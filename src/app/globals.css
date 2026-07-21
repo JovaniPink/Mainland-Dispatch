@@ -154,6 +154,25 @@ a {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 10%, transparent);
 }
 
+.atlas-map .maplibregl-ctrl-group {
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.atlas-map .maplibregl-ctrl-group button,
+.atlas-map .maplibregl-ctrl-attrib {
+  background-color: color-mix(in srgb, var(--paper) 92%, transparent);
+}
+
+.atlas-map .maplibregl-ctrl button .maplibregl-ctrl-icon {
+  filter: sepia(0.2) saturate(0.6);
+}
+
+[data-theme="night"] .atlas-map .maplibregl-canvas {
+  filter: brightness(0.72) saturate(0.7) contrast(1.08);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rise-in {
     animation: none;

@@ -3,7 +3,9 @@ import { dispatches, isPublicDispatch } from "./dispatches";
 import { comparisons } from "./comparisons";
 import { traces } from "./traces";
 import { dossiers } from "./dossiers";
+import { atlasReleases } from "./atlas";
 import {
+  AtlasReleaseSchema,
   ComparisonSchema,
   DispatchSchema,
   DossierSchema,
@@ -33,6 +35,7 @@ export const ContentCatalogSchema = z
     comparisons: z.array(ComparisonSchema),
     traces: z.array(TraceSchema),
     dossiers: z.array(DossierSchema),
+    atlasReleases: z.array(AtlasReleaseSchema),
   })
   .superRefine((catalog, ctx) => {
     addDuplicateIssues(
@@ -58,6 +61,11 @@ export const ContentCatalogSchema = z
     addDuplicateIssues(
       catalog.dossiers.map((item) => item.slug),
       "dossier slug",
+      ctx
+    );
+    addDuplicateIssues(
+      catalog.atlasReleases.map((item) => item.slug),
+      "atlas release slug",
       ctx
     );
 
@@ -152,6 +160,122 @@ export const ContentCatalogSchema = z
         });
       }
     }
+
+    for (const release of catalog.atlasReleases) {
+      const sourceIds = new Set(release.sources.map((item) => item.id));
+      const placeIds = new Set(release.places.map((item) => item.id));
+      const eventIds = new Set(release.events.map((item) => item.id));
+      const chainSlugs = new Set(release.chains.map((item) => item.slug));
+
+      for (const id of release.relatedDispatchIds) {
+        requireDispatch(id, release.slug, true);
+      }
+
+      addDuplicateIssues(
+        release.sources.map((item) => item.id),
+        `${release.slug} source id`,
+        ctx
+      );
+      addDuplicateIssues(
+        release.places.map((item) => item.id),
+        `${release.slug} place id`,
+        ctx
+      );
+      addDuplicateIssues(
+        release.events.map((item) => item.id),
+        `${release.slug} event id`,
+        ctx
+      );
+      addDuplicateIssues(
+        release.chains.map((item) => item.id),
+        `${release.slug} chain id`,
+        ctx
+      );
+      addDuplicateIssues(
+        release.chains.map((item) => item.slug),
+        `${release.slug} chain slug`,
+        ctx
+      );
+      addDuplicateIssues(
+        release.series.map((item) => item.id),
+        `${release.slug} series id`,
+        ctx
+      );
+
+      const requireAtlasRef = (
+        values: string[],
+        valid: Set<string>,
+        label: string
+      ) => {
+        for (const value of values) {
+          if (!valid.has(value)) {
+            ctx.addIssue({
+              code: "custom",
+              message: `${release.slug} ${label} references missing ${value}`,
+            });
+          }
+        }
+      };
+
+      for (let index = 1; index < release.events.length; index += 1) {
+        if (release.events[index - 1].date > release.events[index].date) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${release.slug} events must be chronological`,
+          });
+        }
+      }
+
+      for (const place of release.places) {
+        requireAtlasRef(place.sourceIds, sourceIds, `${place.id} source`);
+      }
+
+      for (const event of release.events) {
+        requireAtlasRef(event.sourceIds, sourceIds, `${event.id} source`);
+        requireAtlasRef(event.placeIds, placeIds, `${event.id} place`);
+        requireAtlasRef(event.chainSlugs, chainSlugs, `${event.id} chain`);
+      }
+
+      for (const chain of release.chains) {
+        requireAtlasRef(chain.sourceIds, sourceIds, `${chain.id} source`);
+        requireAtlasRef(chain.placeIds, placeIds, `${chain.id} place`);
+        requireAtlasRef(chain.eventIds, eventIds, `${chain.id} event`);
+        for (const step of chain.steps) {
+          requireAtlasRef(step.sourceIds, sourceIds, `${chain.id} step source`);
+          requireAtlasRef(step.placeIds, placeIds, `${chain.id} step place`);
+          requireAtlasRef(step.eventIds, eventIds, `${chain.id} step event`);
+        }
+      }
+
+      for (const series of release.series) {
+        requireAtlasRef(series.sourceIds, sourceIds, `${series.id} source`);
+        for (let index = 1; index < series.observations.length; index += 1) {
+          if (
+            series.observations[index - 1].month >=
+            series.observations[index].month
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: `${series.id} observations must be chronological and unique`,
+            });
+          }
+        }
+        for (const observation of series.observations) {
+          requireAtlasRef(
+            observation.sourceIds,
+            sourceIds,
+            `${series.id} observation source`
+          );
+        }
+        for (const annotation of series.annotations) {
+          requireAtlasRef(
+            [annotation.eventId],
+            eventIds,
+            `${series.id} annotation event`
+          );
+        }
+      }
+    }
   });
 
 /** Parsed at import time from the root layout, so broken content fails builds. */
@@ -160,6 +284,7 @@ export const catalog = ContentCatalogSchema.parse({
   comparisons,
   traces,
   dossiers,
+  atlasReleases,
 });
 
 export const isPrototypeCatalog = [
@@ -167,4 +292,5 @@ export const isPrototypeCatalog = [
   ...catalog.comparisons,
   ...catalog.traces,
   ...catalog.dossiers,
+  ...catalog.atlasReleases,
 ].some((item) => item.provenance === "prototype");

@@ -9,6 +9,7 @@ const baseUrl = "https://mainlanddispatch.com";
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
+    "/atlas",
     "/saved",
     ...publishedDispatches.map((item) => `/dispatch/${item.slug}`),
     ...comparisons.map((item) => `/compare/${item.slug}`),

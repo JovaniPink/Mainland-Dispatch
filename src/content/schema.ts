@@ -245,3 +245,174 @@ export const DossierSchema = z.object({
 });
 
 export type Dossier = z.infer<typeof DossierSchema>;
+
+/* ── Evidence Atlas ──────────────────────────────────────────────── */
+
+export const AtlasSourceClassSchema = z.enum([
+  "policy",
+  "legal-record",
+  "screening-data",
+  "trade-data",
+  "filing",
+  "map",
+]);
+
+export const AtlasLifecycleStageSchema = z.enum([
+  "announcement",
+  "publication",
+  "implementation",
+  "observation",
+]);
+
+export const AtlasStepKindSchema = z.enum([
+  "rule",
+  "scope",
+  "entity",
+  "date",
+  "location",
+  "trade",
+  "disclosure",
+  "effect",
+  "question",
+  "caveat",
+]);
+
+export const AtlasSourceRecordSchema = z.object({
+  id: nonEmpty.regex(
+    /^source-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a source- prefixed id"
+  ),
+  label: nonEmpty,
+  publisher: nonEmpty,
+  sourceClass: AtlasSourceClassSchema,
+  canonicalUrl: z.url(),
+  publishedAt: isoDate,
+  retrievedAt: isoDate,
+  datasetVintage: nonEmpty,
+  language: nonEmpty,
+  translationStatus: TranslationStatusSchema,
+  snapshotId: nonEmpty,
+  snapshotChecksum: nonEmpty.regex(
+    /^[a-f0-9]{64}$/,
+    "expected a SHA-256 checksum"
+  ),
+  notes: nonEmpty,
+});
+
+export const AtlasPlaceSchema = z.object({
+  id: nonEmpty.regex(
+    /^place-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a place- prefixed id"
+  ),
+  label: nonEmpty,
+  coordinates: z.tuple([
+    z.number().min(-180).max(180),
+    z.number().min(-90).max(90),
+  ]),
+  precision: z.enum(["exact", "city", "country"]),
+  role: nonEmpty,
+  sourceIds: z.array(nonEmpty).min(1),
+});
+
+export const AtlasEventSchema = z.object({
+  id: nonEmpty.regex(
+    /^event-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected an event- prefixed id"
+  ),
+  date: isoDate,
+  stage: AtlasLifecycleStageSchema,
+  evidenceStatus: EvidenceStatusSchema,
+  title: nonEmpty,
+  detail: nonEmpty,
+  sourceIds: z.array(nonEmpty).min(1),
+  placeIds: nonEmptyList,
+  chainSlugs: z.array(slug).min(1),
+});
+
+export const SignalStepSchema = z.object({
+  code: nonEmpty,
+  kind: AtlasStepKindSchema,
+  label: nonEmpty,
+  detail: nonEmpty,
+  date: isoDate.optional(),
+  evidenceStatus: EvidenceStatusSchema,
+  sourceIds: z.array(nonEmpty).min(1),
+  placeIds: nonEmptyList,
+  eventIds: nonEmptyList,
+});
+
+export const SignalChainSchema = z.object({
+  id: nonEmpty.regex(
+    /^chain-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a chain- prefixed id"
+  ),
+  slug,
+  eyebrow: nonEmpty,
+  title: nonEmpty,
+  summary: nonEmpty,
+  steps: z.array(SignalStepSchema).length(4),
+  conclusion: nonEmpty,
+  caveat: nonEmpty,
+  evidenceStatus: EvidenceStatusSchema,
+  sourceIds: z.array(nonEmpty).min(1),
+  placeIds: nonEmptyList,
+  eventIds: nonEmptyList,
+});
+
+export const AtlasObservationSchema = z.object({
+  month: nonEmpty.regex(/^\d{4}-\d{2}$/, "expected YYYY-MM"),
+  value: z.number().nonnegative(),
+  sourceIds: z.array(nonEmpty).min(1),
+  estimated: z.boolean(),
+});
+
+export const AtlasAnnotationSchema = z.object({
+  month: nonEmpty.regex(/^\d{4}-\d{2}$/, "expected YYYY-MM"),
+  label: nonEmpty,
+  eventId: nonEmpty,
+});
+
+export const AtlasSeriesSchema = z.object({
+  id: nonEmpty.regex(
+    /^series-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a series- prefixed id"
+  ),
+  slug,
+  title: nonEmpty,
+  description: nonEmpty,
+  unit: z.literal("usd"),
+  frequency: z.literal("monthly"),
+  methodology: nonEmpty,
+  sourceIds: z.array(nonEmpty).min(1),
+  downloadPath: nonEmpty.regex(/^\//, "expected a root-relative path"),
+  observations: z.array(AtlasObservationSchema).min(2),
+  annotations: z.array(AtlasAnnotationSchema),
+});
+
+export const AtlasReleaseSchema = z.object({
+  slug,
+  version: nonEmpty,
+  title: nonEmpty,
+  summary: nonEmpty,
+  methodology: nonEmpty,
+  publishedAt: isoDate,
+  retrievedAt: isoDate,
+  dataThrough: isoDate,
+  editorialStatus: EditorialStatusSchema,
+  provenance: z.literal("prototype"),
+  reviewState: z.literal("source-snapshot"),
+  relatedDispatchIds: nonEmptyList,
+  sources: z.array(AtlasSourceRecordSchema).min(1),
+  chains: z.array(SignalChainSchema).min(1),
+  places: z.array(AtlasPlaceSchema).min(1),
+  events: z.array(AtlasEventSchema).length(4),
+  series: z.array(AtlasSeriesSchema).min(1),
+});
+
+export type AtlasSourceRecord = z.infer<typeof AtlasSourceRecordSchema>;
+export type AtlasPlace = z.infer<typeof AtlasPlaceSchema>;
+export type AtlasEvent = z.infer<typeof AtlasEventSchema>;
+export type SignalChain = z.infer<typeof SignalChainSchema>;
+export type AtlasSeries = z.infer<typeof AtlasSeriesSchema>;
+export type AtlasRelease = z.infer<typeof AtlasReleaseSchema>;
+export type AtlasLifecycleStage = z.infer<typeof AtlasLifecycleStageSchema>;

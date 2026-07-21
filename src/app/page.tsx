@@ -2,6 +2,8 @@ import Link from "next/link";
 import { publishedDispatches, countsByVertical } from "@/content/dispatches";
 import { verticals } from "@/content/site";
 import { Stream } from "@/components/dispatch/stream";
+import { atlasRelease } from "@/content/atlas";
+import { SignalTeaser } from "@/components/atlas/signal-teaser";
 
 export default function HomePage() {
   const lead =
@@ -67,6 +69,8 @@ export default function HomePage() {
           </ul>
         </aside>
       </section>
+
+      {atlasRelease && <SignalTeaser release={atlasRelease} />}
 
       <Stream />
     </div>

@@ -21,11 +21,20 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: site.name,
     description: site.tagline,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Mainland Dispatch Evidence Atlas map and semiconductor evidence chain",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: site.name,
     description: site.tagline,
+    images: ["/og.png"],
   },
 };
 

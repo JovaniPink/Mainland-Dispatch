@@ -1,4 +1,4 @@
-import { DispatchSchema } from "./schema";
+import { AtlasReleaseSchema, DispatchSchema } from "./schema";
 import { dispatches } from "./dispatches";
 import { comparisons } from "./comparisons";
 import { traces } from "./traces";
@@ -9,6 +9,11 @@ import {
   isPublicDispatch,
   publishedDispatches,
 } from "./dispatches";
+import { atlasReleases, publishedAtlasReleases } from "./atlas";
+
+function clone<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
 
 const validArticle = {
   kind: "article",
@@ -182,5 +187,55 @@ describe("publication boundary", () => {
       getPublicDispatch("weibo-graduate-employment-thread")
     ).toBeUndefined();
     expect(getPublicDispatch("chongqing-ev-factory-photos")).toBeUndefined();
+  });
+
+  it("publishes only public Atlas releases", () => {
+    expect(
+      publishedAtlasReleases.every((item) =>
+        ["published", "corrected"].includes(item.editorialStatus)
+      )
+    ).toBe(true);
+  });
+});
+
+describe("Evidence Atlas schema and graph", () => {
+  const release = atlasReleases[0];
+
+  it("ships one source-snapshot release with four-step chains", () => {
+    expect(release.reviewState).toBe("source-snapshot");
+    expect(release.provenance).toBe("prototype");
+    expect(release.chains.every((chain) => chain.steps.length === 4)).toBe(
+      true
+    );
+    expect(release.series[0].observations).toHaveLength(24);
+  });
+
+  it("rejects invalid coordinates and missing snapshot metadata", () => {
+    const invalid = clone(release);
+    invalid.places[0].coordinates = [181, 91];
+    invalid.sources[0].snapshotChecksum = "missing";
+    expect(AtlasReleaseSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects non-four-step chains", () => {
+    const invalid = clone(release);
+    invalid.chains[0].steps.pop();
+    expect(AtlasReleaseSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects unresolved Atlas references and unsorted observations", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[0].chains[0].sourceIds = ["source-missing"];
+    invalid.atlasReleases[0].series[0].observations.reverse();
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("prevents Atlas releases from exposing review-stage dispatches", () => {
+    const invalid = clone(catalog);
+    const reviewOnly = invalid.dispatches.find(
+      (item) => item.slug === "weibo-graduate-employment-thread"
+    )!;
+    invalid.atlasReleases[0].relatedDispatchIds = [reviewOnly.id];
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
   });
 });

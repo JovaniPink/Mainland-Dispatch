@@ -8,11 +8,12 @@ export function PrototypeNotice() {
         <strong className="font-semibold">
           Editorial interface prototype.
         </strong>{" "}
-        Headlines, dates, quotations, bylines, figures, and links are
-        fictionalized samples—not published reporting.
+        Dispatches remain fictionalized samples. Labeled source snapshots use
+        real public records for interaction testing; their editorial
+        interpretation is provisional.
       </p>
       <span className="shrink-0 font-mono text-[0.65rem] uppercase tracking-widest text-signal">
-        Demo content
+        Demo + source lab
       </span>
     </aside>
   );
