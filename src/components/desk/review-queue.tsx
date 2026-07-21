@@ -6,6 +6,7 @@ import { dispatches } from "@/content/dispatches";
 import { formatDate } from "@/content/site";
 import type { EditorialStatus } from "@/content/schema";
 import { MetaLine, metaParts } from "@/components/dispatch/meta-line";
+import { cn } from "@/lib/utils";
 
 const stages: { id: EditorialStatus; label: string }[] = [
   { id: "draft", label: "Draft" },
@@ -51,11 +52,12 @@ export function ReviewQueue() {
                     <li key={d.id}>
                       <button
                         onClick={() => setSelectedId(d.id)}
-                        className={`block w-full px-3 py-2 text-left font-serif text-sm leading-snug ${
+                        className={cn(
+                          "block w-full px-3 py-2 text-left font-serif text-sm leading-snug",
                           selectedId === d.id
                             ? "bg-signal-soft text-signal"
                             : "hover:bg-paper-warm"
-                        }`}
+                        )}
                       >
                         {d.title}
                       </button>

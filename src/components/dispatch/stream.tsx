@@ -7,6 +7,7 @@ import { filterDispatches, sortByCuratedDesc } from "@/lib/filters";
 import { dispatches } from "@/content/dispatches";
 import { verticals, kindLabels } from "@/content/site";
 import type { DispatchKind, Vertical } from "@/content/schema";
+import { cn } from "@/lib/utils";
 import { DispatchCard } from "./dispatch-card";
 import { StateLab } from "@/components/state-lab/state-lab";
 
@@ -24,11 +25,12 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className={`whitespace-nowrap border px-3 py-1 font-mono text-xs uppercase tracking-widest ${
+      className={cn(
+        "whitespace-nowrap border px-3 py-1 font-mono text-xs uppercase tracking-widest",
         active
           ? "border-signal bg-signal-soft text-signal"
           : "border-rule text-ink-muted hover:text-ink"
-      }`}
+      )}
     >
       {label}
     </button>

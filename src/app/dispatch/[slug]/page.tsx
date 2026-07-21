@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { dispatches, getDispatch, relatedDispatches } from "@/content/dispatches";
+import {
+  dispatches,
+  getDispatch,
+  relatedDispatches,
+} from "@/content/dispatches";
 import { comparisons } from "@/content/comparisons";
 import { traces } from "@/content/traces";
 import { formatDate, verticals } from "@/content/site";
@@ -39,8 +43,11 @@ export default async function DispatchPage({
           {d.title}
         </h1>
         <p className="mt-4 font-mono text-xs uppercase tracking-widest text-ink-muted">
-          Published {formatDate(d.sourceDate)} · Curated {formatDate(d.curatedAt)}
-          {d.updatedAt !== d.curatedAt && <> · Updated {formatDate(d.updatedAt)}</>}
+          Published {formatDate(d.sourceDate)} · Curated{" "}
+          {formatDate(d.curatedAt)}
+          {d.updatedAt !== d.curatedAt && (
+            <> · Updated {formatDate(d.updatedAt)}</>
+          )}
         </p>
       </div>
 

@@ -4,9 +4,16 @@ import { verticals } from "@/content/site";
 import { Stream } from "@/components/dispatch/stream";
 
 export default function HomePage() {
-  const lead =
-    dispatches.find((d) => d.kind === "original") ?? dispatches[0];
+  const lead = dispatches.find((d) => d.kind === "original") ?? dispatches[0];
   const counts = countsByVertical();
+
+  if (!lead) {
+    return (
+      <p className="py-16 text-center font-serif text-lg italic text-ink-muted">
+        No dispatches available yet.
+      </p>
+    );
+  }
 
   return (
     <div className="pb-8">

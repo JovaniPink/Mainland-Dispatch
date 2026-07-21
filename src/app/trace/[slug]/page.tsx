@@ -25,7 +25,9 @@ export default async function TracePage({
         <h1 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
           {t.title}
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-ink-muted">{t.intro}</p>
+        <p className="mt-4 text-base leading-relaxed text-ink-muted">
+          {t.intro}
+        </p>
       </header>
 
       <div className="mt-10">

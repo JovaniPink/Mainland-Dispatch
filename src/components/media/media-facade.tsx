@@ -27,10 +27,20 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
 
   const meta =
     d.kind === "video"
-      ? [d.provider.toUpperCase(), d.duration, d.language.toUpperCase(),
-         d.captions.length > 0 ? `CC ${d.captions.join("/").toUpperCase()}` : "NO CAPTIONS"]
-      : [d.showName.toUpperCase(), d.duration, d.language.toUpperCase(),
-         d.transcriptAvailable ? "TRANSCRIPT AVAILABLE" : "NO TRANSCRIPT"];
+      ? [
+          d.provider.toUpperCase(),
+          d.duration,
+          d.language.toUpperCase(),
+          d.captions.length > 0
+            ? `CC ${d.captions.join("/").toUpperCase()}`
+            : "NO CAPTIONS",
+        ]
+      : [
+          d.showName.toUpperCase(),
+          d.duration,
+          d.language.toUpperCase(),
+          d.transcriptAvailable ? "TRANSCRIPT AVAILABLE" : "NO TRANSCRIPT",
+        ];
 
   return (
     <div>

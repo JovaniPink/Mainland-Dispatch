@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Comparison } from "@/content/schema";
 import { formatDate } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 const roleLabels: Record<string, string> = {
   mainland: "Mainland source",
@@ -10,11 +11,7 @@ const roleLabels: Record<string, string> = {
   primary: "Primary document",
 };
 
-function SourceColumn({
-  source,
-}: {
-  source: Comparison["sources"][number];
-}) {
+function SourceColumn({ source }: { source: Comparison["sources"][number] }) {
   return (
     <div className="flex flex-col gap-3 border border-rule bg-paper-warm/40 p-4">
       <p className="font-mono text-xs uppercase tracking-widest text-signal">
@@ -59,11 +56,12 @@ export function CompareColumns({ comparison }: { comparison: Comparison }) {
           <button
             key={s.role}
             onClick={() => setActiveTab(i)}
-            className={`whitespace-nowrap border px-3 py-1 font-mono text-xs uppercase tracking-widest ${
+            className={cn(
+              "whitespace-nowrap border px-3 py-1 font-mono text-xs uppercase tracking-widest",
               activeTab === i
                 ? "border-signal bg-signal-soft text-signal"
                 : "border-rule text-ink-muted"
-            }`}
+            )}
           >
             {roleLabels[s.role]}
           </button>

@@ -63,3 +63,21 @@ npm run start
 
 Content lives in `src/content/`. To add a dispatch, use the Desk composer
 to produce validated JSON, then paste it into `src/content/dispatches.ts`.
+
+Quality tooling: `npm run typecheck` (strict tsc), `npm test` (Jest +
+Testing Library), `npm run format` (Prettier). Husky runs lint-staged on
+commit and typecheck on push.
+
+## Standards notes (documented deviations)
+
+Checked against the workspace Next.js SOP and the Cross-App Analytics SOP;
+deviations are recorded here per the analytics SOP §2 exception rule:
+
+- **Next.js 16**: currently on 15.5; the upgrade is deferred to its own PR
+  so framework churn stays isolated from feature review.
+- **react-hook-form**: the Desk composer is XState-driven with live Zod
+  validation; RHF will be revisited when real persistence lands.
+- **Analytics stack** (GTM, GA4, Consent Mode, BigQuery export, Search
+  Console/IndexNow, Clarity): launch-time infrastructure for deployed
+  properties. This prototype is not deployed; no placeholder tag IDs are
+  committed. Wire these up at launch following the SOP naming standard.

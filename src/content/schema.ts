@@ -41,19 +41,21 @@ export const EvidenceStatusSchema = z.enum([
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
 
+const nonEmpty = z.string().min(1);
+
 const DispatchBase = z.object({
-  id: z.string(),
-  slug: z.string(),
-  title: z.string(),
-  summary: z.string(),
-  commentary: z.string(),
-  whyItMatters: z.string(),
-  source: z.string(),
+  id: nonEmpty,
+  slug: nonEmpty,
+  title: nonEmpty,
+  summary: nonEmpty,
+  commentary: nonEmpty,
+  whyItMatters: nonEmpty,
+  source: nonEmpty,
   sourceUrl: z.url(),
   sourceDate: isoDate,
   curatedAt: isoDate,
   updatedAt: isoDate,
-  language: z.string(),
+  language: nonEmpty,
   translationStatus: TranslationStatusSchema,
   verticals: z.array(VerticalSchema).min(1),
   tags: z.array(z.string()),

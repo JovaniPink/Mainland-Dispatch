@@ -24,7 +24,11 @@ const kindExtras: Record<string, KindExtra[]> = {
   article: [],
   original: [],
   video: [
-    { name: "provider", label: "Provider (youtube/vimeo/bilibili)", type: "text" },
+    {
+      name: "provider",
+      label: "Provider (youtube/vimeo/bilibili)",
+      type: "text",
+    },
     { name: "embedId", label: "Embed ID", type: "text" },
     { name: "duration", label: "Duration (mm:ss)", type: "text" },
   ],
@@ -38,7 +42,11 @@ const kindExtras: Record<string, KindExtra[]> = {
     { name: "documentDate", label: "Document date (YYYY-MM-DD)", type: "text" },
   ],
   social: [
-    { name: "platform", label: "Platform (weibo/x/wechat/xiaohongshu/douyin)", type: "text" },
+    {
+      name: "platform",
+      label: "Platform (weibo/x/wechat/xiaohongshu/douyin)",
+      type: "text",
+    },
     { name: "account", label: "Account", type: "text" },
     { name: "captureDate", label: "Capture date (YYYY-MM-DD)", type: "text" },
     { name: "archivalUrl", label: "Archival URL", type: "text" },
@@ -215,9 +223,7 @@ export function Composer() {
             <span className={labelCls}>Kind</span>
             <select
               value={form.kind}
-              onChange={(e) =>
-                update({ kind: e.target.value, extras: {} })
-              }
+              onChange={(e) => update({ kind: e.target.value, extras: {} })}
               className={inputCls}
             >
               {kinds.map((k) => (

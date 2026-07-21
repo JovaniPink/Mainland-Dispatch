@@ -108,7 +108,8 @@ const seeds: unknown[] = [
     whyItMatters:
       "Distribution, not production, is where cultural exchange actually narrows. The bottleneck is commercial, and it is measurable.",
     source: "The Hollywood Reporter",
-    sourceUrl: "https://www.hollywoodreporter.com/chinese-cinema-us-distribution",
+    sourceUrl:
+      "https://www.hollywoodreporter.com/chinese-cinema-us-distribution",
     sourceDate: "2026-07-10",
     curatedAt: "2026-07-14",
     updatedAt: "2026-07-14",
@@ -304,7 +305,8 @@ const seeds: unknown[] = [
     kind: "video",
     id: "d-011",
     slug: "smic-earnings-call-analysis",
-    title: "What SMIC's earnings call revealed about domestic tool substitution",
+    title:
+      "What SMIC's earnings call revealed about domestic tool substitution",
     summary:
       "Asianometry's close reading of SMIC's capex guidance and what it implies about yield on domestic lithography tools.",
     commentary:

@@ -48,7 +48,9 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
-  transition: background-color 200ms ease, color 200ms ease;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
 /* Double ruled notebook margin, large screens only */
@@ -76,6 +78,11 @@ body {
   background-size: 100% 0.375em;
   background-position: 0 100%;
   padding-bottom: 0.375em;
+}
+
+/* Keep the underline stroke on the night theme's signal color */
+[data-theme="night"] .editorial-underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6' preserveAspectRatio='none'%3E%3Cpath d='M2 4.5 C 25 2.5, 48 3.5, 70 3 S 108 2, 118 3.5' fill='none' stroke='%23d4574b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 /* Restrained entrance: notes rising into place */

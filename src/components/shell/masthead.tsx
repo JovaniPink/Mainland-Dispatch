@@ -1,23 +1,22 @@
 import Link from "next/link";
 import { site } from "@/content/site";
 import { ThemeToggle } from "./theme-toggle";
-
-function todayLabel(): string {
-  return new Date()
-    .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
-    .toUpperCase();
-}
+import { TodayDate } from "./today-date";
 
 export function Masthead() {
   return (
     <header className="border-b border-rule">
       <div className="flex items-baseline justify-between gap-4 px-4 py-5 sm:px-6">
-        <Link href="/" className="font-serif text-2xl font-semibold tracking-tight sm:text-3xl">
+        <Link
+          href="/"
+          className="font-serif text-2xl font-semibold tracking-tight sm:text-3xl"
+        >
           {site.name.toUpperCase()}
         </Link>
         <div className="flex items-center gap-3">
           <span className="hidden font-mono text-xs tracking-widest text-ink-muted sm:inline">
-            {todayLabel()} · {site.volume}
+            <TodayDate />
+            {site.volume}
           </span>
           <ThemeToggle />
         </div>

@@ -28,12 +28,10 @@ export function StateLab({
       </summary>
       <div className="space-y-2 px-3 pb-3 text-ink">
         <p>
-          <span className="text-ink-muted">state:</span>{" "}
-          {JSON.stringify(state)}
+          <span className="text-ink-muted">state:</span> {JSON.stringify(state)}
         </p>
         <p>
-          <span className="text-ink-muted">last event:</span>{" "}
-          {lastEvent ?? "—"}
+          <span className="text-ink-muted">last event:</span> {lastEvent ?? "—"}
         </p>
         <p>
           <span className="text-ink-muted">available events:</span>{" "}

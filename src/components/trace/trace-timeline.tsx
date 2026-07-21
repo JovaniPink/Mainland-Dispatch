@@ -6,6 +6,7 @@ import type { Trace } from "@/content/schema";
 import { getDispatchById } from "@/content/dispatches";
 import { phaseLabels } from "@/content/traces";
 import { formatDate } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 /**
  * Chronological story record with a clickable entry list and a
@@ -24,14 +25,19 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
             ? getDispatchById(entry.dispatchId)
             : undefined;
           return (
-            <li key={entry.id} id={entry.id} className="relative pb-8 last:pb-0">
+            <li
+              key={entry.id}
+              id={entry.id}
+              className="relative pb-8 last:pb-0"
+            >
               <span
                 aria-hidden
-                className={`absolute -left-[1.85rem] top-1.5 h-2.5 w-2.5 rounded-full border ${
+                className={cn(
+                  "absolute -left-[1.85rem] top-1.5 h-2.5 w-2.5 rounded-full border",
                   entry.critical
                     ? "border-signal bg-signal"
                     : "border-ink-muted bg-paper"
-                }`}
+                )}
               />
               <button
                 onClick={() => setSelectedId(entry.id)}
@@ -41,9 +47,10 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
                   {formatDate(entry.date)} · {phaseLabels[entry.phase]}
                 </p>
                 <h3
-                  className={`mt-1 font-serif text-xl leading-snug ${
-                    selected ? "text-signal" : ""
-                  }`}
+                  className={cn(
+                    "mt-1 font-serif text-xl leading-snug",
+                    selected && "text-signal"
+                  )}
                 >
                   {entry.title}
                 </h3>
