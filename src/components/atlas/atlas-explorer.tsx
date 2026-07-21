@@ -3,23 +3,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMachine } from "@xstate/react";
 import type {
-  AtlasLifecycleStage,
   AtlasRelease,
+  AtlasSeries,
   EvidenceStatus,
+  SignalStep,
 } from "@/content/schema";
 import { evidenceStatusLabels } from "@/content/dossiers";
+import { getStepScope } from "@/content/atlas-selectors";
 import { atlasMachine, type AtlasEvent } from "@/machines/atlas-machine";
 import { formatDate } from "@/content/site";
 import { StateLab } from "@/components/state-lab/state-lab";
-import { ContextMap } from "./context-map";
+import { MapDialog, type AtlasMapStatus } from "./map-dialog";
+import { RelationDiagram } from "./relation-diagram";
 import { TradeChart } from "./trade-chart";
-
-const stageLabels: Record<AtlasLifecycleStage, string> = {
-  announcement: "Announced",
-  publication: "Published",
-  implementation: "Implemented",
-  observation: "Observed",
-};
 
 const statusTone: Record<EvidenceStatus, string> = {
   reported: "border-rule text-ink-muted",
@@ -35,25 +31,47 @@ function unique(values: string[]) {
   return [...new Set(values)];
 }
 
+function seriesForStep(series: AtlasSeries, step: SignalStep): AtlasSeries {
+  return {
+    ...series,
+    annotations: series.annotations.filter((annotation) =>
+      step.eventIds.includes(annotation.eventId)
+    ),
+  };
+}
+
 export function AtlasExplorer({ release }: { release: AtlasRelease }) {
   const input = useMemo(() => {
-    const placeIdsByChain = Object.fromEntries(
-      release.chains.map((chain) => [chain.slug, chain.placeIds])
-    );
-    const chainSlugsByPlace = Object.fromEntries(
-      release.places.map((place) => [
-        place.id,
-        release.chains
-          .filter((chain) => chain.placeIds.includes(place.id))
-          .map((chain) => chain.slug),
+    const stepIdsByChain = Object.fromEntries(
+      release.chains.map((chain) => [
+        chain.slug,
+        chain.steps.map((step) => step.id),
       ])
+    );
+    const placeIdsByStep = Object.fromEntries(
+      release.chains.flatMap((chain) =>
+        chain.steps.map((step) => [step.id, step.placeIds])
+      )
+    );
+    const monthsByStep = Object.fromEntries(
+      release.chains.flatMap((chain) =>
+        chain.steps.map((step) => [
+          step.id,
+          unique(
+            release.series
+              .filter((series) => step.seriesIds.includes(series.id))
+              .flatMap((series) =>
+                series.observations.map((observation) => observation.month)
+              )
+          ).sort(),
+        ])
+      )
     );
     return {
       chainSlugs: release.chains.map((chain) => chain.slug),
-      placeIds: release.places.map((place) => place.id),
-      months: release.series[0]?.observations.map((item) => item.month) ?? [],
-      placeIdsByChain,
-      chainSlugsByPlace,
+      stepIdsByChain,
+      placeIdsByStep,
+      monthsByStep,
     };
   }, [release]);
   const [state, send] = useMachine(atlasMachine, { input });
@@ -61,9 +79,10 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
   const [lastEvent, setLastEvent] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
   const pendingEvent = useRef<string | null>(null);
-  const hydratedRef = useRef(false);
+  const hasInteracted = useRef(false);
 
   function dispatch(event: AtlasEvent) {
+    hasInteracted.current = true;
     send(event);
     setLastEvent(event.type);
     pendingEvent.current = event.type;
@@ -72,23 +91,32 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       const params = new URLSearchParams(window.location.search);
-      const event: AtlasEvent = {
-        type: "HYDRATE",
-        chain: params.get("chain"),
-        place: params.get("place"),
-        month: params.get("month"),
-      };
-      send(event);
-      setLastEvent(event.type);
-      pendingEvent.current = event.type;
-      hydratedRef.current = true;
+      if (!hasInteracted.current) {
+        const event: AtlasEvent = {
+          type: "HYDRATE",
+          chain: params.get("chain"),
+          step: params.get("step"),
+          place: params.get("place"),
+          month: params.get("month"),
+        };
+        send(event);
+        setLastEvent(event.type);
+        pendingEvent.current = event.type;
+      }
       setHydrated(true);
     }, 0);
     return () => window.clearTimeout(timeoutId);
-  }, [send]);
+    // Query hydration is intentionally a one-time machine event.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const { selectedChain, selectedPlace, selectedMonth, selectedStage, metric } =
-    state.context;
+  const {
+    selectedChain,
+    selectedStepId,
+    selectedPlace,
+    selectedMonth,
+    metric,
+  } = state.context;
 
   useEffect(() => {
     if (!pendingEvent.current) return;
@@ -103,55 +131,65 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
     selectedChain,
     selectedMonth,
     selectedPlace,
-    selectedStage,
+    selectedStepId,
     state.value,
   ]);
 
   useEffect(() => {
-    if (!hydrated || !hydratedRef.current) return;
+    if (!hydrated) return;
     const url = new URL(window.location.href);
     url.searchParams.set("chain", selectedChain);
+    url.searchParams.set("step", selectedStepId);
     if (selectedPlace) url.searchParams.set("place", selectedPlace);
     else url.searchParams.delete("place");
     if (selectedMonth) url.searchParams.set("month", selectedMonth);
     else url.searchParams.delete("month");
     window.history.replaceState({}, "", `${url.pathname}${url.search}`);
-  }, [hydrated, selectedChain, selectedMonth, selectedPlace]);
+  }, [hydrated, selectedChain, selectedMonth, selectedPlace, selectedStepId]);
 
   const chain =
     release.chains.find((item) => item.slug === selectedChain) ??
     release.chains[0];
-  const chainEvents = release.events.filter((event) =>
-    event.chainSlugs.includes(chain.slug)
+  const step =
+    chain.steps.find((item) => item.id === selectedStepId) ?? chain.steps[0];
+  const scope = getStepScope(release, step);
+  const selectedPlaceRecord = scope.places.find(
+    (item) => item.id === selectedPlace
   );
-  const visibleEvents = selectedStage
-    ? chainEvents.filter((event) => event.stage === selectedStage)
-    : chainEvents;
-  const stagePlaceIds = selectedStage
-    ? unique(visibleEvents.flatMap((event) => event.placeIds))
-    : chain.placeIds;
-  const activePlaceIds =
-    stagePlaceIds.length > 0 ? stagePlaceIds : chain.placeIds;
-  const place = release.places.find((item) => item.id === selectedPlace);
-  const series = release.series[0];
-
+  const scopedSeries = scope.series.map((series) =>
+    seriesForStep(series, step)
+  );
+  const selectedObservation = scopedSeries
+    .flatMap((series) => series.observations)
+    .find((observation) => observation.month === selectedMonth);
   const sourceIds = unique([
-    ...chain.sourceIds,
-    ...visibleEvents.flatMap((event) => event.sourceIds),
-    ...(place?.sourceIds ?? []),
-    ...(series?.observations.find((item) => item.month === selectedMonth)
-      ?.sourceIds ?? []),
+    ...scope.sourceIds,
+    ...scope.series.flatMap((series) => series.sourceIds),
+    ...(selectedPlaceRecord?.sourceIds ?? []),
+    ...(selectedObservation?.sourceIds ?? []),
   ]);
   const sources = release.sources.filter((source) =>
     sourceIds.includes(source.id)
   );
-  const mapStatus = state.matches({ map: "idle" })
-    ? "idle"
+  const mapStatus: AtlasMapStatus = state.matches({ map: "closed" })
+    ? "closed"
     : state.matches({ map: "loading" })
       ? "loading"
       : state.matches({ map: "ready" })
         ? "ready"
-        : "failed";
+        : state.matches({ map: "degraded" })
+          ? "degraded"
+          : "failed";
+
+  function selectChain(slug: string) {
+    dispatch({ type: "CLOSE_MAP" });
+    dispatch({ type: "SELECT_CHAIN", slug });
+  }
+
+  function selectStep(id: string) {
+    dispatch({ type: "CLOSE_MAP" });
+    dispatch({ type: "SELECT_STEP", id });
+  }
 
   return (
     <div className="mt-10 space-y-12">
@@ -170,49 +208,39 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
           </div>
           <button
             type="button"
-            onClick={() => dispatch({ type: "RESET" })}
+            onClick={() => {
+              dispatch({ type: "CLOSE_MAP" });
+              dispatch({ type: "RESET" });
+            }}
             className="border border-rule px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-signal hover:text-signal"
           >
-            Reset atlas
+            Reset evidence view
           </button>
         </div>
 
-        <div className="mt-5 grid gap-4 lg:grid-cols-3">
-          {release.chains.map((item, index) => {
+        <div className="mt-5 grid gap-3 lg:grid-cols-3">
+          {release.chains.map((item) => {
             const active = item.slug === chain.slug;
             return (
               <button
                 key={item.id}
                 type="button"
                 aria-pressed={active}
-                onClick={() =>
-                  dispatch({ type: "SELECT_CHAIN", slug: item.slug })
-                }
-                className={`rise-in group text-left border p-4 transition-colors ${
+                onClick={() => selectChain(item.slug)}
+                className={`text-left border p-4 transition-colors ${
                   active
                     ? "border-signal bg-signal-soft/40"
                     : "border-rule bg-paper-warm/25 hover:bg-paper-warm/60"
                 }`}
-                style={{ animationDelay: `${index * 70}ms` }}
               >
                 <span className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
                   {item.eyebrow}
                 </span>
-                <span className="mt-2 block font-serif text-xl leading-snug group-hover:text-signal">
+                <span className="mt-2 block font-serif text-lg leading-snug">
                   {item.title}
                 </span>
-                <span className="mt-3 grid grid-cols-4 gap-1" aria-hidden>
-                  {item.steps.map((step) => (
-                    <span
-                      key={step.code}
-                      className="border-t border-rule pt-2 font-mono text-[0.55rem] uppercase tracking-wider text-ink-muted"
-                    >
-                      {step.code}
-                    </span>
-                  ))}
-                </span>
                 <span
-                  className={`mt-4 inline-block border px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest ${statusTone[item.evidenceStatus]}`}
+                  className={`mt-3 inline-block border px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest ${statusTone[item.evidenceStatus]}`}
                 >
                   {evidenceStatusLabels[item.evidenceStatus]}
                 </span>
@@ -222,161 +250,218 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
         </div>
       </section>
 
-      <section aria-labelledby="lifecycle-heading">
-        <p className="font-mono text-xs uppercase tracking-widest text-jade">
-          Policy lifecycle
+      <section aria-labelledby="steps-heading">
+        <p className="font-mono text-xs uppercase tracking-widest text-signal">
+          Selected chain
         </p>
-        <h2 id="lifecycle-heading" className="mt-2 font-serif text-2xl">
-          Announcement to observable record
+        <h2 id="steps-heading" className="mt-2 font-serif text-2xl sm:text-3xl">
+          {chain.title}
         </h2>
-        <div className="chip-row scroll-affordance -mx-4 mt-5 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-          <ol className="grid min-w-[44rem] grid-cols-4 border-y border-rule sm:min-w-0">
-            {release.events.map((event, index) => {
-              const active = selectedStage === event.stage;
-              const relevant = event.chainSlugs.includes(chain.slug);
-              return (
-                <li key={event.id} className="relative">
-                  <button
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() =>
-                      dispatch({ type: "SELECT_STAGE", stage: event.stage })
-                    }
-                    className={`h-full w-full border-r border-rule px-4 py-4 text-left last:border-r-0 ${
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-muted">
+          {chain.summary}
+        </p>
+
+        <ol className="relative mt-6 grid gap-3 before:absolute before:top-7 before:bottom-7 before:left-[1.45rem] before:w-px before:bg-rule md:grid-cols-4 md:gap-0 md:before:top-[1.45rem] md:before:right-7 md:before:bottom-auto md:before:left-7 md:before:h-px md:before:w-auto">
+          {chain.steps.map((item, index) => {
+            const active = item.id === step.id;
+            const itemScope = getStepScope(release, item);
+            return (
+              <li key={item.id} className="relative md:px-1">
+                <button
+                  type="button"
+                  aria-current={active ? "step" : undefined}
+                  onClick={() => selectStep(item.id)}
+                  className={`relative h-full w-full border p-4 pl-14 text-left transition-colors md:min-h-72 md:p-4 md:pt-14 ${
+                    active
+                      ? "border-signal bg-signal-soft/35"
+                      : "border-rule bg-paper hover:bg-paper-warm/45"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-3 left-3 z-10 grid h-8 w-8 place-items-center rounded-full border font-mono text-xs md:left-4 ${
                       active
-                        ? "bg-signal-soft/55"
-                        : relevant
-                          ? "hover:bg-paper-warm/60"
-                          : "opacity-55"
+                        ? "border-signal bg-signal text-paper"
+                        : "border-jade bg-paper text-jade"
                     }`}
                   >
-                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
-                      0{index + 1} · {formatDate(event.date)}
-                    </span>
-                    <span className="mt-2 block font-serif text-base leading-snug">
-                      {stageLabels[event.stage]}
-                    </span>
-                    <span className="mt-1 block text-xs leading-relaxed text-ink-muted">
-                      {event.title}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+                    {index + 1}
+                  </span>
+                  <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                    {item.code}
+                  </span>
+                  <span className="mt-2 block font-serif text-lg leading-snug">
+                    {item.label}
+                  </span>
+                  <span className="mt-2 block text-sm leading-relaxed text-ink-muted">
+                    {item.detail}
+                  </span>
+                  <span className="mt-4 block font-mono text-[0.58rem] uppercase leading-relaxed tracking-widest text-ink-muted">
+                    {item.date ? `${formatDate(item.date)} · ` : ""}
+                    {itemScope.sourceIds.length} source
+                    {itemScope.sourceIds.length === 1 ? "" : "s"}
+                  </span>
+                  <span
+                    className={`mt-2 inline-block border px-2 py-0.5 font-mono text-[0.56rem] uppercase tracking-widest ${statusTone[item.evidenceStatus]}`}
+                  >
+                    {evidenceStatusLabels[item.evidenceStatus]}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
       </section>
 
-      <section aria-labelledby="map-heading">
-        <div className="flex flex-wrap items-end justify-between gap-3">
+      <section
+        aria-labelledby="step-detail-heading"
+        className="border-y border-rule py-7"
+      >
+        <div className="grid gap-7 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.7fr)]">
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-jade">
-              Context atlas
+              Step evidence · {step.code}
             </p>
             <h2
-              id="map-heading"
-              className="mt-2 font-serif text-2xl sm:text-3xl"
+              id="step-detail-heading"
+              className="mt-2 font-serif text-3xl leading-tight"
             >
-              Where this chain reaches
+              {step.label}
             </h2>
-          </div>
-          <p className="max-w-md text-xs leading-relaxed text-ink-muted">
-            City-level points come from disclosed relationships. Map geography
-            is context, not evidence of a physical shipment.
-          </p>
-        </div>
-
-        <div className="mt-5 grid overflow-hidden border border-rule lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.75fr)]">
-          <ContextMap
-            places={release.places}
-            relations={release.relations}
-            activeIds={activePlaceIds}
-            selectedId={selectedPlace}
-            status={mapStatus}
-            onSelect={(id) => dispatch({ type: "SELECT_PLACE", id })}
-            onReady={() => dispatch({ type: "MAP_READY" })}
-            onError={() => dispatch({ type: "MAP_ERROR" })}
-            onConsent={() => dispatch({ type: "LOAD_MAP" })}
-          />
-
-          <aside className="border-t border-rule bg-paper p-5 lg:border-t-0 lg:border-l">
-            <p className="font-mono text-xs uppercase tracking-widest text-signal">
-              Focused evidence
+            <p className="mt-4 max-w-3xl font-serif text-xl leading-relaxed">
+              {step.detail}
             </p>
-            <h3 className="mt-2 font-serif text-2xl leading-snug">
-              {place?.label ?? chain.title}
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-              {place?.role ?? chain.summary}
-            </p>
-
-            <ul className="mt-5 space-y-2" aria-label="Atlas locations">
-              {release.places.map((item) => {
-                const active = item.id === selectedPlace;
-                const inChain = activePlaceIds.includes(item.id);
-                return (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() =>
-                        dispatch({ type: "SELECT_PLACE", id: item.id })
-                      }
-                      className={`flex w-full items-baseline justify-between gap-3 border-b border-rule py-2 text-left ${
-                        active
-                          ? "text-signal"
-                          : inChain
-                            ? "hover:text-signal"
-                            : "text-ink-muted"
-                      }`}
-                    >
-                      <span className="font-serif text-base">{item.label}</span>
-                      <span className="font-mono text-[0.6rem] uppercase tracking-widest">
-                        {item.precision}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {selectedPlace && (
-              <button
-                type="button"
-                onClick={() => dispatch({ type: "CLEAR_PLACE" })}
-                className="mt-4 font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-signal"
-              >
-                Show the full chain →
-              </button>
+            {scope.events.length > 0 && (
+              <div className="mt-6 space-y-3">
+                {scope.events.map((event) => (
+                  <article
+                    key={event.id}
+                    className="border-l-2 border-jade pl-4"
+                  >
+                    <p className="font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted">
+                      {formatDate(event.date)} ·{" "}
+                      {evidenceStatusLabels[event.evidenceStatus]}
+                    </p>
+                    <h3 className="mt-1 font-serif text-lg">{event.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+                      {event.detail}
+                    </p>
+                  </article>
+                ))}
+              </div>
             )}
-
-            <div className="mt-6 border-t border-rule pt-5">
-              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
-                What the combination supports
-              </p>
-              <p className="mt-2 font-serif text-base leading-relaxed">
-                {chain.conclusion}
-              </p>
-              <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-widest text-signal">
-                What it does not prove
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                {chain.caveat}
-              </p>
-            </div>
+          </div>
+          <aside className="bg-paper-warm/35 p-5">
+            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+              What the chain supports
+            </p>
+            <p className="mt-2 font-serif text-lg leading-relaxed">
+              {chain.conclusion}
+            </p>
+            <p className="mt-5 font-mono text-[0.65rem] uppercase tracking-widest text-signal">
+              What it does not prove
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+              {chain.caveat}
+            </p>
           </aside>
         </div>
       </section>
 
-      {series && (
-        <section aria-labelledby="notebook-heading">
+      {scope.places.length === 1 && (
+        <section
+          aria-labelledby="place-heading"
+          className="border border-rule p-5"
+        >
+          <p className="font-mono text-xs uppercase tracking-widest text-jade">
+            Place named in this step
+          </p>
+          <h2 id="place-heading" className="mt-2 font-serif text-2xl">
+            {scope.places[0].label}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">
+            {scope.places[0].role}
+          </p>
+          <p className="mt-3 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+            {scope.places[0].precision} precision · no geographic relation
+            asserted
+          </p>
+        </section>
+      )}
+
+      {scope.mapEligible && (
+        <section aria-labelledby="relations-heading">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-jade">
+                Documented geography
+              </p>
+              <h2
+                id="relations-heading"
+                className="mt-2 font-serif text-2xl sm:text-3xl"
+              >
+                Relationships in this step
+              </h2>
+            </div>
+            <button
+              type="button"
+              aria-haspopup="dialog"
+              aria-controls="atlas-map-dialog"
+              onClick={() => dispatch({ type: "OPEN_MAP" })}
+              className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
+            >
+              Explore geographic context…
+            </button>
+          </div>
+          <div className="mt-5">
+            <RelationDiagram
+              places={scope.places}
+              relations={scope.relations}
+              selectedId={selectedPlace}
+              onSelect={(id) => dispatch({ type: "SELECT_PLACE", id })}
+            />
+          </div>
+          {selectedPlace && (
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "CLEAR_PLACE" })}
+              className="mt-3 font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-signal"
+            >
+              Clear location focus →
+            </button>
+          )}
+        </section>
+      )}
+
+      {scope.places.length > 1 && !scope.mapEligible && (
+        <section aria-labelledby="places-heading">
+          <p className="font-mono text-xs uppercase tracking-widest text-jade">
+            Places named in this step
+          </p>
+          <h2 id="places-heading" className="mt-2 font-serif text-2xl">
+            Location record
+          </h2>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {scope.places.map((place) => (
+              <article key={place.id} className="border border-rule p-4">
+                <h3 className="font-serif text-lg">{place.label}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                  {place.role}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {scopedSeries.map((series) => (
+        <section key={series.id} aria-labelledby={`notebook-${series.id}`}>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-widest text-jade">
-                Trade notebook
+                Quantitative context
               </p>
               <h2
-                id="notebook-heading"
+                id={`notebook-${series.id}`}
                 className="mt-2 font-serif text-2xl sm:text-3xl"
               >
                 {series.title}
@@ -392,18 +477,13 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
                   type="button"
                   aria-pressed={metric === item}
                   onClick={() => dispatch({ type: "SET_METRIC", metric: item })}
-                  className={`border px-3 py-1.5 font-mono text-xs uppercase tracking-widest ${
-                    metric === item
-                      ? "border-signal bg-signal-soft text-signal"
-                      : "border-rule text-ink-muted hover:text-ink"
-                  }`}
+                  className={`border px-3 py-1.5 font-mono text-xs uppercase tracking-widest ${metric === item ? "border-signal bg-signal-soft text-signal" : "border-rule text-ink-muted hover:text-ink"}`}
                 >
                   {item === "value" ? "Monthly value" : "Year over year"}
                 </button>
               ))}
             </div>
           </div>
-
           <div className="mt-5">
             <TradeChart
               series={series}
@@ -414,17 +494,15 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
               }
             />
           </div>
-
           <div className="mt-5 grid gap-4 border-y border-rule py-4 sm:grid-cols-[1fr_auto]">
             <div>
               <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
                 Interpretation boundary
               </p>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-muted">
-                The public preview flags these aggregate observations as
-                estimated. A decline after December 2024 is temporal context,
-                not proof that the rule caused it; demand, licensing,
-                classification, and revisions remain competing explanations.
+                Month selection is a chart cursor, not an evidence-as-of
+                reconstruction. Aggregate estimated observations cannot
+                establish policy causation.
               </p>
             </div>
             <a
@@ -436,7 +514,7 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
             </a>
           </div>
         </section>
-      )}
+      ))}
 
       <section aria-labelledby="sources-heading">
         <p className="font-mono text-xs uppercase tracking-widest text-jade">
@@ -446,14 +524,12 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
           id="sources-heading"
           className="mt-2 font-serif text-2xl sm:text-3xl"
         >
-          Evidence in the current view
+          Evidence for this step
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
-          Every item identifies its role, vintage, retrieval date, and local
-          normalized snapshot. The Federal Register remains controlling for
-          legal interpretation.
+          Sources are derived from the selected step, its events and
+          relationships, the focused place, and the selected chart observation.
         </p>
-
         <div className="mt-5 divide-y divide-rule border-y border-rule">
           {sources.map((source) => (
             <details key={source.id} className="group py-4">
@@ -462,7 +538,8 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
                   {source.label}
                 </span>
                 <span className="mt-1 block font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted sm:mt-0">
-                  {source.sourceClass} · {source.publisher}
+                  {source.evidenceRole} · {source.sourceClass} ·{" "}
+                  {source.publisher}
                 </span>
               </summary>
               <div className="mt-4 grid gap-4 border-l-2 border-jade pl-4 text-sm sm:grid-cols-[1fr_1.25fr]">
@@ -471,7 +548,11 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
                     <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
                       Published
                     </dt>
-                    <dd>{formatDate(source.publishedAt)}</dd>
+                    <dd>
+                      {source.publishedAt
+                        ? formatDate(source.publishedAt)
+                        : "Continuously updated"}
+                    </dd>
                   </div>
                   <div>
                     <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
@@ -483,18 +564,32 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
                   </div>
                   <div>
                     <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
-                      Snapshot
+                      Record
                     </dt>
                     <dd className="break-all font-mono text-xs">
-                      {source.snapshotId} ·{" "}
-                      {source.snapshotChecksum.slice(0, 12)}…
+                      {source.recordId}
                     </dd>
                   </div>
+                  {source.artifact && (
+                    <div>
+                      <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+                        Local artifact · SHA-256
+                      </dt>
+                      <dd className="break-all font-mono text-xs">
+                        {source.artifact.path} · {source.artifact.sha256}
+                      </dd>
+                    </div>
+                  )}
                 </dl>
                 <div>
                   <p className="leading-relaxed text-ink-muted">
                     {source.notes}
                   </p>
+                  {source.revisionPolicy && (
+                    <p className="mt-2 text-xs leading-relaxed text-ink-muted">
+                      Revision policy: {source.revisionPolicy}
+                    </p>
+                  )}
                   <a
                     href={source.canonicalUrl}
                     target="_blank"
@@ -510,10 +605,24 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
         </div>
       </section>
 
+      <MapDialog
+        open={mapStatus !== "closed"}
+        status={mapStatus}
+        places={scope.places}
+        relations={scope.relations}
+        selectedId={selectedPlace}
+        onSelect={(id) => dispatch({ type: "SELECT_PLACE", id })}
+        onReady={() => dispatch({ type: "MAP_READY" })}
+        onFatal={() => dispatch({ type: "MAP_FATAL" })}
+        onDegraded={() => dispatch({ type: "MAP_DEGRADED" })}
+        onRetry={() => dispatch({ type: "RETRY_MAP" })}
+        onClose={() => dispatch({ type: "CLOSE_MAP" })}
+      />
+
       <p className="sr-only" aria-live="polite">
-        Viewing {chain.title}
-        {place ? ` at ${place.label}` : ""}
-        {selectedMonth ? ` for ${selectedMonth}` : ""}.
+        Viewing {chain.title}, step {step.label}
+        {selectedPlaceRecord ? ` at ${selectedPlaceRecord.label}` : ""}
+        {selectedMonth ? `, chart cursor ${selectedMonth}` : ""}.
       </p>
 
       <StateLab
@@ -522,9 +631,12 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
         lastEvent={lastEvent}
         nextEvents={[
           "SELECT_CHAIN",
+          "SELECT_STEP",
           "SELECT_PLACE",
-          "SELECT_STAGE",
           "SELECT_MONTH",
+          "OPEN_MAP",
+          "CLOSE_MAP",
+          "RETRY_MAP",
           "SET_METRIC",
           "RESET",
         ]}

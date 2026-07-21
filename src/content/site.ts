@@ -8,7 +8,6 @@ export const site = {
     { label: "Crosscurrents", href: "/compare/animation-industry" },
     { label: "Mainland Pulse", href: "/trace/export-controls" },
     { label: "Dossiers", href: "/dossiers/semiconductor-export-controls" },
-    { label: "Atlas", href: "/atlas" },
     { label: "Saved", href: "/saved" },
   ],
   principle:

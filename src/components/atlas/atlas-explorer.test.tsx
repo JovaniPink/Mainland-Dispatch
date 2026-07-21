@@ -1,129 +1,151 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { atlasRelease } from "@/content/atlas";
 import { AtlasExplorer } from "./atlas-explorer";
 
-jest.mock("./context-map", () => ({
-  ContextMap: ({
-    onSelect,
-    onError,
-    onConsent,
+jest.mock("./map-dialog", () => ({
+  MapDialog: ({
+    open,
     status,
+    onFatal,
+    onDegraded,
+    onRetry,
+    onClose,
   }: {
-    onSelect: (id: string) => void;
-    onError: () => void;
-    onConsent: () => void;
-    status: "idle" | "loading" | "ready" | "failed";
-  }) => (
-    <div>
-      <p>Mock map status: {status}</p>
-      <button onClick={onConsent}>Mock map consent</button>
-      <button onClick={() => onSelect("place-shanghai")}>
-        Mock map Shanghai
-      </button>
-      <button
-        onClick={() => {
-          onConsent();
-          onError();
-        }}
-      >
-        Mock map error
-      </button>
-      {status === "failed" && <p>Map unavailable; use the location list.</p>}
-    </div>
-  ),
+    open: boolean;
+    status: string;
+    onFatal: () => void;
+    onDegraded: () => void;
+    onRetry: () => void;
+    onClose: () => void;
+  }) =>
+    open ? (
+      <div role="dialog" aria-label="Mock geographic context">
+        <p>Mock map status: {status}</p>
+        <button onClick={onFatal}>Mock fatal map</button>
+        <button onClick={onDegraded}>Mock degraded map</button>
+        <button onClick={onRetry}>Mock retry map</button>
+        <button onClick={onClose}>Mock close map</button>
+      </div>
+    ) : null,
 }));
 
 describe("AtlasExplorer", () => {
   beforeEach(() => window.history.replaceState({}, "", "/atlas"));
 
-  it("synchronizes chain, location, lifecycle, and URL state", async () => {
+  it("renders the complete four-step chain and synchronizes step query state", async () => {
     render(<AtlasExplorer release={atlasRelease!} />);
 
-    await waitFor(() =>
-      expect(window.location.search).toContain("chain=rule-to-reach")
-    );
-
-    fireEvent.click(
-      screen.getByRole("button", { name: /from affected company/i })
-    );
-    expect(screen.getByText(/acm shanghai and acm korea/i)).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: /mock map shanghai/i }));
+    expect(screen.getAllByText("December package")).toHaveLength(2);
     expect(
-      screen.getByRole("heading", { name: "Shanghai" })
+      screen.getByText("24 equipment types + 3 software tools")
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("140 additions + 14 modifications")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("December 31 limited compliance")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /december package/i })
+    ).toHaveAttribute("aria-current", "step");
+
+    fireEvent.click(screen.getByRole("button", { name: /140 additions/i }));
+    await waitFor(() => {
+      expect(window.location.search).toContain("step=step-rule-entities");
+    });
+    expect(
+      screen.getByRole("heading", { name: /140 additions/i })
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Regulatory reach").length).toBeGreaterThan(0);
+  });
+
+  it("shows quantitative evidence only for the referenced trade step", () => {
+    render(<AtlasExplorer release={atlasRelease!} />);
+    expect(
+      screen.queryByRole("img", { name: /monthly value/i })
+    ).not.toBeInTheDocument();
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: /entity list compliance date arrives/i,
+        name: /from listed parties to trade movement/i,
       })
     );
-    await waitFor(() => {
-      expect(window.location.search).toContain("chain=exposure-to-response");
-      expect(window.location.search).toContain("place=place-shanghai");
-    });
-  });
-
-  it("switches chart metrics and exposes the source ledger", () => {
-    render(<AtlasExplorer release={atlasRelease!} />);
-    fireEvent.click(screen.getByRole("button", { name: /year over year/i }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /hs 8486 monthly exports/i })
+    );
     expect(
-      screen.getByRole("img", { name: /year-over-year change/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/federal register remains controlling/i)
+      screen.getByRole("img", { name: /monthly value/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /download snapshot/i })
     ).toHaveAttribute("href", "/data/us-china-hs8486-2024-2025.csv");
-  });
 
-  it("preserves evidence access when the map fails", () => {
-    render(<AtlasExplorer release={atlasRelease!} />);
-    fireEvent.click(screen.getByRole("button", { name: /mock map error/i }));
+    fireEvent.click(screen.getByRole("button", { name: /year over year/i }));
     expect(
-      screen.getByText(/map unavailable; use the location list/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("list", { name: /atlas locations/i })
+      screen.getByRole("img", { name: /year-over-year change/i })
     ).toBeInTheDocument();
   });
 
-  it("never loads the map until the reader consents", () => {
+  it("gives the corporate chain neither chart nor map affordance", () => {
     render(<AtlasExplorer release={atlasRelease!} />);
-    expect(screen.getByText(/mock map status: idle/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /mock map consent/i }));
-    expect(screen.getByText(/mock map status: loading/i)).toBeInTheDocument();
-  });
-
-  it("selects a chart month with the keyboard and exposes snapshot metadata", () => {
-    render(<AtlasExplorer release={atlasRelease!} />);
-    const month = screen.getByRole("button", { name: /2025-11: \$59\.6m/i });
-    fireEvent.focus(month);
-    fireEvent.keyDown(month, { key: "Enter" });
-    expect(screen.getByText(/2025-11 · \$59\.6m/i)).toBeInTheDocument();
-
-    const federalRegister = screen
-      .getByText(
-        /89 fr 96790 · semiconductor manufacturing equipment controls/i
-      )
-      .closest("details")!;
     fireEvent.click(
-      within(federalRegister).getByText(
-        /89 fr 96790 · semiconductor manufacturing equipment controls/i
-      )
+      screen.getByRole("button", { name: /from affected company/i })
     );
+
     expect(
-      within(federalRegister).getByText(/retrieved · vintage/i)
+      screen.getByRole("heading", { name: /acm shanghai and acm korea/i })
     ).toBeInTheDocument();
     expect(
-      within(federalRegister).getByText(/fr-2024-28270/i)
+      screen.queryByRole("button", { name: /explore geographic context/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("img", { name: /monthly value/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/no geographic relation asserted/i)
     ).toBeInTheDocument();
+  });
+
+  it("does not mount the optional map before consent and keeps the diagram after failure", () => {
+    render(<AtlasExplorer release={atlasRelease!} />);
+    fireEvent.click(screen.getByRole("button", { name: /140 additions/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getAllByText("Regulatory reach").length).toBeGreaterThan(0);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /explore geographic context/i })
+    );
+    expect(screen.getByText(/mock map status: loading/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /mock fatal map/i }));
+    expect(screen.getByText(/mock map status: failed/i)).toBeInTheDocument();
+    expect(screen.getAllByText("Regulatory reach").length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: /mock retry map/i }));
+    expect(screen.getByText(/mock map status: loading/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /mock close map/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("filters the source ledger to the selected step and selected observation", () => {
+    render(<AtlasExplorer release={atlasRelease!} />);
+    expect(
+      screen.getByText(/commerce strengthens semiconductor export controls/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/mofcom response to the december 2/i)
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/asml 2024 form 20-f/i)).not.toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /from listed parties to trade movement/i,
+      })
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: /hs 8486 monthly exports/i })
+    );
+    expect(screen.getAllByText(/un comtrade preview/i).length).toBeGreaterThan(
+      0
+    );
+    expect(screen.queryByText(/asml 2024 form 20-f/i)).not.toBeInTheDocument();
   });
 });

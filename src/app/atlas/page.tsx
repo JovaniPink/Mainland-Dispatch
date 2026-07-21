@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { atlasRelease } from "@/content/atlas";
 import { formatDate } from "@/content/site";
@@ -32,6 +33,12 @@ export default function AtlasPage() {
               editorial interpretation remains provisional.
             </span>
           </p>
+          <Link
+            href={`/dossiers/${atlasRelease.dossierSlug}`}
+            className="mt-6 inline-block font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
+          >
+            ← Return to semiconductor dossier
+          </Link>
         </div>
         <dl className="self-start border border-rule bg-paper-warm/35 p-4 text-sm">
           <div className="border-b border-rule pb-3">
@@ -48,12 +55,20 @@ export default function AtlasPage() {
               {formatDate(atlasRelease.retrievedAt)}
             </dd>
           </div>
-          <div className="pt-3">
+          <div className="border-b border-rule py-3">
             <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
-              Data through
+              Evidence through
             </dt>
             <dd className="mt-1 font-serif">
-              {formatDate(atlasRelease.dataThrough)}
+              {formatDate(atlasRelease.evidenceThrough)}
+            </dd>
+          </div>
+          <div className="pt-3">
+            <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              Trade series through
+            </dt>
+            <dd className="mt-1 font-serif">
+              {formatDate(atlasRelease.seriesThrough)}
             </dd>
           </div>
         </dl>

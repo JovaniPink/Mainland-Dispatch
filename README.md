@@ -34,7 +34,13 @@ claim-safety posture from `handoff-navigator`.
 - **Trace** — a selectable chronology with critical moments and an explicit
   evidence status for the current assessment.
 - **Dossiers** — claims separated into reported, announced, implemented,
-  independently observed, contested, superseded, and corrected.
+  independently observed, contested, superseded, and corrected. The
+  semiconductor dossier is the primary entry point to its experimental
+  evidence view.
+- **Evidence view** — a crawlable `/atlas` prototype organized around four
+  complete, inspectable steps. It is deliberately absent from global
+  navigation until a second editorial case proves the model generalizes beyond
+  semiconductor controls.
 - **Saved** — a browser-local reading collection implemented as an external
   store, so all Save controls stay synchronized.
 - **Desk** — a local editorial sandbox with link intake, live Zod feedback, and
@@ -53,6 +59,12 @@ claim-safety posture from `handoff-navigator`.
 - `src/content/catalog.ts` validates the complete graph at import time: schema
   variants, real calendar dates, route-safe slugs, unique IDs/slugs, date order,
   chronological trace entries, and every dispatch/trace/dossier relation.
+- Atlas sources distinguish controlling records, supporting statements,
+  contextual data, methodology, and enrichment. Stored artifacts declare a
+  local path and SHA-256 that the test suite recomputes. The complete source
+  inventory, web audit, query contract, exclusions, and promotion threshold are
+  documented in
+  [`docs/evidence-atlas-source-methodology.md`](docs/evidence-atlas-source-methodology.md).
 
 ## Architecture
 
@@ -68,6 +80,15 @@ claim-safety posture from `handoff-navigator`.
 - Media embeds are consent-gated. A verified external video creates its iframe
   only after consent and reports readiness through iframe load/error events.
   Prototype media exercises the same machine without contacting a third party.
+- Atlas geography follows the same privacy contract. A local labeled SVG and
+  semantic relationship list carry the evidence by default; MapLibre and
+  OpenFreeMap load only after the reader opens the optional geographic dialog.
+  Paper uses Positron and Night uses the native Dark style. Closing the dialog
+  disposes the map, while failed or degraded tiles never remove the local
+  evidence.
+- Atlas deep links accept `chain`, `step`, `place`, and `month`. Place and month
+  are retained only when valid for the selected step; month is strictly a chart
+  cursor, not an evidence-as-of reconstruction.
 - Development-only State Lab panels expose current state, recent events,
   available events, and Zod results.
 - Metadata includes route titles/descriptions, Open Graph artwork, manifest,
@@ -96,6 +117,10 @@ commands are also available as `npm run format:check`, `npm run lint`,
 Current regression coverage includes catalog integrity, publication boundaries,
 reader/media/explorer/intake machines, consent-gated prototype media, saved
 reading, stream filtering, and exclusion of review-stage content.
+
+Atlas remains a single-case research prototype. Restoring it to global
+navigation requires at least one separately sourced culture or everyday-life
+case; that editorial release is intentionally deferred.
 
 ## Content workflow
 

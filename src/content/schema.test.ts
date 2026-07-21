@@ -210,11 +210,30 @@ describe("Evidence Atlas schema and graph", () => {
     expect(release.series[0].observations).toHaveLength(24);
   });
 
-  it("rejects invalid coordinates and missing snapshot metadata", () => {
+  it("rejects invalid coordinates and malformed artifact metadata", () => {
     const invalid = clone(release);
     invalid.places[0].coordinates = [181, 91];
-    invalid.sources[0].snapshotChecksum = "missing";
+    const comtrade = invalid.sources.find(
+      (source) => source.id === "source-un-comtrade-hs"
+    )!;
+    comtrade.artifact!.sha256 = "missing";
     expect(AtlasReleaseSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("records a reproducible one-period-at-a-time Comtrade query", () => {
+    const comtrade = release.sources.find(
+      (source) => source.id === "source-un-comtrade-hs"
+    )!;
+    expect(comtrade.query?.periods).toHaveLength(24);
+    expect(comtrade.query?.parameters).toMatchObject({
+      reporterCode: "842",
+      partnerCode: "156",
+      cmdCode: "8486",
+      flowCode: "X",
+    });
+    expect(comtrade.artifact?.path).toBe(
+      "public/data/us-china-hs8486-2024-2025.csv"
+    );
   });
 
   it("rejects non-four-step chains", () => {
@@ -225,8 +244,37 @@ describe("Evidence Atlas schema and graph", () => {
 
   it("rejects unresolved Atlas references and unsorted observations", () => {
     const invalid = clone(catalog);
-    invalid.atlasReleases[0].chains[0].sourceIds = ["source-missing"];
+    invalid.atlasReleases[0].chains[0].steps[0].sourceIds = ["source-missing"];
     invalid.atlasReleases[0].series[0].observations.reverse();
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects duplicate step ids and unresolved relation or series references", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[0].chains[1].steps[0].id =
+      invalid.atlasReleases[0].chains[0].steps[0].id;
+    invalid.atlasReleases[0].chains[0].steps[0].relationIds = [
+      "relation-missing",
+    ];
+    invalid.atlasReleases[0].chains[0].steps[0].seriesIds = ["series-missing"];
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("requires relation sources and both endpoints in a referencing step", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[0].relations[0].sourceIds = ["source-missing"];
+    const referencingStep = invalid.atlasReleases[0].chains
+      .flatMap((chain) => chain.steps)
+      .find((step) => step.relationIds.includes("relation-regulatory-reach"))!;
+    referencingStep.placeIds = referencingStep.placeIds.filter(
+      (id) => id !== "place-shanghai"
+    );
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("requires every Atlas release to resolve to a dossier", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[0].dossierSlug = "missing-dossier";
     expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
   });
 

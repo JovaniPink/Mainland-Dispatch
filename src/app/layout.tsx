@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Mainland Dispatch Evidence Atlas map and semiconductor evidence chain",
+        alt: "Mainland Dispatch correspondent notebook editorial cover",
       },
     ],
   },

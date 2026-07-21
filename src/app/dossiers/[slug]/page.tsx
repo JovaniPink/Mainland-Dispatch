@@ -6,6 +6,7 @@ import { getDispatchById } from "@/content/dispatches";
 import { formatDate } from "@/content/site";
 import { MetaLine } from "@/components/dispatch/meta-line";
 import type { EvidenceStatus } from "@/content/schema";
+import { getAtlasReleaseForDossier } from "@/content/atlas";
 
 export function generateStaticParams() {
   return dossiers.map((d) => ({ slug: d.slug }));
@@ -41,6 +42,7 @@ export default async function DossierPage({
   const { slug } = await params;
   const dossier = getDossier(slug);
   if (!dossier) notFound();
+  const evidenceRelease = getAtlasReleaseForDossier(slug);
 
   const latest = dossier.dispatchIds
     .map(getDispatchById)
@@ -86,6 +88,46 @@ export default async function DossierPage({
           ))}
         </ul>
       </section>
+
+      {evidenceRelease && (
+        <section className="mt-10 border-y border-rule bg-paper-warm/30 py-6 sm:px-6">
+          <p className="font-mono text-xs uppercase tracking-widest text-signal">
+            Evidence view · source snapshot
+          </p>
+          <div className="mt-2 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)]">
+            <div>
+              <h2 className="font-serif text-2xl sm:text-3xl">
+                {evidenceRelease.title}
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
+                {evidenceRelease.summary}
+              </p>
+              <p className="mt-4 border-l-2 border-signal pl-3 text-sm leading-relaxed text-ink-muted">
+                The source records are real; this interpretation remains a
+                provisional prototype and is not verified reporting.
+              </p>
+            </div>
+            <div>
+              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+                Enter through a chain
+              </p>
+              <ul className="mt-2 divide-y divide-rule border-y border-rule">
+                {evidenceRelease.chains.map((chain) => (
+                  <li key={chain.id}>
+                    <Link
+                      href={`/atlas?chain=${chain.slug}&step=${chain.steps[0].id}`}
+                      className="flex items-baseline justify-between gap-4 py-3 font-serif text-lg hover:text-signal"
+                    >
+                      <span>{chain.title}</span>
+                      <span aria-hidden>→</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
 
       <div className="mt-10 grid gap-4 lg:grid-cols-2">
         <section className="border border-rule p-4">

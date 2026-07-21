@@ -74,6 +74,7 @@ export const ContentCatalogSchema = z
       catalog.dispatches.filter(isPublicDispatch).map((item) => item.id)
     );
     const traceSlugs = new Set(catalog.traces.map((item) => item.slug));
+    const dossierSlugs = new Set(catalog.dossiers.map((item) => item.slug));
 
     const requireDispatch = (id: string, owner: string, publicOnly = false) => {
       if (!byId.has(id)) {
@@ -164,8 +165,17 @@ export const ContentCatalogSchema = z
     for (const release of catalog.atlasReleases) {
       const sourceIds = new Set(release.sources.map((item) => item.id));
       const placeIds = new Set(release.places.map((item) => item.id));
+      const relationIds = new Set(release.relations.map((item) => item.id));
       const eventIds = new Set(release.events.map((item) => item.id));
       const chainSlugs = new Set(release.chains.map((item) => item.slug));
+      const seriesIds = new Set(release.series.map((item) => item.id));
+
+      if (!dossierSlugs.has(release.dossierSlug)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${release.slug} references missing dossier ${release.dossierSlug}`,
+        });
+      }
 
       for (const id of release.relatedDispatchIds) {
         requireDispatch(id, release.slug, true);
@@ -199,6 +209,11 @@ export const ContentCatalogSchema = z
       addDuplicateIssues(
         release.chains.map((item) => item.slug),
         `${release.slug} chain slug`,
+        ctx
+      );
+      addDuplicateIssues(
+        release.chains.flatMap((item) => item.steps.map((step) => step.id)),
+        `${release.slug} step id`,
         ctx
       );
       addDuplicateIssues(
@@ -241,6 +256,7 @@ export const ContentCatalogSchema = z
           placeIds,
           `${relation.id} endpoint`
         );
+        requireAtlasRef(relation.sourceIds, sourceIds, `${relation.id} source`);
       }
 
       for (const event of release.events) {
@@ -250,13 +266,31 @@ export const ContentCatalogSchema = z
       }
 
       for (const chain of release.chains) {
-        requireAtlasRef(chain.sourceIds, sourceIds, `${chain.id} source`);
-        requireAtlasRef(chain.placeIds, placeIds, `${chain.id} place`);
-        requireAtlasRef(chain.eventIds, eventIds, `${chain.id} event`);
         for (const step of chain.steps) {
           requireAtlasRef(step.sourceIds, sourceIds, `${chain.id} step source`);
           requireAtlasRef(step.placeIds, placeIds, `${chain.id} step place`);
           requireAtlasRef(step.eventIds, eventIds, `${chain.id} step event`);
+          requireAtlasRef(
+            step.relationIds,
+            relationIds,
+            `${chain.id} step relation`
+          );
+          requireAtlasRef(step.seriesIds, seriesIds, `${chain.id} step series`);
+          for (const relationId of step.relationIds) {
+            const relation = release.relations.find(
+              (item) => item.id === relationId
+            );
+            if (
+              relation &&
+              (!step.placeIds.includes(relation.from) ||
+                !step.placeIds.includes(relation.to))
+            ) {
+              ctx.addIssue({
+                code: "custom",
+                message: `${chain.id} ${step.id} must include both endpoints for ${relation.id}`,
+              });
+            }
+          }
         }
       }
 

@@ -169,8 +169,16 @@ a {
   filter: sepia(0.2) saturate(0.6);
 }
 
-[data-theme="night"] .atlas-map .maplibregl-canvas {
-  filter: brightness(0.72) saturate(0.7) contrast(1.08);
+.atlas-map-dialog-modal {
+  height: 100dvh;
+  max-height: none;
+}
+
+@media (min-width: 640px) {
+  .atlas-map-dialog-modal {
+    height: fit-content;
+    max-height: 92dvh;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

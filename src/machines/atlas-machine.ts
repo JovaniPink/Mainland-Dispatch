@@ -1,48 +1,51 @@
 import { assign, setup } from "xstate";
-import type { AtlasLifecycleStage } from "@/content/schema";
 
 export type AtlasMetric = "value" | "yoy";
 
 export type AtlasMachineInput = {
   chainSlugs: string[];
-  placeIds: string[];
-  months: string[];
-  placeIdsByChain: Record<string, string[]>;
-  chainSlugsByPlace: Record<string, string[]>;
+  stepIdsByChain: Record<string, string[]>;
+  placeIdsByStep: Record<string, string[]>;
+  monthsByStep: Record<string, string[]>;
 };
 
 export type AtlasContext = AtlasMachineInput & {
   selectedChain: string;
+  selectedStepId: string;
   selectedPlace: string | null;
   selectedMonth: string | null;
-  selectedStage: AtlasLifecycleStage | null;
   metric: AtlasMetric;
 };
 
 export type AtlasEvent =
-  | { type: "LOAD_MAP" }
+  | { type: "OPEN_MAP" }
+  | { type: "CLOSE_MAP" }
   | { type: "MAP_READY" }
-  | { type: "MAP_ERROR" }
+  | { type: "MAP_FATAL" }
+  | { type: "MAP_DEGRADED" }
+  | { type: "RETRY_MAP" }
   | { type: "SELECT_CHAIN"; slug: string }
+  | { type: "SELECT_STEP"; id: string }
   | { type: "SELECT_PLACE"; id: string }
   | { type: "SELECT_MONTH"; month: string }
-  | { type: "SELECT_STAGE"; stage: AtlasLifecycleStage }
   | { type: "SET_METRIC"; metric: AtlasMetric }
   | {
       type: "HYDRATE";
       chain?: string | null;
+      step?: string | null;
       place?: string | null;
       month?: string | null;
     }
   | { type: "CLEAR_PLACE" }
   | { type: "RESET" };
 
-const lifecycleStages: AtlasLifecycleStage[] = [
-  "announcement",
-  "publication",
-  "implementation",
-  "observation",
-];
+function firstStep(context: AtlasMachineInput, chain: string) {
+  return context.stepIdsByChain[chain]?.[0] ?? "";
+}
+
+function latestMonth(context: AtlasMachineInput, step: string) {
+  return context.monthsByStep[step]?.at(-1) ?? null;
+}
 
 export const atlasMachine = setup({
   types: {
@@ -53,34 +56,56 @@ export const atlasMachine = setup({
   guards: {
     chainExists: ({ context, event }) =>
       event.type === "SELECT_CHAIN" && context.chainSlugs.includes(event.slug),
-    placeExists: ({ context, event }) =>
-      event.type === "SELECT_PLACE" && context.placeIds.includes(event.id),
-    monthExists: ({ context, event }) =>
-      event.type === "SELECT_MONTH" && context.months.includes(event.month),
-    stageExists: ({ event }) =>
-      event.type === "SELECT_STAGE" && lifecycleStages.includes(event.stage),
+    stepExistsForChain: ({ context, event }) =>
+      event.type === "SELECT_STEP" &&
+      context.stepIdsByChain[context.selectedChain]?.includes(event.id),
+    placeExistsForStep: ({ context, event }) =>
+      event.type === "SELECT_PLACE" &&
+      context.placeIdsByStep[context.selectedStepId]?.includes(event.id),
+    monthExistsForStep: ({ context, event }) =>
+      event.type === "SELECT_MONTH" &&
+      context.monthsByStep[context.selectedStepId]?.includes(event.month),
   },
 }).createMachine({
   id: "evidence-atlas",
   type: "parallel",
-  context: ({ input }) => ({
-    ...input,
-    selectedChain: input.chainSlugs[0] ?? "",
-    selectedPlace: null,
-    selectedMonth: input.months.at(-1) ?? null,
-    selectedStage: null,
-    metric: "value",
-  }),
+  context: ({ input }) => {
+    const selectedChain = input.chainSlugs[0] ?? "";
+    const selectedStepId = firstStep(input, selectedChain);
+    return {
+      ...input,
+      selectedChain,
+      selectedStepId,
+      selectedPlace: null,
+      selectedMonth: latestMonth(input, selectedStepId),
+      metric: "value",
+    };
+  },
   states: {
     map: {
-      initial: "idle",
+      initial: "closed",
       states: {
-        idle: { on: { LOAD_MAP: "loading" } },
+        closed: { on: { OPEN_MAP: "loading" } },
         loading: {
-          on: { MAP_READY: "ready", MAP_ERROR: "failed" },
+          on: {
+            MAP_READY: "ready",
+            MAP_FATAL: "failed",
+            CLOSE_MAP: "closed",
+          },
         },
-        ready: { on: { MAP_ERROR: "failed" } },
-        failed: { on: { LOAD_MAP: "loading" } },
+        ready: {
+          on: {
+            MAP_DEGRADED: "degraded",
+            MAP_FATAL: "failed",
+            CLOSE_MAP: "closed",
+          },
+        },
+        degraded: {
+          on: { RETRY_MAP: "loading", CLOSE_MAP: "closed" },
+        },
+        failed: {
+          on: { RETRY_MAP: "loading", CLOSE_MAP: "closed" },
+        },
       },
     },
     exploration: {
@@ -90,71 +115,81 @@ export const atlasMachine = setup({
           on: {
             SELECT_CHAIN: {
               guard: "chainExists",
-              actions: assign({
-                selectedChain: ({ event }) => event.slug,
-                selectedPlace: ({ context, event }) =>
-                  context.selectedPlace &&
-                  context.placeIdsByChain[event.slug]?.includes(
-                    context.selectedPlace
-                  )
-                    ? context.selectedPlace
-                    : null,
-                selectedStage: null,
+              actions: assign(({ context, event }) => {
+                const selectedStepId = firstStep(context, event.slug);
+                return {
+                  selectedChain: event.slug,
+                  selectedStepId,
+                  selectedPlace: null,
+                  selectedMonth: latestMonth(context, selectedStepId),
+                  metric: "value" as const,
+                };
               }),
+            },
+            SELECT_STEP: {
+              guard: "stepExistsForChain",
+              actions: assign(({ context, event }) => ({
+                selectedStepId: event.id,
+                selectedPlace: null,
+                selectedMonth: latestMonth(context, event.id),
+                metric: "value" as const,
+              })),
             },
             SELECT_PLACE: {
-              guard: "placeExists",
-              actions: assign({
-                selectedPlace: ({ event }) => event.id,
-                selectedChain: ({ context, event }) =>
-                  context.chainSlugsByPlace[event.id]?.includes(
-                    context.selectedChain
-                  )
-                    ? context.selectedChain
-                    : (context.chainSlugsByPlace[event.id]?.[0] ??
-                      context.selectedChain),
-              }),
+              guard: "placeExistsForStep",
+              actions: assign({ selectedPlace: ({ event }) => event.id }),
             },
             SELECT_MONTH: {
-              guard: "monthExists",
+              guard: "monthExistsForStep",
               actions: assign({ selectedMonth: ({ event }) => event.month }),
-            },
-            SELECT_STAGE: {
-              guard: "stageExists",
-              actions: assign({
-                selectedStage: ({ context, event }) =>
-                  context.selectedStage === event.stage ? null : event.stage,
-              }),
             },
             SET_METRIC: {
               actions: assign({ metric: ({ event }) => event.metric }),
             },
             HYDRATE: {
-              actions: assign({
-                selectedChain: ({ context, event }) =>
+              actions: assign(({ context, event }) => {
+                const selectedChain =
                   event.chain && context.chainSlugs.includes(event.chain)
                     ? event.chain
-                    : context.selectedChain,
-                selectedPlace: ({ context, event }) =>
-                  event.place && context.placeIds.includes(event.place)
+                    : context.selectedChain;
+                const fallbackStep = firstStep(context, selectedChain);
+                const selectedStepId =
+                  event.step &&
+                  context.stepIdsByChain[selectedChain]?.includes(event.step)
+                    ? event.step
+                    : fallbackStep;
+                const selectedPlace =
+                  event.place &&
+                  context.placeIdsByStep[selectedStepId]?.includes(event.place)
                     ? event.place
-                    : null,
-                selectedMonth: ({ context, event }) =>
-                  event.month && context.months.includes(event.month)
+                    : null;
+                const selectedMonth =
+                  event.month &&
+                  context.monthsByStep[selectedStepId]?.includes(event.month)
                     ? event.month
-                    : context.selectedMonth,
+                    : latestMonth(context, selectedStepId);
+                return {
+                  selectedChain,
+                  selectedStepId,
+                  selectedPlace,
+                  selectedMonth,
+                };
               }),
             },
             CLEAR_PLACE: {
               actions: assign({ selectedPlace: null }),
             },
             RESET: {
-              actions: assign({
-                selectedChain: ({ context }) => context.chainSlugs[0] ?? "",
-                selectedPlace: null,
-                selectedMonth: ({ context }) => context.months.at(-1) ?? null,
-                selectedStage: null,
-                metric: "value",
+              actions: assign(({ context }) => {
+                const selectedChain = context.chainSlugs[0] ?? "";
+                const selectedStepId = firstStep(context, selectedChain);
+                return {
+                  selectedChain,
+                  selectedStepId,
+                  selectedPlace: null,
+                  selectedMonth: latestMonth(context, selectedStepId),
+                  metric: "value" as const,
+                };
               }),
             },
           },

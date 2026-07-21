@@ -12,16 +12,15 @@ import type { AtlasPlace, AtlasRelation } from "@/content/schema";
 type MapLibreModule = typeof import("maplibre-gl");
 type MapInstance = import("maplibre-gl").Map;
 type GeoJsonSource = import("maplibre-gl").GeoJSONSource;
-type MapStatus = "idle" | "loading" | "ready" | "failed";
 
 type FeatureCollection = GeoJsonFeatureCollection<
   Point | LineString,
-  { id: string; label: string; active?: boolean; relation?: string }
+  { id: string; label: string; selected?: boolean; kind?: string }
 >;
 
 function pointData(
   places: AtlasPlace[],
-  activeIds: string[]
+  selectedId: string | null
 ): FeatureCollection {
   return {
     type: "FeatureCollection",
@@ -31,7 +30,7 @@ function pointData(
       properties: {
         id: place.id,
         label: place.label,
-        active: activeIds.includes(place.id),
+        selected: place.id === selectedId,
       },
     })),
   };
@@ -42,7 +41,6 @@ function relationData(
   relations: AtlasRelation[]
 ): FeatureCollection {
   const byId = new Map(places.map((place) => [place.id, place]));
-
   return {
     type: "FeatureCollection",
     features: relations.flatMap((relation) => {
@@ -59,7 +57,7 @@ function relationData(
           properties: {
             id: relation.id,
             label: relation.label,
-            relation: relation.label,
+            kind: relation.kind,
           },
         },
       ];
@@ -67,58 +65,69 @@ function relationData(
   };
 }
 
-/**
- * Click-to-load context map: no request to the third-party tile host until
- * the reader consents, mirroring MediaFacade's poster-before-iframe pattern.
- */
+function fitPlaces(
+  map: MapInstance,
+  maplibre: MapLibreModule,
+  places: AtlasPlace[],
+  selectedId: string | null
+) {
+  const selected = places.find((place) => place.id === selectedId);
+  if (selected) {
+    map.easeTo({ center: selected.coordinates, zoom: 3.4, duration: 400 });
+    return;
+  }
+  if (places.length === 0) return;
+  const bounds = new maplibre.LngLatBounds();
+  for (const place of places) bounds.extend(place.coordinates);
+  map.fitBounds(bounds, {
+    padding: { top: 72, right: 72, bottom: 72, left: 72 },
+    maxZoom: 3.1,
+    duration: 0,
+  });
+}
+
 export function ContextMap({
   places,
   relations,
-  activeIds,
   selectedId,
   status,
   onSelect,
   onReady,
-  onError,
-  onConsent,
+  onFatal,
+  onDegraded,
 }: {
   places: AtlasPlace[];
   relations: AtlasRelation[];
-  activeIds: string[];
   selectedId: string | null;
-  status: MapStatus;
+  status: "loading" | "ready" | "degraded";
   onSelect: (id: string) => void;
   onReady: () => void;
-  onError: () => void;
-  onConsent: () => void;
+  onFatal: () => void;
+  onDegraded: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapInstance | null>(null);
   const moduleRef = useRef<MapLibreModule | null>(null);
-  const onSelectRef = useRef(onSelect);
-  const onReadyRef = useRef(onReady);
-  const onErrorRef = useRef(onError);
-  const activeIdsRef = useRef(activeIds);
   const readyRef = useRef(false);
+  const selectedIdRef = useRef(selectedId);
+  const callbacksRef = useRef({ onSelect, onReady, onFatal, onDegraded });
 
   useEffect(() => {
-    onSelectRef.current = onSelect;
-    onReadyRef.current = onReady;
-    onErrorRef.current = onError;
-    activeIdsRef.current = activeIds;
-  }, [activeIds, onError, onReady, onSelect]);
+    selectedIdRef.current = selectedId;
+  }, [selectedId]);
 
-  // Runs only once the reader has consented (status leaves "idle"), and
-  // again on a retry from "failed" — never on mount, never automatically.
+  useEffect(() => {
+    callbacksRef.current = { onSelect, onReady, onFatal, onDegraded };
+  }, [onDegraded, onFatal, onReady, onSelect]);
+
   useEffect(() => {
     if (status !== "loading" || !containerRef.current) return;
     let cancelled = false;
     let timeoutId: number | undefined;
+    let observer: ResizeObserver | undefined;
 
     async function initialize() {
       try {
-        // Dispose a stale instance from a previous failed attempt before
-        // creating a fresh one.
         mapRef.current?.remove();
         mapRef.current = null;
         readyRef.current = false;
@@ -126,17 +135,23 @@ export function ContextMap({
         const maplibre = await import("maplibre-gl");
         if (cancelled || !containerRef.current) return;
         moduleRef.current = maplibre;
-
+        const night = document.documentElement.dataset.theme === "night";
         const map = new maplibre.Map({
           container: containerRef.current,
-          style: "https://tiles.openfreemap.org/styles/positron",
+          style: `https://tiles.openfreemap.org/styles/${night ? "dark" : "positron"}`,
           center: [32, 33],
           zoom: 1.2,
           minZoom: 0.8,
           maxZoom: 8,
+          maxBounds: [
+            [-179, -75],
+            [179, 75],
+          ],
+          renderWorldCopies: false,
           attributionControl: { compact: true },
           dragRotate: false,
           pitchWithRotate: false,
+          cooperativeGestures: true,
         });
         mapRef.current = map;
         map.touchZoomRotate.disableRotation();
@@ -145,14 +160,21 @@ export function ContextMap({
           "top-right"
         );
 
+        if (typeof ResizeObserver !== "undefined") {
+          observer = new ResizeObserver(() => map.resize());
+          observer.observe(containerRef.current);
+        }
+
         timeoutId = window.setTimeout(() => {
-          if (!readyRef.current) onErrorRef.current();
+          if (!readyRef.current) callbacksRef.current.onFatal();
         }, 12000);
 
         map.on("load", () => {
           if (cancelled) return;
-          readyRef.current = true;
-          if (timeoutId) window.clearTimeout(timeoutId);
+          const signal = night ? "#d4574b" : "#bd382d";
+          const jade = night ? "#7fa899" : "#486e64";
+          const paper = night ? "#17201d" : "#f3f0e8";
+          const ink = night ? "#e9e6db" : "#191b18";
 
           map.addSource("atlas-relations", {
             type: "geojson",
@@ -163,25 +185,48 @@ export function ContextMap({
             type: "line",
             source: "atlas-relations",
             paint: {
-              "line-color": "#486e64",
-              "line-width": 1.5,
-              "line-opacity": 0.55,
+              "line-color": [
+                "match",
+                ["get", "kind"],
+                "regulatory-reach",
+                signal,
+                jade,
+              ],
+              "line-width": 2,
+              "line-opacity": 0.8,
               "line-dasharray": [2, 2],
+            },
+          });
+          map.addLayer({
+            id: "atlas-relations-label",
+            type: "symbol",
+            source: "atlas-relations",
+            layout: {
+              "symbol-placement": "line-center",
+              "text-field": ["get", "label"],
+              "text-font": ["Noto Sans Regular"],
+              "text-size": 11,
+              "text-letter-spacing": 0.05,
+            },
+            paint: {
+              "text-color": ink,
+              "text-halo-color": paper,
+              "text-halo-width": 2,
             },
           });
 
           map.addSource("atlas-places", {
             type: "geojson",
-            data: pointData(places, activeIdsRef.current),
+            data: pointData(places, selectedIdRef.current),
           });
           map.addLayer({
             id: "atlas-place-glow",
             type: "circle",
             source: "atlas-places",
             paint: {
-              "circle-radius": ["case", ["get", "active"], 15, 10],
-              "circle-color": ["case", ["get", "active"], "#bd382d", "#486e64"],
-              "circle-opacity": 0.16,
+              "circle-radius": ["case", ["get", "selected"], 16, 11],
+              "circle-color": ["case", ["get", "selected"], signal, jade],
+              "circle-opacity": 0.18,
             },
           });
           map.addLayer({
@@ -189,22 +234,39 @@ export function ContextMap({
             type: "circle",
             source: "atlas-places",
             paint: {
-              "circle-radius": ["case", ["get", "active"], 6.5, 4.5],
-              "circle-color": ["case", ["get", "active"], "#bd382d", "#486e64"],
-              "circle-stroke-color": "#f3f0e8",
-              "circle-stroke-width": 1.5,
+              "circle-radius": ["case", ["get", "selected"], 7, 5],
+              "circle-color": ["case", ["get", "selected"], signal, jade],
+              "circle-stroke-color": paper,
+              "circle-stroke-width": 2,
+            },
+          });
+          map.addLayer({
+            id: "atlas-place-label",
+            type: "symbol",
+            source: "atlas-places",
+            layout: {
+              "text-field": ["get", "label"],
+              "text-font": ["Noto Sans Regular"],
+              "text-size": 12,
+              "text-offset": [0, 1.25],
+              "text-anchor": "top",
+            },
+            paint: {
+              "text-color": ink,
+              "text-halo-color": paper,
+              "text-halo-width": 2,
             },
           });
           map.addLayer({
             id: "atlas-place-hit",
             type: "circle",
             source: "atlas-places",
-            paint: { "circle-radius": 20, "circle-opacity": 0 },
+            paint: { "circle-radius": 22, "circle-opacity": 0 },
           });
 
           map.on("click", "atlas-place-hit", (event) => {
             const id = event.features?.[0]?.properties?.id;
-            if (typeof id === "string") onSelectRef.current(id);
+            if (typeof id === "string") callbacksRef.current.onSelect(id);
           });
           map.on("mouseenter", "atlas-place-hit", () => {
             map.getCanvas().style.cursor = "pointer";
@@ -213,128 +275,65 @@ export function ContextMap({
             map.getCanvas().style.cursor = "";
           });
 
-          onReadyRef.current();
+          map.resize();
+          fitPlaces(map, maplibre, places, selectedIdRef.current);
+          map.once("idle", () => {
+            if (cancelled) return;
+            if (!map.areTilesLoaded()) {
+              callbacksRef.current.onFatal();
+              return;
+            }
+            readyRef.current = true;
+            if (timeoutId) window.clearTimeout(timeoutId);
+            callbacksRef.current.onReady();
+          });
         });
 
         map.on("error", () => {
-          if (!readyRef.current) onErrorRef.current();
+          if (cancelled) return;
+          if (readyRef.current) callbacksRef.current.onDegraded();
+          else callbacksRef.current.onFatal();
         });
       } catch {
-        if (!cancelled) onErrorRef.current();
+        if (!cancelled) callbacksRef.current.onFatal();
       }
     }
 
     void initialize();
-
     return () => {
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
+      observer?.disconnect();
     };
-  }, [status, places, relations]);
-
-  // True teardown only on unmount — a status change from "loading" to
-  // "ready" must not tear down the map that effect just created.
-  useEffect(() => {
-    return () => {
-      mapRef.current?.remove();
-      mapRef.current = null;
-      moduleRef.current = null;
-      readyRef.current = false;
-    };
-  }, []);
+  }, [places, relations, status]);
 
   useEffect(() => {
     const map = mapRef.current;
     const maplibre = moduleRef.current;
     if (!map || !maplibre || !readyRef.current) return;
-
     const source = map.getSource("atlas-places") as GeoJsonSource | undefined;
-    source?.setData(pointData(places, activeIds));
+    source?.setData(pointData(places, selectedId));
+    fitPlaces(map, maplibre, places, selectedId);
+  }, [places, selectedId]);
 
-    const selected = places.find((place) => place.id === selectedId);
-    if (selected) {
-      map.easeTo({ center: selected.coordinates, zoom: 3.4, duration: 500 });
-      return;
-    }
-
-    const activePlaces = places.filter((place) => activeIds.includes(place.id));
-    if (activePlaces.length === 0) return;
-    const bounds = new maplibre.LngLatBounds();
-    for (const place of activePlaces) bounds.extend(place.coordinates);
-    map.fitBounds(bounds, {
-      padding: { top: 56, right: 56, bottom: 56, left: 56 },
-      maxZoom: 3.2,
-      duration: 500,
-    });
-  }, [activeIds, places, selectedId]);
+  useEffect(
+    () => () => {
+      mapRef.current?.remove();
+      mapRef.current = null;
+      moduleRef.current = null;
+      readyRef.current = false;
+    },
+    []
+  );
 
   return (
-    <div className="relative min-h-[25rem] overflow-hidden bg-night/5">
-      <div
-        ref={containerRef}
-        className="atlas-map absolute inset-0"
-        role="application"
-        aria-label="Interactive context map. Use the synchronized location list for full keyboard access."
-      />
-
-      {status === "idle" && (
-        <div className="absolute inset-0 grid place-items-center bg-paper-warm/95 p-8 text-center">
-          <div className="flex max-w-sm flex-col items-center gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink text-ink transition-colors group-hover:border-signal">
-              ◎
-            </span>
-            <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
-              Map geography is context, not evidence
-            </p>
-            <button
-              type="button"
-              onClick={onConsent}
-              className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
-            >
-              Load interactive map
-            </button>
-            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
-              External source — contacts OpenFreeMap on load
-            </p>
-          </div>
-        </div>
-      )}
-
-      {status === "loading" && (
-        <div className="absolute inset-0 grid place-items-center bg-paper-warm/95">
-          <div className="flex flex-col items-center gap-3">
-            <span className="loading-mark h-8 w-8 rounded-full border-2 border-ink/20 border-t-signal" />
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
-              Preparing map
-            </p>
-          </div>
-        </div>
-      )}
-
-      {status === "failed" && (
-        <div className="absolute inset-0 grid place-items-center bg-paper-warm/95 p-8 text-center">
-          <div className="flex max-w-sm flex-col items-center gap-4">
-            <p className="font-mono text-xs uppercase tracking-widest text-signal">
-              Map unavailable
-            </p>
-            <p className="font-serif text-lg leading-relaxed">
-              The evidence remains available in the synchronized location list
-              and source ledger.
-            </p>
-            <button
-              type="button"
-              onClick={onConsent}
-              className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="pointer-events-none absolute bottom-2 left-2 bg-paper/90 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
-        Lines show regulatory reach or disclosed exposure—not shipments
-      </div>
-    </div>
+    <div
+      ref={containerRef}
+      className="atlas-map h-full min-h-[22rem] w-full"
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+      role="region"
+      aria-label="Geographic context for the selected evidence step"
+      data-testid="atlas-map-container"
+    />
   );
 }

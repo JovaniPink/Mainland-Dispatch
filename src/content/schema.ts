@@ -254,8 +254,16 @@ export const AtlasSourceClassSchema = z.enum([
   "legal-record",
   "screening-data",
   "trade-data",
+  "methodology",
   "filing",
-  "map",
+]);
+
+export const AtlasEvidenceRoleSchema = z.enum([
+  "controlling",
+  "supporting",
+  "context",
+  "methodology",
+  "enrichment",
 ]);
 
 export const AtlasLifecycleStageSchema = z.enum([
@@ -278,6 +286,21 @@ export const AtlasStepKindSchema = z.enum([
   "caveat",
 ]);
 
+export const AtlasRelationKindSchema = z.enum(["regulatory-reach"]);
+
+const sha256 = nonEmpty.regex(/^[a-f0-9]{64}$/, "expected a SHA-256 checksum");
+
+const AtlasSourceArtifactSchema = z.object({
+  path: nonEmpty.regex(/^public\//, "expected a public/ artifact path"),
+  sha256,
+});
+
+const AtlasSourceQuerySchema = z.object({
+  endpoint: z.url(),
+  parameters: z.record(nonEmpty, nonEmpty),
+  periods: z.array(nonEmpty.regex(/^\d{6}$/, "expected YYYYMM")).min(1),
+});
+
 export const AtlasSourceRecordSchema = z.object({
   id: nonEmpty.regex(
     /^source-[a-z0-9]+(?:-[a-z0-9]+)*$/,
@@ -286,17 +309,17 @@ export const AtlasSourceRecordSchema = z.object({
   label: nonEmpty,
   publisher: nonEmpty,
   sourceClass: AtlasSourceClassSchema,
+  evidenceRole: AtlasEvidenceRoleSchema,
   canonicalUrl: z.url(),
-  publishedAt: isoDate,
+  publishedAt: isoDate.optional(),
   retrievedAt: isoDate,
   datasetVintage: nonEmpty,
+  revisionPolicy: nonEmpty.optional(),
   language: nonEmpty,
   translationStatus: TranslationStatusSchema,
-  snapshotId: nonEmpty,
-  snapshotChecksum: nonEmpty.regex(
-    /^[a-f0-9]{64}$/,
-    "expected a SHA-256 checksum"
-  ),
+  recordId: nonEmpty,
+  artifact: AtlasSourceArtifactSchema.optional(),
+  query: AtlasSourceQuerySchema.optional(),
   notes: nonEmpty,
 });
 
@@ -324,6 +347,8 @@ export const AtlasRelationSchema = z.object({
   from: nonEmpty,
   to: nonEmpty,
   label: nonEmpty,
+  kind: AtlasRelationKindSchema,
+  sourceIds: z.array(nonEmpty).min(1),
 });
 
 export const AtlasEventSchema = z.object({
@@ -342,6 +367,10 @@ export const AtlasEventSchema = z.object({
 });
 
 export const SignalStepSchema = z.object({
+  id: nonEmpty.regex(
+    /^step-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a step- prefixed id"
+  ),
   code: nonEmpty,
   kind: AtlasStepKindSchema,
   label: nonEmpty,
@@ -351,6 +380,8 @@ export const SignalStepSchema = z.object({
   sourceIds: z.array(nonEmpty).min(1),
   placeIds: nonEmptyList,
   eventIds: nonEmptyList,
+  relationIds: nonEmptyList,
+  seriesIds: nonEmptyList,
 });
 
 export const SignalChainSchema = z.object({
@@ -366,9 +397,6 @@ export const SignalChainSchema = z.object({
   conclusion: nonEmpty,
   caveat: nonEmpty,
   evidenceStatus: EvidenceStatusSchema,
-  sourceIds: z.array(nonEmpty).min(1),
-  placeIds: nonEmptyList,
-  eventIds: nonEmptyList,
 });
 
 export const AtlasObservationSchema = z.object({
@@ -403,13 +431,15 @@ export const AtlasSeriesSchema = z.object({
 
 export const AtlasReleaseSchema = z.object({
   slug,
+  dossierSlug: slug,
   version: nonEmpty,
   title: nonEmpty,
   summary: nonEmpty,
   methodology: nonEmpty,
   publishedAt: isoDate,
   retrievedAt: isoDate,
-  dataThrough: isoDate,
+  evidenceThrough: isoDate,
+  seriesThrough: isoDate,
   editorialStatus: EditorialStatusSchema,
   provenance: z.literal("prototype"),
   reviewState: z.literal("source-snapshot"),
@@ -426,6 +456,7 @@ export type AtlasSourceRecord = z.infer<typeof AtlasSourceRecordSchema>;
 export type AtlasPlace = z.infer<typeof AtlasPlaceSchema>;
 export type AtlasRelation = z.infer<typeof AtlasRelationSchema>;
 export type AtlasEvent = z.infer<typeof AtlasEventSchema>;
+export type SignalStep = z.infer<typeof SignalStepSchema>;
 export type SignalChain = z.infer<typeof SignalChainSchema>;
 export type AtlasSeries = z.infer<typeof AtlasSeriesSchema>;
 export type AtlasRelease = z.infer<typeof AtlasReleaseSchema>;

@@ -2,7 +2,8 @@ import { AtlasReleaseSchema, type AtlasRelease } from "./schema";
 
 const release = {
   slug: "semiconductor-control-chain",
-  version: "2026.07.21-1",
+  dossierSlug: "semiconductor-export-controls",
+  version: "2026.07.21-2",
   title: "The semiconductor control chain",
   summary:
     "A source-led atlas of how the December 2024 US semiconductor controls moved from announcement to legal text, named companies, trade signals, and corporate disclosure.",
@@ -10,7 +11,8 @@ const release = {
     "This release connects official records by date and documented relationship. Map lines show regulatory reach or disclosed supply-chain exposure, never inferred shipments. Trade movement is contextual correlation and does not establish policy causation.",
   publishedAt: "2026-07-21",
   retrievedAt: "2026-07-21",
-  dataThrough: "2026-03-02",
+  evidenceThrough: "2026-03-02",
+  seriesThrough: "2025-12-31",
   editorialStatus: "published",
   provenance: "prototype",
   reviewState: "source-snapshot",
@@ -21,6 +23,7 @@ const release = {
       label: "Commerce strengthens semiconductor export controls",
       publisher: "Bureau of Industry and Security",
       sourceClass: "policy",
+      evidenceRole: "supporting",
       canonicalUrl:
         "https://www.bis.gov/press-release/commerce-strengthens-export-controls-restrict-chinas-capability-produce-advanced-semiconductors-military",
       publishedAt: "2024-12-02",
@@ -28,44 +31,74 @@ const release = {
       datasetVintage: "December 2, 2024 announcement",
       language: "en",
       translationStatus: "original-english",
-      snapshotId: "bis-2024-12-02-controls",
-      snapshotChecksum:
-        "dbecc60cd8fd21c0ad49180e40efec81626d4a4f7dce5bab36515979b3eb4cc4",
+      recordId: "bis-2024-12-02-controls",
       notes:
-        "Normalized excerpt records 24 equipment types, three software-tool types, 140 Entity List additions, and 14 modifications.",
+        "Announcement-level source for 24 equipment types, three software-tool types, 140 Entity List additions, and 14 modifications. The Federal Register controls legal interpretation.",
     },
     {
-      id: "source-federal-register-rule",
+      id: "source-federal-register-sme-rule",
       label: "89 FR 96790 · semiconductor manufacturing equipment controls",
       publisher: "Office of the Federal Register",
       sourceClass: "legal-record",
+      evidenceRole: "controlling",
       canonicalUrl:
         "https://www.govinfo.gov/content/pkg/FR-2024-12-05/pdf/2024-28270.pdf",
       publishedAt: "2024-12-05",
       retrievedAt: "2026-07-21",
-      datasetVintage: "Federal Register Vol. 89, No. 234",
+      datasetVintage: "89 FR 96790 · RIN 0694-AJ74",
       language: "en",
       translationStatus: "original-english",
-      snapshotId: "fr-2024-28270",
-      snapshotChecksum:
-        "ade43c3b84ec268d7f5fa7dfdbd6dcfadfa3819a0e3195a47f0c0f0029d40fc1",
+      recordId: "fr-2024-28270",
       notes:
-        "The legal record controls interpretation. The Atlas records December 31, 2024 as the Entity List compliance date stated in the rule.",
+        "Controlling interim rule for advanced-computing, semiconductor-manufacturing-equipment, HBM, FN5, and FDP changes. December 31 applies only to the amendatory instructions named in the rule.",
+    },
+    {
+      id: "source-federal-register-entity-rule",
+      label: "89 FR 96830 · Entity List additions and modifications",
+      publisher: "Office of the Federal Register",
+      sourceClass: "legal-record",
+      evidenceRole: "controlling",
+      canonicalUrl:
+        "https://www.govinfo.gov/content/pkg/FR-2024-12-05/pdf/2024-28267.pdf",
+      publishedAt: "2024-12-05",
+      retrievedAt: "2026-07-21",
+      datasetVintage: "89 FR 96830 · RIN 0694-AJ77",
+      language: "en",
+      translationStatus: "original-english",
+      recordId: "fr-2024-28267",
+      notes:
+        "Controlling final rule for 140 Entity List additions and 14 modifications, including ACM Research Shanghai and ACM Research Korea. Effective December 2; December 31 applies to requirements linked to FN5 designations.",
+    },
+    {
+      id: "source-mofcom-response",
+      label: "MOFCOM response to the December 2 semiconductor controls",
+      publisher: "Ministry of Commerce of the People's Republic of China",
+      sourceClass: "policy",
+      evidenceRole: "supporting",
+      canonicalUrl:
+        "https://www.mofcom.gov.cn/xwfb/xwfyrth/art/2024/art_be61cee67b6340e59038896021e67453.html",
+      publishedAt: "2024-12-02",
+      retrievedAt: "2026-07-21",
+      datasetVintage: "December 2, 2024 spokesperson response",
+      language: "zh",
+      translationStatus: "original-chinese",
+      recordId: "mofcom-2024-12-02-semiconductor-response",
+      notes:
+        "Official PRC response. Its count of 136 Chinese entities is consistent with the US rule's 140 additions across China, Japan, Singapore, and South Korea; it is a government position, not independent impact evidence.",
     },
     {
       id: "source-trade-csl",
       label: "Consolidated Screening List",
       publisher: "International Trade Administration",
       sourceClass: "screening-data",
+      evidenceRole: "enrichment",
       canonicalUrl: "https://www.trade.gov/consolidated-screening-list",
-      publishedAt: "2026-07-21",
       retrievedAt: "2026-07-21",
       datasetVintage: "Retrieved July 21, 2026",
+      revisionPolicy: "Automatically refreshed daily by Trade.gov.",
       language: "en",
       translationStatus: "original-english",
-      snapshotId: "csl-enrichment-2026-07-21",
-      snapshotChecksum:
-        "1013de03b2313e66b3b8d6d50f79461a1266dd4068b75aea4e25f5aa673ddb93",
+      recordId: "csl-enrichment-2026-07-21",
       notes:
         "Used only for alias and screening context. Trade.gov instructs readers to consult the underlying Federal Register publication for the official restriction.",
     },
@@ -73,43 +106,85 @@ const release = {
       id: "source-census-hs-contract",
       label: "Monthly US exports by Harmonized System code",
       publisher: "US Census Bureau",
-      sourceClass: "trade-data",
+      sourceClass: "methodology",
+      evidenceRole: "methodology",
       canonicalUrl:
         "https://api.census.gov/data/timeseries/intltrade/exports/hs/variables.html",
       publishedAt: "2026-05-20",
       retrievedAt: "2026-07-21",
       datasetVintage: "API documentation revised May 20, 2026",
+      revisionPolicy:
+        "Updated monthly; previously released trade data are revised annually with the April statistics.",
       language: "en",
       translationStatus: "original-english",
-      snapshotId: "census-hs8486-contract-2026-07-21",
-      snapshotChecksum:
-        "c6a9e2190594f10666754964ea1e8b13e82f5ab6eb955d864bf901fa21984f78",
+      recordId: "census-hs8486-contract-2026-07-21",
       notes:
-        "Defines the preferred US-side ALL_VAL_MO series and annual-revision posture. The endpoint required a personal API key at retrieval, so it is not the value source for this release.",
+        "Defines ALL_VAL_MO and the preferred US-side extraction contract. It is methodology, not the value source for this release, because all Census trade API queries required a personal key at retrieval.",
     },
     {
       id: "source-un-comtrade-hs",
       label: "UN Comtrade preview · US reporter series · HS 8486",
       publisher: "United Nations Statistics Division",
       sourceClass: "trade-data",
-      canonicalUrl:
-        "https://comtradeapi.un.org/public/v1/preview/C/M/HS?reporterCode=842&partnerCode=156&cmdCode=8486&flowCode=X",
-      publishedAt: "2026-07-21",
+      evidenceRole: "context",
+      canonicalUrl: "https://uncomtrade.org/docs/un-comtrade-api/",
       retrievedAt: "2026-07-21",
-      datasetVintage: "2024-01 through 2025-12 public preview snapshot",
+      datasetVintage: "2024-01 through 2025-12 public-preview extraction",
+      revisionPolicy:
+        "UN Comtrade exposes only the latest version of a dataset; later revisions can replace previously retrieved values.",
       language: "en",
       translationStatus: "original-english",
-      snapshotId: "comtrade-842-156-8486-x-2024-2025",
-      snapshotChecksum:
-        "4ac6125833b024c75caf2a51fc9d97897e572b7d01c0438cdeb08bf4466c33ea",
+      recordId: "comtrade-842-156-8486-x-2024-2025",
+      artifact: {
+        path: "public/data/us-china-hs8486-2024-2025.csv",
+        sha256:
+          "b10581d98a918ee41b3f96ef7e3a3fc8c21f335f7cdefda701c54014baffaa00",
+      },
+      query: {
+        endpoint: "https://comtradeapi.un.org/public/v1/preview/C/M/HS",
+        parameters: {
+          reporterCode: "842",
+          partnerCode: "156",
+          cmdCode: "8486",
+          flowCode: "X",
+          maxRecords: "500",
+        },
+        periods: [
+          "202401",
+          "202402",
+          "202403",
+          "202404",
+          "202405",
+          "202406",
+          "202407",
+          "202408",
+          "202409",
+          "202410",
+          "202411",
+          "202412",
+          "202501",
+          "202502",
+          "202503",
+          "202504",
+          "202505",
+          "202506",
+          "202507",
+          "202508",
+          "202509",
+          "202510",
+          "202511",
+          "202512",
+        ],
+      },
       notes:
-        "The pinned chart values come from the public preview. Records are aggregate observations flagged as estimated by UN Comtrade and are not a substitute for a keyed Census extraction.",
+        "All 24 normalized values were rechecked against one-period official preview requests on July 21, 2026. Responses were aggregate and not directly reported; the series is contextual and is not a substitute for a keyed Census extraction.",
     },
     {
       id: "source-sec-acmr-2025",
       label: "ACM Research 2025 Form 10-K",
       publisher: "US Securities and Exchange Commission",
       sourceClass: "filing",
+      evidenceRole: "supporting",
       canonicalUrl:
         "https://www.sec.gov/Archives/edgar/data/1680062/000162828026013231/acmr-20251231.htm",
       publishedAt: "2026-03-02",
@@ -117,46 +192,9 @@ const release = {
       datasetVintage: "Fiscal year ended December 31, 2025",
       language: "en",
       translationStatus: "original-english",
-      snapshotId: "sec-acmr-2025-10k",
-      snapshotChecksum:
-        "9f1f7dde95f0b0cdc9c56b900f65df14028cff8f8bec5c6f0058abcfe1733dc0",
+      recordId: "sec-acmr-2025-10k",
       notes:
-        "The company reports that ACM Shanghai and ACM Korea were among the additions and describes continuing operational exposure in mainland China and Korea. These statements remain company-reported evidence.",
-    },
-    {
-      id: "source-sec-asml-2024",
-      label: "ASML 2024 Form 20-F",
-      publisher: "US Securities and Exchange Commission",
-      sourceClass: "filing",
-      canonicalUrl:
-        "https://www.sec.gov/Archives/edgar/data/937966/000093796625000009/asml-20241231.htm",
-      publishedAt: "2025-02-12",
-      retrievedAt: "2026-07-21",
-      datasetVintage: "Fiscal year ended December 31, 2024",
-      language: "en",
-      translationStatus: "original-english",
-      snapshotId: "sec-asml-2024-20f",
-      snapshotChecksum:
-        "5e1fbdaa7dac2ce3c64e7f3e3c91b3f1749f438fd4c2fb7e4e16a18e6c936973",
-      notes:
-        "Supports Veldhoven as a supply-chain exposure point and records company-disclosed China revenue exposure, not a shipment route.",
-    },
-    {
-      id: "source-openfreemap",
-      label: "OpenFreeMap Positron basemap",
-      publisher: "OpenFreeMap",
-      sourceClass: "map",
-      canonicalUrl: "https://openfreemap.org/quick_start/",
-      publishedAt: "2026-07-21",
-      retrievedAt: "2026-07-21",
-      datasetVintage: "Live vector-tile style retrieved at map load",
-      language: "en",
-      translationStatus: "original-english",
-      snapshotId: "openfreemap-positron-2026-07-21",
-      snapshotChecksum:
-        "359e677097e27b4d2b09b3605eef07cdeaee0c01945128a52947289304f111c4",
-      notes:
-        "Provides geography only. Atlas evidence remains available through the synchronized location list if tiles or WebGL fail.",
+        "Company-reported evidence that ACM Shanghai and ACM Korea were added, procurement was affected, and business practices changed. It is not independent observation of operational impact.",
     },
   ],
   relations: [
@@ -165,12 +203,11 @@ const release = {
       from: "place-washington-dc",
       to: "place-shanghai",
       label: "Regulatory reach",
-    },
-    {
-      id: "relation-supply-chain-exposure",
-      from: "place-veldhoven",
-      to: "place-shanghai",
-      label: "Disclosed supply-chain exposure",
+      kind: "regulatory-reach",
+      sourceIds: [
+        "source-bis-announcement",
+        "source-federal-register-entity-rule",
+      ],
     },
   ],
   places: [
@@ -180,7 +217,11 @@ const release = {
       coordinates: [-77.0369, 38.9072],
       precision: "city",
       role: "Rulemaking and publication",
-      sourceIds: ["source-bis-announcement", "source-federal-register-rule"],
+      sourceIds: [
+        "source-bis-announcement",
+        "source-federal-register-sme-rule",
+        "source-federal-register-entity-rule",
+      ],
     },
     {
       id: "place-shanghai",
@@ -188,15 +229,10 @@ const release = {
       coordinates: [121.4737, 31.2304],
       precision: "city",
       role: "ACM Shanghai · listed operating subsidiary",
-      sourceIds: ["source-federal-register-rule", "source-sec-acmr-2025"],
-    },
-    {
-      id: "place-veldhoven",
-      label: "Veldhoven",
-      coordinates: [5.4697, 51.4185],
-      precision: "city",
-      role: "Allied semiconductor-equipment exposure",
-      sourceIds: ["source-sec-asml-2024"],
+      sourceIds: [
+        "source-federal-register-entity-rule",
+        "source-sec-acmr-2025",
+      ],
     },
   ],
   events: [
@@ -217,10 +253,13 @@ const release = {
       date: "2024-12-05",
       stage: "publication",
       evidenceStatus: "officiallyAnnounced",
-      title: "The rule enters the Federal Register",
+      title: "The companion rules enter the Federal Register",
       detail:
-        "The Federal Register supplies the controlling text, definitions, licensing requirements, and compliance instructions.",
-      sourceIds: ["source-federal-register-rule"],
+        "The interim SME rule and final Entity List rule provide separate controlling records for the package.",
+      sourceIds: [
+        "source-federal-register-sme-rule",
+        "source-federal-register-entity-rule",
+      ],
       placeIds: ["place-washington-dc"],
       chainSlugs: ["rule-to-reach", "reach-to-trade"],
     },
@@ -229,10 +268,13 @@ const release = {
       date: "2024-12-31",
       stage: "implementation",
       evidenceStatus: "implemented",
-      title: "Entity List compliance date arrives",
+      title: "FN5-linked compliance date arrives",
       detail:
-        "The rule states December 31 as the compliance date for the relevant Entity List and Footnote 5 requirements.",
-      sourceIds: ["source-federal-register-rule"],
+        "December 31 applies to the amendatory instructions and Entity List requirements linked to Footnote 5—not every addition to the Entity List.",
+      sourceIds: [
+        "source-federal-register-sme-rule",
+        "source-federal-register-entity-rule",
+      ],
       placeIds: ["place-washington-dc", "place-shanghai"],
       chainSlugs: ["rule-to-reach", "reach-to-trade"],
     },
@@ -259,6 +301,7 @@ const release = {
         "Follow the package from the announcement through its defined scope, named parties, and compliance date.",
       steps: [
         {
+          id: "step-rule-announcement",
           code: "RULE",
           kind: "rule",
           label: "December package",
@@ -266,41 +309,62 @@ const release = {
             "BIS announces the coordinated semiconductor-control package.",
           date: "2024-12-02",
           evidenceStatus: "officiallyAnnounced",
-          sourceIds: ["source-bis-announcement"],
+          sourceIds: ["source-bis-announcement", "source-mofcom-response"],
           placeIds: ["place-washington-dc"],
           eventIds: ["event-package-announced"],
+          relationIds: [],
+          seriesIds: [],
         },
         {
+          id: "step-rule-scope",
           code: "SCOPE",
           kind: "scope",
           label: "24 equipment types + 3 software tools",
           detail: "The announcement also covers HBM and related end-use rules.",
           evidenceStatus: "officiallyAnnounced",
-          sourceIds: ["source-bis-announcement"],
+          sourceIds: [
+            "source-bis-announcement",
+            "source-federal-register-sme-rule",
+          ],
           placeIds: ["place-washington-dc"],
           eventIds: ["event-rule-published"],
+          relationIds: [],
+          seriesIds: [],
         },
         {
+          id: "step-rule-entities",
           code: "ENTITIES",
           kind: "entity",
           label: "140 additions + 14 modifications",
           detail:
             "The official record, not the screening helper, controls each entry.",
           evidenceStatus: "implemented",
-          sourceIds: ["source-federal-register-rule", "source-trade-csl"],
-          placeIds: ["place-shanghai"],
+          sourceIds: [
+            "source-federal-register-entity-rule",
+            "source-trade-csl",
+          ],
+          placeIds: ["place-washington-dc", "place-shanghai"],
           eventIds: ["event-rule-published"],
+          relationIds: ["relation-regulatory-reach"],
+          seriesIds: [],
         },
         {
+          id: "step-rule-compliance",
           code: "DATE",
           kind: "date",
-          label: "December 31 compliance",
-          detail: "The applicable Entity List requirements reach compliance.",
+          label: "December 31 limited compliance",
+          detail:
+            "The specified FN5, FDP, HBM, and linked Entity List requirements reach their delayed compliance date.",
           date: "2024-12-31",
           evidenceStatus: "implemented",
-          sourceIds: ["source-federal-register-rule"],
+          sourceIds: [
+            "source-federal-register-sme-rule",
+            "source-federal-register-entity-rule",
+          ],
           placeIds: ["place-washington-dc", "place-shanghai"],
           eventIds: ["event-compliance-date"],
+          relationIds: ["relation-regulatory-reach"],
+          seriesIds: [],
         },
       ],
       conclusion:
@@ -308,17 +372,6 @@ const release = {
       caveat:
         "Legal reach does not by itself show the magnitude or effectiveness of the economic outcome.",
       evidenceStatus: "implemented",
-      sourceIds: [
-        "source-bis-announcement",
-        "source-federal-register-rule",
-        "source-trade-csl",
-      ],
-      placeIds: ["place-washington-dc", "place-shanghai"],
-      eventIds: [
-        "event-package-announced",
-        "event-rule-published",
-        "event-compliance-date",
-      ],
     },
     {
       id: "chain-reach-to-trade",
@@ -329,6 +382,7 @@ const release = {
         "Connect the official list to an equipment-trade series without presenting temporal alignment as proof of causation.",
       steps: [
         {
+          id: "step-trade-list",
           code: "LIST",
           kind: "entity",
           label: "Named entities",
@@ -336,22 +390,28 @@ const release = {
             "The Federal Register establishes the affected legal parties.",
           date: "2024-12-05",
           evidenceStatus: "implemented",
-          sourceIds: ["source-federal-register-rule"],
-          placeIds: ["place-shanghai"],
+          sourceIds: ["source-federal-register-entity-rule"],
+          placeIds: ["place-washington-dc", "place-shanghai"],
           eventIds: ["event-rule-published"],
+          relationIds: ["relation-regulatory-reach"],
+          seriesIds: [],
         },
         {
+          id: "step-trade-places",
           code: "PLACES",
           kind: "location",
-          label: "Documented city-level exposure",
+          label: "Documented regulatory reach",
           detail:
-            "The map uses disclosed city relationships, not inferred facilities.",
-          evidenceStatus: "reported",
-          sourceIds: ["source-sec-acmr-2025", "source-sec-asml-2024"],
-          placeIds: ["place-shanghai", "place-veldhoven"],
-          eventIds: ["event-company-disclosure"],
+            "The local diagram connects the rulemaking record to a named Shanghai entity; it does not depict a shipment route or commercial relationship.",
+          evidenceStatus: "implemented",
+          sourceIds: ["source-federal-register-entity-rule"],
+          placeIds: ["place-washington-dc", "place-shanghai"],
+          eventIds: ["event-rule-published"],
+          relationIds: ["relation-regulatory-reach"],
+          seriesIds: [],
         },
         {
+          id: "step-trade-flow",
           code: "FLOW",
           kind: "trade",
           label: "HS 8486 monthly exports",
@@ -361,8 +421,11 @@ const release = {
           sourceIds: ["source-census-hs-contract", "source-un-comtrade-hs"],
           placeIds: ["place-washington-dc", "place-shanghai"],
           eventIds: ["event-compliance-date"],
+          relationIds: ["relation-regulatory-reach"],
+          seriesIds: ["series-us-china-hs8486"],
         },
         {
+          id: "step-trade-caveat",
           code: "CAVEAT",
           kind: "caveat",
           label: "Correlation, not attribution",
@@ -372,6 +435,8 @@ const release = {
           sourceIds: ["source-census-hs-contract", "source-un-comtrade-hs"],
           placeIds: [],
           eventIds: [],
+          relationIds: [],
+          seriesIds: [],
         },
       ],
       conclusion:
@@ -379,13 +444,6 @@ const release = {
       caveat:
         "The series is broad, estimated in the public preview, and cannot isolate the rule from demand, licensing, or classification effects.",
       evidenceStatus: "contested",
-      sourceIds: [
-        "source-federal-register-rule",
-        "source-census-hs-contract",
-        "source-un-comtrade-hs",
-      ],
-      placeIds: ["place-washington-dc", "place-shanghai", "place-veldhoven"],
-      eventIds: ["event-rule-published", "event-compliance-date"],
     },
     {
       id: "chain-exposure-to-response",
@@ -396,6 +454,7 @@ const release = {
         "Separate what a listed company disclosed from what independent evidence can establish about outcomes.",
       steps: [
         {
+          id: "step-company-identity",
           code: "COMPANY",
           kind: "entity",
           label: "ACM Shanghai and ACM Korea",
@@ -406,8 +465,11 @@ const release = {
           sourceIds: ["source-sec-acmr-2025"],
           placeIds: ["place-shanghai"],
           eventIds: ["event-company-disclosure"],
+          relationIds: [],
+          seriesIds: [],
         },
         {
+          id: "step-company-disclosure",
           code: "DISCLOSURE",
           kind: "disclosure",
           label: "Continuing operational exposure",
@@ -418,8 +480,11 @@ const release = {
           sourceIds: ["source-sec-acmr-2025"],
           placeIds: ["place-shanghai"],
           eventIds: ["event-company-disclosure"],
+          relationIds: [],
+          seriesIds: [],
         },
         {
+          id: "step-company-effect",
           code: "EFFECT",
           kind: "effect",
           label: "Company-reported response",
@@ -429,17 +494,25 @@ const release = {
           sourceIds: ["source-sec-acmr-2025"],
           placeIds: ["place-shanghai"],
           eventIds: ["event-company-disclosure"],
+          relationIds: [],
+          seriesIds: [],
         },
         {
+          id: "step-company-question",
           code: "QUESTION",
           kind: "question",
           label: "What changed in operations?",
           detail:
             "Licensing outcomes and independently measured production effects remain open.",
           evidenceStatus: "contested",
-          sourceIds: ["source-federal-register-rule", "source-sec-acmr-2025"],
+          sourceIds: [
+            "source-federal-register-entity-rule",
+            "source-sec-acmr-2025",
+          ],
           placeIds: ["place-shanghai"],
           eventIds: [],
+          relationIds: [],
+          seriesIds: [],
         },
       ],
       conclusion:
@@ -447,9 +520,6 @@ const release = {
       caveat:
         "It does not independently prove the size, duration, or cause of an operating effect.",
       evidenceStatus: "reported",
-      sourceIds: ["source-federal-register-rule", "source-sec-acmr-2025"],
-      placeIds: ["place-shanghai"],
-      eventIds: ["event-company-disclosure"],
     },
   ],
   series: [
@@ -520,4 +590,12 @@ export const atlasRelease = publishedAtlasReleases[0];
 
 export function getAtlasRelease(slug: string): AtlasRelease | undefined {
   return publishedAtlasReleases.find((item) => item.slug === slug);
+}
+
+export function getAtlasReleaseForDossier(
+  dossierSlug: string
+): AtlasRelease | undefined {
+  return publishedAtlasReleases.find(
+    (item) => item.dossierSlug === dossierSlug
+  );
 }
