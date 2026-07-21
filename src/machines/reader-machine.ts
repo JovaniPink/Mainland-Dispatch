@@ -68,6 +68,12 @@ export const readerMachine = setup({
         SEARCH: {
           actions: assign({ query: ({ event }) => event.query }),
         },
+        FILTER_VERTICAL: {
+          actions: assign({ vertical: ({ event }) => event.vertical }),
+        },
+        FILTER_KIND: {
+          actions: assign({ kind: ({ event }) => event.kind }),
+        },
         CLEAR_SEARCH: {
           target: "browsing",
           actions: assign({ query: "" }),

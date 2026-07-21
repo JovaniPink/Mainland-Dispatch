@@ -41,7 +41,7 @@ export const EvidenceStatusSchema = z.enum([
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
 
-const nonEmpty = z.string().min(1);
+const nonEmpty = z.string().trim().min(1);
 
 const DispatchBase = z.object({
   id: nonEmpty,

@@ -37,6 +37,14 @@ describe("DispatchSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  it("rejects whitespace-only required fields", () => {
+    const result = DispatchSchema.safeParse({
+      ...validArticle,
+      title: "   ",
+    });
+    expect(result.success).toBe(false);
+  });
+
   it("rejects a malformed date", () => {
     const result = DispatchSchema.safeParse({
       ...validArticle,
