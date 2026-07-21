@@ -230,6 +230,21 @@ describe("Evidence Atlas schema and graph", () => {
     expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
   });
 
+  it("draws map relations only between places declared on the release", () => {
+    expect(release.relations.length).toBeGreaterThan(0);
+    const placeIds = new Set(release.places.map((place) => place.id));
+    for (const relation of release.relations) {
+      expect(placeIds).toContain(relation.from);
+      expect(placeIds).toContain(relation.to);
+    }
+  });
+
+  it("rejects a relation that references a place outside the release", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[0].relations[0].to = "place-missing";
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
   it("prevents Atlas releases from exposing review-stage dispatches", () => {
     const invalid = clone(catalog);
     const reviewOnly = invalid.dispatches.find(

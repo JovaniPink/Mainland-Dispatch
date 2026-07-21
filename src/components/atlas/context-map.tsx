@@ -7,11 +7,12 @@ import type {
   LineString,
   Point,
 } from "geojson";
-import type { AtlasPlace } from "@/content/schema";
+import type { AtlasPlace, AtlasRelation } from "@/content/schema";
 
 type MapLibreModule = typeof import("maplibre-gl");
 type MapInstance = import("maplibre-gl").Map;
 type GeoJsonSource = import("maplibre-gl").GeoJSONSource;
+type MapStatus = "idle" | "loading" | "ready" | "failed";
 
 type FeatureCollection = GeoJsonFeatureCollection<
   Point | LineString,
@@ -36,22 +37,11 @@ function pointData(
   };
 }
 
-function relationData(places: AtlasPlace[]): FeatureCollection {
+function relationData(
+  places: AtlasPlace[],
+  relations: AtlasRelation[]
+): FeatureCollection {
   const byId = new Map(places.map((place) => [place.id, place]));
-  const relations = [
-    {
-      id: "regulatory-reach",
-      from: "place-washington-dc",
-      to: "place-shanghai",
-      label: "Regulatory reach",
-    },
-    {
-      id: "supply-chain-exposure",
-      from: "place-veldhoven",
-      to: "place-shanghai",
-      label: "Disclosed supply-chain exposure",
-    },
-  ];
 
   return {
     type: "FeatureCollection",
@@ -77,30 +67,35 @@ function relationData(places: AtlasPlace[]): FeatureCollection {
   };
 }
 
+/**
+ * Click-to-load context map: no request to the third-party tile host until
+ * the reader consents, mirroring MediaFacade's poster-before-iframe pattern.
+ */
 export function ContextMap({
   places,
+  relations,
   activeIds,
   selectedId,
-  failed,
+  status,
   onSelect,
-  onLoading,
   onReady,
   onError,
+  onConsent,
 }: {
   places: AtlasPlace[];
+  relations: AtlasRelation[];
   activeIds: string[];
   selectedId: string | null;
-  failed: boolean;
+  status: MapStatus;
   onSelect: (id: string) => void;
-  onLoading: () => void;
   onReady: () => void;
   onError: () => void;
+  onConsent: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapInstance | null>(null);
   const moduleRef = useRef<MapLibreModule | null>(null);
   const onSelectRef = useRef(onSelect);
-  const onLoadingRef = useRef(onLoading);
   const onReadyRef = useRef(onReady);
   const onErrorRef = useRef(onError);
   const activeIdsRef = useRef(activeIds);
@@ -108,21 +103,26 @@ export function ContextMap({
 
   useEffect(() => {
     onSelectRef.current = onSelect;
-    onLoadingRef.current = onLoading;
     onReadyRef.current = onReady;
     onErrorRef.current = onError;
     activeIdsRef.current = activeIds;
-  }, [activeIds, onError, onLoading, onReady, onSelect]);
+  }, [activeIds, onError, onReady, onSelect]);
 
+  // Runs only once the reader has consented (status leaves "idle"), and
+  // again on a retry from "failed" — never on mount, never automatically.
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (status !== "loading" || !containerRef.current) return;
     let cancelled = false;
     let timeoutId: number | undefined;
 
-    onLoadingRef.current();
-
     async function initialize() {
       try {
+        // Dispose a stale instance from a previous failed attempt before
+        // creating a fresh one.
+        mapRef.current?.remove();
+        mapRef.current = null;
+        readyRef.current = false;
+
         const maplibre = await import("maplibre-gl");
         if (cancelled || !containerRef.current) return;
         moduleRef.current = maplibre;
@@ -156,7 +156,7 @@ export function ContextMap({
 
           map.addSource("atlas-relations", {
             type: "geojson",
-            data: relationData(places),
+            data: relationData(places, relations),
           });
           map.addLayer({
             id: "atlas-relations-line",
@@ -229,12 +229,19 @@ export function ContextMap({
     return () => {
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [status, places, relations]);
+
+  // True teardown only on unmount — a status change from "loading" to
+  // "ready" must not tear down the map that effect just created.
+  useEffect(() => {
+    return () => {
       mapRef.current?.remove();
       mapRef.current = null;
       moduleRef.current = null;
       readyRef.current = false;
     };
-  }, [places]);
+  }, []);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -269,19 +276,62 @@ export function ContextMap({
         role="application"
         aria-label="Interactive context map. Use the synchronized location list for full keyboard access."
       />
-      {failed && (
+
+      {status === "idle" && (
         <div className="absolute inset-0 grid place-items-center bg-paper-warm/95 p-8 text-center">
-          <div className="max-w-sm">
-            <p className="font-mono text-xs uppercase tracking-widest text-signal">
-              Map unavailable
+          <div className="flex max-w-sm flex-col items-center gap-4">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink text-ink transition-colors group-hover:border-signal">
+              ◎
+            </span>
+            <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
+              Map geography is context, not evidence
             </p>
-            <p className="mt-3 font-serif text-lg leading-relaxed">
-              The evidence remains available in the synchronized location list
-              and source ledger.
+            <button
+              type="button"
+              onClick={onConsent}
+              className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
+            >
+              Load interactive map
+            </button>
+            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+              External source — contacts OpenFreeMap on load
             </p>
           </div>
         </div>
       )}
+
+      {status === "loading" && (
+        <div className="absolute inset-0 grid place-items-center bg-paper-warm/95">
+          <div className="flex flex-col items-center gap-3">
+            <span className="loading-mark h-8 w-8 rounded-full border-2 border-ink/20 border-t-signal" />
+            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+              Preparing map
+            </p>
+          </div>
+        </div>
+      )}
+
+      {status === "failed" && (
+        <div className="absolute inset-0 grid place-items-center bg-paper-warm/95 p-8 text-center">
+          <div className="flex max-w-sm flex-col items-center gap-4">
+            <p className="font-mono text-xs uppercase tracking-widest text-signal">
+              Map unavailable
+            </p>
+            <p className="font-serif text-lg leading-relaxed">
+              The evidence remains available in the synchronized location list
+              and source ledger.
+            </p>
+            <button
+              type="button"
+              onClick={onConsent}
+              className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="pointer-events-none absolute bottom-2 left-2 bg-paper/90 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
         Lines show regulatory reach or disclosed exposure—not shipments
       </div>

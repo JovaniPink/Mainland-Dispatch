@@ -182,6 +182,11 @@ export const ContentCatalogSchema = z
         ctx
       );
       addDuplicateIssues(
+        release.relations.map((item) => item.id),
+        `${release.slug} relation id`,
+        ctx
+      );
+      addDuplicateIssues(
         release.events.map((item) => item.id),
         `${release.slug} event id`,
         ctx
@@ -228,6 +233,14 @@ export const ContentCatalogSchema = z
 
       for (const place of release.places) {
         requireAtlasRef(place.sourceIds, sourceIds, `${place.id} source`);
+      }
+
+      for (const relation of release.relations) {
+        requireAtlasRef(
+          [relation.from, relation.to],
+          placeIds,
+          `${relation.id} endpoint`
+        );
       }
 
       for (const event of release.events) {

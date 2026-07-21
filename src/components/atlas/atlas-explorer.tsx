@@ -145,7 +145,13 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
   const sources = release.sources.filter((source) =>
     sourceIds.includes(source.id)
   );
-  const mapFailed = state.matches({ map: "failed" });
+  const mapStatus = state.matches({ map: "idle" })
+    ? "idle"
+    : state.matches({ map: "loading" })
+      ? "loading"
+      : state.matches({ map: "ready" })
+        ? "ready"
+        : "failed";
 
   return (
     <div className="mt-10 space-y-12">
@@ -283,13 +289,14 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
         <div className="mt-5 grid overflow-hidden border border-rule lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.75fr)]">
           <ContextMap
             places={release.places}
+            relations={release.relations}
             activeIds={activePlaceIds}
             selectedId={selectedPlace}
-            failed={mapFailed}
+            status={mapStatus}
             onSelect={(id) => dispatch({ type: "SELECT_PLACE", id })}
-            onLoading={() => dispatch({ type: "LOAD_MAP" })}
             onReady={() => dispatch({ type: "MAP_READY" })}
             onError={() => dispatch({ type: "MAP_ERROR" })}
+            onConsent={() => dispatch({ type: "LOAD_MAP" })}
           />
 
           <aside className="border-t border-rule bg-paper p-5 lg:border-t-0 lg:border-l">

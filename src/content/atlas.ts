@@ -159,6 +159,20 @@ const release = {
         "Provides geography only. Atlas evidence remains available through the synchronized location list if tiles or WebGL fail.",
     },
   ],
+  relations: [
+    {
+      id: "relation-regulatory-reach",
+      from: "place-washington-dc",
+      to: "place-shanghai",
+      label: "Regulatory reach",
+    },
+    {
+      id: "relation-supply-chain-exposure",
+      from: "place-veldhoven",
+      to: "place-shanghai",
+      label: "Disclosed supply-chain exposure",
+    },
+  ],
   places: [
     {
       id: "place-washington-dc",

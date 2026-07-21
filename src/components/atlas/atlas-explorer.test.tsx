@@ -11,28 +11,30 @@ import { AtlasExplorer } from "./atlas-explorer";
 jest.mock("./context-map", () => ({
   ContextMap: ({
     onSelect,
-    onLoading,
     onError,
-    failed,
+    onConsent,
+    status,
   }: {
     onSelect: (id: string) => void;
-    onLoading: () => void;
     onError: () => void;
-    failed: boolean;
+    onConsent: () => void;
+    status: "idle" | "loading" | "ready" | "failed";
   }) => (
     <div>
+      <p>Mock map status: {status}</p>
+      <button onClick={onConsent}>Mock map consent</button>
       <button onClick={() => onSelect("place-shanghai")}>
         Mock map Shanghai
       </button>
       <button
         onClick={() => {
-          onLoading();
+          onConsent();
           onError();
         }}
       >
         Mock map error
       </button>
-      {failed && <p>Map unavailable; use the location list.</p>}
+      {status === "failed" && <p>Map unavailable; use the location list.</p>}
     </div>
   ),
 }));
@@ -91,6 +93,13 @@ describe("AtlasExplorer", () => {
     expect(
       screen.getByRole("list", { name: /atlas locations/i })
     ).toBeInTheDocument();
+  });
+
+  it("never loads the map until the reader consents", () => {
+    render(<AtlasExplorer release={atlasRelease!} />);
+    expect(screen.getByText(/mock map status: idle/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /mock map consent/i }));
+    expect(screen.getByText(/mock map status: loading/i)).toBeInTheDocument();
   });
 
   it("selects a chart month with the keyboard and exposes snapshot metadata", () => {

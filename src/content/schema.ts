@@ -54,6 +54,7 @@ const slug = nonEmpty.regex(
   /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
   "expected a lowercase kebab-case slug"
 );
+/** Items must be non-empty strings; the list itself may be empty (defaults to []). */
 const nonEmptyList = z.array(nonEmpty).default([]);
 
 const DispatchBase = z.object({
@@ -314,6 +315,17 @@ export const AtlasPlaceSchema = z.object({
   sourceIds: z.array(nonEmpty).min(1),
 });
 
+/** A drawn map connection between two places. Content-driven so the map never invents a route. */
+export const AtlasRelationSchema = z.object({
+  id: nonEmpty.regex(
+    /^relation-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a relation- prefixed id"
+  ),
+  from: nonEmpty,
+  to: nonEmpty,
+  label: nonEmpty,
+});
+
 export const AtlasEventSchema = z.object({
   id: nonEmpty.regex(
     /^event-[a-z0-9]+(?:-[a-z0-9]+)*$/,
@@ -405,12 +417,14 @@ export const AtlasReleaseSchema = z.object({
   sources: z.array(AtlasSourceRecordSchema).min(1),
   chains: z.array(SignalChainSchema).min(1),
   places: z.array(AtlasPlaceSchema).min(1),
+  relations: z.array(AtlasRelationSchema),
   events: z.array(AtlasEventSchema).length(4),
   series: z.array(AtlasSeriesSchema).min(1),
 });
 
 export type AtlasSourceRecord = z.infer<typeof AtlasSourceRecordSchema>;
 export type AtlasPlace = z.infer<typeof AtlasPlaceSchema>;
+export type AtlasRelation = z.infer<typeof AtlasRelationSchema>;
 export type AtlasEvent = z.infer<typeof AtlasEventSchema>;
 export type SignalChain = z.infer<typeof SignalChainSchema>;
 export type AtlasSeries = z.infer<typeof AtlasSeriesSchema>;
