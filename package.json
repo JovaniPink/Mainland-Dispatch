@@ -1,0 +1,60 @@
+{
+  "name": "mainland-dispatch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:ci": "jest --runInBand --coverage",
+    "test-all": "npm run format:check && npm run lint && npm run typecheck && npm run test:ci && npm run build",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@xstate/react": "^6.1.0",
+    "clsx": "^2.1.1",
+    "maplibre-gl": "^5.24.0",
+    "next": "^16.2.6",
+    "postcss": "^8.5.21",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^3.6.0",
+    "xstate": "^5.32.5",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.6",
+    "husky": "^9.1.7",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "lint-staged": "^17.1.0",
+    "prettier": "^3.9.6",
+    "tailwindcss": "^4",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "overrides": {
+    "postcss": "$postcss"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

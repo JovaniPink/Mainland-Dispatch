@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* ── The Correspondent's Notebook palette ─────────────────────────── */
+
+:root {
+  --paper: #f3f0e8;
+  --paper-warm: #ebe5d8;
+  --ink: #191b18;
+  --ink-muted: #62655f;
+  --rule: #d6d0c4;
+  --signal: #bd382d;
+  --signal-soft: #f2d9d4;
+  --jade: #486e64;
+  --jade-soft: #dbe6e1;
+  --night: #17201d;
+}
+
+[data-theme="night"] {
+  --paper: #17201d;
+  --paper-warm: #1e2925;
+  --ink: #e9e6db;
+  --ink-muted: #96a09a;
+  --rule: #33403a;
+  --signal: #d4574b;
+  --signal-soft: #45241f;
+  --jade: #7fa899;
+  --jade-soft: #24332d;
+  --night: #f3f0e8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-warm: var(--paper-warm);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-jade: var(--jade);
+  --color-jade-soft: var(--jade-soft);
+  --color-night: var(--night);
+  --font-serif:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-sans:
+    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-mono:
+    "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
+}
+
+body {
+  background: var(--paper);
+  background-image: radial-gradient(var(--rule) 0.55px, transparent 0.55px);
+  background-size: 18px 18px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+::selection {
+  background: var(--signal-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+button,
+a {
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+/* Double ruled notebook margin, large screens only */
+@media (min-width: 64rem) {
+  .notebook-margin {
+    background-image: linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(4.5rem - 1px),
+      var(--signal) calc(4.5rem - 1px),
+      var(--signal) 4.5rem,
+      transparent 4.5rem,
+      transparent calc(4.875rem - 1px),
+      var(--signal) calc(4.875rem - 1px),
+      var(--signal) 4.875rem,
+      transparent 4.875rem
+    );
+  }
+}
+
+/* Hand-drawn underline, reserved for key editorial conclusions */
+.editorial-underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6' preserveAspectRatio='none'%3E%3Cpath d='M2 4.5 C 25 2.5, 48 3.5, 70 3 S 108 2, 118 3.5' fill='none' stroke='%23bd382d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 0.375em;
+  background-position: 0 100%;
+  padding-bottom: 0.375em;
+}
+
+/* Keep the underline stroke on the night theme's signal color */
+[data-theme="night"] .editorial-underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6' preserveAspectRatio='none'%3E%3Cpath d='M2 4.5 C 25 2.5, 48 3.5, 70 3 S 108 2, 118 3.5' fill='none' stroke='%23d4574b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Restrained entrance: notes rising into place */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 400ms ease-out both;
+}
+
+@keyframes loading-turn {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.loading-mark {
+  animation: loading-turn 800ms linear infinite;
+}
+
+.media-stage,
+.media-visual {
+  --paper: #f3f0e8;
+  --ink: #17201d;
+}
+
+.dispatch-card {
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.dispatch-card:hover {
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.prototype-notice {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 10%, transparent);
+}
+
+.atlas-map .maplibregl-ctrl-group {
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.atlas-map .maplibregl-ctrl-group button,
+.atlas-map .maplibregl-ctrl-attrib {
+  background-color: color-mix(in srgb, var(--paper) 92%, transparent);
+}
+
+.atlas-map .maplibregl-ctrl button .maplibregl-ctrl-icon {
+  filter: sepia(0.2) saturate(0.6);
+}
+
+[data-theme="night"] .atlas-map .maplibregl-canvas {
+  filter: brightness(0.72) saturate(0.7) contrast(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+  }
+  .loading-mark {
+    animation-duration: 1.6s;
+  }
+  body {
+    transition: none;
+  }
+}
+
+/* Horizontally scrolling chip rows on mobile */
+.chip-row {
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-affordance {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 1rem,
+    black calc(100% - 1rem),
+    transparent
+  );
+}
+
+@media (min-width: 40rem) {
+  .scroll-affordance {
+    mask-image: none;
+  }
+}

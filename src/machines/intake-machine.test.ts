@@ -1,0 +1,86 @@
+import { createActor } from "xstate";
+import { intakeMachine } from "./intake-machine";
+import { dispatches } from "@/content/dispatches";
+
+const validDraft = {
+  kind: "article",
+  id: "d-new",
+  slug: "new-dispatch",
+  title: "A new dispatch",
+  summary: "Summary.",
+  commentary: "Commentary.",
+  whyItMatters: "It matters.",
+  source: "Test Wire",
+  sourceUrl: "https://example.com/new-story",
+  sourceDate: "2026-07-01",
+  curatedAt: "2026-07-21",
+  updatedAt: "2026-07-21",
+  language: "en",
+  translationStatus: "original-english",
+  verticals: ["bilateral"],
+  tags: [],
+  people: [],
+  organizations: [],
+  places: [],
+  relatedDispatchIds: [],
+  editorialStatus: "draft",
+  provenance: "prototype",
+};
+
+describe("intakeMachine", () => {
+  it("routes a valid, non-duplicate draft to editing", () => {
+    const actor = createActor(intakeMachine).start();
+    actor.send({ type: "SUBMIT_URL", url: "https://example.com/new-story" });
+    actor.send({ type: "RESOLVED", draft: validDraft });
+    expect(actor.getSnapshot().value).toBe("editing");
+  });
+
+  it("routes an invalid draft to invalid with recorded issues", () => {
+    const actor = createActor(intakeMachine).start();
+    actor.send({ type: "SUBMIT_URL", url: "https://example.com/x" });
+    actor.send({
+      type: "RESOLVED",
+      draft: { ...validDraft, sourceUrl: "not-a-url" },
+    });
+    const snap = actor.getSnapshot();
+    expect(snap.value).toBe("invalid");
+    expect(snap.context.validationErrors.length).toBeGreaterThan(0);
+  });
+
+  it("flags a draft whose sourceUrl matches an existing dispatch", () => {
+    const existing = dispatches[0];
+    const actor = createActor(intakeMachine).start();
+    actor.send({ type: "SUBMIT_URL", url: existing.sourceUrl });
+    actor.send({
+      type: "RESOLVED",
+      draft: { ...validDraft, sourceUrl: existing.sourceUrl },
+    });
+    const snap = actor.getSnapshot();
+    expect(snap.value).toBe("possibleDuplicate");
+    expect(snap.context.duplicateOf).toBe(existing.id);
+  });
+
+  it("falls back to manualEntry when resolution fails", () => {
+    const actor = createActor(intakeMachine).start();
+    actor.send({ type: "SUBMIT_URL", url: "garbage" });
+    actor.send({ type: "RESOLVE_FAILED" });
+    expect(actor.getSnapshot().value).toBe("manualEntry");
+  });
+
+  it("refuses to save an invalid edit and saves a valid one as JSON", () => {
+    const actor = createActor(intakeMachine).start();
+    actor.send({ type: "SUBMIT_URL", url: "https://example.com/new-story" });
+    actor.send({ type: "RESOLVED", draft: validDraft });
+    actor.send({ type: "EDIT", draft: { ...validDraft, title: "" } });
+    actor.send({ type: "SAVE" });
+    expect(actor.getSnapshot().value).toBe("editing");
+
+    actor.send({ type: "EDIT", draft: validDraft });
+    actor.send({ type: "SAVE" });
+    const snap = actor.getSnapshot();
+    expect(snap.value).toBe("saved");
+    expect(JSON.parse(snap.context.savedJson ?? "{}").slug).toBe(
+      "new-dispatch"
+    );
+  });
+});
