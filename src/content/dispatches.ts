@@ -15,7 +15,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "The meaningful shift is not only box-office revenue, but ownership of durable characters and cultural vocabulary.",
     source: "Sixth Tone",
-    sourceUrl: "https://www.sixthtone.com/news/animation-franchises",
+    sourceUrl: "https://example.com/prototype/animation-franchises",
     sourceDate: "2026-07-18",
     curatedAt: "2026-07-21",
     updatedAt: "2026-07-21",
@@ -28,8 +28,9 @@ const seeds: unknown[] = [
     places: ["Beijing", "Chengdu"],
     relatedDispatchIds: ["d-004", "d-009"],
     editorialStatus: "published",
+    provenance: "prototype",
     provider: "youtube",
-    embedId: "dQw4w9WgXcQ",
+    embedId: "prototype-animation-video",
     duration: "09:42",
     captions: ["zh", "en"],
   },
@@ -46,7 +47,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Each expansion reshapes which Chinese fabs can service which nodes — and quietly redraws the market for domestic tool substitutes.",
     source: "Reuters",
-    sourceUrl: "https://www.reuters.com/technology/bis-entity-list-july",
+    sourceUrl: "https://example.com/prototype/entity-list-analysis",
     sourceDate: "2026-07-15",
     curatedAt: "2026-07-19",
     updatedAt: "2026-07-19",
@@ -59,7 +60,8 @@ const seeds: unknown[] = [
     places: ["Washington", "Shanghai"],
     relatedDispatchIds: ["d-003", "d-007", "d-011"],
     editorialStatus: "published",
-    byline: "Karen Freifeld",
+    provenance: "prototype",
+    byline: "Sample correspondent",
     pullQuote:
       "The additions close a loophole that had allowed re-export through third-country intermediaries.",
   },
@@ -76,7 +78,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Official statements are the primary record. Reading them directly, rather than through summaries, shows what escalation language is actually in play.",
     source: "Ministry of Commerce (PRC)",
-    sourceUrl: "https://www.mofcom.gov.cn/statement-2026-07",
+    sourceUrl: "https://example.com/prototype/commerce-statement",
     sourceDate: "2026-07-16",
     curatedAt: "2026-07-19",
     updatedAt: "2026-07-20",
@@ -89,6 +91,7 @@ const seeds: unknown[] = [
     places: ["Beijing"],
     relatedDispatchIds: ["d-002", "d-007"],
     editorialStatus: "published",
+    provenance: "prototype",
     issuingBody: "Ministry of Commerce, People's Republic of China",
     pageCount: 3,
     documentDate: "2026-07-16",
@@ -108,8 +111,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Distribution, not production, is where cultural exchange actually narrows. The bottleneck is commercial, and it is measurable.",
     source: "The Hollywood Reporter",
-    sourceUrl:
-      "https://www.hollywoodreporter.com/chinese-cinema-us-distribution",
+    sourceUrl: "https://example.com/prototype/cinema-distribution",
     sourceDate: "2026-07-10",
     curatedAt: "2026-07-14",
     updatedAt: "2026-07-14",
@@ -122,7 +124,8 @@ const seeds: unknown[] = [
     places: ["Los Angeles"],
     relatedDispatchIds: ["d-001"],
     editorialStatus: "published",
-    byline: "Patrick Brzeski",
+    provenance: "prototype",
+    byline: "Sample correspondent",
   },
   {
     kind: "audio",
@@ -136,7 +139,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Model competition is usually reported as a horse race. The infrastructure and cost story underneath is the one with policy consequences.",
     source: "ChinaTalk",
-    sourceUrl: "https://www.chinatalk.media/podcast/open-weight-race",
+    sourceUrl: "https://example.com/prototype/open-weight-podcast",
     sourceDate: "2026-07-12",
     curatedAt: "2026-07-15",
     updatedAt: "2026-07-15",
@@ -149,6 +152,7 @@ const seeds: unknown[] = [
     places: [],
     relatedDispatchIds: ["d-002"],
     editorialStatus: "published",
+    provenance: "prototype",
     showName: "ChinaTalk",
     episode: "Mid-2026 model landscape",
     duration: "58:20",
@@ -167,7 +171,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Moderated-then-removed threads are a real signal of where official tolerance sits on economic sentiment, but they need archival discipline to cite responsibly.",
     source: "Weibo",
-    sourceUrl: "https://weibo.com/thread/example",
+    sourceUrl: "https://example.com/prototype/social-thread",
     sourceDate: "2026-07-08",
     curatedAt: "2026-07-11",
     updatedAt: "2026-07-11",
@@ -180,10 +184,11 @@ const seeds: unknown[] = [
     places: ["Wuhan"],
     relatedDispatchIds: ["d-010"],
     editorialStatus: "sourceReview",
+    provenance: "prototype",
     platform: "weibo",
     account: "@工科毕业生2026",
     captureDate: "2026-07-09",
-    archivalUrl: "https://archive.org/weibo-thread-capture",
+    archivalUrl: "https://example.com/prototype/social-thread-archive",
   },
   {
     kind: "document",
@@ -197,7 +202,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "The rule text, not the announcement, determines what actually ships. Carve-outs here will define the next year of compliance disputes.",
     source: "Federal Register",
-    sourceUrl: "https://www.federalregister.gov/bis-interim-rule-2026",
+    sourceUrl: "https://example.com/prototype/export-control-rule",
     sourceDate: "2026-07-15",
     curatedAt: "2026-07-18",
     updatedAt: "2026-07-18",
@@ -210,6 +215,7 @@ const seeds: unknown[] = [
     places: ["Washington"],
     relatedDispatchIds: ["d-002", "d-003"],
     editorialStatus: "published",
+    provenance: "prototype",
     issuingBody: "US Department of Commerce, Bureau of Industry and Security",
     pageCount: 212,
     documentDate: "2026-07-15",
@@ -228,7 +234,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Tariff debates are abstract until you see which markets a production line is physically tooled for.",
     source: "Caixin",
-    sourceUrl: "https://www.caixinglobal.com/ev-plant-photo-essay",
+    sourceUrl: "https://example.com/prototype/ev-plant-gallery",
     sourceDate: "2026-07-05",
     curatedAt: "2026-07-09",
     updatedAt: "2026-07-09",
@@ -241,6 +247,7 @@ const seeds: unknown[] = [
     places: ["Chongqing"],
     relatedDispatchIds: ["d-010"],
     editorialStatus: "editorialReview",
+    provenance: "prototype",
     imageCount: 14,
     photographer: "Ding Gang",
   },
@@ -256,7 +263,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Gaming approvals are one of the few monthly, quantifiable measures of cultural-market opening or closing.",
     source: "Niko Partners",
-    sourceUrl: "https://nikopartners.com/july-2026-approvals",
+    sourceUrl: "https://example.com/prototype/gaming-approvals",
     sourceDate: "2026-07-17",
     curatedAt: "2026-07-20",
     updatedAt: "2026-07-20",
@@ -269,7 +276,8 @@ const seeds: unknown[] = [
     places: [],
     relatedDispatchIds: ["d-001"],
     editorialStatus: "published",
-    byline: "Daniel Ahmad",
+    provenance: "prototype",
+    byline: "Sample analyst",
   },
   {
     kind: "data",
@@ -283,7 +291,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Trade totals get quoted as a temperature reading. The category breakdown is where policy effects are actually visible.",
     source: "US Census Bureau",
-    sourceUrl: "https://www.census.gov/foreign-trade/china-h1-2026",
+    sourceUrl: "https://example.com/prototype/trade-data",
     sourceDate: "2026-07-14",
     curatedAt: "2026-07-17",
     updatedAt: "2026-07-17",
@@ -296,10 +304,11 @@ const seeds: unknown[] = [
     places: [],
     relatedDispatchIds: ["d-006", "d-008"],
     editorialStatus: "published",
+    provenance: "prototype",
     methodology:
       "Monthly customs-district goods data, seasonally unadjusted, HS-4 category level.",
     measurementPeriod: "January–June 2026",
-    downloadUrl: "https://www.census.gov/foreign-trade/china-h1-2026.csv",
+    downloadUrl: "https://example.com/prototype/trade-data.csv",
   },
   {
     kind: "video",
@@ -314,7 +323,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "Export-control effectiveness ultimately shows up in fab economics, not policy announcements. Earnings calls are where the evidence surfaces.",
     source: "Asianometry",
-    sourceUrl: "https://www.youtube.com/watch?v=smic-analysis",
+    sourceUrl: "https://example.com/prototype/fab-analysis-video",
     sourceDate: "2026-07-19",
     curatedAt: "2026-07-21",
     updatedAt: "2026-07-21",
@@ -327,8 +336,9 @@ const seeds: unknown[] = [
     places: ["Shanghai"],
     relatedDispatchIds: ["d-002", "d-007"],
     editorialStatus: "published",
+    provenance: "prototype",
     provider: "youtube",
-    embedId: "smic-analysis",
+    embedId: "prototype-fab-analysis-video",
     duration: "18:47",
     captions: ["en"],
   },
@@ -344,7 +354,7 @@ const seeds: unknown[] = [
     whyItMatters:
       "If economic and cultural policy are being decoupled on purpose, most 'relations are warming/cooling' framing is measuring the wrong thing.",
     source: "Mainland Dispatch",
-    sourceUrl: "https://mainlanddispatch.example.com/original/july-signals",
+    sourceUrl: "https://example.com/prototype/original-july-signals",
     sourceDate: "2026-07-21",
     curatedAt: "2026-07-21",
     updatedAt: "2026-07-21",
@@ -357,14 +367,30 @@ const seeds: unknown[] = [
     places: [],
     relatedDispatchIds: ["d-002", "d-009", "d-001"],
     editorialStatus: "published",
-    wordCount: 1450,
+    provenance: "prototype",
   },
 ];
 
 export const dispatches: Dispatch[] = z.array(DispatchSchema).parse(seeds);
 
+const publicStatuses = new Set<Dispatch["editorialStatus"]>([
+  "published",
+  "corrected",
+]);
+
+/** The only records allowed to cross the public publication boundary. */
+export function isPublicDispatch(dispatch: Dispatch): boolean {
+  return publicStatuses.has(dispatch.editorialStatus);
+}
+
+export const publishedDispatches = dispatches.filter(isPublicDispatch);
+
 export function getDispatch(slug: string): Dispatch | undefined {
   return dispatches.find((d) => d.slug === slug);
+}
+
+export function getPublicDispatch(slug: string): Dispatch | undefined {
+  return publishedDispatches.find((d) => d.slug === slug);
 }
 
 export function getDispatchById(id: string): Dispatch | undefined {
@@ -377,16 +403,24 @@ export function relatedDispatches(d: Dispatch): Dispatch[] {
     .filter((x): x is Dispatch => Boolean(x));
 }
 
-export function countsByVertical(): Record<string, number> {
+export function publicRelatedDispatches(d: Dispatch): Dispatch[] {
+  return relatedDispatches(d).filter(isPublicDispatch);
+}
+
+export function countsByVertical(
+  collection: Dispatch[] = publishedDispatches
+): Record<string, number> {
   const counts: Record<string, number> = {};
-  for (const d of dispatches) {
+  for (const d of collection) {
     for (const v of d.verticals) counts[v] = (counts[v] ?? 0) + 1;
   }
   return counts;
 }
 
-export function countsByKind(): Partial<Record<DispatchKind, number>> {
+export function countsByKind(
+  collection: Dispatch[] = publishedDispatches
+): Partial<Record<DispatchKind, number>> {
   const counts: Partial<Record<DispatchKind, number>> = {};
-  for (const d of dispatches) counts[d.kind] = (counts[d.kind] ?? 0) + 1;
+  for (const d of collection) counts[d.kind] = (counts[d.kind] ?? 0) + 1;
   return counts;
 }

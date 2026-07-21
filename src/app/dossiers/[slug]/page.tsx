@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { dossiers, getDossier, evidenceStatusLabels } from "@/content/dossiers";
 import { getDispatchById } from "@/content/dispatches";
@@ -8,6 +9,18 @@ import type { EvidenceStatus } from "@/content/schema";
 
 export function generateStaticParams() {
   return dossiers.map((d) => ({ slug: d.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const dossier = getDossier(slug);
+  return dossier
+    ? { title: dossier.title, description: dossier.summary }
+    : { title: "Dossier not found" };
 }
 
 const statusTone: Record<EvidenceStatus, string> = {

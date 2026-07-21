@@ -11,7 +11,7 @@ describe("DispatchCard", () => {
       "href",
       `/dispatch/${video.slug}`
     );
-    expect(screen.getByText(/why it matters/i)).toBeInTheDocument();
+    expect(screen.getByText(/editorial note/i)).toBeInTheDocument();
     expect(screen.getByText(/published .* · curated/i)).toBeInTheDocument();
     expect(
       screen.getByText(new RegExp(`Video · ${video.source}`, "i"))
@@ -20,6 +20,6 @@ describe("DispatchCard", () => {
 
   it("shows duration in the meta line for timed media", () => {
     render(<DispatchCard dispatch={video} />);
-    expect(screen.getByText(new RegExp(video.duration))).toBeInTheDocument();
+    expect(screen.getAllByText(new RegExp(video.duration))).not.toHaveLength(0);
   });
 });

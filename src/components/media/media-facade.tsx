@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { mediaMachine } from "@/machines/media-machine";
 import type { Dispatch } from "@/content/schema";
@@ -22,8 +23,33 @@ function embedUrl(d: Extract<Dispatch, { kind: "video" }>): string {
  */
 export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
   const [state, send] = useMachine(mediaMachine);
+  const [lastEvent, setLastEvent] = useState<string | null>(null);
+  const [history, setHistory] = useState<string[]>([]);
+  const isMedia = d.kind === "video" || d.kind === "audio";
+  const prototypeMedia = d.provenance === "prototype";
 
-  if (d.kind !== "video" && d.kind !== "audio") return null;
+  const dispatch = useCallback(
+    (event: Parameters<typeof send>[0]) => {
+      send(event);
+      setLastEvent(event.type);
+      setHistory((items) => [...items.slice(-7), event.type]);
+    },
+    [send]
+  );
+
+  useEffect(() => {
+    if (
+      !isMedia ||
+      !state.matches("loading") ||
+      (!prototypeMedia && d.kind === "video")
+    ) {
+      return;
+    }
+    const timeout = window.setTimeout(() => dispatch({ type: "LOADED" }), 500);
+    return () => window.clearTimeout(timeout);
+  }, [d.kind, dispatch, isMedia, prototypeMedia, state]);
+
+  if (!isMedia) return null;
 
   const meta =
     d.kind === "video"
@@ -44,18 +70,41 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
 
   return (
     <div>
-      <div className="relative aspect-video overflow-hidden border border-rule bg-night">
-        {state.matches("playing") && d.kind === "video" ? (
+      <div className="media-stage relative aspect-video overflow-hidden border border-rule bg-ink text-paper">
+        {(state.matches("loading") || state.matches("playing")) &&
+        d.kind === "video" &&
+        !prototypeMedia ? (
           <iframe
             src={embedUrl(d)}
             title={d.title}
             className="absolute inset-0 h-full w-full"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
+            onLoad={() => dispatch({ type: "LOADED" })}
+            onError={() => dispatch({ type: "ERROR" })}
           />
+        ) : state.matches("playing") && prototypeMedia ? (
+          <div className="flex h-full flex-col items-center justify-center gap-4 bg-[radial-gradient(circle_at_25%_25%,var(--jade)_0,transparent_38%),linear-gradient(135deg,#17201d,#25322d)] p-6 text-center text-[#f3f0e8]">
+            <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#d8aaa5]">
+              Prototype media surface
+            </span>
+            <p className="max-w-lg font-serif text-xl leading-snug">
+              {d.title}
+            </p>
+            <p className="max-w-md text-sm text-[#c1c8c3]">
+              A verified embed or audio player will appear here when this sample
+              is replaced with published source material.
+            </p>
+            <button
+              onClick={() => dispatch({ type: "RESET" })}
+              className="border border-[#f3f0e8]/40 px-3 py-1 font-mono text-xs uppercase tracking-widest"
+            >
+              Return to poster
+            </button>
+          </div>
         ) : state.matches("playing") && d.kind === "audio" ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-            <p className="font-serif text-lg text-paper">{d.title}</p>
+            <p className="font-serif text-lg">{d.title}</p>
             <a
               href={d.sourceUrl}
               target="_blank"
@@ -66,17 +115,27 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
             </a>
           </div>
         ) : state.matches("unavailable") ? (
-          <div className="flex h-full items-center justify-center">
-            <p className="font-mono text-xs uppercase tracking-widest text-paper">
+          <div className="flex h-full flex-col items-center justify-center gap-3">
+            <p className="font-mono text-xs uppercase tracking-widest">
               Media unavailable
+            </p>
+            <button
+              onClick={() => dispatch({ type: "RETRY" })}
+              className="border border-paper/40 px-3 py-1 font-mono text-xs uppercase tracking-widest"
+            >
+              Retry
+            </button>
+          </div>
+        ) : state.matches("loading") ? (
+          <div className="flex h-full flex-col items-center justify-center gap-3">
+            <span className="loading-mark h-8 w-8 rounded-full border-2 border-paper/30 border-t-signal" />
+            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-paper/70">
+              Preparing media
             </p>
           </div>
         ) : (
           <button
-            onClick={() => {
-              send({ type: "CONSENT" });
-              send({ type: "LOADED" });
-            }}
+            onClick={() => dispatch({ type: "CONSENT" })}
             className="group flex h-full w-full flex-col items-center justify-center gap-4 p-6 text-center"
             aria-label={`Load external media: ${d.title}`}
           >
@@ -88,7 +147,9 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
               {meta.join(" · ")}
             </span>
             <span className="border border-paper/40 px-3 py-1 font-mono text-[0.65rem] uppercase tracking-widest text-paper/70">
-              External source — loads on play
+              {prototypeMedia
+                ? "Demo interaction — no third party loads"
+                : "External source — loads on play"}
             </span>
           </button>
         )}
@@ -96,8 +157,9 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
       <StateLab
         title="Media actor"
         state={state.value}
-        lastEvent={null}
-        nextEvents={["CONSENT", "LOADED", "ERROR", "RESET"]}
+        lastEvent={lastEvent}
+        nextEvents={["CONSENT", "LOADED", "ERROR", "RETRY", "RESET"]}
+        history={history}
       />
     </div>
   );

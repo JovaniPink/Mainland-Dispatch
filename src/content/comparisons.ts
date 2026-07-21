@@ -11,7 +11,7 @@ const seed = {
       outlet: "Sixth Tone",
       headline:
         "China's domestic animation industry is building franchises beyond Hollywood's orbit",
-      url: "https://www.sixthtone.com/news/animation-franchises",
+      url: "https://example.com/prototype/animation-franchises",
       publishedAt: "2026-07-18",
       language: "zh/en",
       framing:
@@ -24,7 +24,7 @@ const seed = {
       outlet: "The Hollywood Reporter",
       headline:
         "Why Chinese blockbusters still struggle to find US theatrical distribution",
-      url: "https://www.hollywoodreporter.com/chinese-cinema-us-distribution",
+      url: "https://example.com/prototype/cinema-distribution",
       publishedAt: "2026-07-10",
       language: "en",
       framing:
@@ -36,7 +36,7 @@ const seed = {
       role: "primary",
       outlet: "China Film Administration",
       headline: "2026 half-year film market bulletin",
-      url: "https://www.chinafilm.gov.cn/h1-2026-bulletin",
+      url: "https://example.com/prototype/film-market-bulletin",
       publishedAt: "2026-07-08",
       language: "zh",
       framing:
@@ -60,6 +60,7 @@ const seed = {
   editorialNotes:
     "None of the three is wrong. The mainland source measures against China's own past, the US source against US market access, and the official bulletin against policy goals. Read together they describe an industry succeeding on the first metric, indifferent to the second, and claimed by the third.",
   relatedDispatchIds: ["d-001", "d-004"],
+  provenance: "prototype",
 };
 
 export const comparisons: Comparison[] = [ComparisonSchema.parse(seed)];

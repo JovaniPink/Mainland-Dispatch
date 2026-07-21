@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { readerMachine } from "@/machines/reader-machine";
 import { filterDispatches, sortByCuratedDesc } from "@/lib/filters";
-import { dispatches } from "@/content/dispatches";
+import { publishedDispatches } from "@/content/dispatches";
 import { verticals, kindLabels } from "@/content/site";
 import type { DispatchKind, Vertical } from "@/content/schema";
 import { cn } from "@/lib/utils";
@@ -40,22 +40,33 @@ function Chip({
 export function Stream() {
   const [state, send] = useMachine(readerMachine);
   const [lastEvent, setLastEvent] = useState<string | null>(null);
-  const historyRef = useRef<string[]>([]);
+  const [history, setHistory] = useState<string[]>([]);
+  const pendingEvent = useRef<string | null>(null);
 
   function dispatch(event: Parameters<typeof send>[0]) {
     send(event);
     setLastEvent(event.type);
-    historyRef.current.push(`${event.type} → ${JSON.stringify(state.value)}`);
+    pendingEvent.current = event.type;
   }
 
   const { vertical, kind, query } = state.context;
+
+  useEffect(() => {
+    if (!pendingEvent.current) return;
+    const event = pendingEvent.current;
+    pendingEvent.current = null;
+    setHistory((items) => [
+      ...items.slice(-7),
+      `${event} → ${JSON.stringify(state.value)}`,
+    ]);
+  }, [state.value, vertical, kind, query]);
   const visible = sortByCuratedDesc(
-    filterDispatches(dispatches, { vertical, kind, query })
+    filterDispatches(publishedDispatches, { vertical, kind, query })
   );
 
   return (
     <section className="px-4 sm:px-6">
-      <div className="chip-row -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+      <div className="chip-row scroll-affordance -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
         <div className="flex gap-2 border-y border-rule py-3">
           <Chip
             label="All"
@@ -105,13 +116,19 @@ export function Stream() {
           className="w-full max-w-xs border border-rule bg-paper px-3 py-1.5 font-mono text-xs tracking-wide placeholder:text-ink-muted focus:border-jade focus:outline-none"
         />
         <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
-          {visible.length} / {dispatches.length}
+          {visible.length} / {publishedDispatches.length}
         </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {visible.map((d) => (
-          <DispatchCard key={d.id} dispatch={d} />
+        {visible.map((d, index) => (
+          <DispatchCard
+            key={d.id}
+            dispatch={d}
+            featured={
+              index === 0 && vertical === "all" && kind === "all" && !query
+            }
+          />
         ))}
       </div>
       {visible.length === 0 && (
@@ -129,9 +146,9 @@ export function Stream() {
           "FILTER_KIND",
           "SEARCH",
           "CLEAR_SEARCH",
-          "FOCUS",
+          "RESET_FILTERS",
         ]}
-        history={historyRef.current}
+        history={history}
       />
     </section>
   );

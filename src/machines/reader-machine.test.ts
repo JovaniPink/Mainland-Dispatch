@@ -26,15 +26,15 @@ describe("readerMachine", () => {
     });
   });
 
-  it("tracks focus modes and clears on BACK", () => {
+  it("resets search and filters in one event", () => {
     const actor = createActor(readerMachine).start();
-    actor.send({ type: "FOCUS", slug: "some-dispatch" });
-    expect(actor.getSnapshot().value).toEqual({ focused: "reading" });
-    actor.send({ type: "COMPARE" });
-    expect(actor.getSnapshot().value).toEqual({ focused: "comparing" });
-    actor.send({ type: "TRACE" });
-    expect(actor.getSnapshot().value).toEqual({ focused: "tracing" });
-    actor.send({ type: "BACK" });
-    expect(actor.getSnapshot().context.focusedSlug).toBeNull();
+    actor.send({ type: "FILTER_VERTICAL", vertical: "culture" });
+    actor.send({ type: "SEARCH", query: "film" });
+    actor.send({ type: "RESET_FILTERS" });
+    expect(actor.getSnapshot().context).toEqual({
+      vertical: "all",
+      kind: "all",
+      query: "",
+    });
   });
 });

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useMachine } from "@xstate/react";
 import type { Comparison } from "@/content/schema";
 import { formatDate } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { compareMachine } from "@/machines/explorer-machines";
+import { StateLab } from "@/components/state-lab/state-lab";
 
 const roleLabels: Record<string, string> = {
   mainland: "Mainland source",
@@ -47,15 +49,19 @@ function SourceColumn({ source }: { source: Comparison["sources"][number] }) {
 
 /** Side-by-side on desktop; stacked behind source tabs on mobile. */
 export function CompareColumns({ comparison }: { comparison: Comparison }) {
-  const [activeTab, setActiveTab] = useState(0);
+  const [state, send] = useMachine(compareMachine, {
+    input: { sourceCount: comparison.sources.length },
+  });
+  const activeTab = state.context.selectedIndex;
 
   return (
     <div>
-      <div className="chip-row flex gap-2 overflow-x-auto md:hidden">
+      <div className="chip-row scroll-affordance flex gap-2 overflow-x-auto pb-1 md:hidden">
         {comparison.sources.map((s, i) => (
           <button
             key={s.role}
-            onClick={() => setActiveTab(i)}
+            onClick={() => send({ type: "SELECT_SOURCE", index: i })}
+            aria-pressed={activeTab === i}
             className={cn(
               "whitespace-nowrap border px-3 py-1 font-mono text-xs uppercase tracking-widest",
               activeTab === i
@@ -75,6 +81,12 @@ export function CompareColumns({ comparison }: { comparison: Comparison }) {
           <SourceColumn key={s.role} source={s} />
         ))}
       </div>
+      <StateLab
+        title="Compare source selector"
+        state={state.value}
+        lastEvent={null}
+        nextEvents={["SELECT_SOURCE"]}
+      />
     </div>
   );
 }

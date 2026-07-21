@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { dispatches } from "@/content/dispatches";
 import { formatDate } from "@/content/site";
 import type { EditorialStatus } from "@/content/schema";
@@ -22,13 +21,19 @@ const stages: { id: EditorialStatus; label: string }[] = [
 
 /** ADP-style queue/detail split: the selected entry opens its evidence beside the queue. */
 export function ReviewQueue() {
-  const [selectedId, setSelectedId] = useState<string | null>(
-    dispatches.find((d) => d.editorialStatus !== "published")?.id ?? null
+  const queue = dispatches.filter(
+    (dispatch) =>
+      dispatch.editorialStatus !== "published" &&
+      dispatch.editorialStatus !== "corrected" &&
+      dispatch.editorialStatus !== "archived"
   );
-  const selected = dispatches.find((d) => d.id === selectedId) ?? null;
+  const [selectedId, setSelectedId] = useState<string | null>(
+    queue[0]?.id ?? null
+  );
+  const selected = queue.find((d) => d.id === selectedId) ?? null;
 
   const activeStages = stages.filter((s) =>
-    dispatches.some((d) => d.editorialStatus === s.id)
+    queue.some((d) => d.editorialStatus === s.id)
   );
 
   return (
@@ -39,9 +44,7 @@ export function ReviewQueue() {
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">
           {activeStages.map((stage) => {
-            const items = dispatches.filter(
-              (d) => d.editorialStatus === stage.id
-            );
+            const items = queue.filter((d) => d.editorialStatus === stage.id);
             return (
               <div key={stage.id}>
                 <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
@@ -115,12 +118,10 @@ export function ReviewQueue() {
                   {selected.commentary}
                 </p>
               </div>
-              <Link
-                href={`/dispatch/${selected.slug}`}
-                className="inline-block border border-rule px-3 py-1 font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-signal"
-              >
-                Preview presentation →
-              </Link>
+              <p className="border-l-2 border-jade pl-3 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+                Public route remains closed until this entry reaches Published
+                or Corrected.
+              </p>
             </div>
           ) : (
             <p className="font-serif italic text-ink-muted">

@@ -20,17 +20,17 @@ const seed = {
   primaryDocuments: [
     {
       label: "BIS interim final rule (July 2026)",
-      url: "https://www.federalregister.gov/bis-interim-rule-2026",
+      url: "https://example.com/prototype/export-control-rule",
       date: "2026-07-15",
     },
     {
       label: "MOFCOM response statement",
-      url: "https://www.mofcom.gov.cn/statement-2026-07",
+      url: "https://example.com/prototype/commerce-statement",
       date: "2026-07-16",
     },
     {
       label: "October 2022 foundational rule",
-      url: "https://www.federalregister.gov/2022-october-rule",
+      url: "https://example.com/prototype/foundational-rule",
       date: "2022-10-07",
     },
   ],
@@ -68,6 +68,7 @@ const seed = {
   ],
   traceSlug: "export-controls",
   dispatchIds: ["d-002", "d-003", "d-007", "d-011", "d-012"],
+  provenance: "prototype",
 };
 
 export const dossiers: Dossier[] = [DossierSchema.parse(seed)];

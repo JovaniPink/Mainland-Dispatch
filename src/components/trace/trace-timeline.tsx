@@ -1,19 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useMachine } from "@xstate/react";
 import Link from "next/link";
 import type { Trace } from "@/content/schema";
 import { getDispatchById } from "@/content/dispatches";
 import { phaseLabels } from "@/content/traces";
 import { formatDate } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { traceMachine } from "@/machines/explorer-machines";
+import { StateLab } from "@/components/state-lab/state-lab";
 
 /**
  * Chronological story record with a clickable entry list and a
  * "critical moments" sidebar (the chess-lab review-panel pattern).
  */
 export function TraceTimeline({ trace }: { trace: Trace }) {
-  const [selectedId, setSelectedId] = useState(trace.entries[0]?.id ?? "");
+  const [state, send] = useMachine(traceMachine, {
+    input: {
+      initialId: trace.entries[0]?.id ?? "",
+      entryIds: trace.entries.map((entry) => entry.id),
+    },
+  });
+  const selectedId = state.context.selectedId;
   const critical = trace.entries.filter((e) => e.critical);
 
   return (
@@ -40,7 +48,8 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
                 )}
               />
               <button
-                onClick={() => setSelectedId(entry.id)}
+                onClick={() => send({ type: "SELECT_ENTRY", id: entry.id })}
+                aria-expanded={selected}
                 className="block w-full text-left"
               >
                 <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
@@ -94,7 +103,7 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
             <li key={entry.id}>
               <button
                 onClick={() => {
-                  setSelectedId(entry.id);
+                  send({ type: "SELECT_ENTRY", id: entry.id });
                   document
                     .getElementById(entry.id)
                     ?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -112,6 +121,14 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
           ))}
         </ul>
       </aside>
+      <div className="lg:col-span-2">
+        <StateLab
+          title="Trace selector"
+          state={state.value}
+          lastEvent={null}
+          nextEvents={["SELECT_ENTRY"]}
+        />
+      </div>
     </div>
   );
 }

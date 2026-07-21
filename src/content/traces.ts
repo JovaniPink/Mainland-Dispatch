@@ -17,7 +17,7 @@ const seed = {
       detail:
         "The 212-page rule adds 14 firms to the Entity List and tightens license review for sub-14nm logic facilities to a presumption of denial.",
       sourceLabel: "Federal Register",
-      sourceUrl: "https://www.federalregister.gov/bis-interim-rule-2026",
+      sourceUrl: "https://example.com/prototype/export-control-rule",
       critical: true,
       dispatchId: "d-007",
     },
@@ -29,7 +29,7 @@ const seed = {
       detail:
         "Reuters leads with the headline count of fourteen firms; three are subsidiaries of already-listed companies, indicating enforcement tightening more than new scope.",
       sourceLabel: "Reuters",
-      sourceUrl: "https://www.reuters.com/technology/bis-entity-list-july",
+      sourceUrl: "https://example.com/prototype/entity-list-analysis",
       critical: false,
       dispatchId: "d-002",
     },
@@ -41,7 +41,7 @@ const seed = {
       detail:
         "The statement revives 'development interests' language absent since 2024 — a measurably wider claim than the standard 'legitimate rights' formulation.",
       sourceLabel: "MOFCOM",
-      sourceUrl: "https://www.mofcom.gov.cn/statement-2026-07",
+      sourceUrl: "https://example.com/prototype/commerce-statement",
       critical: true,
       dispatchId: "d-003",
     },
@@ -63,7 +63,7 @@ const seed = {
       detail:
         "Capex guidance implies domestic lithography tools are running at materially lower yield: substitution is happening, at a real and quantifiable cost.",
       sourceLabel: "Asianometry",
-      sourceUrl: "https://www.youtube.com/watch?v=smic-analysis",
+      sourceUrl: "https://example.com/prototype/fab-analysis-video",
       critical: true,
       dispatchId: "d-011",
     },
@@ -78,6 +78,7 @@ const seed = {
       dispatchId: "d-012",
     },
   ],
+  provenance: "prototype",
 };
 
 export const traces: Trace[] = [TraceSchema.parse(seed)];

@@ -1,12 +1,12 @@
 "use client";
 
 import { useSaved } from "@/lib/saved";
-import { dispatches } from "@/content/dispatches";
+import { publishedDispatches } from "@/content/dispatches";
 import { DispatchCard } from "@/components/dispatch/dispatch-card";
 
 export default function SavedPage() {
   const { saved } = useSaved();
-  const items = dispatches.filter((d) => saved.includes(d.id));
+  const items = publishedDispatches.filter((d) => saved.includes(d.id));
 
   return (
     <div className="px-4 py-10 sm:px-6">

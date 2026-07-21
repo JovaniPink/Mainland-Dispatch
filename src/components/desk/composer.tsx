@@ -66,30 +66,36 @@ function slugify(title: string): string {
     .slice(0, 60);
 }
 
-const today = new Date().toISOString().slice(0, 10);
+function today(): string {
+  return new Date().toISOString().slice(0, 10);
+}
 
-const emptyForm = {
-  kind: "article",
-  title: "",
-  summary: "",
-  commentary: "",
-  whyItMatters: "",
-  source: "",
-  sourceUrl: "",
-  sourceDate: today,
-  language: "en",
-  translationStatus: "original-english",
-  vertical: "bilateral",
-  tags: "",
-  extras: {} as Record<string, string>,
-};
+function createEmptyForm() {
+  return {
+    kind: "article",
+    title: "",
+    summary: "",
+    commentary: "",
+    whyItMatters: "",
+    source: "",
+    sourceUrl: "",
+    sourceDate: today(),
+    language: "en",
+    translationStatus: "original-english",
+    vertical: "bilateral",
+    tags: "",
+    extras: {} as Record<string, string>,
+  };
+}
+
+type ComposerForm = ReturnType<typeof createEmptyForm>;
 
 export function Composer() {
   const [state, send] = useMachine(intakeMachine);
   const [lastEvent, setLastEvent] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
   const [url, setUrl] = useState("");
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<ComposerForm>(createEmptyForm);
 
   function dispatch(event: Parameters<typeof send>[0]) {
     send(event);
@@ -97,7 +103,7 @@ export function Composer() {
     setHistory((h) => [...h, event.type]);
   }
 
-  function buildDraft(f: typeof form): Record<string, unknown> {
+  function buildDraft(f: ComposerForm): Record<string, unknown> {
     const extras: Record<string, unknown> = {};
     for (const field of kindExtras[f.kind] ?? []) {
       const raw = f.extras[field.name] ?? "";
@@ -115,8 +121,8 @@ export function Composer() {
       source: f.source,
       sourceUrl: f.sourceUrl,
       sourceDate: f.sourceDate,
-      curatedAt: today,
-      updatedAt: today,
+      curatedAt: today(),
+      updatedAt: today(),
       language: f.language,
       translationStatus: f.translationStatus,
       verticals: [f.vertical],
@@ -129,11 +135,12 @@ export function Composer() {
       places: [],
       relatedDispatchIds: [],
       editorialStatus: "draft",
+      provenance: "prototype",
       ...extras,
     };
   }
 
-  function update(patch: Partial<typeof form>) {
+  function update(patch: Partial<ComposerForm>) {
     const next = { ...form, ...patch };
     setForm(next);
     dispatch({ type: "EDIT", draft: buildDraft(next) });
@@ -143,7 +150,7 @@ export function Composer() {
     dispatch({ type: "SUBMIT_URL", url });
     const looksLikeUrl = /^https?:\/\//.test(url);
     if (looksLikeUrl) {
-      const next = { ...emptyForm, sourceUrl: url };
+      const next = { ...createEmptyForm(), sourceUrl: url };
       setForm(next);
       dispatch({ type: "RESOLVED", draft: buildDraft(next) });
     } else {
@@ -182,14 +189,14 @@ export function Composer() {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste a source URL…"
+            placeholder="Paste a source URL to begin…"
             className={inputCls}
           />
           <button
             onClick={submitUrl}
             className="shrink-0 border border-ink bg-ink px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
           >
-            Resolve
+            Start capture
           </button>
         </div>
       )}
@@ -381,7 +388,7 @@ export function Composer() {
           </pre>
           <button
             onClick={() => {
-              setForm(emptyForm);
+              setForm(createEmptyForm());
               setUrl("");
               dispatch({ type: "RESET" });
             }}

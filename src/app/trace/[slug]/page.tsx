@@ -1,10 +1,23 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { traces, getTrace } from "@/content/traces";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import { TraceTimeline } from "@/components/trace/trace-timeline";
 
 export function generateStaticParams() {
   return traces.map((t) => ({ slug: t.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const trace = getTrace(slug);
+  return trace
+    ? { title: trace.title, description: trace.intro }
+    : { title: "Trace not found" };
 }
 
 export default async function TracePage({

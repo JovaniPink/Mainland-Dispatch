@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { dispatches, countsByVertical } from "@/content/dispatches";
+import { publishedDispatches, countsByVertical } from "@/content/dispatches";
 import { verticals } from "@/content/site";
 import { Stream } from "@/components/dispatch/stream";
 
 export default function HomePage() {
-  const lead = dispatches.find((d) => d.kind === "original") ?? dispatches[0];
+  const lead =
+    publishedDispatches.find((d) => d.kind === "original") ??
+    publishedDispatches[0];
   const counts = countsByVertical();
 
   if (!lead) {

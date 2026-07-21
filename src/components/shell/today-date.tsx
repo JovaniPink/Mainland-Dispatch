@@ -1,27 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+function formatToday(): string {
+  return new Date()
+    .toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    .toUpperCase();
+}
 
-/**
- * The masthead date must reflect the reader's day, not the build day, so it
- * renders client-side after mount (statically prerendered pages would
- * otherwise freeze new Date() at build time).
- */
+/** Re-evaluates in the browser; suppression covers a midnight hydration edge. */
 export function TodayDate() {
-  const [label, setLabel] = useState<string | null>(null);
-
-  useEffect(() => {
-    setLabel(
-      new Date()
-        .toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        })
-        .toUpperCase()
-    );
-  }, []);
-
-  if (!label) return null;
-  return <>{label} · </>;
+  return (
+    <time
+      dateTime={new Date().toISOString().slice(0, 10)}
+      suppressHydrationWarning
+    >
+      {formatToday()} ·{" "}
+    </time>
+  );
 }

@@ -24,6 +24,7 @@ const validDraft = {
   places: [],
   relatedDispatchIds: [],
   editorialStatus: "draft",
+  provenance: "prototype",
 };
 
 describe("intakeMachine", () => {

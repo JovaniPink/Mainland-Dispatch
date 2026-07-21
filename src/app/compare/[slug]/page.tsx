@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { comparisons, getComparison } from "@/content/comparisons";
 import { getDispatchById } from "@/content/dispatches";
@@ -6,6 +7,18 @@ import { CompareColumns } from "@/components/compare/compare-columns";
 
 export function generateStaticParams() {
   return comparisons.map((c) => ({ slug: c.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const comparison = getComparison(slug);
+  return comparison
+    ? { title: comparison.title, description: comparison.intro }
+    : { title: "Comparison not found" };
 }
 
 export default async function ComparePage({

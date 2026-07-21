@@ -1,83 +1,110 @@
 # Mainland Dispatch
 
-A curated publication on China and the US–China relationship. Every source
-gets context; every conclusion shows its evidence; every developing story
-preserves its history.
+An editorial product prototype for context-rich coverage of China and the
+US–China relationship. The governing principle is simple: every source gets
+context, every conclusion shows its evidence, and every developing story keeps
+its history.
 
-## Design: The Correspondent's Notebook
+> **Prototype content notice:** all current headlines, dates, quotations,
+> bylines, figures, and links are fictionalized interface samples. They are
+> visibly labeled in the application and must not be represented as reporting.
 
-Mineral-paper background, editorial ink, vermilion annotation marks, muted
-jade metadata, and a double ruled margin on large screens. Typography is
-Newsreader (display and commentary), Geist (interface), and IBM Plex Mono
-(dates, locations, languages, source labels). Two reading environments:
-**Paper** and **Night**, toggled from the masthead and persisted in
-localStorage.
+## Design direction
 
-## Interaction model
+“The Correspondent’s Notebook” combines a mineral-paper field notebook with a
+disciplined source archive. It uses near-black editorial ink, vermilion
+annotations, jade metadata, a double ruled margin, restrained motion, and Paper
+and Night reading environments. System serif/sans/mono stacks keep builds
+network-independent.
 
-- **Read** — the editorial presentation: source headline, commentary,
-  "Why it matters", tags and entities, published vs curated dates.
-- **Compare** (`/compare/[slug]`) — mainland source, US source, and primary
-  document side by side, with shared facts, differing emphasis, and
-  editorial notes. No bias scores; framing differences are exposed for
-  inspection. Stacked with source tabs on mobile.
-- **Trace** (`/trace/[slug]`) — a chronological record of a developing
-  story with a clickable timeline and a critical-moments sidebar, ending in
-  a current editorial assessment with an explicit evidence status.
-- **Desk** (`/desk`) — the private editorial mode: a link-intake composer
-  validated live against the Zod schema, and a review queue with a
-  selected-item evidence panel.
+The stream is deliberately not a wall of identical cards. Video, audio,
+documents, data, galleries, social captures, articles, and original notes have
+distinct visual signatures, while the first item receives a wider editorial
+treatment. The pattern borrows chapter rhythm from `christinepink`, structured
+link metadata from `jovanipinkv2`, selectable moments from `chess-lab`, and
+claim-safety posture from `handoff-navigator`.
+
+## Reader experiences
+
+- **Read** — source metadata, commentary, “Why it matters,” entities, tags, and
+  separate source/curation dates.
+- **Compare** — mainland, US, and primary-document framing with shared facts,
+  differing emphasis, and no synthetic bias score. Mobile uses state-driven
+  source tabs.
+- **Trace** — a selectable chronology with critical moments and an explicit
+  evidence status for the current assessment.
+- **Dossiers** — claims separated into reported, announced, implemented,
+  independently observed, contested, superseded, and corrected.
+- **Saved** — a browser-local reading collection implemented as an external
+  store, so all Save controls stay synchronized.
+- **Desk** — a local editorial sandbox with link intake, live Zod feedback, and
+  an evidence-focused review queue. It is absent from public navigation and
+  returns 404 in production unless `ENABLE_EDITORIAL_DESK=1` is explicitly set
+  at build time. It is not an authenticated CMS.
+
+## Publication and evidence boundaries
+
+- Only `published` and `corrected` dispatches can enter public streams, static
+  route generation, related links, saved reading, Compare, Trace, or Dossiers.
+- Review-stage records remain available to the local Desk but do not resolve on
+  public dispatch routes.
+- Every record declares `provenance: "verified" | "prototype"`; prototype
+  records display a global and per-record warning and use non-live example URLs.
+- `src/content/catalog.ts` validates the complete graph at import time: schema
+  variants, real calendar dates, route-safe slugs, unique IDs/slugs, date order,
+  chronological trace entries, and every dispatch/trace/dossier relation.
 
 ## Architecture
 
-- **Next.js 15** (App Router) + **Tailwind CSS v4** + **TypeScript**.
-- **Content model** (`src/content/schema.ts`): a Zod discriminated union
-  over dispatch kinds (`article`, `video`, `audio`, `document`, `social`,
-  `gallery`, `data`, `original`), with media-specific fields living only on
-  the relevant variant. Seeds in `src/content/*.ts` are parsed through the
-  schema at import time, so invalid content fails the build.
-- **XState v5 machines** (`src/machines/`): a reader machine
-  (browsing → filtering / focused / searching), a media actor
-  (poster → consented → loading → playing / unavailable), and a link-intake
-  machine (resolving → validating → duplicateCheck → editing → saved).
-- **State Lab**: in development mode, collapsible inspectors under the
-  stream, media facades, and composer show current state, last event,
-  available events, transition history, and live Zod results.
-- **Media facades**: privacy-conscious click-to-load — poster, publisher,
-  duration, language, and an external-source label are shown, and the
-  third-party iframe is created only after the reader presses play.
-- **Dossiers** (`/dossiers/[slug]`): long-running subjects with claims
-  labeled `reported / officially announced / implemented / independently
-  observed / contested / superseded / corrected`, primary documents,
-  unresolved questions, and a last-reviewed date.
-- **Saved reading** (`/saved`): a localStorage bookmark collection.
+- Next.js 16.2, React 19, Tailwind CSS 4, TypeScript 6, XState 5, and Zod 4.
+- Zod discriminated union for `article`, `video`, `audio`, `document`, `social`,
+  `gallery`, `data`, and `original` dispatches.
+- XState owns real interaction state:
+  - stream filtering/search;
+  - Compare source selection;
+  - Trace entry selection;
+  - media poster → loading → playing/unavailable/retry;
+  - Desk intake → validation → duplicate check → editing → saved JSON.
+- Media embeds are consent-gated. A verified external video creates its iframe
+  only after consent and reports readiness through iframe load/error events.
+  Prototype media exercises the same machine without contacting a third party.
+- Development-only State Lab panels expose current state, recent events,
+  available events, and Zod results.
+- Metadata includes route titles/descriptions, Open Graph artwork, manifest,
+  `robots.txt`, and a public-only sitemap.
 
 ## Development
 
+Requires Node 22.15 or newer.
+
 ```bash
-npm install
-npm run dev    # development, with State Lab inspectors
-npm run build  # validates all seed content through the Zod schemas
-npm run start
+npm ci
+npm run dev
 ```
 
-Content lives in `src/content/`. To add a dispatch, use the Desk composer
-to produce validated JSON, then paste it into `src/content/dispatches.ts`.
+The complete quality gate is:
 
-Quality tooling: `npm run typecheck` (strict tsc), `npm test` (Jest +
-Testing Library), `npm run format` (Prettier). Husky runs lint-staged on
-commit and typecheck on push.
+```bash
+npm run test-all
+```
 
-## Standards notes (documented deviations)
+It runs formatting, ESLint, strict TypeScript, Jest/Testing Library coverage,
+and a production build. The same gate runs in GitHub Actions. Individual
+commands are also available as `npm run format:check`, `npm run lint`,
+`npm run typecheck`, `npm test`, and `npm run build`.
 
-Checked against the workspace Next.js SOP and the Cross-App Analytics SOP;
-deviations are recorded here per the analytics SOP §2 exception rule:
+Current regression coverage includes catalog integrity, publication boundaries,
+reader/media/explorer/intake machines, consent-gated prototype media, saved
+reading, stream filtering, and exclusion of review-stage content.
 
-- **Next.js 16**: currently on 15.5; the upgrade is deferred to its own PR
-  so framework churn stays isolated from feature review.
-- **react-hook-form**: the Desk composer is XState-driven with live Zod
-  validation; RHF will be revisited when real persistence lands.
-- **Analytics stack** (GTM, GA4, Consent Mode, BigQuery export, Search
-  Console/IndexNow, Clarity): launch-time infrastructure for deployed
-  properties. This prototype is not deployed; no placeholder tag IDs are
-  committed. Wire these up at launch following the SOP naming standard.
+## Content workflow
+
+Content lives in `src/content/`. The local Desk can assemble and validate a
+draft, then emit JSON for review. That JSON is not persisted automatically; a
+real authenticated write path and source-verification workflow are separate
+product decisions.
+
+Before changing a record from `prototype` to `verified`, replace every sample
+claim, URL, media identifier, and attribution with reviewed source material,
+verify translations and archival captures, and move the record through the
+editorial state machine.

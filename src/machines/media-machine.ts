@@ -7,6 +7,7 @@ export const mediaMachine = setup({
       | { type: "CONSENT" }
       | { type: "LOADED" }
       | { type: "ERROR" }
+      | { type: "RETRY" }
       | { type: "RESET" },
   },
 }).createMachine({
@@ -14,10 +15,7 @@ export const mediaMachine = setup({
   initial: "poster",
   states: {
     poster: {
-      on: { CONSENT: "consented" },
-    },
-    consented: {
-      always: "loading",
+      on: { CONSENT: "loading" },
     },
     loading: {
       on: { LOADED: "playing", ERROR: "unavailable" },
@@ -26,7 +24,7 @@ export const mediaMachine = setup({
       on: { RESET: "poster" },
     },
     unavailable: {
-      on: { RESET: "poster" },
+      on: { RETRY: "loading", RESET: "poster" },
     },
   },
 });
