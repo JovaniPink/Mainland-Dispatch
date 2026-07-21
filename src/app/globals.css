@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ── The Correspondent's Notebook palette ─────────────────────────── */
+
+:root {
+  --paper: #f3f0e8;
+  --paper-warm: #ebe5d8;
+  --ink: #191b18;
+  --ink-muted: #62655f;
+  --rule: #d6d0c4;
+  --signal: #bd382d;
+  --signal-soft: #f2d9d4;
+  --jade: #486e64;
+  --jade-soft: #dbe6e1;
+  --night: #17201d;
+}
+
+[data-theme="night"] {
+  --paper: #17201d;
+  --paper-warm: #1e2925;
+  --ink: #e9e6db;
+  --ink-muted: #96a09a;
+  --rule: #33403a;
+  --signal: #d4574b;
+  --signal-soft: #45241f;
+  --jade: #7fa899;
+  --jade-soft: #24332d;
+  --night: #f3f0e8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-warm: var(--paper-warm);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-jade: var(--jade);
+  --color-jade-soft: var(--jade-soft);
+  --color-night: var(--night);
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Double ruled notebook margin, large screens only */
+@media (min-width: 64rem) {
+  .notebook-margin {
+    background-image: linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(4.5rem - 1px),
+      var(--signal) calc(4.5rem - 1px),
+      var(--signal) 4.5rem,
+      transparent 4.5rem,
+      transparent calc(4.875rem - 1px),
+      var(--signal) calc(4.875rem - 1px),
+      var(--signal) 4.875rem,
+      transparent 4.875rem
+    );
+  }
+}
+
+/* Hand-drawn underline, reserved for key editorial conclusions */
+.editorial-underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6' preserveAspectRatio='none'%3E%3Cpath d='M2 4.5 C 25 2.5, 48 3.5, 70 3 S 108 2, 118 3.5' fill='none' stroke='%23bd382d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 0.375em;
+  background-position: 0 100%;
+  padding-bottom: 0.375em;
+}
+
+/* Restrained entrance: notes rising into place */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 400ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+  }
+  body {
+    transition: none;
+  }
+}
+
+/* Horizontally scrolling chip rows on mobile */
+.chip-row {
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar {
+  display: none;
+}
