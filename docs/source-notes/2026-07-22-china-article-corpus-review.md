@@ -2,7 +2,7 @@
 
 **Audit date:** 2026-07-22 (America/New_York)
 **Collection:** `china-article-corpus-2026-07`
-**Candidate count:** 88 external canonical URLs
+**Candidate count:** 88 supplied external article URLs
 **Public Dispatches created from this collection:** 0
 
 ## Boundary and decision rule
@@ -15,7 +15,7 @@ Every candidate is currently `withheld`. This is a deliberate fail-closed result
 
 Access labels describe the 2026-07-22 review attempt:
 
-- `reachable`: the canonical endpoint resolved, but evidence review remains incomplete;
+- `reachable`: the candidate endpoint resolved, but evidence review remains incomplete;
 - `paywalled`: full canonical text requires authorized subscriber access;
 - `restricted`: the publisher endpoint blocked or did not expose reviewable full text;
 - `unstable`: the endpoint or repost is not durable enough to serve as canonical evidence;
@@ -23,7 +23,7 @@ Access labels describe the 2026-07-22 review attempt:
 
 ## Candidate ledger
 
-| # | Canonical candidate | Publisher | Access | Disposition | Dispatch | Exact stopping point |
+| # | Article candidate | Publisher | Access | Disposition | Dispatch | Exact stopping point |
 | -: | --- | --- | --- | --- | --- | --- |
 | 1 | [China’s Economy Slows Sharply](https://www.nytimes.com/2018/12/14/business/china-economy-xi-jinping.html) | The New York Times | paywalled | withheld | — | Full canonical text is paywalled; review stops before source-read until authorized full-text review and corroboration are complete. |
 | 2 | [Leaked Transcript Contradicts Google’s Official Story on China](https://theintercept.com/2018/10/09/google-china-censored-search-engine/) | The Intercept | reachable | withheld | — | The canonical URL resolves, but full-text and supporting-evidence review is incomplete; review stops before source-read. |

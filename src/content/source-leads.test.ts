@@ -1,8 +1,8 @@
 import { sourceLeads, SourceLeadCatalogSchema } from "./source-leads";
 
 describe("editorial article-candidate catalog", () => {
-  it("holds a chronological canonical-source inbox", () => {
-    expect(sourceLeads).toHaveLength(165);
+  it("holds a chronological article-source inbox", () => {
+    expect(sourceLeads).toHaveLength(195);
     const datedYears = sourceLeads
       .map((lead) =>
         String(lead.publicationYear ?? lead.publishedAt?.slice(0, 4))
@@ -11,6 +11,23 @@ describe("editorial article-candidate catalog", () => {
     expect(datedYears[0]).toBe("2006");
     expect(datedYears.at(-1)).toBe("2026");
     expect(datedYears).not.toContain("undefined");
+  });
+
+  it("accounts for the fourth 30-article batch without publishing it", () => {
+    const corpus = sourceLeads.filter(
+      (lead) => lead.collectionId === "china-article-corpus-2026-07-04"
+    );
+
+    expect(corpus).toHaveLength(30);
+    expect(
+      corpus.filter((lead) => lead.disposition === "withheld")
+    ).toHaveLength(28);
+    expect(
+      corpus.filter((lead) => lead.disposition === "rejected")
+    ).toHaveLength(2);
+    expect(
+      corpus.every((lead) => Boolean(lead.decisionReason) && !lead.dispatchId)
+    ).toBe(true);
   });
 
   it("accounts for exactly 88 external article candidates", () => {
@@ -59,6 +76,17 @@ describe("editorial article-candidate catalog", () => {
           id: "lead-invalid-withheld",
           disposition: "withheld",
           decisionReason: undefined,
+        },
+      ]).success
+    ).toBe(false);
+    expect(
+      SourceLeadCatalogSchema.safeParse([
+        {
+          ...sourceLeads[0],
+          id: "lead-invalid-canonical-check",
+          url: "https://www.loc.gov/",
+          urlStatus: "publisher-canonical",
+          canonicalCheckedAt: undefined,
         },
       ]).success
     ).toBe(false);

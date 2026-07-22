@@ -70,13 +70,14 @@ export function SourceLeadInbox() {
             Article candidates · chronological inbox
           </p>
           <p className="mt-2 max-w-2xl font-serif text-sm leading-relaxed text-ink-muted">
-            {sourceLeads.length} canonical-source candidates. Every article
-            remains outside the public archive until its full text, evidence,
-            limitations, and Dispatch linkage pass review.
+            {sourceLeads.length} article-source candidates. A supplied URL is
+            not treated as publisher-canonical until that status is checked.
+            Every article remains outside the public archive until its full
+            text, evidence, limitations, and Dispatch linkage pass review.
           </p>
         </div>
         <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
-          Canonical articles · fail closed
+          Candidate URLs · fail closed
         </p>
       </div>
 
@@ -187,7 +188,7 @@ export function SourceLeadInbox() {
                         "Date pending"}{" "}
                       · {lead.publisher} · {lead.contentType} ·{" "}
                       {lead.reviewState} · {lead.disposition} ·{" "}
-                      {lead.accessStatus}
+                      {lead.accessStatus} · {lead.urlStatus}
                     </p>
                     <p className="mt-2 text-xs leading-relaxed text-ink-muted">
                       {lead.notes}

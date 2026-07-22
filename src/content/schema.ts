@@ -231,6 +231,20 @@ export const SourceLeadSchema = z.object({
   accessStatus: z
     .enum(["reachable", "paywalled", "restricted", "unavailable", "unstable"])
     .default("reachable"),
+  urlStatus: z
+    .enum(["supplied", "redirect-resolved", "publisher-canonical"])
+    .default("supplied"),
+  canonicalCheckedAt: isoDate.optional(),
+  byline: nonEmpty.optional(),
+  language: nonEmpty.optional(),
+  translationStatus: z
+    .enum([
+      "original-language",
+      "original-english",
+      "publisher-translation",
+      "independent-translation",
+    ])
+    .optional(),
   reviewedAt: isoDate.optional(),
   decisionReason: nonEmpty.optional(),
   dispatchId: nonEmpty

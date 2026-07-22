@@ -137,8 +137,9 @@ read the canonical source, separate reported fact from editorial commentary,
 record date/language/attribution limitations, verify every public relationship,
 and fail closed when a promised artifact or independent check has not arrived.
 Research prompts remain private and cannot support public claims. The tracked
-catalog retains only canonical articles, reviewed supporting records, explicit
-claim statuses, and limitations.
+catalog distinguishes supplied article URLs from publisher-verified canonical
+URLs and retains reviewed supporting records, explicit claim statuses, and
+limitations.
 
 Topic-specific intake logs record source quality, exclusions, open checks, and
 the exact research stopping point. The current Chinese open-model package is
@@ -161,3 +162,6 @@ in
 The three supplied general-China article batches are consolidated into one
 88-candidate access and disposition audit in
 [`docs/source-notes/2026-07-22-china-article-corpus-review.md`](docs/source-notes/2026-07-22-china-article-corpus-review.md).
+The fourth 30-candidate batch, including redirect corrections, two rejections,
+and article-specific review blockers, is recorded in
+[`docs/source-notes/2026-07-22-china-article-corpus-batch-04-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-04-review.md).

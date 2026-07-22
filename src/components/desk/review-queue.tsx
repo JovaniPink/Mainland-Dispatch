@@ -201,7 +201,8 @@ export function ReviewQueue() {
                   <li>Editorial status is {selected.editorialStatus}.</li>
                   <li>
                     Lead review is {selectedLead?.reviewState ?? "missing"};
-                    disposition is {selectedLead?.disposition ?? "missing"}.
+                    disposition is {selectedLead?.disposition ?? "missing"}; URL
+                    status is {selectedLead?.urlStatus ?? "missing"}.
                   </li>
                   {selectedLead?.decisionReason && (
                     <li>{selectedLead.decisionReason}</li>

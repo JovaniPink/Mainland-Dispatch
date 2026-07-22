@@ -3,6 +3,7 @@ import { SourceLeadSchema } from "./schema";
 import { chinaArticleIntake01 } from "./source-lead-batches/china-article-intake-01";
 import { chinaArticleIntake02 } from "./source-lead-batches/china-article-intake-02";
 import { chinaArticleIntake03 } from "./source-lead-batches/china-article-intake-03";
+import { chinaArticleIntake04 } from "./source-lead-batches/china-article-intake-04";
 import { existingDispatchCanonicalSources } from "./source-lead-batches/existing-dispatch-canonical-sources";
 
 const draftedDispatchByLeadId = new Map<string, string>([
@@ -49,6 +50,7 @@ const leads = [
   ...chinaArticleIntake01,
   ...chinaArticleIntake02,
   ...chinaArticleIntake03,
+  ...chinaArticleIntake04,
   ...existingDispatchCanonicalSources,
   {
     id: "lead-2006-science-plan",
@@ -1140,6 +1142,12 @@ export const SourceLeadCatalogSchema = z
           message: `${item.id} has a next review before access`,
         });
       }
+      if (item.urlStatus !== "supplied" && !item.canonicalCheckedAt) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${item.id} needs a canonical URL check date`,
+        });
+      }
       if (
         ["source-read", "evidence-reviewed"].includes(item.reviewState) &&
         !item.reviewedAt
@@ -1188,6 +1196,7 @@ export const SourceLeadCatalogSchema = z
 export const sourceLeads = SourceLeadCatalogSchema.parse(
   leads.map((lead) => ({
     disposition: "pending",
+    urlStatus: "supplied",
     ...lead,
     ...(draftedDispatchByLeadId.has(lead.id)
       ? {
@@ -1198,6 +1207,13 @@ export const sourceLeads = SourceLeadCatalogSchema.parse(
       : {}),
     ...(atlasEvidenceLeadIds.has(lead.id)
       ? { reviewState: "evidence-reviewed" }
+      : {}),
+    ...(draftedDispatchByLeadId.has(lead.id) ||
+    atlasEvidenceLeadIds.has(lead.id)
+      ? {
+          urlStatus: "publisher-canonical",
+          canonicalCheckedAt: lead.accessedAt,
+        }
       : {}),
     ...(["source-read", "evidence-reviewed"].includes(lead.reviewState)
       ? { reviewedAt: lead.accessedAt }

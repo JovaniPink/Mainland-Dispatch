@@ -18,7 +18,8 @@ relationships.
    social summary, discussion link, or syndication headline is discovery only.
 2. **Identity and date.** Check the canonical URL, publisher, title, byline when
    available, publication date, and source language. Preserve the original date
-   even when the Dispatch is curated years later.
+   even when the Dispatch is curated years later. A supplied or
+   redirect-resolved URL is not a publisher-verified canonical URL.
 3. **Faithful summary.** Summarize the source's actual scope and avoid turning a
    period report into a timeless claim. Attribute first-party benchmarks,
    company motives, official statements, and forecasts to their speakers.
@@ -61,8 +62,10 @@ editor reviews and cites that record directly.
   current action; future delivery remains open.
 - `implemented`: an operative rule, published artifact, or completed release is
   directly inspectable.
-- `independentlyObserved`: a separate source or reproducible artifact confirms
-  the observation.
+- `independentlyObserved`: at least one explicitly classified independent
+  corroborating source, in addition to the canonical report, confirms the
+  observation. Repeating one source ID or adding a methodology source does not
+  satisfy this status.
 - `contested`: sources or methods materially disagree, or the available record
   cannot decide the claim.
 - `superseded`, `corrected`: a later record changes the earlier state and the

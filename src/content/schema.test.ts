@@ -382,6 +382,34 @@ describe("publication boundary", () => {
     dispatch.claims[0].status = "independentlyObserved";
     dispatch.claims[0].sourceIds = [dispatch.canonicalSource.id];
     expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+
+    const wrongRole = clone(catalog);
+    const wrongRoleDispatch = wrongRole.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    wrongRoleDispatch.supportingSources.push({
+      ...wrongRoleDispatch.canonicalSource,
+      id: "source-methodology-only",
+      url: "https://www.loc.gov/",
+      role: "methodology",
+    });
+    wrongRoleDispatch.claims[0].status = "independentlyObserved";
+    wrongRoleDispatch.claims[0].sourceIds = [
+      wrongRoleDispatch.canonicalSource.id,
+      "source-methodology-only",
+    ];
+    expect(ContentCatalogSchema.safeParse(wrongRole).success).toBe(false);
+
+    const duplicated = clone(catalog);
+    const duplicatedDispatch = duplicated.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    duplicatedDispatch.claims[0].status = "independentlyObserved";
+    duplicatedDispatch.claims[0].sourceIds = [
+      duplicatedDispatch.canonicalSource.id,
+      duplicatedDispatch.canonicalSource.id,
+    ];
+    expect(ContentCatalogSchema.safeParse(duplicated).success).toBe(false);
   });
 
   it("rejects public Dispatches tied to withheld leads", () => {

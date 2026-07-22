@@ -25,13 +25,15 @@ The culture and open-model releases use the source-lead inbox as an intake
 boundary, not as a public feed. A lead may enter an Atlas source ledger only
 when:
 
-1. its `reviewState` is `source-read`;
-2. the Atlas record preserves the reviewed canonical URL;
+1. its `reviewState` is `evidence-reviewed`;
+2. its URL is recorded as `publisher-canonical` and the Atlas record preserves
+   that reviewed URL;
 3. the Atlas record states the source's evidentiary role and limitations; and
 4. every public event, place, step, and relation resolves to that source record.
 
 The catalog validates the first two conditions at build time. Leads marked
-`supplied` or `metadata-checked` cannot be promoted through a `sourceLeadId`.
+`supplied`, `metadata-checked`, `source-read`, `redirect-resolved`, or with only
+a supplied URL cannot be promoted through a `sourceLeadId`.
 Both source-review-derived releases deliberately have no `relatedDispatchIds`:
 their backfile cards remain in `sourceReview` and are not exposed by the Atlas.
 

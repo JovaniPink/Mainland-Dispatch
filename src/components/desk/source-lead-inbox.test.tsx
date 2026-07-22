@@ -7,7 +7,7 @@ describe("SourceLeadInbox", () => {
     render(<SourceLeadInbox />);
 
     expect(
-      screen.getByText(/165 canonical-source candidates/)
+      screen.getByText(/195 article-source candidates/)
     ).toBeInTheDocument();
     expect(screen.getByText("2000s")).toBeInTheDocument();
     expect(screen.getByText("2010s")).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe("SourceLeadInbox", () => {
       "https://www.itu.int/en/ITU-D/Cybersecurity/Documents/National_Strategies_Repository/China_2006.pdf"
     );
     expect(
-      screen.getByText(/Canonical articles · fail closed/)
+      screen.getByText(/Candidate URLs · fail closed/)
     ).toBeInTheDocument();
     expect(
       screen.getByRole("combobox", { name: "Disposition" })
@@ -44,7 +44,7 @@ describe("SourceLeadInbox", () => {
       { target: { value: "no-source-can-match-this" } }
     );
 
-    expect(screen.getByText("0 of 165 leads shown")).toBeInTheDocument();
+    expect(screen.getByText("0 of 195 leads shown")).toBeInTheDocument();
     expect(
       screen.getByText("No source leads match this editorial filter.")
     ).toBeInTheDocument();

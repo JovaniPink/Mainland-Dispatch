@@ -141,6 +141,11 @@ export const ContentCatalogSchema = z
       );
       const dispatchSourceIds = new Set(dispatchSourceIdList);
       for (const claim of dispatch.claims) {
+        addDuplicateIssues(
+          claim.sourceIds,
+          `${dispatch.id} claim ${claim.id} source id`,
+          ctx
+        );
         for (const sourceId of claim.sourceIds) {
           if (!dispatchSourceIds.has(sourceId)) {
             ctx.addIssue({
@@ -151,7 +156,12 @@ export const ContentCatalogSchema = z
         }
         if (
           claim.status === "independentlyObserved" &&
-          claim.sourceIds.length < 2
+          (new Set(claim.sourceIds).size < 2 ||
+            !dispatch.supportingSources.some(
+              (source) =>
+                source.role === "independent-corroboration" &&
+                claim.sourceIds.includes(source.id)
+            ))
         ) {
           ctx.addIssue({
             code: "custom",
@@ -182,7 +192,8 @@ export const ContentCatalogSchema = z
         isPublicDispatch(dispatch) &&
         (canonicalLead.reviewState !== "evidence-reviewed" ||
           canonicalLead.disposition !== "drafted" ||
-          canonicalLead.dispatchId !== dispatch.id)
+          canonicalLead.dispatchId !== dispatch.id ||
+          canonicalLead.urlStatus !== "publisher-canonical")
       ) {
         ctx.addIssue({
           code: "custom",
@@ -294,7 +305,10 @@ export const ContentCatalogSchema = z
             code: "custom",
             message: `${release.slug} source ${source.id} references missing lead ${source.sourceLeadId}`,
           });
-        } else if (lead.reviewState !== "evidence-reviewed") {
+        } else if (
+          lead.reviewState !== "evidence-reviewed" ||
+          lead.urlStatus !== "publisher-canonical"
+        ) {
           ctx.addIssue({
             code: "custom",
             message: `${release.slug} source ${source.id} exposes lead ${source.sourceLeadId} before source review`,
