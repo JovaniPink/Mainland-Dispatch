@@ -7,6 +7,7 @@ import { formatDate } from "@/content/site";
 import { MetaLine } from "@/components/dispatch/meta-line";
 import type { EvidenceStatus } from "@/content/schema";
 import { getAtlasReleaseForDossier } from "@/content/atlas";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return dossiers.map((d) => ({ slug: d.slug }));
@@ -20,7 +21,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const dossier = getDossier(slug);
   return dossier
-    ? { title: dossier.title, description: dossier.summary }
+    ? pageMetadata({
+        title: dossier.title,
+        description: dossier.summary,
+        path: `/dossiers/${dossier.slug}`,
+      })
     : { title: "Dossier not found" };
 }
 

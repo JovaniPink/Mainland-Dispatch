@@ -75,4 +75,5 @@ relationships.
 Resume one candidate at a time with lawful direct full-text access. Record the
 canonical metadata and article claims first, then assemble primary records,
 independent corroboration, counterpoints, later developments and limitations.
-Only an evidence-reviewed lead may map one-to-one to an individual Dispatch.
+Only an evidence-reviewed lead may map one-to-one to an individual Dispatch;
+publication remains a separate catalog and relationship gate.

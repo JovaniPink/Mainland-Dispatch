@@ -37,6 +37,19 @@ a supplied URL cannot be promoted through a `sourceLeadId`.
 Both source-review-derived releases deliberately have no `relatedDispatchIds`:
 their backfile cards remain in `sourceReview` and are not exposed by the Atlas.
 
+## Search and canonical boundary
+
+The default published release uses `/atlas` as its canonical URL. A non-default
+published release uses `/atlas?case=[release-slug]`. Chain, step, place and month
+parameters are reader interaction state; they do not create separate sitemap
+entries or independent canonical documents. Invalid case values return not
+found rather than canonicalizing unpublished material.
+
+Atlas metadata uses the selected published release's title and summary. Its
+prototype and source-snapshot labels remain visible and are not weakened for
+search presentation. Review-stage leads never appear in sitemap, page metadata
+or structured data merely because they are present in the Desk catalog.
+
 ## Governing source hierarchy
 
 Atlas records identify both a source class and an evidence role. They are not

@@ -5,25 +5,43 @@ import { Masthead } from "@/components/shell/masthead";
 import { Footer } from "@/components/shell/footer";
 import { PrototypeNotice } from "@/components/shell/prototype-notice";
 import { catalog, isPrototypeCatalog } from "@/content/catalog";
+import { JsonLd } from "@/components/seo/json-ld";
+import { siteUrl, socialImage } from "@/lib/seo";
 
 void catalog;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mainlanddispatch.com"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: site.name,
     template: `%s · ${site.name}`,
   },
   description: site.tagline,
   applicationName: site.name,
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
+  publisher: site.name,
+  category: "News and media",
+  keywords: [
+    "China",
+    "US-China relations",
+    "Chinese culture",
+    "China technology",
+    "China economy",
+    "evidence-led journalism",
+    "source transparency",
+  ],
+  icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
     siteName: site.name,
     title: site.name,
     description: site.tagline,
+    url: siteUrl,
+    locale: "en_US",
     images: [
       {
-        url: "/og.png",
+        url: socialImage,
         width: 1200,
         height: 630,
         alt: "Mainland Dispatch correspondent notebook editorial cover",
@@ -34,7 +52,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: site.name,
     description: site.tagline,
-    images: ["/og.png"],
+    images: [socialImage],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -48,6 +77,29 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                "@id": `${siteUrl}/#organization`,
+                name: site.name,
+                url: siteUrl,
+                logo: `${siteUrl}/favicon.ico`,
+              },
+              {
+                "@type": "WebSite",
+                "@id": `${siteUrl}/#website`,
+                url: siteUrl,
+                name: site.name,
+                description: site.tagline,
+                publisher: { "@id": `${siteUrl}/#organization` },
+                inLanguage: "en-US",
+              },
+            ],
+          }}
+        />
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <a
           href="#main-content"

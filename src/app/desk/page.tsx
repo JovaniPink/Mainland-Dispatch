@@ -5,8 +5,9 @@ import { ReviewQueue } from "@/components/desk/review-queue";
 import { SourceLeadInbox } from "@/components/desk/source-lead-inbox";
 
 export const metadata: Metadata = {
-  title: "Desk · Mainland Dispatch",
-  robots: { index: false },
+  title: "Desk",
+  description: "Local editorial review workspace for Mainland Dispatch.",
+  robots: { index: false, follow: false, noarchive: true },
 };
 
 const deskEnabled =

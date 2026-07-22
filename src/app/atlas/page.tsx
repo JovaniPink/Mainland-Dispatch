@@ -8,12 +8,27 @@ import {
 } from "@/content/atlas";
 import { formatDate } from "@/content/site";
 import { AtlasExplorer } from "@/components/atlas/atlas-explorer";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Evidence Atlas",
-  description:
-    "Explore source-led evidence chains across policy, culture, and everyday life.",
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ case?: string }>;
+}): Promise<Metadata> {
+  const { case: requestedCase } = await searchParams;
+  const release = requestedCase ? getAtlasRelease(requestedCase) : atlasRelease;
+  if (!release) return { title: "Evidence Atlas not found" };
+
+  const casePath =
+    release.slug === atlasRelease.slug
+      ? "/atlas"
+      : `/atlas?case=${encodeURIComponent(release.slug)}`;
+  return pageMetadata({
+    title: `${release.title} — Evidence Atlas`,
+    description: release.summary,
+    path: casePath,
+  });
+}
 
 export default async function AtlasPage({
   searchParams,

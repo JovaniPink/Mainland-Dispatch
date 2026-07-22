@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { traces, getTrace } from "@/content/traces";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import { TraceTimeline } from "@/components/trace/trace-timeline";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return traces.map((t) => ({ slug: t.slug }));
@@ -16,7 +17,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const trace = getTrace(slug);
   return trace
-    ? { title: trace.title, description: trace.intro }
+    ? pageMetadata({
+        title: trace.title,
+        description: trace.intro,
+        path: `/trace/${trace.slug}`,
+      })
     : { title: "Trace not found" };
 }
 

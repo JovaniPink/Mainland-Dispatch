@@ -1,7 +1,19 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { publishedDispatches, countsByVertical } from "@/content/dispatches";
 import { verticals } from "@/content/site";
 import { Stream } from "@/components/dispatch/stream";
+import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  ...pageMetadata({
+    title: site.name,
+    description: site.tagline,
+    path: "/",
+  }),
+  title: { absolute: site.name },
+};
 
 export default function HomePage() {
   const lead = publishedDispatches.reduce<

@@ -93,8 +93,11 @@ claim-safety posture from `handoff-navigator`.
   cursor, not an evidence-as-of reconstruction.
 - Development-only State Lab panels expose current state, recent events,
   available events, and Zod results.
-- Metadata includes route titles/descriptions, Open Graph artwork, manifest,
-  `robots.txt`, and a public-only sitemap.
+- Metadata includes route titles/descriptions, route canonicals, Open Graph
+  artwork, WebSite/Organization and NewsArticle structured data, manifest,
+  `robots.txt`, private-route `noindex`, and a public-only dated sitemap. The
+  contract is documented in
+  [`docs/seo-and-indexing.md`](docs/seo-and-indexing.md).
 
 ## Development
 
@@ -141,8 +144,15 @@ catalog distinguishes supplied article URLs from publisher-verified canonical
 URLs and retains reviewed supporting records, explicit claim statuses, and
 limitations.
 
+The current documentation map, governing-methodology precedence, and catalog
+rollup are maintained in [`docs/README.md`](docs/README.md). The source-lead
+catalog contains 285 records. The seven general-China intake batches cover 208
+external article candidates: 193 withheld, 15 rejected, and none drafted or
+public.
+
 Topic-specific intake logs record source quality, exclusions, open checks, and
-the exact research stopping point. The current Chinese open-model package is
+the exact research stopping point. They are dated snapshots, so earlier totals
+describe the catalog at that review time. The current Chinese open-model package is
 documented in
 [`docs/source-notes/2026-07-21-chinese-open-models.md`](docs/source-notes/2026-07-21-chinese-open-models.md).
 The user-supplied follow-up brief is tracked separately in

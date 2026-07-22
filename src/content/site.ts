@@ -1,5 +1,6 @@
 export const site = {
   name: "Mainland Dispatch",
+  url: "https://mainlanddispatch.com",
   tagline:
     "Curated reporting on China and the US–China relationship, with sources, context, and history preserved.",
   volume: "VOL. 001",

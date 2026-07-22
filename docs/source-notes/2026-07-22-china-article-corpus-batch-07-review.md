@@ -73,4 +73,5 @@ candidates map to no Dispatch. This batch creates no public relationships.
 Resume one withheld candidate at a time with lawful direct full-text access.
 Build its claim ledger from the canonical article, then collect primary records,
 independent corroboration, counterpoints, later developments and limitations.
-Only an evidence-reviewed lead may map one-to-one to a public Dispatch.
+Only an evidence-reviewed lead may map one-to-one to a Dispatch; publication
+remains a separate catalog and relationship gate.

@@ -39,6 +39,10 @@ relationships.
    complete. An empty optional structure is preferable to invented precision.
 8. **Quality gate.** Run the complete repository gate and inspect production at
    desktop and mobile widths for changes to public content or navigation.
+9. **Search publication gate.** A public page must have one canonical URL, a
+   faithful concise description, social metadata, and—where applicable—
+   structured data. Review-stage content, private reader state, and Desk data
+   must remain absent from sitemap and structured-data output.
 
 ## Article-to-Dispatch review
 
@@ -83,6 +87,25 @@ Meta's Llama 2 announcement, Meta's Llama 3.1 announcement, and ChinaTalk's
 annotated translation of Liang Wenfeng's 2024 interview. Kimi K3 appears in the
 chronology and Dossier only as a sourced July 20 announcement with a July 27
 verification gate; its review-stage Dispatch remains outside public routes.
+
+The wider source-lead catalog currently contains 285 records. The seven
+general-China article batches account for 208 external candidates: 193 are
+withheld and 15 rejected. None is drafted or public. These figures describe
+editorial intake, not the size of the public archive.
+
+## Search and indexing boundary
+
+Only validated public selectors may feed route generation, the sitemap,
+canonical metadata or structured data. `/saved` is private browser state and is
+`noindex`; `/desk` is disabled by default, disallowed and `noindex`. Public
+Dispatch structured data identifies the external canonical source through
+`isBasedOn` without representing the source publisher's work as Mainland
+Dispatch authorship.
+
+Atlas filters and selected steps are interaction state, not independent search
+documents. The default release canonicalizes to `/atlas`; each additional
+published case canonicalizes to its `case` URL. See
+[`seo-and-indexing.md`](seo-and-indexing.md) for the full contract.
 
 ## Revision discipline
 
