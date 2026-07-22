@@ -2,7 +2,7 @@ import { sourceLeads, SourceLeadCatalogSchema } from "./source-leads";
 
 describe("editorial source lead catalog", () => {
   it("holds a large chronological inbox without creating public Dispatches", () => {
-    expect(sourceLeads).toHaveLength(79);
+    expect(sourceLeads).toHaveLength(109);
     const datedYears = sourceLeads
       .map((lead) =>
         String(lead.publicationYear ?? lead.publishedAt?.slice(0, 4))
@@ -18,7 +18,7 @@ describe("editorial source lead catalog", () => {
     const hackerNews = sourceLeads.filter(
       (lead) => lead.publisher === "Hacker News"
     );
-    expect(hackerNews).toHaveLength(11);
+    expect(hackerNews).toHaveLength(12);
     expect(
       hackerNews.every(
         (lead) =>
@@ -26,6 +26,19 @@ describe("editorial source lead catalog", () => {
           lead.claimedGrade === "D" &&
           lead.evidenceStatus === "unverified" &&
           lead.hnStoryId
+      )
+    ).toBe(true);
+  });
+
+  it("preserves HN discovery snapshots without treating popularity as verification", () => {
+    const suppliedBatch = sourceLeads.filter((lead) => lead.hnSnapshot);
+    expect(suppliedBatch).toHaveLength(30);
+    expect(
+      suppliedBatch.every(
+        (lead) =>
+          lead.hnStoryId &&
+          lead.reviewState === "supplied" &&
+          lead.evidenceStatus === "unverified"
       )
     ).toBe(true);
   });
@@ -68,6 +81,15 @@ describe("editorial source lead catalog", () => {
           id: "lead-missing-publication-year",
           publishedAt: undefined,
           publicationYear: undefined,
+        },
+      ]).success
+    ).toBe(false);
+    const withoutDiscussion = sourceLeads.find((lead) => !lead.hnStoryId)!;
+    expect(
+      SourceLeadCatalogSchema.safeParse([
+        {
+          ...withoutDiscussion,
+          hnSnapshot: { points: 1, comments: 1, capturedAt: "2026-07-22" },
         },
       ]).success
     ).toBe(false);

@@ -200,6 +200,13 @@ export const SourceLeadSchema = z.object({
   paywall: z.boolean().default(false),
   archiveUrl: z.url().optional(),
   hnStoryId: nonEmpty.regex(/^\d+$/).optional(),
+  hnSnapshot: z
+    .object({
+      points: z.number().int().nonnegative(),
+      comments: z.number().int().nonnegative(),
+      capturedAt: isoDate,
+    })
+    .optional(),
   notes: nonEmpty,
   nextReviewAt: isoDate.optional(),
 });

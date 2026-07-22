@@ -65,7 +65,8 @@ export function SourceLeadInbox() {
           <p className="mt-2 max-w-2xl font-serif text-sm leading-relaxed text-ink-muted">
             {sourceLeads.length} lightweight leads. A link can enter this inbox
             without becoming a Dispatch or crossing the public publication
-            boundary.
+            boundary. HN points are discovery metadata; only substantive, fully
+            reviewed comments may inform commentary.
           </p>
         </div>
         <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
@@ -165,6 +166,16 @@ export function SourceLeadInbox() {
                     <p className="mt-2 text-xs leading-relaxed text-ink-muted">
                       {lead.notes}
                     </p>
+                    {lead.hnStoryId && lead.publisher !== "Hacker News" && (
+                      <a
+                        href={`https://news.ycombinator.com/item?id=${lead.hnStoryId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-block font-mono text-[0.58rem] uppercase tracking-widest text-jade hover:text-signal"
+                      >
+                        HN discussion · commentary only ↗
+                      </a>
+                    )}
                   </li>
                 ))}
             </ul>

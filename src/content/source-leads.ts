@@ -1,7 +1,9 @@
 import { z } from "zod";
 import { SourceLeadSchema } from "./schema";
+import { chinaHn300Leads } from "./source-lead-batches/china-hn-300";
 
 const leads = [
+  ...chinaHn300Leads,
   {
     id: "lead-2006-science-plan",
     title:
@@ -1276,6 +1278,12 @@ export const SourceLeadCatalogSchema = z
         ctx.addIssue({
           code: "custom",
           message: `${item.id} has a next review before access`,
+        });
+      }
+      if (item.hnSnapshot && !item.hnStoryId) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${item.id} has an HN snapshot without an HN story id`,
         });
       }
       ids.add(item.id);
