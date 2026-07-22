@@ -1,9 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import { DispatchCard } from "./dispatch-card";
 import { dispatches } from "@/content/dispatches";
+import { DispatchSchema, type Dispatch } from "@/content/schema";
 
 describe("DispatchCard", () => {
-  const video = dispatches.find((d) => d.kind === "video")!;
+  const article = dispatches.find((d) => d.id === "d-034")!;
+  const video = DispatchSchema.parse({
+    ...article,
+    kind: "video",
+    provider: "youtube",
+    embedId: "privacy-test",
+    duration: "01:00",
+    captions: ["en"],
+  }) as Extract<Dispatch, { kind: "video" }>;
 
   it("renders title, metadata, and both dates", () => {
     render(<DispatchCard dispatch={video} />);

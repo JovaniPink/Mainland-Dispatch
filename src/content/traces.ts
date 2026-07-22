@@ -1,84 +1,73 @@
 import { TraceSchema, type Trace } from "./schema";
 
 const seed = {
-  slug: "export-controls",
-  title: "The July 2026 export-control expansion",
+  slug: "open-model-release-chronology",
+  title: "The open-weight strategy before Kimi K3",
   intro:
-    "A chronological record of the latest semiconductor export-control round: the rule, the reporting on both sides, the official response, and what the evidence shows so far.",
+    "A source-linked chronology of how American and Chinese model developers described weight access, licenses, ecosystems, and technical advantage before the current Kimi K3 debate.",
   currentAssessment:
-    "The expansion is implemented and legally in force. Its practical effect on Chinese fab capacity is contested: policy announcements are running ahead of observable fab economics, and the first independent evidence (SMIC's earnings guidance) points to substitution costs rather than substitution failure.",
+    "The record confirms that open-weight distribution is a strategy used by both US and Chinese developers. It does not support a simple open-versus-closed national divide, and Kimi's announced July 27 artifact release remains an announcement until the promised files and license can be inspected.",
   assessmentStatus: "contested",
   entries: [
     {
-      id: "t-01",
-      date: "2026-07-15",
+      id: "open-model-01",
+      date: "2023-07-18",
       phase: "originalEvent",
-      title: "BIS publishes the interim final rule",
+      title: "Meta releases Llama 2 weights and starting code",
       detail:
-        "The 212-page rule adds 14 firms to the Entity List and tightens license review for sub-14nm logic facilities to a presumption of denial.",
-      sourceLabel: "Federal Register",
-      sourceUrl: "https://example.com/prototype/export-control-rule",
+        "Meta announces research and commercial availability under its custom community license, creating a major American open-weight precedent while retaining use conditions.",
+      sourceLabel: "Meta AI",
+      sourceUrl: "https://ai.meta.com/blog/llama-2/",
       critical: true,
-      dispatchId: "d-007",
+      dispatchId: "d-032",
     },
     {
-      id: "t-02",
-      date: "2026-07-15",
+      id: "open-model-02",
+      date: "2024-07-23",
       phase: "usReporting",
-      title: "US wires report the Entity List additions",
+      title: "Llama 3.1 expands Meta's ecosystem case",
       detail:
-        "Reuters leads with the headline count of fourteen firms; three are subsidiaries of already-listed companies, indicating enforcement tightening more than new scope.",
-      sourceLabel: "Reuters",
-      sourceUrl: "https://example.com/prototype/entity-list-analysis",
-      critical: false,
-      dispatchId: "d-002",
-    },
-    {
-      id: "t-03",
-      date: "2026-07-16",
-      phase: "officialResponse",
-      title: "MOFCOM issues formal response",
-      detail:
-        "The statement revives 'development interests' language absent since 2024 — a measurably wider claim than the standard 'legitimate rights' formulation.",
-      sourceLabel: "MOFCOM",
-      sourceUrl: "https://example.com/prototype/commerce-statement",
+        "Meta pairs a 405-billion-parameter release with cloud and inference partners, safety tools, derivative-model permissions, and a proposed common stack.",
+      sourceLabel: "Meta AI",
+      sourceUrl: "https://ai.meta.com/blog/meta-llama-3-1/",
       critical: true,
-      dispatchId: "d-003",
+      dispatchId: "d-033",
     },
     {
-      id: "t-04",
-      date: "2026-07-17",
+      id: "open-model-03",
+      date: "2024-11-27",
       phase: "mainlandReporting",
-      title: "Mainland outlets frame the rule as accelerating self-reliance",
+      title: "Liang Wenfeng describes DeepSeek's release logic",
       detail:
-        "Caixin and Yicai coverage centers domestic toolmakers' order books rather than the restrictions themselves; SiCarrier is named as the principal beneficiary.",
-      sourceLabel: "Caixin",
-      critical: false,
-    },
-    {
-      id: "t-05",
-      date: "2026-07-19",
-      phase: "followUpEvidence",
-      title: "SMIC earnings call provides first fab-level evidence",
-      detail:
-        "Capex guidance implies domestic lithography tools are running at materially lower yield: substitution is happening, at a real and quantifiable cost.",
-      sourceLabel: "Asianometry",
-      sourceUrl: "https://example.com/prototype/fab-analysis-video",
+        "An annotated translation of a 36Kr interview records Liang linking open releases to talent, foundational research, ecosystem formation, and the short life of technical moats.",
+      sourceLabel: "ChinaTalk / 36Kr",
+      sourceUrl:
+        "https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas",
       critical: true,
-      dispatchId: "d-011",
+      dispatchId: "d-034",
     },
     {
-      id: "t-06",
-      date: "2026-07-21",
-      phase: "editorialAssessment",
-      title: "Current editorial assessment",
+      id: "open-model-04",
+      date: "2026-07-20",
+      phase: "officialResponse",
+      title: "Moonshot AI announces Kimi K3",
       detail:
-        "Both governments' claims outrun the evidence. The rule's force is established; its effectiveness is contested and will be measurable in fab economics over the next two to three quarters, not in statements.",
+        "Moonshot publishes benchmark, pricing, architecture, and product claims and says model artifacts will be released July 27. The future release is recorded as a promise, not a completed event.",
+      sourceLabel: "Moonshot AI",
+      sourceUrl: "https://www.kimi.com/blog/kimi-k3",
+      critical: true,
+    },
+    {
+      id: "open-model-05",
+      date: "2026-07-22",
+      phase: "editorialAssessment",
+      title: "Current evidence boundary",
+      detail:
+        "Release posts and interviews establish declared strategy. License text, downloadable artifacts, reproducible evaluations, deployment cost, adoption, and continued availability require separate observation.",
       critical: false,
-      dispatchId: "d-012",
     },
   ],
-  provenance: "prototype",
+  provenance: "verified",
 };
 
 export const traces: Trace[] = [TraceSchema.parse(seed)];

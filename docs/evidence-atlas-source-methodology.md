@@ -4,9 +4,9 @@
 
 The Evidence Atlas is a three-case research prototype: one dossier-linked
 policy case, one culture/everyday-life case, and one open-model release-state
-case built from the source-review queue. It is public and crawlable at `/atlas`,
-but it is not a mature publication vertical and remains deliberately absent
-from global navigation. All three releases remain:
+case built from the source-review queue. It is public, crawlable, and linked at
+`/atlas`, but it is still a source lab rather than a mature publication
+vertical. All three releases remain:
 
 ```text
 provenance: prototype

@@ -116,7 +116,7 @@ export default async function DispatchPage({
 
       {d.kind === "gallery" && (
         <p className="mt-4 font-mono text-xs uppercase tracking-widest text-ink-muted">
-          {d.imageCount} image prototype · Photographer:{" "}
+          {d.imageCount} images · Photographer:{" "}
           {d.photographer ?? "Not assigned"}
         </p>
       )}
@@ -136,8 +136,8 @@ export default async function DispatchPage({
               Archival posture
             </dt>
             <dd className="mt-1 text-sm leading-relaxed">
-              Prototype reference only. A published record must retain a
-              verified capture.
+              Published social records retain a source URL, capture date, and
+              separate archival URL.
             </dd>
           </div>
         </dl>
@@ -205,9 +205,7 @@ export default async function DispatchPage({
           rel="noopener noreferrer"
           className="border border-ink bg-ink px-4 py-2 font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
         >
-          {d.provenance === "prototype"
-            ? "Preview source model ↗"
-            : "Open source ↗"}
+          Open source ↗
         </a>
         {comparison && (
           <Link

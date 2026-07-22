@@ -2,7 +2,6 @@ import { AtlasReleaseSchema, type AtlasRelease } from "./schema";
 
 const release = {
   slug: "semiconductor-control-chain",
-  dossierSlug: "semiconductor-export-controls",
   version: "2026.07.21-2",
   title: "The semiconductor control chain",
   summary:
@@ -976,6 +975,7 @@ const cultureRelease = {
 
 const openModelRelease = {
   slug: "open-model-release-ledger",
+  dossierSlug: "open-model-release-record",
   version: "2026.07.22-1",
   title: "The open-model release ledger",
   summary:

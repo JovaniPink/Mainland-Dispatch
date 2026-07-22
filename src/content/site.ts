@@ -5,9 +5,10 @@ export const site = {
   volume: "VOL. 001",
   nav: [
     { label: "Dispatches", href: "/" },
-    { label: "Crosscurrents", href: "/compare/animation-industry" },
-    { label: "Mainland Pulse", href: "/trace/export-controls" },
-    { label: "Dossiers", href: "/dossiers/semiconductor-export-controls" },
+    { label: "Crosscurrents", href: "/compare/open-weight-release-postures" },
+    { label: "Mainland Pulse", href: "/trace/open-model-release-chronology" },
+    { label: "Dossiers", href: "/dossiers/open-model-release-record" },
+    { label: "Evidence Atlas", href: "/atlas" },
     { label: "Saved", href: "/saved" },
   ],
   principle:

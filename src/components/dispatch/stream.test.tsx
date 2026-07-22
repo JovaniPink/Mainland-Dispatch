@@ -6,11 +6,11 @@ describe("Stream publication boundary", () => {
     render(<Stream />);
 
     expect(
-      screen.getByText(/domestic animation industry/i)
+      screen.getByText(/liang wenfeng described deepseek's playbook/i)
     ).toBeInTheDocument();
     expect(
-      screen.queryByText(/weibo thread on graduate employment/i)
+      screen.queryByText(/who’s afraid of chinese models/i)
     ).not.toBeInTheDocument();
-    expect(screen.queryByText(/chongqing ev plant/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/kimi k3 arrives/i)).not.toBeInTheDocument();
   });
 });

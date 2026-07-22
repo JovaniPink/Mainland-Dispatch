@@ -23,7 +23,8 @@ export function DispatchVisual({
       aria-label={`${label} preview`}
     >
       <span className="absolute left-3 top-3 z-10 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-jade">
-        {label} · prototype
+        {label} ·{" "}
+        {dispatch.provenance === "verified" ? "source record" : "review draft"}
       </span>
 
       {dispatch.kind === "video" && (

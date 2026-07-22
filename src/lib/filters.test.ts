@@ -24,31 +24,32 @@ describe("filterDispatches", () => {
   it("filters by kind", () => {
     const result = filterDispatches(dispatches, {
       vertical: "all",
-      kind: "video",
+      kind: "article",
       query: "",
     });
-    expect(result.every((d) => d.kind === "video")).toBe(true);
-    expect(result).toHaveLength(2);
+    expect(result.every((d) => d.kind === "article")).toBe(true);
+    expect(result).toHaveLength(dispatches.length);
   });
 
   it("combines vertical and kind filters", () => {
     const result = filterDispatches(dispatches, {
       vertical: "technology",
-      kind: "document",
+      kind: "article",
       query: "",
     });
     expect(
       result.every(
-        (d) => d.kind === "document" && d.verticals.includes("technology")
+        (d) => d.kind === "article" && d.verticals.includes("technology")
       )
     ).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
   });
 
   it("searches across title, tags, and entities case-insensitively", () => {
     const result = filterDispatches(dispatches, {
       vertical: "all",
       kind: "all",
-      query: "SMIC",
+      query: "DeepSeek",
     });
     expect(result.length).toBeGreaterThan(0);
     expect(

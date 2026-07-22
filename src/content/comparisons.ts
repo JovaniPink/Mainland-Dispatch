@@ -1,66 +1,61 @@
 import { ComparisonSchema, type Comparison } from "./schema";
 
 const seed = {
-  slug: "animation-industry",
-  title: "How three sources frame China's animation boom",
+  slug: "open-weight-release-postures",
+  title: "How three model releases define openness",
   intro:
-    "Ne Zha 2's record-breaking run produced coverage on both sides of the Pacific and an official statement from the film administration. The facts barely differ; the framing does.",
+    "Meta's Llama releases and Liang Wenfeng's pre-R1 interview use similar ecosystem language from different institutional positions. This comparison separates the artifacts they released from the strategic claims they made about them.",
   sources: [
     {
       role: "mainland",
-      outlet: "Sixth Tone",
-      headline:
-        "China's domestic animation industry is building franchises beyond Hollywood's orbit",
-      url: "https://example.com/prototype/animation-franchises",
-      publishedAt: "2026-07-18",
-      language: "zh/en",
+      outlet: "ChinaTalk / 36Kr",
+      headline: "Deepseek: The Quiet Giant Leading China’s AI Race",
+      url: "https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas",
+      publishedAt: "2024-11-27",
+      language: "en and zh",
       framing:
-        "An industrial-maturity story: financing structures, studio pipelines, and character IP ownership. Hollywood appears only as a receding benchmark.",
-      keyQuote:
-        "The question studios ask is no longer whether a film can match Pixar, but whether a character can carry a decade of sequels.",
+        "An annotated translation of a founder interview. Liang frames open release as a way to attract talent, accelerate an ecosystem, and make a temporary technical advantage more useful than secrecy would.",
+      keyQuote: "Moats created by closed source are temporary.",
     },
     {
       role: "us",
-      outlet: "The Hollywood Reporter",
-      headline:
-        "Why Chinese blockbusters still struggle to find US theatrical distribution",
-      url: "https://example.com/prototype/cinema-distribution",
-      publishedAt: "2026-07-10",
+      outlet: "Meta AI",
+      headline: "Introducing Llama 3.1: Our most capable models to date",
+      url: "https://ai.meta.com/blog/meta-llama-3-1/",
+      publishedAt: "2024-07-23",
       language: "en",
       framing:
-        "A market-access story: the same boom is framed through what it cannot yet do — reach American screens. Success is measured against US distribution economics.",
-      keyQuote:
-        "For all its domestic scale, no Chinese animated feature has cracked $20 million in North America.",
+        "A first-party platform argument. Meta presents model weights, expanded derivative rights, partners, safety tools, and a proposed interface as the foundation of a durable ecosystem.",
+      keyQuote: "Llama model weights are available to download.",
     },
     {
       role: "primary",
-      outlet: "China Film Administration",
-      headline: "2026 half-year film market bulletin",
-      url: "https://example.com/prototype/film-market-bulletin",
-      publishedAt: "2026-07-08",
-      language: "zh",
+      outlet: "Meta AI",
+      headline: "Meta and Microsoft Introduce the Next Generation of Llama",
+      url: "https://ai.meta.com/blog/llama-2/",
+      publishedAt: "2023-07-18",
+      language: "en",
       framing:
-        "The raw numbers, plus policy vocabulary: domestic animation described as a 'high-quality development' success, with export ambitions stated but not quantified.",
-      keyQuote:
-        "Domestic animated features accounted for 31% of half-year box office, a historic high.",
+        "The earlier release record. Meta made weights and starting code available under a custom community license, establishing the US precedent against which later openness claims can be checked.",
+      keyQuote: "Llama 2 is free for research and commercial use.",
     },
   ],
   sharedFacts: [
-    "Ne Zha 2 is the highest-grossing animated film ever released in a single market.",
-    "Domestic animation took roughly a third of China's H1 2026 box office.",
-    "No recent Chinese animated feature has had a wide US theatrical release.",
-    "Major studios are financing multi-film franchise slates for the first time.",
+    "All three records treat access to model weights as an ecosystem strategy, not only a research disclosure.",
+    "Each source is first-party or founder-originated and therefore documents a position more reliably than it proves outcomes.",
+    "None of the records makes the associated model unrestricted public-domain software.",
+    "Licenses, release artifacts, infrastructure costs, and derivative-use rights must be compared separately.",
   ],
   differingEmphasis: [
-    "Sixth Tone treats US distribution as irrelevant; THR treats it as the test of success.",
-    "The official bulletin claims policy credit; neither news outlet engages that claim.",
-    "THR assumes diaspora audiences without data; Sixth Tone does not discuss overseas audiences at all.",
-    "Only the primary document quantifies market share; both articles round it into narrative.",
+    "Llama 2 emphasizes availability for research and most commercial use; Llama 3.1 expands the argument to partners, tools, safety, and distribution.",
+    "Liang emphasizes the temporary nature of technical advantage and the recruiting value of an open ecosystem.",
+    "Meta labels its strategy open source, while the underlying custom licenses retain conditions that make open weight the more precise cross-release term.",
+    "The founder interview describes intent; the Meta release posts provide more directly inspectable product and license artifacts.",
   ],
   editorialNotes:
-    "None of the three is wrong. The mainland source measures against China's own past, the US source against US market access, and the official bulletin against policy goals. Read together they describe an industry succeeding on the first metric, indifferent to the second, and claimed by the third.",
-  relatedDispatchIds: ["d-001", "d-004"],
-  provenance: "prototype",
+    "This is a comparison of release posture, not a nationality score or a capability ranking. The sources establish what the organizations published and said. They do not, by themselves, establish adoption, cost per completed task, safety, or the durability of access.",
+  relatedDispatchIds: ["d-032", "d-033", "d-034"],
+  provenance: "verified",
 };
 
 export const comparisons: Comparison[] = [ComparisonSchema.parse(seed)];

@@ -4,9 +4,13 @@ import { verticals } from "@/content/site";
 import { Stream } from "@/components/dispatch/stream";
 
 export default function HomePage() {
-  const lead =
-    publishedDispatches.find((d) => d.kind === "original") ??
-    publishedDispatches[0];
+  const lead = publishedDispatches.reduce<
+    (typeof publishedDispatches)[number] | undefined
+  >(
+    (latest, dispatch) =>
+      !latest || dispatch.sourceDate > latest.sourceDate ? dispatch : latest,
+    undefined
+  );
   const counts = countsByVertical();
 
   if (!lead) {
@@ -22,7 +26,7 @@ export default function HomePage() {
       <section className="grid gap-8 border-b border-rule px-4 py-10 sm:px-6 lg:grid-cols-[1fr_16rem]">
         <div className="rise-in">
           <p className="font-mono text-xs uppercase tracking-widest text-signal">
-            Today&rsquo;s Dispatch
+            From the source archive
           </p>
           <h1 className="mt-3 max-w-2xl font-serif text-3xl leading-tight sm:text-5xl">
             {lead.title}
@@ -41,7 +45,7 @@ export default function HomePage() {
               Read dispatch
             </Link>
             <Link
-              href="/trace/export-controls"
+              href="/trace/open-model-release-chronology"
               className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
             >
               Trace story

@@ -1,74 +1,70 @@
 import { DossierSchema, type Dossier } from "./schema";
 
 const seed = {
-  slug: "semiconductor-export-controls",
-  title: "Semiconductor export controls",
+  slug: "open-model-release-record",
+  title: "Open-model release record",
   summary:
-    "The running file on US restrictions of advanced chipmaking technology to China: the rules as written, the responses as stated, and the fab-level evidence of what the controls actually change.",
-  lastReviewed: "2026-07-21",
+    "A bounded record of what selected US and Chinese model developers released, licensed, and claimed about open-weight strategy. It separates inspectable artifacts from founder narratives and future promises.",
+  lastReviewed: "2026-07-22",
   principalEntities: {
-    people: ["Gina Raimondo", "Alan Estevez"],
-    organizations: [
-      "Bureau of Industry and Security",
-      "MOFCOM",
-      "SMIC",
-      "SiCarrier",
-      "ASML",
-    ],
-    places: ["Washington", "Shanghai", "Veldhoven"],
+    people: ["Liang Wenfeng", "Mark Zuckerberg"],
+    organizations: ["DeepSeek", "Meta", "Microsoft", "Moonshot AI"],
+    places: ["China", "United States"],
   },
   primaryDocuments: [
     {
-      label: "BIS interim final rule (July 2026)",
-      url: "https://example.com/prototype/export-control-rule",
-      date: "2026-07-15",
+      label: "Meta announcement and release record for Llama 2",
+      url: "https://ai.meta.com/blog/llama-2/",
+      date: "2023-07-18",
     },
     {
-      label: "MOFCOM response statement",
-      url: "https://example.com/prototype/commerce-statement",
-      date: "2026-07-16",
+      label: "Meta announcement and release record for Llama 3.1",
+      url: "https://ai.meta.com/blog/meta-llama-3-1/",
+      date: "2024-07-23",
     },
     {
-      label: "October 2022 foundational rule",
-      url: "https://example.com/prototype/foundational-rule",
-      date: "2022-10-07",
+      label:
+        "ChinaTalk annotated translation of Liang Wenfeng's 36Kr interview",
+      url: "https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas",
+      date: "2024-11-27",
+    },
+    {
+      label: "Moonshot AI Kimi K3 announcement",
+      url: "https://www.kimi.com/blog/kimi-k3",
+      date: "2026-07-20",
     },
   ],
   claims: [
     {
-      text: "The July 2026 rule applies a presumption of denial to sub-14nm logic facilities.",
+      text: "Meta released Llama 2 weights and starting code under a custom community license for research and most commercial use.",
       status: "implemented",
     },
     {
-      text: "China will impose countermeasures targeting US firms in response.",
-      status: "officiallyAnnounced",
+      text: "Meta expanded its open-model ecosystem pitch with Llama 3.1, including partners, safety tools, derivative-model permissions, and a proposed stack interface.",
+      status: "implemented",
     },
     {
-      text: "Domestic Chinese lithography tools can sustain 7nm-class production at commercial yield.",
-      status: "contested",
-    },
-    {
-      text: "Third-country re-export loopholes have been closed by the new rule.",
+      text: "Liang Wenfeng described open releases as part of DeepSeek's talent, research, and ecosystem strategy in a 2024 founder interview.",
       status: "reported",
     },
     {
-      text: "SMIC is absorbing measurable yield costs from domestic tool substitution.",
-      status: "independentlyObserved",
+      text: "Moonshot AI says it will release Kimi K3 artifacts on July 27, 2026.",
+      status: "officiallyAnnounced",
     },
     {
-      text: "The 2024 licensing carve-out for legacy nodes remains in force.",
-      status: "superseded",
+      text: "Open-weight availability alone establishes lower cost per successful task or broader real-world adoption.",
+      status: "contested",
     },
   ],
   unresolvedQuestions: [
-    "What yield are domestic lithography tools actually achieving at 7nm-class nodes?",
-    "Will announced countermeasures materialize, and against which US firms?",
-    "How much re-export volume moved through the now-closed third-country channel?",
-    "Does the new license-exception carve-out create a workable compliance path for packaging houses?",
+    "Do Kimi K3's promised artifacts and license appear on July 27 in the form described?",
+    "Which license restrictions materially constrain commercial deployment or derivative models across these releases?",
+    "How do serving cost, hardware requirements, and cost per completed task compare under reproducible workloads?",
+    "Will weights, code, and documentation remain available and maintained over time?",
   ],
-  traceSlug: "export-controls",
-  dispatchIds: ["d-002", "d-003", "d-007", "d-011", "d-012"],
-  provenance: "prototype",
+  traceSlug: "open-model-release-chronology",
+  dispatchIds: ["d-032", "d-033", "d-034"],
+  provenance: "verified",
 };
 
 export const dossiers: Dossier[] = [DossierSchema.parse(seed)];

@@ -93,6 +93,21 @@ export const ContentCatalogSchema = z
     };
 
     for (const dispatch of catalog.dispatches) {
+      if (isPublicDispatch(dispatch) && dispatch.provenance !== "verified") {
+        ctx.addIssue({
+          code: "custom",
+          message: `${dispatch.id} cannot publish prototype provenance`,
+        });
+      }
+      if (
+        isPublicDispatch(dispatch) &&
+        new URL(dispatch.sourceUrl).hostname.endsWith("example.com")
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${dispatch.id} cannot publish an example.com source`,
+        });
+      }
       if (dispatch.sourceDate > dispatch.curatedAt) {
         ctx.addIssue({
           code: "custom",
@@ -122,6 +137,12 @@ export const ContentCatalogSchema = z
     }
 
     for (const comparison of catalog.comparisons) {
+      if (comparison.provenance !== "verified") {
+        ctx.addIssue({
+          code: "custom",
+          message: `${comparison.slug} cannot publish prototype provenance`,
+        });
+      }
       addDuplicateIssues(
         comparison.sources.map((source) => source.role),
         `${comparison.slug} source role`,
@@ -133,6 +154,12 @@ export const ContentCatalogSchema = z
     }
 
     for (const trace of catalog.traces) {
+      if (trace.provenance !== "verified") {
+        ctx.addIssue({
+          code: "custom",
+          message: `${trace.slug} cannot publish prototype provenance`,
+        });
+      }
       addDuplicateIssues(
         trace.entries.map((entry) => entry.id),
         `${trace.slug} entry id`,
@@ -153,6 +180,12 @@ export const ContentCatalogSchema = z
     }
 
     for (const dossier of catalog.dossiers) {
+      if (dossier.provenance !== "verified") {
+        ctx.addIssue({
+          code: "custom",
+          message: `${dossier.slug} cannot publish prototype provenance`,
+        });
+      }
       for (const id of dossier.dispatchIds) {
         requireDispatch(id, dossier.slug, true);
       }

@@ -5,9 +5,11 @@ US–China relationship. The governing principle is simple: every source gets
 context, every conclusion shows its evidence, and every developing story keeps
 its history.
 
-> **Prototype content notice:** all current headlines, dates, quotations,
-> bylines, figures, and links are fictionalized interface samples. They are
-> visibly labeled in the application and must not be represented as reporting.
+> **Editorial boundary:** public Dispatches, Compare sources, Trace entries, and
+> Dossier documents use reviewed public records and live source URLs. Evidence
+> Atlas groupings remain provisional editorial source snapshots even though
+> their underlying records are real. Desk leads do not become public merely by
+> entering the review queue.
 
 ## Design direction
 
@@ -35,12 +37,11 @@ claim-safety posture from `handoff-navigator`.
   evidence status for the current assessment.
 - **Dossiers** — claims separated into reported, announced, implemented,
   independently observed, contested, superseded, and corrected. The
-  semiconductor dossier is the primary entry point to its experimental
-  evidence view.
-- **Evidence view** — a crawlable `/atlas` prototype organized around four
-  complete, inspectable steps. It is deliberately absent from global
-  navigation until a second editorial case proves the model generalizes beyond
-  semiconductor controls.
+  current open-model record links directly to its chronology and source-backed
+  Dispatches.
+- **Evidence view** — a crawlable `/atlas` source lab with three cases. Each
+  chain uses four complete, inspectable steps and preserves the difference
+  between source facts and editorial relationships.
 - **Saved** — a browser-local reading collection implemented as an external
   store, so all Save controls stay synchronized.
 - **Desk** — a local editorial sandbox with link intake, live Zod feedback, and
@@ -54,8 +55,9 @@ claim-safety posture from `handoff-navigator`.
   route generation, related links, saved reading, Compare, Trace, or Dossiers.
 - Review-stage records remain available to the local Desk but do not resolve on
   public dispatch routes.
-- Every record declares `provenance: "verified" | "prototype"`; prototype
-  records display a global and per-record warning and use non-live example URLs.
+- Every record declares `provenance: "verified" | "prototype"`. Public reader
+  records are verified; Atlas releases remain labeled prototypes because their
+  grouping and interpretation are still provisional.
 - `src/content/catalog.ts` validates the complete graph at import time: schema
   variants, real calendar dates, route-safe slugs, unique IDs/slugs, date order,
   chronological trace entries, and every dispatch/trace/dossier relation.
@@ -115,12 +117,12 @@ commands are also available as `npm run format:check`, `npm run lint`,
 `npm run typecheck`, `npm test`, and `npm run build`.
 
 Current regression coverage includes catalog integrity, publication boundaries,
-reader/media/explorer/intake machines, consent-gated prototype media, saved
+reader/media/explorer/intake machines, consent-gated external media, saved
 reading, stream filtering, and exclusion of review-stage content.
 
-Atlas remains a single-case research prototype. Restoring it to global
-navigation requires at least one separately sourced culture or everyday-life
-case; that editorial release is intentionally deferred.
+Atlas now includes semiconductor policy, culture/everyday life, and open-model
+release-state cases. It is linked in global navigation, while each release keeps
+its source-snapshot warning and review state.
 
 ## Content workflow
 
@@ -129,10 +131,11 @@ draft, then emit JSON for review. That JSON is not persisted automatically; a
 real authenticated write path and source-verification workflow are separate
 product decisions.
 
-Before changing a record from `prototype` to `verified`, replace every sample
-claim, URL, media identifier, and attribution with reviewed source material,
-verify translations and archival captures, and move the record through the
-editorial state machine.
+Public promotion follows the explicit checklist in
+[`docs/publication-methodology.md`](docs/publication-methodology.md). In short:
+read the canonical source, separate reported fact from editorial commentary,
+record date/language/attribution limitations, verify every public relationship,
+and fail closed when a promised artifact or independent check has not arrived.
 
 Topic-specific intake logs record source quality, exclusions, open checks, and
 the exact research stopping point. The current Chinese open-model package is

@@ -6,14 +6,14 @@ export function PrototypeNotice() {
     >
       <p className="font-serif text-sm leading-relaxed">
         <strong className="font-semibold">
-          Editorial interface prototype.
+          Source-backed editorial prototype.
         </strong>{" "}
-        Dispatches remain fictionalized samples. Labeled source snapshots use
-        real public records for interaction testing; their editorial
-        interpretation is provisional.
+        Public Dispatches link to reviewed records. Evidence Atlas groupings and
+        editorial interpretations remain provisional and show their source
+        boundaries.
       </p>
       <span className="shrink-0 font-mono text-[0.65rem] uppercase tracking-widest text-signal">
-        Demo + source lab
+        Reporting + source lab
       </span>
     </aside>
   );

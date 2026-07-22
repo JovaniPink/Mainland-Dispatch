@@ -163,8 +163,13 @@ describe("DispatchSchema", () => {
 });
 
 describe("seed content", () => {
-  it("ships thirty schema-valid dispatches", () => {
-    expect(dispatches).toHaveLength(36);
+  it("ships twenty-four schema-valid, non-fictional dispatch records", () => {
+    expect(dispatches).toHaveLength(24);
+    expect(
+      dispatches.some((dispatch) =>
+        new URL(dispatch.sourceUrl).hostname.endsWith("example.com")
+      )
+    ).toBe(false);
   });
 
   it("keeps the Chinese-model source package behind editorial review", () => {
@@ -214,7 +219,7 @@ describe("seed content", () => {
     ).toBe(true);
   });
 
-  it("keeps the random historical backfile behind editorial review", () => {
+  it("publishes the source-read historical backfile", () => {
     const backfileIds = new Set([
       "d-021",
       "d-022",
@@ -235,14 +240,16 @@ describe("seed content", () => {
     expect(
       backfileRecords.every(
         (dispatch) =>
-          dispatch.editorialStatus === "sourceReview" &&
+          dispatch.editorialStatus === "published" &&
           dispatch.provenance === "verified" &&
           dispatch.commentaryReferences.length === 0
       )
     ).toBe(true);
     expect(
-      publishedDispatches.some((dispatch) => backfileIds.has(dispatch.id))
-    ).toBe(false);
+      [...backfileIds].every((id) =>
+        publishedDispatches.some((dispatch) => dispatch.id === id)
+      )
+    ).toBe(true);
     expect(
       new Set(
         backfileRecords.map((dispatch) => dispatch.sourceDate.slice(0, 4))
@@ -252,20 +259,9 @@ describe("seed content", () => {
     );
   });
 
-  it("covers every dispatch kind", () => {
+  it("does not retain fake records solely to exercise content variants", () => {
     const kinds = new Set(dispatches.map((d) => d.kind));
-    expect(kinds).toEqual(
-      new Set([
-        "article",
-        "video",
-        "audio",
-        "document",
-        "social",
-        "gallery",
-        "data",
-        "original",
-      ])
-    );
+    expect(kinds).toEqual(new Set(["article"]));
   });
 
   it("has resolvable relatedDispatchIds", () => {
@@ -315,13 +311,34 @@ describe("seed content", () => {
 describe("publication boundary", () => {
   it("contains only published or corrected entries", () => {
     expect(publishedDispatches.every(isPublicDispatch)).toBe(true);
+    expect(
+      publishedDispatches.every(
+        (dispatch) => dispatch.provenance === "verified"
+      )
+    ).toBe(true);
   });
 
   it("does not resolve review-stage entries through the public lookup", () => {
-    expect(
-      getPublicDispatch("weibo-graduate-employment-thread")
-    ).toBeUndefined();
-    expect(getPublicDispatch("chongqing-ev-factory-photos")).toBeUndefined();
+    expect(getPublicDispatch("whos-afraid-of-chinese-models")).toBeUndefined();
+    expect(getPublicDispatch("kimi-k3-official-announcement")).toBeUndefined();
+  });
+
+  it("rejects prototype provenance and placeholder hosts on public records", () => {
+    const prototypeCatalog = clone(catalog);
+    prototypeCatalog.dispatches.find(
+      (dispatch) => dispatch.id === "d-034"
+    )!.provenance = "prototype";
+    expect(ContentCatalogSchema.safeParse(prototypeCatalog).success).toBe(
+      false
+    );
+
+    const placeholderCatalog = clone(catalog);
+    placeholderCatalog.dispatches.find(
+      (dispatch) => dispatch.id === "d-034"
+    )!.sourceUrl = "https://example.com/not-a-source";
+    expect(ContentCatalogSchema.safeParse(placeholderCatalog).success).toBe(
+      false
+    );
   });
 
   it("publishes only public Atlas releases", () => {
@@ -363,7 +380,7 @@ describe("Evidence Atlas schema and graph", () => {
   });
 
   it("ships a source-backed open-model case without inventing geography, relations, or a benchmark series", () => {
-    expect(openModelRelease.dossierSlug).toBeUndefined();
+    expect(openModelRelease.dossierSlug).toBe("open-model-release-record");
     expect(openModelRelease.places).toEqual([]);
     expect(openModelRelease.relations).toEqual([]);
     expect(openModelRelease.series).toEqual([]);
@@ -503,7 +520,7 @@ describe("Evidence Atlas schema and graph", () => {
   it("prevents Atlas releases from exposing review-stage dispatches", () => {
     const invalid = clone(catalog);
     const reviewOnly = invalid.dispatches.find(
-      (item) => item.slug === "weibo-graduate-employment-thread"
+      (item) => item.slug === "whos-afraid-of-chinese-models"
     )!;
     invalid.atlasReleases[0].relatedDispatchIds = [reviewOnly.id];
     expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
