@@ -88,9 +88,9 @@ annotated translation of Liang Wenfeng's 2024 interview. Kimi K3 appears in the
 chronology and Dossier only as a sourced July 20 announcement with a July 27
 verification gate; its review-stage Dispatch remains outside public routes.
 
-The wider source-lead catalog currently contains 285 records. The seven
-general-China article batches account for 208 external candidates: 193 are
-withheld and 15 rejected. None is drafted or public. These figures describe
+The wider source-lead catalog currently contains 315 records. The eight
+general-China article batches account for 238 external candidates: 219 are
+withheld and 19 rejected. None is drafted or public. These figures describe
 editorial intake, not the size of the public archive.
 
 ## Search and indexing boundary
