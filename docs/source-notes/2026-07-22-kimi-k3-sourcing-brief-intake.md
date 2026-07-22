@@ -62,7 +62,7 @@ That record supports a more durable Mainland Dispatch question:
 - Do not say the chip controls “predicted” or “caused” DeepSeek. Present the 2022
   analysis as a dated hypothesis and investigate the causal steps.
 - Do not convert the a16z/Casado anecdote into market share.
-- Do not convert a Hacker News report of a deployment, price, model identity, or
+- Do not convert an informal report of a deployment, price, model identity, or
   product architecture into a factual claim.
 - Do not describe China or the United States as a single AI actor. Firms within
   each jurisdiction have different business models, access constraints, and
@@ -94,8 +94,7 @@ The new leads cover:
 - Hugging Face, SCIO/Xinhua, Anthropic, and ChinaTalk primary or direct records;
 - Emerging Trajectories, The Stack, MarkTechPost, and OrcaRouter with explicit
   limitations;
-- five additional Hacker News discussions, all structurally constrained to grade
-  D, `discussion`, and `unverified`.
+- five informal discussion prompts, excluded from the tracked evidence catalog.
 
 Blocked Reuters, Bloomberg, Financial Times, Economist, and Verge links remain in
 the supplied artifact and its gap list. They were not upgraded to source-read or
@@ -128,8 +127,8 @@ any of the six drafts can publish:
 4. source market-adoption claims from telemetry or a defined survey population;
 5. independently corroborate the Hugging Face incident where possible;
 6. obtain and review the blocked Reuters overseas-access report;
-7. inspect the complete Tier-3 Hacker News threads before paraphrasing them;
+7. independently source any potentially useful factual research prompts;
 8. replace provider and router benchmark claims with protocols, inputs, outputs,
    pricing dates, and repeatable results.
 
-Hacker News remains commentary and question generation only.
+Informal discussion remains private question generation only.

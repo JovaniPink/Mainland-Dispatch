@@ -54,8 +54,8 @@ The following material remains outside the Atlas because it was not in the
   artifacts, the Stanford AI Index, and USCC analysis;
 - Reuters and other independent-reporting leads that have not completed source
   review in the local catalog;
-- Hacker News threads and comments, which may surface questions but cannot
-  establish release state, performance, cost, adoption, or motive;
+- informal discussion prompts, which cannot establish release state,
+  performance, cost, adoption, or motive;
 - review-stage Dispatch records `d-031` through `d-036`; and
 - the sourcebook itself, which organizes research but is not substituted for
   the underlying records.

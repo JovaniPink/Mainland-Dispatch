@@ -110,6 +110,7 @@ export function Composer() {
       extras[field.name] = field.type === "number" ? Number(raw) : raw;
     }
     if (f.kind === "video") extras.captions = [];
+    const sourceLeadId = `lead-${slugify(f.source || f.title) || "new"}`;
     return {
       kind: f.kind,
       id: `d-${slugify(f.title) || "new"}`,
@@ -118,9 +119,29 @@ export function Composer() {
       summary: f.summary,
       commentary: f.commentary,
       whyItMatters: f.whyItMatters,
-      source: f.source,
-      sourceUrl: f.sourceUrl,
-      sourceDate: f.sourceDate,
+      sourceLeadId,
+      canonicalSource: {
+        id: "source-canonical",
+        title: f.title || "Unresolved canonical title",
+        publisher: f.source || "Unresolved publisher",
+        url: f.sourceUrl,
+        publishedAt: f.sourceDate,
+        retrievedAt: today(),
+        language: f.language,
+        translationStatus: f.translationStatus,
+        limitations: ["Canonical source requires editorial verification."],
+      },
+      supportingSources: [],
+      claims: [
+        {
+          id: "claim-source-report",
+          statement: f.summary || "Claim requires editorial review.",
+          status: "reported",
+          sourceIds: ["source-canonical"],
+          limitations: ["Supporting evidence has not been added."],
+        },
+      ],
+      excerpts: [],
       curatedAt: today(),
       updatedAt: today(),
       language: f.language,

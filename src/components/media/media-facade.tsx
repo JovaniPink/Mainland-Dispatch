@@ -106,7 +106,7 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
           <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
             <p className="font-serif text-lg">{d.title}</p>
             <a
-              href={d.sourceUrl}
+              href={d.canonicalSource.url}
               target="_blank"
               rel="noopener noreferrer"
               className="border border-signal px-4 py-2 font-mono text-xs uppercase tracking-widest text-signal"
@@ -142,7 +142,9 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
             <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-paper text-paper transition-colors group-hover:border-signal group-hover:text-signal">
               {d.kind === "video" ? "▶" : "♪"}
             </span>
-            <span className="font-serif text-base text-paper">{d.source}</span>
+            <span className="font-serif text-base text-paper">
+              {d.canonicalSource.publisher}
+            </span>
             <span className="font-mono text-[0.65rem] uppercase tracking-widest text-paper/70">
               {meta.join(" · ")}
             </span>

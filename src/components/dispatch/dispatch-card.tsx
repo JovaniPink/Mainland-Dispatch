@@ -52,7 +52,7 @@ export function DispatchCard({
         </p>
         <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-rule pt-3">
           <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
-            Published {formatDateShort(d.sourceDate)} · Curated{" "}
+            Published {formatDateShort(d.canonicalSource.publishedAt)} · Curated{" "}
             {formatDateShort(d.curatedAt)}
           </p>
           <SaveButton id={d.id} />

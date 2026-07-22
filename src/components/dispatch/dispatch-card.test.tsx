@@ -23,7 +23,9 @@ describe("DispatchCard", () => {
     expect(screen.getByText(/editorial note/i)).toBeInTheDocument();
     expect(screen.getByText(/published .* · curated/i)).toBeInTheDocument();
     expect(
-      screen.getByText(new RegExp(`Video · ${video.source}`, "i"))
+      screen.getByText(
+        new RegExp(`Video · ${video.canonicalSource.publisher}`, "i")
+      )
     ).toBeInTheDocument();
   });
 

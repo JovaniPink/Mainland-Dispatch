@@ -1,23 +1,61 @@
-const snapshot = (points: number, comments: number) => ({
-  points,
-  comments,
-  capturedAt: "2026-07-22",
-});
+const accessAudit: Record<
+  string,
+  { accessStatus: "restricted" | "unavailable"; decisionReason: string }
+> = {
+  "lead-2018-reuters-healthy-life-expectancy": {
+    accessStatus: "restricted",
+    decisionReason:
+      "The legacy publisher URL resolves but does not expose the full report. Review stops before source-read pending authorized access and the exact WHO dataset release.",
+  },
+  "lead-2019-cassandra-yuan-devaluation": {
+    accessStatus: "unavailable",
+    decisionReason:
+      "The supplied article returns not found. Review stops pending a publisher archive; no Dispatch can rely on the headline or surviving snippets.",
+  },
+  "lead-2021-daily-business-group-crypto-illegal": {
+    accessStatus: "restricted",
+    decisionReason:
+      "The publisher blocks full-text retrieval. Review stops before source-read pending authorized access and the controlling PBOC notice.",
+  },
+  "lead-2017-ap-china-esa-moon-outpost": {
+    accessStatus: "unavailable",
+    decisionReason:
+      "The legacy publisher host no longer resolves. Review stops pending a publisher-authorized archive and primary ESA or CNSA records.",
+  },
+  "lead-2019-nyt-reuters-simon-cheng-torture": {
+    accessStatus: "restricted",
+    decisionReason:
+      "The syndicated legacy report is not exposed as reviewable full text. Review stops before source-read pending authorized access, the first-person account, official response, and later record.",
+  },
+  "lead-2019-reuters-bitcoin-mining-draft-ban": {
+    accessStatus: "restricted",
+    decisionReason:
+      "The legacy publisher URL resolves but does not expose the full report. Review stops before source-read pending authorized access and the cited NDRC catalogue and final policy history.",
+  },
+};
 
-const lead = <T extends object>(item: T) => ({
-  accessedAt: "2026-07-22",
-  sourceOrigin: "user-sourcebook",
-  reviewState: "supplied",
-  evidenceStatus: "unverified",
-  ...item,
-});
+const lead = <T extends { id: string; paywall?: boolean }>(item: T) => {
+  const audit = accessAudit[item.id];
+  return {
+    accessedAt: "2026-07-22",
+    sourceOrigin: "user-sourcebook",
+    reviewState: "supplied",
+    evidenceStatus: "unverified",
+    collectionId: "china-article-corpus-2026-07",
+    disposition: "withheld",
+    ...item,
+    decisionReason:
+      audit?.decisionReason ??
+      (item.paywall
+        ? "Full canonical text is paywalled; review stops before source-read until authorized full-text review and corroboration are complete."
+        : "The canonical URL resolves, but full-text and supporting-evidence review is incomplete; review stops before source-read."),
+    accessStatus:
+      audit?.accessStatus ?? (item.paywall ? "paywalled" : "reachable"),
+  };
+};
 
-/**
- * User-supplied HN discovery batch from the all-time China search, page 5 at
- * intake time. These records are Desk leads, not reporting. The external link
- * is the candidate source and the HN thread is commentary context only.
- */
-export const chinaHn288To316Leads = [
+/** Article candidates supplied for editorial review. Discovery metadata is intentionally omitted. */
+export const chinaArticleIntake03 = [
   lead({
     id: "lead-2021-scmp-log4j-alibaba-cloud",
     title:
@@ -28,8 +66,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["log4j", "alibaba-cloud", "cybersecurity", "regulation"],
     paywall: true,
-    hnStoryId: "29658342",
-    hnSnapshot: snapshot(316, 189),
     notes:
       "Verify the MIIT record and the disclosure timeline. A reported suspension of a cooperation arrangement is not a finding that Alibaba caused Log4Shell, and vulnerability discovery, notification, and regulatory punishment are distinct events.",
   }),
@@ -41,24 +77,8 @@ export const chinaHn288To316Leads = [
     publishedAt: "2026-07-01",
     contentType: "analysis",
     topics: ["jet-engines", "aerospace", "manufacturing", "technology"],
-    hnStoryId: "48740971",
-    hnSnapshot: snapshot(314, 315),
     notes:
       "Recent explanatory essay, not a technical authority. Check program history, materials, manufacturing yields, certification, imports, and current engine deployments against specialist and primary sources; the headline must not become a timeless claim that China makes no jet engines.",
-  }),
-  lead({
-    id: "lead-2022-hn-shanghai-lockdown",
-    title: "Tell HN: China Is Entering Lockdown",
-    url: "https://news.ycombinator.com/item?id=30658886",
-    publisher: "Hacker News",
-    publishedAt: "2022-03-13",
-    contentType: "discussion",
-    claimedGrade: "D",
-    topics: ["shanghai", "covid-19", "lockdown", "firsthand-perspective"],
-    hnStoryId: "30658886",
-    hnSnapshot: snapshot(314, 295),
-    notes:
-      "First-person Shanghai snapshot and forecast from March 2022. It may contextualize uncertainty and household preparation only after full-thread review; it is anecdotal, later events must be reconstructed independently, and neither the post nor its comments establish national conditions.",
   }),
   lead({
     id: "lead-2017-nyt-urban-cashless-payments",
@@ -69,8 +89,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["mobile-payments", "cash", "cities", "consumer-life"],
     paywall: true,
-    hnStoryId: "14785084",
-    hnSnapshot: snapshot(312, 337),
     notes:
       "Historical urban snapshot. Do not generalize observed Alipay and WeChat Pay adoption to national cash disappearance; review rural, elderly, unbanked, accessibility, merchant, and later legal-tender evidence.",
   }),
@@ -82,8 +100,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2015,
     contentType: "analysis",
     topics: ["business-culture", "gender", "elite-networks", "guanxi"],
-    hnStoryId: "17453554",
-    hnSnapshot: snapshot(312, 243),
     notes:
       "A period cultural essay with a bounded authorial perspective. Preserve its gendered and elite-network sample, seek Chinese and participant perspectives, and do not turn described practices into an essentialized national business culture.",
   }),
@@ -100,8 +116,6 @@ export const chinaHn288To316Leads = [
       "platforms",
       "political-economy",
     ],
-    hnStoryId: "28036847",
-    hnSnapshot: snapshot(311, 383),
     notes:
       "Opinionated causal synthesis. Separate the different regulatory campaigns, agencies, legal bases, sectors, and dates, then account for subsequent policy reversals before retaining any single explanation.",
   }),
@@ -115,8 +129,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["entrepreneurs", "expatriates", "business-climate", "migration"],
     paywall: true,
-    hnStoryId: "18629735",
-    hnSnapshot: snapshot(311, 292),
     notes:
       "Interview-led period reporting can show individual experiences, not the prevalence of a general exodus. Resolve sample selection, visa and sector context, investment data, and counterexamples.",
   }),
@@ -128,8 +140,6 @@ export const chinaHn288To316Leads = [
     publishedAt: "2018-05-30",
     contentType: "reporting",
     topics: ["public-health", "healthy-life-expectancy", "who", "statistics"],
-    hnStoryId: "17192639",
-    hnSnapshot: snapshot(311, 206),
     notes:
       "Healthy life expectancy is a modeled metric, not total life expectancy or a general ranking of healthcare systems. Retrieve the exact WHO release, uncertainty and later revisions before comparison.",
   }),
@@ -142,8 +152,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2019,
     contentType: "analysis",
     topics: ["yuan", "exchange-rates", "trade", "monetary-policy"],
-    hnStoryId: "20736573",
-    hnSnapshot: snapshot(311, 166),
     notes:
       "Explanatory blog, not a primary monetary-policy record. Preserve the difference between a managed exchange-rate regime and a free float, and verify the claimed policy action and motive against PBOC data and contemporaneous analysis.",
   }),
@@ -156,8 +164,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2019,
     contentType: "analysis",
     topics: ["amazon", "sellers", "e-commerce", "cross-border-trade"],
-    hnStoryId: "19877499",
-    hnSnapshot: snapshot(309, 187),
     notes:
       "Commercial research estimate. Capture the marketplace, date, seller-location inference, definition of top or active seller, and denominator; seller share is not transaction or revenue share.",
   }),
@@ -175,8 +181,6 @@ export const chinaHn288To316Leads = [
       "travel-restrictions",
       "governance",
     ],
-    hnStoryId: "18515909",
-    hnSnapshot: snapshot(306, 256),
     notes:
       "High-risk headline framing. Distinguish court judgment-defaulter enforcement, sectoral blacklists, rail or air restrictions, financial credit, local pilots, and any scoring system; retrieve the responsible agency's records and avoid the monolithic national-score myth.",
   }),
@@ -189,8 +193,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["ageism", "technology-work", "labor", "employment"],
     paywall: true,
-    hnStoryId: "16978342",
-    hnSnapshot: snapshot(306, 230),
     notes:
       "Reported workplace ageism deserves sector, occupation, gender, firm-size, and economic-cycle context. Interviews and job listings do not establish a universal age cutoff.",
   }),
@@ -203,8 +205,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     claimedGrade: "D",
     topics: ["cryptocurrency", "regulation", "pboc", "financial-risk"],
-    hnStoryId: "28640964",
-    hnSnapshot: snapshot(305, 667),
     notes:
       "Derivative report with insufficient authority for the legal claim. Resolve the joint PBOC notice and translation, jurisdiction and effective scope, and distinguish transactions, exchange services, mining, and private ownership.",
   }),
@@ -216,8 +216,6 @@ export const chinaHn288To316Leads = [
     publishedAt: "2015-04-02",
     contentType: "analysis",
     topics: ["github", "great-cannon", "ddos", "network-measurement"],
-    hnStoryId: "9308048",
-    hnSnapshot: snapshot(305, 138),
     notes:
       "Independent technical analysis from the incident period. Preserve observation-versus-attribution limits and compare its mechanism and location claims with GitHub, Citizen Lab, packet evidence, and later peer-reviewed work.",
   }),
@@ -231,8 +229,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["hong-kong", "twitter", "information-operations", "attribution"],
     paywall: true,
-    hnStoryId: "21004297",
-    hnSnapshot: snapshot(304, 133),
     notes:
       "Review the platform dataset, account-selection method, coordination evidence, and attribution basis. A documented campaign does not justify treating all Chinese-language users or criticism of protesters as state-directed.",
   }),
@@ -245,8 +241,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["xinjiang", "surveillance", "detention", "human-rights"],
     paywall: true,
-    hnStoryId: "17215966",
-    hnSnapshot: snapshot(303, 244),
     notes:
       "Important but dated briefing. Reconstruct the source trail for detention and surveillance claims, include affected-community testimony and official responses, and update the chronology rather than projecting 2018 conditions unchanged.",
   }),
@@ -263,8 +257,6 @@ export const chinaHn288To316Leads = [
       "blacklists",
       "daily-life",
     ],
-    hnStoryId: "19493033",
-    hnSnapshot: snapshot(302, 315),
     notes:
       "Case reporting needs precise program identity. Separate court judgment-defaulter lists and specific restrictions from financial credit and local point pilots; verify the 13-million denominator and date against primary records.",
   }),
@@ -277,8 +269,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["treasuries", "yuan", "foreign-reserves", "market-intervention"],
     paywall: true,
-    hnStoryId: "10129110",
-    hnSnapshot: snapshot(301, 204),
     notes:
       "Contemporaneous reported estimates, potentially based on anonymous sources and indirect reserve data. Distinguish liquidity operations from geopolitical divestment and incorporate subsequent official data revisions.",
   }),
@@ -290,8 +280,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2017,
     contentType: "reporting",
     topics: ["moon", "esa", "space-cooperation", "exploration"],
-    hnStoryId: "14210032",
-    hnSnapshot: snapshot(300, 158),
     notes:
       "Talks and stated interest are not an agreement, funded program, or constructed outpost. The obsolete AP Big Story URL needs a canonical or archived copy, then later ESA and Chinese program records.",
   }),
@@ -304,8 +292,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["journalists", "media", "diplomacy", "press-freedom"],
     paywall: true,
-    hnStoryId: "22607236",
-    hnSnapshot: snapshot(298, 171),
     notes:
       "Verify the exact credential and nationality rules from the government announcement, the affected staff, reciprocal US media restrictions, and later status. Preserve the chronology rather than using the headline as a current rule.",
   }),
@@ -322,8 +308,6 @@ export const chinaHn288To316Leads = [
       "entrepreneurship",
       "personal-perspective",
     ],
-    hnStoryId: "9034673",
-    hnSnapshot: snapshot(297, 304),
     notes:
       "Personal travel and technology essay from 2015. It can document the author's impressions, not representative Chinese attitudes, business conditions, or a durable national trajectory.",
   }),
@@ -336,8 +320,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2019,
     contentType: "reporting",
     topics: ["concordia", "uyghurs", "academic-freedom", "foreign-influence"],
-    hnStoryId: "26678946",
-    hnSnapshot: snapshot(297, 86),
     notes:
       "Resolve the event and cancellation timeline plus university, organizer, activist, and consular accounts. One alleged intervention does not establish the prevalence of influence across Canadian campuses.",
   }),
@@ -349,8 +331,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2013,
     contentType: "reporting",
     topics: ["jade-rabbit", "change-3", "moon", "space"],
-    hnStoryId: "6905786",
-    hnSnapshot: snapshot(295, 105),
     notes:
       "Landing and rover deployment are distinct from long-term mission performance. Pair the breaking report with mission records and later accounts of the rover's mobility problems and scientific output.",
   }),
@@ -363,8 +343,6 @@ export const chinaHn288To316Leads = [
     publishedAt: "2019-11-20",
     contentType: "reporting",
     topics: ["simon-cheng", "hong-kong", "detention", "torture-allegation"],
-    hnStoryId: "21584337",
-    hnSnapshot: snapshot(293, 38),
     notes:
       "Report the allegation with attribution and include UK and Chinese responses, available medical or documentary evidence, and later legal or diplomatic records. The retired syndication URL may require a canonical Reuters or archive copy.",
   }),
@@ -377,8 +355,6 @@ export const chinaHn288To316Leads = [
     publicationYear: 2017,
     contentType: "reporting",
     topics: ["personal-data", "data-brokers", "privacy", "surveillance"],
-    hnStoryId: "13379095",
-    hnSnapshot: snapshot(292, 241),
     notes:
       "Historical investigation into data markets. Keep demonstrated broker access separate from inferred government access, identify collection methods and samples, and account for China's later cybersecurity and personal-information laws.",
   }),
@@ -391,8 +367,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["tesla", "shanghai", "manufacturing", "foreign-investment"],
     paywall: true,
-    hnStoryId: "15529944",
-    hnSnapshot: snapshot(292, 179),
     notes:
       "Treat this as contemporaneous reporting on a preliminary arrangement, not the final factory agreement. Trace the 2018 deal, ownership rules, approvals, construction, and production separately.",
   }),
@@ -406,8 +380,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["vpn", "great-firewall", "internet-regulation", "miit"],
     paywall: true,
-    hnStoryId: "13459623",
-    hnSnapshot: snapshot(292, 81),
     notes:
       "The cleanup campaign and authorization rules need the controlling MIIT notice. Do not infer that every VPN use became instantly illegal; identify service-provider obligations, enterprise exceptions, enforcement, geography, and current status.",
   }),
@@ -420,8 +392,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["housing", "vacancy", "property", "survey"],
     paywall: true,
-    hnStoryId: "18935888",
-    hnSnapshot: snapshot(291, 181),
     notes:
       "Survey or model estimate, not a census count. Record the urban sample, denominator, definition and duration of vacancy, treatment of second homes, uncertainty, and 2018 date; do not reuse 50 million as current.",
   }),
@@ -434,8 +404,6 @@ export const chinaHn288To316Leads = [
     contentType: "reporting",
     topics: ["tsmc", "semiconductors", "engineers", "talent"],
     paywall: true,
-    hnStoryId: "24129861",
-    hnSnapshot: snapshot(290, 412),
     notes:
       "Recruiting count and company identities may rely on unnamed sources. Hiring does not itself prove technology transfer or capability parity; seek company responses, employment context, and later fab outcomes.",
   }),
@@ -447,8 +415,6 @@ export const chinaHn288To316Leads = [
     publishedAt: "2019-04-09",
     contentType: "reporting",
     topics: ["bitcoin", "mining", "ndrc", "industrial-policy"],
-    hnStoryId: "19611848",
-    hnSnapshot: snapshot(288, 312),
     notes:
       "This concerned an NDRC draft industry catalogue and consultation, not an immediate nationwide ban. Track the final catalogue and distinguish this 2019 proposal from the later 2021 mining crackdown.",
   }),

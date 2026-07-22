@@ -19,7 +19,7 @@ export function filterDispatches(
         d.title,
         d.summary,
         d.commentary,
-        d.source,
+        d.canonicalSource.publisher,
         ...d.tags,
         ...d.people,
         ...d.organizations,

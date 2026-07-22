@@ -17,6 +17,9 @@ export function SourceLeadInbox() {
   const [reviewState, setReviewState] = useState<
     "all" | SourceLead["reviewState"]
   >("all");
+  const [disposition, setDisposition] = useState<
+    "all" | SourceLead["disposition"]
+  >("all");
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredLeads = useMemo(
@@ -24,6 +27,8 @@ export function SourceLeadInbox() {
       sourceLeads.filter((lead) => {
         const matchesReviewState =
           reviewState === "all" || lead.reviewState === reviewState;
+        const matchesDisposition =
+          disposition === "all" || lead.disposition === disposition;
         const searchable = [
           lead.title,
           lead.publisher,
@@ -34,10 +39,11 @@ export function SourceLeadInbox() {
           .toLowerCase();
         return (
           matchesReviewState &&
+          matchesDisposition &&
           (!normalizedQuery || searchable.includes(normalizedQuery))
         );
       }),
-    [normalizedQuery, reviewState]
+    [disposition, normalizedQuery, reviewState]
   );
 
   const groups = new Map<string, typeof filteredLeads>();
@@ -53,28 +59,28 @@ export function SourceLeadInbox() {
         ? -1
         : left.localeCompare(right)
   );
-  const isFiltering = Boolean(normalizedQuery) || reviewState !== "all";
+  const isFiltering =
+    Boolean(normalizedQuery) || reviewState !== "all" || disposition !== "all";
 
   return (
     <section className="border border-rule p-4">
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-signal">
-            Source leads · chronological inbox
+            Article candidates · chronological inbox
           </p>
           <p className="mt-2 max-w-2xl font-serif text-sm leading-relaxed text-ink-muted">
-            {sourceLeads.length} lightweight leads. A link can enter this inbox
-            without becoming a Dispatch or crossing the public publication
-            boundary. HN points are discovery metadata; only substantive, fully
-            reviewed comments may inform commentary.
+            {sourceLeads.length} canonical-source candidates. Every article
+            remains outside the public archive until its full text, evidence,
+            limitations, and Dispatch linkage pass review.
           </p>
         </div>
         <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
-          2006–2026 · HN is commentary only
+          Canonical articles · fail closed
         </p>
       </div>
 
-      <div className="mt-4 grid gap-3 border-y border-rule py-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="mt-4 grid gap-3 border-y border-rule py-3 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
         <label className="grid gap-1 font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted">
           Search source leads
           <input
@@ -100,10 +106,29 @@ export function SourceLeadInbox() {
             <option value="supplied">Supplied</option>
             <option value="metadata-checked">Metadata checked</option>
             <option value="source-read">Source read</option>
+            <option value="evidence-reviewed">Evidence reviewed</option>
+          </select>
+        </label>
+        <label className="grid gap-1 font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted">
+          Disposition
+          <select
+            value={disposition}
+            onChange={(event) =>
+              setDisposition(
+                event.target.value as "all" | SourceLead["disposition"]
+              )
+            }
+            className="border border-rule bg-paper px-3 py-2 font-sans text-sm normal-case tracking-normal text-ink outline-none focus:border-signal"
+          >
+            <option value="all">All dispositions</option>
+            <option value="pending">Pending</option>
+            <option value="drafted">Drafted</option>
+            <option value="withheld">Withheld</option>
+            <option value="rejected">Rejected</option>
           </select>
         </label>
         <p
-          className="font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted sm:col-span-2"
+          className="font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted sm:col-span-3"
           aria-live="polite"
         >
           {filteredLeads.length} of {sourceLeads.length} leads shown
@@ -161,20 +186,21 @@ export function SourceLeadInbox() {
                       {yearFor(lead.publishedAt, lead.publicationYear) ??
                         "Date pending"}{" "}
                       · {lead.publisher} · {lead.contentType} ·{" "}
-                      {lead.reviewState}
+                      {lead.reviewState} · {lead.disposition} ·{" "}
+                      {lead.accessStatus}
                     </p>
                     <p className="mt-2 text-xs leading-relaxed text-ink-muted">
                       {lead.notes}
                     </p>
-                    {lead.hnStoryId && lead.publisher !== "Hacker News" && (
-                      <a
-                        href={`https://news.ycombinator.com/item?id=${lead.hnStoryId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 inline-block font-mono text-[0.58rem] uppercase tracking-widest text-jade hover:text-signal"
-                      >
-                        HN discussion · commentary only ↗
-                      </a>
+                    {lead.decisionReason && (
+                      <p className="mt-2 border-l-2 border-rule pl-2 text-xs leading-relaxed text-ink-muted">
+                        Decision: {lead.decisionReason}
+                      </p>
+                    )}
+                    {lead.dispatchId && (
+                      <p className="mt-2 font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                        Linked Dispatch · {lead.dispatchId}
+                      </p>
                     )}
                   </li>
                 ))}

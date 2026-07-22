@@ -27,9 +27,29 @@ const validArticle = {
   summary: "Summary.",
   commentary: "Commentary.",
   whyItMatters: "It matters.",
-  source: "Test Wire",
-  sourceUrl: "https://example.com/story",
-  sourceDate: "2026-07-01",
+  sourceLeadId: "lead-test-wire-story",
+  canonicalSource: {
+    id: "source-canonical",
+    title: "A test dispatch",
+    publisher: "Test Wire",
+    url: "https://example.com/story",
+    publishedAt: "2026-07-01",
+    retrievedAt: "2026-07-02",
+    language: "en",
+    translationStatus: "original-english",
+    limitations: ["Test limitation."],
+  },
+  supportingSources: [],
+  claims: [
+    {
+      id: "claim-test",
+      statement: "A test claim.",
+      status: "reported",
+      sourceIds: ["source-canonical"],
+      limitations: [],
+    },
+  ],
+  excerpts: [],
   curatedAt: "2026-07-02",
   updatedAt: "2026-07-02",
   language: "en",
@@ -44,47 +64,48 @@ describe("DispatchSchema", () => {
   it("accepts a valid article dispatch", () => {
     const result = DispatchSchema.safeParse(validArticle);
     expect(result.success).toBe(true);
-    if (result.success) expect(result.data.commentaryReferences).toEqual([]);
+    if (result.success) expect(result.data.supportingSources).toEqual([]);
   });
 
-  it("accepts a labeled HN commentary reference without treating it as evidence", () => {
+  it("accepts a corroborating source and bounded excerpt", () => {
     const result = DispatchSchema.safeParse({
       ...validArticle,
-      commentaryReferences: [
+      supportingSources: [
         {
-          label: "Hacker News discussion 123",
-          url: "https://news.ycombinator.com/item?id=123",
+          id: "source-record",
+          title: "Primary record",
+          publisher: "Public Agency",
+          url: "https://agency.example/record",
+          publishedAt: "2026-07-01",
           retrievedAt: "2026-07-21",
-          use: "commentary-context",
+          language: "en",
+          translationStatus: "original-english",
+          limitations: [],
+          role: "primary-record",
+        },
+      ],
+      excerpts: [
+        {
+          sourceId: "source-record",
+          text: "A short attributed excerpt.",
+          context: "Public Agency record.",
         },
       ],
     });
     expect(result.success).toBe(true);
   });
 
-  it("rejects an unlabeled or evidentiary commentary reference", () => {
+  it("rejects an excerpt longer than 25 words", () => {
     expect(
       DispatchSchema.safeParse({
         ...validArticle,
-        commentaryReferences: [
+        excerpts: [
           {
-            label: " ",
-            url: "https://news.ycombinator.com/item?id=123",
-            retrievedAt: "2026-07-21",
-            use: "commentary-context",
-          },
-        ],
-      }).success
-    ).toBe(false);
-    expect(
-      DispatchSchema.safeParse({
-        ...validArticle,
-        commentaryReferences: [
-          {
-            label: "Hacker News discussion 123",
-            url: "https://news.ycombinator.com/item?id=123",
-            retrievedAt: "2026-07-21",
-            use: "evidence",
+            sourceId: "source-canonical",
+            text: Array.from({ length: 26 }, (_, index) => `word${index}`).join(
+              " "
+            ),
+            context: "Too long.",
           },
         ],
       }).success
@@ -94,7 +115,7 @@ describe("DispatchSchema", () => {
   it("rejects an invalid sourceUrl", () => {
     const result = DispatchSchema.safeParse({
       ...validArticle,
-      sourceUrl: "not-a-url",
+      canonicalSource: { ...validArticle.canonicalSource, url: "not-a-url" },
     });
     expect(result.success).toBe(false);
   });
@@ -110,7 +131,10 @@ describe("DispatchSchema", () => {
   it("rejects a malformed date", () => {
     const result = DispatchSchema.safeParse({
       ...validArticle,
-      sourceDate: "July 1, 2026",
+      canonicalSource: {
+        ...validArticle.canonicalSource,
+        publishedAt: "July 1, 2026",
+      },
     });
     expect(result.success).toBe(false);
   });
@@ -118,7 +142,10 @@ describe("DispatchSchema", () => {
   it("rejects an impossible calendar date", () => {
     const result = DispatchSchema.safeParse({
       ...validArticle,
-      sourceDate: "2026-99-99",
+      canonicalSource: {
+        ...validArticle.canonicalSource,
+        publishedAt: "2026-99-99",
+      },
     });
     expect(result.success).toBe(false);
   });
@@ -167,7 +194,7 @@ describe("seed content", () => {
     expect(dispatches).toHaveLength(24);
     expect(
       dispatches.some((dispatch) =>
-        new URL(dispatch.sourceUrl).hostname.endsWith("example.com")
+        new URL(dispatch.canonicalSource.url).hostname.endsWith("example.com")
       )
     ).toBe(false);
   });
@@ -199,26 +226,6 @@ describe("seed content", () => {
     expect(getPublicDispatch("whos-afraid-of-chinese-models")).toBeUndefined();
   });
 
-  it("uses supplied Hacker News links only as commentary context", () => {
-    const suppliedHnUrls = new Set([
-      "https://news.ycombinator.com/item?id=48977128",
-      "https://news.ycombinator.com/item?id=48979269",
-    ]);
-
-    expect(
-      dispatches.some((dispatch) => suppliedHnUrls.has(dispatch.sourceUrl))
-    ).toBe(false);
-    const hnReferences = dispatches
-      .flatMap((dispatch) => dispatch.commentaryReferences)
-      .filter((reference) => suppliedHnUrls.has(reference.url));
-    expect(new Set(hnReferences.map((reference) => reference.url))).toEqual(
-      suppliedHnUrls
-    );
-    expect(
-      hnReferences.every((reference) => reference.use === "commentary-context")
-    ).toBe(true);
-  });
-
   it("publishes the source-read historical backfile", () => {
     const backfileIds = new Set([
       "d-021",
@@ -242,7 +249,7 @@ describe("seed content", () => {
         (dispatch) =>
           dispatch.editorialStatus === "published" &&
           dispatch.provenance === "verified" &&
-          dispatch.commentaryReferences.length === 0
+          dispatch.claims.length > 0
       )
     ).toBe(true);
     expect(
@@ -252,7 +259,9 @@ describe("seed content", () => {
     ).toBe(true);
     expect(
       new Set(
-        backfileRecords.map((dispatch) => dispatch.sourceDate.slice(0, 4))
+        backfileRecords.map((dispatch) =>
+          dispatch.canonicalSource.publishedAt.slice(0, 4)
+        )
       )
     ).toEqual(
       new Set(["2012", "2016", "2017", "2018", "2019", "2020", "2021", "2022"])
@@ -306,6 +315,12 @@ describe("seed content", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("enforces one canonical source lead per Dispatch", () => {
+    const invalid = clone(catalog);
+    invalid.dispatches[1].sourceLeadId = invalid.dispatches[0].sourceLeadId;
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
 });
 
 describe("publication boundary", () => {
@@ -335,10 +350,61 @@ describe("publication boundary", () => {
     const placeholderCatalog = clone(catalog);
     placeholderCatalog.dispatches.find(
       (dispatch) => dispatch.id === "d-034"
-    )!.sourceUrl = "https://example.com/not-a-source";
+    )!.canonicalSource.url = "https://example.com/not-a-source";
     expect(ContentCatalogSchema.safeParse(placeholderCatalog).success).toBe(
       false
     );
+  });
+
+  it("rejects duplicate or unresolved evidence source ids", () => {
+    const duplicate = clone(catalog);
+    const dispatch = duplicate.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    dispatch.supportingSources.push({
+      ...dispatch.canonicalSource,
+      role: "independent-corroboration",
+    });
+    expect(ContentCatalogSchema.safeParse(duplicate).success).toBe(false);
+
+    const unresolved = clone(catalog);
+    unresolved.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!.claims[0].sourceIds = ["source-missing"];
+    expect(ContentCatalogSchema.safeParse(unresolved).success).toBe(false);
+  });
+
+  it("requires corroboration for independently observed claims", () => {
+    const invalid = clone(catalog);
+    const dispatch = invalid.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    dispatch.claims[0].status = "independentlyObserved";
+    dispatch.claims[0].sourceIds = [dispatch.canonicalSource.id];
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects public Dispatches tied to withheld leads", () => {
+    const invalid = clone(catalog);
+    const dispatch = invalid.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    dispatch.sourceLeadId = "lead-2018-nyt-china-economy-slowdown";
+    dispatch.canonicalSource.url =
+      "https://www.nytimes.com/2018/12/14/business/china-economy-xi-jinping.html";
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects public relationships to review-stage Dispatches", () => {
+    const invalid = clone(catalog);
+    const publicDispatch = invalid.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    const reviewDispatch = invalid.dispatches.find(
+      (item) => item.editorialStatus === "sourceReview"
+    )!;
+    publicDispatch.relatedDispatchIds = [reviewDispatch.id];
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
   });
 
   it("publishes only public Atlas releases", () => {

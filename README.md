@@ -136,10 +136,9 @@ Public promotion follows the explicit checklist in
 read the canonical source, separate reported fact from editorial commentary,
 record date/language/attribution limitations, verify every public relationship,
 and fail closed when a promised artifact or independent check has not arrived.
-Hacker News threads are perspective inputs only: reviewers retain substantive
-arguments, explicit uncertainty, checkable references, corrections, and
-relevant firsthand technical experience while excluding popularity, jokes,
-slogans, repetition, unsupported generalizations, and claims of consensus.
+Research prompts remain private and cannot support public claims. The tracked
+catalog retains only canonical articles, reviewed supporting records, explicit
+claim statuses, and limitations.
 
 Topic-specific intake logs record source quality, exclusions, open checks, and
 the exact research stopping point. The current Chinese open-model package is
@@ -159,10 +158,6 @@ The revised Kimi K3 sourcing brief, canonical-source corrections, six historical
 drafts, source-inbox expansion, and exact research stopping point are documented
 in
 [`docs/source-notes/2026-07-22-kimi-k3-sourcing-brief-intake.md`](docs/source-notes/2026-07-22-kimi-k3-sourcing-brief-intake.md).
-The 30-item general-China HN discovery batch, unresolved URLs, and comment
-selection rule are recorded in
-[`docs/source-notes/2026-07-22-china-hn-300-intake.md`](docs/source-notes/2026-07-22-china-hn-300-intake.md).
-The following 30-item HN discovery batch, including corrections for social-credit
-framing, preliminary policy announcements, historical estimates, and anecdotal
-lockdown testimony, is recorded in
-[`docs/source-notes/2026-07-22-china-hn-288-316-intake.md`](docs/source-notes/2026-07-22-china-hn-288-316-intake.md).
+The three supplied general-China article batches are consolidated into one
+88-candidate access and disposition audit in
+[`docs/source-notes/2026-07-22-china-article-corpus-review.md`](docs/source-notes/2026-07-22-china-article-corpus-review.md).

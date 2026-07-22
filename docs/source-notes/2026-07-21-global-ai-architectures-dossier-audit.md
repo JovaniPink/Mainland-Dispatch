@@ -143,7 +143,7 @@ This pass added:
 - LMArena methodology context;
 - Anthropic's distillation allegation;
 - the Qwen-Robot product lead;
-- one Hacker News discussion, constrained to commentary-only status.
+- one informal discussion prompt, excluded from the tracked evidence catalog.
 
 ## Exact stopping point
 
@@ -159,5 +159,5 @@ copy, the next pass must obtain:
 6. region- and facility-level evidence before connecting power additions to AI;
 7. a durable Qwen-Robot release page, repositories, licenses, and evaluation protocol.
 
-Hacker News remains a source of questions and paraphrased practitioner commentary,
-never factual evidence.
+Informal discussion remains outside the tracked evidence catalog and never
+serves as factual evidence.

@@ -29,8 +29,15 @@ function validateDraft(draft: Record<string, unknown>): string[] {
 }
 
 function findDuplicate(draft: Record<string, unknown>): string | null {
-  const url = typeof draft.sourceUrl === "string" ? draft.sourceUrl : "";
-  const hit = dispatches.find((d) => d.sourceUrl === url);
+  const canonicalSource = draft.canonicalSource;
+  const url =
+    canonicalSource &&
+    typeof canonicalSource === "object" &&
+    "url" in canonicalSource &&
+    typeof canonicalSource.url === "string"
+      ? canonicalSource.url
+      : "";
+  const hit = dispatches.find((d) => d.canonicalSource.url === url);
   return hit ? hit.id : null;
 }
 

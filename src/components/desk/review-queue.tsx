@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { dispatches } from "@/content/dispatches";
+import { sourceLeads } from "@/content/source-leads";
 import { formatDate } from "@/content/site";
 import type { EditorialStatus } from "@/content/schema";
 import { MetaLine, metaParts } from "@/components/dispatch/meta-line";
@@ -31,6 +32,9 @@ export function ReviewQueue() {
     queue[0]?.id ?? null
   );
   const selected = queue.find((d) => d.id === selectedId) ?? null;
+  const selectedLead = selected
+    ? sourceLeads.find((lead) => lead.id === selected.sourceLeadId)
+    : undefined;
 
   const activeStages = stages.filter((s) =>
     queue.some((d) => d.editorialStatus === s.id)
@@ -99,15 +103,27 @@ export function ReviewQueue() {
                     Dates
                   </dt>
                   <dd>
-                    Published {formatDate(selected.sourceDate)} · Curated{" "}
-                    {formatDate(selected.curatedAt)}
+                    Published {formatDate(selected.canonicalSource.publishedAt)}{" "}
+                    · Curated {formatDate(selected.curatedAt)}
                   </dd>
                 </div>
                 <div>
                   <dt className="uppercase tracking-widest text-ink-muted">
                     Source URL
                   </dt>
-                  <dd className="break-all">{selected.sourceUrl}</dd>
+                  <dd className="break-all">{selected.canonicalSource.url}</dd>
+                </div>
+                <div>
+                  <dt className="uppercase tracking-widest text-ink-muted">
+                    Canonical record
+                  </dt>
+                  <dd>
+                    {selected.canonicalSource.publisher} ·{" "}
+                    {selected.canonicalSource.title} · retrieved{" "}
+                    {formatDate(selected.canonicalSource.retrievedAt)} ·{" "}
+                    {selected.canonicalSource.language} ·{" "}
+                    {selected.canonicalSource.translationStatus}
+                  </dd>
                 </div>
               </dl>
               <div>
@@ -117,22 +133,83 @@ export function ReviewQueue() {
                 <p className="mt-1 font-serif text-sm leading-relaxed">
                   {selected.commentary}
                 </p>
-                {selected.commentaryReferences.length > 0 && (
-                  <ul className="mt-3 space-y-1 border-t border-rule pt-3 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
-                    {selected.commentaryReferences.map((reference) => (
-                      <li key={reference.url}>
-                        <a
-                          href={reference.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-signal"
-                        >
-                          Commentary context · {reference.label} ↗
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              </div>
+              <div>
+                <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+                  Evidence ledger
+                </p>
+                <ul className="mt-2 space-y-2 text-xs leading-relaxed text-ink-muted">
+                  {selected.claims.map((claim) => (
+                    <li key={claim.id} className="border-l-2 border-rule pl-2">
+                      <span className="font-mono uppercase tracking-widest text-signal">
+                        {claim.status}
+                      </span>{" "}
+                      · {claim.statement}
+                      <span className="mt-1 block font-mono text-[0.6rem] uppercase tracking-widest">
+                        Sources: {claim.sourceIds.join(" · ")}
+                      </span>
+                      {claim.limitations.length > 0 && (
+                        <span className="mt-1 block">
+                          Limits: {claim.limitations.join(" ")}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+                  Sources and unresolved limitations
+                </p>
+                <ul className="mt-2 space-y-2 text-xs leading-relaxed text-ink-muted">
+                  {[
+                    {
+                      ...selected.canonicalSource,
+                      roleLabel: "canonical source",
+                    },
+                    ...selected.supportingSources.map((source) => ({
+                      ...source,
+                      roleLabel: source.role,
+                    })),
+                  ].map((source) => (
+                    <li key={source.id} className="border-l-2 border-rule pl-2">
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-serif text-sm text-ink hover:text-signal"
+                      >
+                        {source.publisher} · {source.title} ↗
+                      </a>
+                      <span className="mt-1 block font-mono text-[0.58rem] uppercase tracking-widest">
+                        {source.roleLabel}
+                      </span>
+                      {source.limitations.length > 0 && (
+                        <span className="mt-1 block">
+                          {source.limitations.join(" ")}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="border-l-2 border-signal pl-3">
+                <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
+                  Publication blockers
+                </p>
+                <ul className="mt-1 list-disc space-y-1 pl-4 text-xs leading-relaxed text-ink-muted">
+                  <li>Editorial status is {selected.editorialStatus}.</li>
+                  <li>
+                    Lead review is {selectedLead?.reviewState ?? "missing"};
+                    disposition is {selectedLead?.disposition ?? "missing"}.
+                  </li>
+                  {selectedLead?.decisionReason && (
+                    <li>{selectedLead.decisionReason}</li>
+                  )}
+                  {selected.canonicalSource.limitations.map((limitation) => (
+                    <li key={limitation}>{limitation}</li>
+                  ))}
+                </ul>
               </div>
               <p className="border-l-2 border-jade pl-3 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
                 Public route remains closed until this entry reaches Published

@@ -43,7 +43,7 @@ Evidence posture is separate:
 - `pending`: an announced release, proposal, or follow-up event;
 - `unverified`: discovery/commentary material that cannot support a factual assertion.
 
-Every Hacker News lead is structurally constrained to `discussion`, grade D, and `unverified`. Comments may generate questions and paraphrased practitioner context, never evidence.
+Informal discussion material is not represented as a source lead. It may generate private research questions, but it never enters the tracked evidence catalog.
 
 ## Files
 

@@ -1,11 +1,55 @@
 import { z } from "zod";
 import { SourceLeadSchema } from "./schema";
-import { chinaHn300Leads } from "./source-lead-batches/china-hn-300";
-import { chinaHn288To316Leads } from "./source-lead-batches/china-hn-288-316";
+import { chinaArticleIntake01 } from "./source-lead-batches/china-article-intake-01";
+import { chinaArticleIntake02 } from "./source-lead-batches/china-article-intake-02";
+import { chinaArticleIntake03 } from "./source-lead-batches/china-article-intake-03";
+import { existingDispatchCanonicalSources } from "./source-lead-batches/existing-dispatch-canonical-sources";
+
+const draftedDispatchByLeadId = new Map<string, string>([
+  ["lead-2026-stratechery-chinese-models", "d-013"],
+  ["lead-2026-werd-open-models", "d-014"],
+  ["lead-2026-kimi-k3", "d-015"],
+  ["lead-2026-simon-willison-kimi-k3", "d-016"],
+  ["lead-2026-epoch-us-china-eci", "d-017"],
+  ["lead-2026-scio-world-ai-keynote-mobile", "d-018"],
+  ["lead-2026-hugging-face-security-incident", "d-019"],
+  ["lead-2026-interconnects-kimi-k3", "d-020"],
+  ["lead-2012-chinafile-web-searches", "d-021"],
+  ["lead-2016-chinese-language-technology", "d-022"],
+  ["lead-2017-sixth-tone-amateur-programmers", "d-023"],
+  ["lead-2017-sixth-tone-student-council", "d-024"],
+  ["lead-2018-robot-dividend", "d-025"],
+  ["lead-2019-sixth-tone-basketball-fans", "d-026"],
+  ["lead-2020-marriage-advocacy", "d-027"],
+  ["lead-2021-rest-of-world-alpacas-douyin", "d-028"],
+  ["lead-2021-li-ziqi", "d-029"],
+  ["lead-2022-tech-workers", "d-030"],
+  ["lead-2022-stratechery-chips-china", "d-031"],
+  ["lead-2023-meta-llama-2", "d-032"],
+  ["lead-2024-meta-llama-3-1", "d-033"],
+  ["lead-2024-chinatalk-deepseek-interview", "d-034"],
+  ["lead-2025-stratechery-deepseek-faq", "d-035"],
+  ["lead-2026-anthropic-redeploying-fable", "d-036"],
+]);
+
+const atlasEvidenceLeadIds = new Set([
+  "lead-2021-li-ziqi",
+  "lead-2021-factory-tiktok",
+  "lead-2022-algorithm-rules",
+  "lead-2023-meta-llama-2",
+  "lead-2024-deepseek-v2",
+  "lead-2024-qwen2-release",
+  "lead-2024-meta-llama-3-1",
+  "lead-2024-chinatalk-deepseek-interview",
+  "lead-2026-kimi-k3",
+  "lead-2026-scio-world-ai-keynote",
+]);
 
 const leads = [
-  ...chinaHn300Leads,
-  ...chinaHn288To316Leads,
+  ...chinaArticleIntake01,
+  ...chinaArticleIntake02,
+  ...chinaArticleIntake03,
+  ...existingDispatchCanonicalSources,
   {
     id: "lead-2006-science-plan",
     title:
@@ -680,23 +724,6 @@ const leads = [
       "Useful policy framing, but claims of state orchestration and relative training cost require independent corroboration.",
   },
   {
-    id: "lead-hn-deepseek-propaganda",
-    title: "Hacker News: DeepSeek R1 Propaganda Analysis",
-    url: "https://news.ycombinator.com/item?id=42918935",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-21",
-    publishedAt: "2025-02-03",
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["deepseek", "censorship", "practitioner-commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "42918935",
-    notes:
-      "Commentary and discovery only; model-output anecdotes cannot establish training-data or reinforcement-learning provenance.",
-  },
-  {
     id: "lead-2025-irena-renewable-capacity",
     title: "Record-Breaking Annual Growth in Renewable Power Capacity",
     url: "https://www.irena.org/News/pressreleases/2025/Mar/Record-Breaking-Annual-Growth-in-Renewable-Power-Capacity",
@@ -1060,176 +1087,6 @@ const leads = [
     notes:
       "Vendor-tier comparison. Do not cite scores until the third-party test inputs, outputs, pricing date, and methodology are available.",
   },
-  {
-    id: "lead-hn-chinese-models-economics",
-    title: "Hacker News: Who’s Afraid of Chinese Models?",
-    url: "https://news.ycombinator.com/item?id=48977128",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["model-economics", "distillation", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48977128",
-    notes:
-      "Commentary context for task-cost and switching-cost questions; anonymous deployment claims require separate evidence.",
-  },
-  {
-    id: "lead-hn-china-open-weight-strategy",
-    title: "Hacker News: China’s Open-Weights AI Strategy Is Winning",
-    url: "https://news.ycombinator.com/item?id=48979269",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["adoption", "open-weights", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48979269",
-    notes:
-      "Commentary context for interrogating the Casado statistic and workflow-versus-production distinction.",
-  },
-  {
-    id: "lead-hn-frontier-lab-economics",
-    title: "Hacker News: Kimi K3, Qwen 3.8, and Anthropic’s Unravelling",
-    url: "https://news.ycombinator.com/item?id=48980019",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["inference", "asics", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48980019",
-    notes:
-      "Commentary and discovery trail for fixed-model ASICs; verify Taalas claims against company and independent technical records.",
-  },
-  {
-    id: "lead-hn-kimi-k3-moment",
-    title: "Hacker News: The Kimi K3 Moment",
-    url: "https://news.ycombinator.com/item?id=48960218",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["kimi-k3", "distillation", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48960218",
-    notes:
-      "Snippet-level lead only; read the complete thread before paraphrasing any practitioner view.",
-  },
-  {
-    id: "lead-hn-qwen-3-8",
-    title: "Hacker News: Qwen 3.8",
-    url: "https://news.ycombinator.com/item?id=48966120",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["qwen", "moderation", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48966120",
-    notes:
-      "Snippet-level media-literacy lead; do not infer suppression from flags or deleted comments without an archival record.",
-  },
-  {
-    id: "lead-hn-kimi-pelican",
-    title: "Hacker News: Kimi K3 and the Pelican Benchmark",
-    url: "https://news.ycombinator.com/item?id=48947717",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["kimi-k3", "evaluation", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48947717",
-    notes:
-      "Evaluation-design prompt, not benchmark evidence; preserve the joke-thread context if paraphrased.",
-  },
-  {
-    id: "lead-hn-deepseek-r1",
-    title: "Hacker News: DeepSeek-R1",
-    url: "https://news.ycombinator.com/item?id=42823568",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-21",
-    publicationYear: 2025,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["deepseek", "reasoning", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "42823568",
-    notes:
-      "Practitioner commentary only; original paper is the evidentiary source.",
-  },
-  {
-    id: "lead-hn-qwen3",
-    title: "Hacker News: Qwen3",
-    url: "https://news.ycombinator.com/item?id=43825900",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-21",
-    publicationYear: 2025,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["qwen", "hardware", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "43825900",
-    notes:
-      "Practitioner commentary only; use to identify deployment questions.",
-  },
-  {
-    id: "lead-hn-kimi-k3",
-    title: "Hacker News: Kimi K3 — Open Frontier Intelligence",
-    url: "https://news.ycombinator.com/item?id=48935342",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-21",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["kimi", "cost", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48935342",
-    notes:
-      "Launch-thread commentary only; pricing and release claims must resolve to primary pages.",
-  },
-  {
-    id: "lead-hn-open-model-gap",
-    title: "Hacker News: The Gap Between Open and Closed Models",
-    url: "https://news.ycombinator.com/item?id=48692058",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-21",
-    publicationYear: 2026,
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["open-models", "business-models", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "48692058",
-    notes:
-      "Structural debate and discovery trail only; no comment is factual evidence.",
-  },
 ];
 
 export const SourceLeadCatalogSchema = z
@@ -1238,6 +1095,7 @@ export const SourceLeadCatalogSchema = z
   .superRefine((items, ctx) => {
     const ids = new Set<string>();
     const urls = new Set<string>();
+    const dispatchIds = new Set<string>();
     for (const item of items) {
       if (ids.has(item.id)) {
         ctx.addIssue({
@@ -1282,15 +1140,67 @@ export const SourceLeadCatalogSchema = z
           message: `${item.id} has a next review before access`,
         });
       }
-      if (item.hnSnapshot && !item.hnStoryId) {
+      if (
+        ["source-read", "evidence-reviewed"].includes(item.reviewState) &&
+        !item.reviewedAt
+      ) {
         ctx.addIssue({
           code: "custom",
-          message: `${item.id} has an HN snapshot without an HN story id`,
+          message: `${item.id} needs a review date`,
+        });
+      }
+      if (
+        ["withheld", "rejected"].includes(item.disposition) &&
+        !item.decisionReason
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${item.id} needs a disposition reason`,
+        });
+      }
+      if (
+        item.disposition === "drafted" &&
+        (item.reviewState !== "evidence-reviewed" || !item.dispatchId)
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${item.id} cannot link a draft before evidence review`,
+        });
+      }
+      if (item.disposition !== "drafted" && item.dispatchId) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${item.id} has a dispatch without a drafted disposition`,
+        });
+      }
+      if (item.dispatchId && dispatchIds.has(item.dispatchId)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `duplicate linked dispatch: ${item.dispatchId}`,
         });
       }
       ids.add(item.id);
       urls.add(item.url);
+      if (item.dispatchId) dispatchIds.add(item.dispatchId);
     }
   });
 
-export const sourceLeads = SourceLeadCatalogSchema.parse(leads);
+export const sourceLeads = SourceLeadCatalogSchema.parse(
+  leads.map((lead) => ({
+    disposition: "pending",
+    ...lead,
+    ...(draftedDispatchByLeadId.has(lead.id)
+      ? {
+          reviewState: "evidence-reviewed",
+          disposition: "drafted",
+          dispatchId: draftedDispatchByLeadId.get(lead.id),
+        }
+      : {}),
+    ...(atlasEvidenceLeadIds.has(lead.id)
+      ? { reviewState: "evidence-reviewed" }
+      : {}),
+    ...(["source-read", "evidence-reviewed"].includes(lead.reviewState)
+      ? { reviewedAt: lead.accessedAt }
+      : {}),
+  }))
+);

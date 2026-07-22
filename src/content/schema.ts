@@ -57,11 +57,44 @@ const slug = nonEmpty.regex(
 /** Items must be non-empty strings; the list itself may be empty (defaults to []). */
 const nonEmptyList = z.array(nonEmpty).default([]);
 
-export const CommentaryReferenceSchema = z.object({
-  label: nonEmpty,
+export const DispatchCanonicalSourceSchema = z.object({
+  id: nonEmpty.regex(/^source-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  title: nonEmpty,
+  publisher: nonEmpty,
+  byline: nonEmpty.optional(),
   url: z.url(),
+  publishedAt: isoDate,
   retrievedAt: isoDate,
-  use: z.literal("commentary-context"),
+  language: nonEmpty,
+  translationStatus: TranslationStatusSchema,
+  limitations: nonEmptyList,
+});
+
+export const DispatchSupportingSourceSchema =
+  DispatchCanonicalSourceSchema.extend({
+    role: z.enum([
+      "primary-record",
+      "independent-corroboration",
+      "methodology",
+      "counterpoint",
+    ]),
+  });
+
+export const DispatchClaimSchema = z.object({
+  id: nonEmpty.regex(/^claim-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  statement: nonEmpty,
+  status: EvidenceStatusSchema,
+  sourceIds: z.array(nonEmpty).min(1),
+  limitations: nonEmptyList,
+});
+
+export const DispatchExcerptSchema = z.object({
+  sourceId: nonEmpty,
+  text: nonEmpty.refine(
+    (value) => value.split(/\s+/).filter(Boolean).length <= 25,
+    "expected no more than 25 words"
+  ),
+  context: nonEmpty,
 });
 
 const DispatchBase = z.object({
@@ -73,11 +106,12 @@ const DispatchBase = z.object({
   title: nonEmpty,
   summary: nonEmpty,
   commentary: nonEmpty,
-  commentaryReferences: z.array(CommentaryReferenceSchema).default([]),
   whyItMatters: nonEmpty,
-  source: nonEmpty,
-  sourceUrl: z.url(),
-  sourceDate: isoDate,
+  sourceLeadId: nonEmpty.regex(/^lead-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  canonicalSource: DispatchCanonicalSourceSchema,
+  supportingSources: z.array(DispatchSupportingSourceSchema).default([]),
+  claims: z.array(DispatchClaimSchema).min(1),
+  excerpts: z.array(DispatchExcerptSchema).default([]),
   curatedAt: isoDate,
   updatedAt: isoDate,
   language: nonEmpty,
@@ -94,8 +128,6 @@ const DispatchBase = z.object({
 
 export const ArticleDispatchSchema = DispatchBase.extend({
   kind: z.literal("article"),
-  byline: nonEmpty.optional(),
-  pullQuote: nonEmpty.optional(),
 });
 
 export const VideoDispatchSchema = DispatchBase.extend({
@@ -184,11 +216,27 @@ export const SourceLeadSchema = z.object({
     "reporting",
     "analysis",
     "podcast",
-    "discussion",
   ]),
   claimedGrade: z.enum(["A", "B", "C", "D"]).optional(),
   sourceOrigin: z.enum(["user-sourcebook", "web-research", "prior-intake"]),
-  reviewState: z.enum(["supplied", "metadata-checked", "source-read"]),
+  reviewState: z.enum([
+    "supplied",
+    "metadata-checked",
+    "source-read",
+    "evidence-reviewed",
+  ]),
+  disposition: z
+    .enum(["pending", "drafted", "withheld", "rejected"])
+    .default("pending"),
+  accessStatus: z
+    .enum(["reachable", "paywalled", "restricted", "unavailable", "unstable"])
+    .default("reachable"),
+  reviewedAt: isoDate.optional(),
+  decisionReason: nonEmpty.optional(),
+  dispatchId: nonEmpty
+    .regex(/^d-[a-z0-9]+(?:-[a-z0-9]+)*$/, "expected a d- prefixed id")
+    .optional(),
+  collectionId: nonEmpty.optional(),
   topics: z.array(nonEmpty).min(1),
   evidenceStatus: z.enum([
     "confirmed",
@@ -199,14 +247,6 @@ export const SourceLeadSchema = z.object({
   ]),
   paywall: z.boolean().default(false),
   archiveUrl: z.url().optional(),
-  hnStoryId: nonEmpty.regex(/^\d+$/).optional(),
-  hnSnapshot: z
-    .object({
-      points: z.number().int().nonnegative(),
-      comments: z.number().int().nonnegative(),
-      capturedAt: isoDate,
-    })
-    .optional(),
   notes: nonEmpty,
   nextReviewAt: isoDate.optional(),
 });

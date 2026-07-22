@@ -1,15 +1,35 @@
-const snapshot = (points: number, comments: number) => ({
-  points,
-  comments,
-  capturedAt: "2026-07-22",
-});
+const accessDecisionById: Record<string, string> = {
+  "lead-2025-akamai-china-cdn-shutdown":
+    "The supplied campaign URL redirects to a different current page and blocks retrieval. Review stops pending a stable publisher archive and the shutdown notice.",
+  "lead-2021-nasdaq-bitcoin-hashrate-blackouts":
+    "The publisher endpoint did not return a stable reviewable response. Review stops before source-read pending a lawful full copy and network-level corroboration.",
+  "lead-2017-trustnodes-bitcoin-exit-ban":
+    "The supplied publisher URL now redirects to a malformed, unreachable host. Review stops pending a publisher archive and independent verification of the alleged exit restrictions.",
+  "lead-2019-reuters-china-737-max-suspension":
+    "The legacy publisher URL resolves but does not expose the full report. Review stops before source-read pending authorized access and the CAAC directive.",
+  "lead-2017-wapo-apple-world-internet-conference":
+    "The publisher did not expose a reviewable full text. Review stops before source-read pending authorized access and a transcript of the cited remarks.",
+  "lead-2023-cnbc-evergrande-chapter-15":
+    "The publisher endpoint restricts automated full-text review. Review stops before source-read pending authorized access, the Chapter 15 filing, and later liquidation records.",
+  "lead-2015-fortune-us-china-manufacturing-costs":
+    "The publisher blocks full-text retrieval. Review stops before source-read pending authorized access and the underlying cost-comparison model.",
+};
 
-/**
- * User-supplied high-engagement HN discovery batch. These are lightweight Desk
- * leads only. `hnSnapshot` preserves the supplied discovery context; it is not
- * a source grade and does not authorize use of any comment as evidence.
- */
-export const chinaHn300Leads = [
+const accessStatusById: Record<
+  string,
+  "restricted" | "unstable" | "unavailable"
+> = {
+  "lead-2025-akamai-china-cdn-shutdown": "restricted",
+  "lead-2021-nasdaq-bitcoin-hashrate-blackouts": "unstable",
+  "lead-2017-trustnodes-bitcoin-exit-ban": "unavailable",
+  "lead-2019-reuters-china-737-max-suspension": "restricted",
+  "lead-2017-wapo-apple-world-internet-conference": "restricted",
+  "lead-2023-cnbc-evergrande-chapter-15": "restricted",
+  "lead-2015-fortune-us-china-manufacturing-costs": "restricted",
+};
+
+/** Article candidates supplied for editorial review. Discovery metadata is intentionally omitted. */
+export const chinaArticleIntake02 = [
   {
     id: "lead-2022-nyt-russia-olympics-delay",
     title:
@@ -24,8 +44,6 @@ export const chinaHn300Leads = [
     topics: ["russia", "ukraine", "diplomacy", "intelligence"],
     evidenceStatus: "unverified",
     paywall: true,
-    hnStoryId: "30532935",
-    hnSnapshot: snapshot(344, 304),
     notes:
       "Anonymous US-official attribution is a reporting lead, not proof that Beijing made the request; compare later intelligence assessments and Chinese and Russian responses before use.",
   },
@@ -41,8 +59,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["rare-earths", "magnets", "export-controls", "industrial-policy"],
     evidenceStatus: "unverified",
-    hnStoryId: "35456721",
-    hnSnapshot: snapshot(342, 588),
     notes:
       "A reported policy plan is not an enacted ban. Resolve the Chinese catalogue or ministry record, covered technology, effective status, and later revisions.",
   },
@@ -58,8 +74,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["xinjiang", "surveillance", "biometrics", "human-rights"],
     evidenceStatus: "unverified",
-    hnStoryId: "16441347",
-    hnSnapshot: snapshot(342, 261),
     notes:
       "Dated secondary overview with broad framing. Trace technical and human-rights assertions to field reporting, procurement records, and primary policy documents; do not extrapolate unchanged conditions to the present.",
   },
@@ -77,8 +91,6 @@ export const chinaHn300Leads = [
     evidenceStatus: "unverified",
     paywall: true,
     archiveUrl: "https://archive.is/DQpXM",
-    hnStoryId: "46016639",
-    hnSnapshot: snapshot(341, 314),
     notes:
       "Archive supplied. Resolve the incomplete Science and Technology Daily English URL and underlying technical record; distinguish experimental uranium production from fuel-cycle scale or energy independence.",
   },
@@ -94,8 +106,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["amazon", "e-commerce", "market-exit", "platforms"],
     evidenceStatus: "unverified",
-    hnStoryId: "19717991",
-    hnSnapshot: snapshot(339, 295),
     notes:
       "The headline may collapse distinct businesses. Verify which domestic marketplace services ended and which cross-border, cloud, device, or seller operations continued.",
   },
@@ -112,8 +122,6 @@ export const chinaHn300Leads = [
     topics: ["electric-buses", "oil-demand", "transport", "energy-transition"],
     evidenceStatus: "unverified",
     paywall: true,
-    hnStoryId: "19438252",
-    hnSnapshot: snapshot(339, 257),
     notes:
       "Treat avoided-oil estimates as model outputs, not directly observed demand. Capture fleet, utilization, displacement, geography, and counterfactual assumptions.",
   },
@@ -135,8 +143,6 @@ export const chinaHn300Leads = [
       "criminal-case",
     ],
     evidenceStatus: "unverified",
-    hnStoryId: "22176261",
-    hnSnapshot: snapshot(338, 191),
     notes:
       "An arrest report is an early procedural snapshot. Any use must incorporate the charging documents, later verdict and sentencing record, and the distinction between disclosure offenses and espionage.",
   },
@@ -153,8 +159,6 @@ export const chinaHn300Leads = [
     topics: ["intellectual-property", "enforcement", "trade", "regulation"],
     evidenceStatus: "unverified",
     paywall: true,
-    hnStoryId: "18602843",
-    hnSnapshot: snapshot(337, 199),
     notes:
       "Announcement and implementation are separate states. Resolve the controlling Chinese record and later enforcement evidence before evaluating effectiveness.",
   },
@@ -170,8 +174,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["uyghurs", "xinjiang", "genocide", "legal-analysis"],
     evidenceStatus: "unverified",
-    hnStoryId: "26217821",
-    hnSnapshot: snapshot(336, 288),
     notes:
       "Preserve the difference between a commissioned legal opinion, parliamentary or executive determinations, and a judgment by a competent court; review the opinion and cited evidence directly.",
   },
@@ -187,8 +189,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["wikimedia", "wipo", "accreditation", "internet-governance"],
     evidenceStatus: "unverified",
-    hnStoryId: "24588913",
-    hnSnapshot: snapshot(335, 147),
     notes:
       "Primary for Wikimedia's account and position, not a neutral adjudication. Pair with WIPO meeting records and China's stated objection.",
   },
@@ -205,8 +205,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["evergrande", "property", "chapter-15", "debt"],
     evidenceStatus: "unverified",
-    hnStoryId: "37171187",
-    hnSnapshot: snapshot(334, 382),
     notes:
       "Describe the US filing precisely as Chapter 15 recognition/protection rather than generic bankruptcy, and incorporate later Hong Kong liquidation developments if published.",
   },
@@ -222,8 +220,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["change-4", "moon", "cotton", "space-science"],
     evidenceStatus: "unverified",
-    hnStoryId: "21116303",
-    hnSnapshot: snapshot(331, 129),
     notes:
       "Keep germination, leaf growth, survival duration, and the sealed payload environment distinct; avoid implying sustained agriculture on the lunar surface.",
   },
@@ -240,8 +236,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["cisco", "golden-shield", "human-rights", "litigation"],
     evidenceStatus: "unverified",
-    hnStoryId: "10890907",
-    hnSnapshot: snapshot(331, 116),
     notes:
       "Advocacy statement from a litigating position. Use for EFF's argument only; resolve complaints, decisions, appellate history, and disputed factual allegations from court records.",
   },
@@ -257,8 +251,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["cyber-espionage", "business", "attribution", "trade-secrets"],
     evidenceStatus: "unverified",
-    hnStoryId: "19649409",
-    hnSnapshot: snapshot(330, 195),
     notes:
       "Separate attributed intrusions, corporate response incentives, and the author's broader thesis; verify named incidents against indictments, technical reports, and company records.",
   },
@@ -274,8 +266,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["covid-19", "research-policy", "deleted-pages", "censorship"],
     evidenceStatus: "unverified",
-    hnStoryId: "22849747",
-    hnSnapshot: snapshot(329, 331),
     notes:
       "Archived institutional notices can support a policy-change chronology; they do not decide virus-origin claims. Preserve deletion evidence, dates, and later policy records.",
   },
@@ -292,8 +282,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["exit-bans", "consular-affairs", "law", "americans-in-china"],
     evidenceStatus: "unverified",
-    hnStoryId: "20977342",
-    hnSnapshot: snapshot(329, 245),
     notes:
       "Reported cases and travel-risk guidance need a denominator and legal context; distinguish criminal, civil, national-security, and coercive-leverage rationales.",
   },
@@ -309,8 +297,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["xinjiang", "china-cables", "detention", "leaked-documents"],
     evidenceStatus: "unverified",
-    hnStoryId: "21622138",
-    hnSnapshot: snapshot(329, 148),
     notes:
       "Review the leaked documents, authentication method, expert analysis, and Chinese government response directly; retain quotation marks around translated policy terminology where needed.",
   },
@@ -326,8 +312,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["web-development", "hosting", "cdn", "great-firewall"],
     evidenceStatus: "unverified",
-    hnStoryId: "19457709",
-    hnSnapshot: snapshot(327, 157),
     notes:
       "Useful dated practitioner guide, not a universal compliance manual. Recheck ICP, hosting, CDN, DNS, performance, and regulatory claims against current primary guidance.",
   },
@@ -343,8 +327,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["akamai", "cdn", "china-operations", "infrastructure"],
     evidenceStatus: "unverified",
-    hnStoryId: "42603585",
-    hnSnapshot: snapshot(327, 143),
     notes:
       "Ephemeral email-view URL. Find a stable Akamai announcement or customer notice and establish product scope, dates, migration path, and whether partner delivery continues.",
   },
@@ -360,8 +342,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["icos", "cryptocurrency", "pboc", "financial-regulation"],
     evidenceStatus: "unverified",
-    hnStoryId: "15166607",
-    hnSnapshot: snapshot(326, 373),
     notes:
       "Secondary breaking-news account. Resolve the joint regulator notice, its legal scope, implementation, and the difference between ICO restrictions and later cryptocurrency measures.",
   },
@@ -378,8 +358,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["canada", "uyghurs", "parliament", "genocide-motion"],
     evidenceStatus: "unverified",
-    hnStoryId: "26253886",
-    hnSnapshot: snapshot(326, 172),
     notes:
       "Record the exact nonbinding motion, vote, executive position, and legal effect; a parliamentary label is not a judicial finding.",
   },
@@ -395,29 +373,8 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["leica", "advertising", "social-media", "censorship"],
     evidenceStatus: "unverified",
-    hnStoryId: "19712564",
-    hnSnapshot: snapshot(324, 260),
     notes:
       "Headline-level ban claims require platform-by-platform tests, dates, archived results, the advertisement itself, and responses from Leica and platforms.",
-  },
-  {
-    id: "lead-2020-hn-youtube-china-comments",
-    title:
-      "Ask HN: How long has Google been censoring YouTube comments critical of China?",
-    url: "https://news.ycombinator.com/item?id=23221264",
-    publisher: "Hacker News",
-    accessedAt: "2026-07-22",
-    publishedAt: "2020-05-18",
-    contentType: "discussion",
-    claimedGrade: "D",
-    sourceOrigin: "user-sourcebook",
-    reviewState: "supplied",
-    topics: ["youtube", "comment-moderation", "china", "commentary"],
-    evidenceStatus: "unverified",
-    hnStoryId: "23221264",
-    hnSnapshot: snapshot(324, 108),
-    notes:
-      "Unverified user test with inflammatory wording. Use only to formulate a moderation question; seek reproducible tests, contemporaneous platform statements, and later corrections. Do not reproduce the submitted slurs.",
   },
   {
     id: "lead-2021-nasdaq-bitcoin-hashrate-blackouts",
@@ -431,8 +388,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["bitcoin", "mining", "hashrate", "power-outages"],
     evidenceStatus: "unverified",
-    hnStoryId: "26849652",
-    hnSnapshot: snapshot(322, 407),
     notes:
       "Hash-rate estimates and blackout timing support a correlation, not a complete causal allocation. Capture estimator, pool coverage, geography, and competing explanations.",
   },
@@ -450,8 +405,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["bitcoin", "exit-bans", "mining", "cryptocurrency"],
     evidenceStatus: "unverified",
-    hnStoryId: "15290117",
-    hnSnapshot: snapshot(322, 260),
     notes:
       "Low-confidence secondary claim with unnamed sourcing. Do not use without strong independent corroboration or a primary legal/official record.",
   },
@@ -468,8 +421,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["boeing-737-max", "caac", "aviation-safety", "airlines"],
     evidenceStatus: "unverified",
-    hnStoryId: "19356138",
-    hnSnapshot: snapshot(322, 199),
     notes:
       "Breaking-news chronology should be paired with the CAAC directive, affected fleet and timing, accident record, and later international grounding decisions.",
   },
@@ -486,8 +437,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["redcore", "chromium", "browser", "technology-claims"],
     evidenceStatus: "unverified",
-    hnStoryId: "17774608",
-    hnSnapshot: snapshot(321, 171),
     notes:
       "Verify the company's exact ‘homegrown’ claim, software artifacts or teardown, Chromium licensing, investor materials, and response; clone is a conclusion requiring technical evidence.",
   },
@@ -505,8 +454,6 @@ export const chinaHn300Leads = [
     topics: ["apple", "tim-cook", "world-internet-conference", "censorship"],
     evidenceStatus: "unverified",
     paywall: true,
-    hnStoryId: "15849184",
-    hnSnapshot: snapshot(319, 310),
     notes:
       "Separate Cook's exact remarks from the article's framing and pair them with the conference transcript, contemporary App Store removals, and Apple's stated policy.",
   },
@@ -522,8 +469,6 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["recycling", "national-sword", "waste-trade", "municipal-policy"],
     evidenceStatus: "unverified",
-    hnStoryId: "15888827",
-    hnSnapshot: snapshot(318, 233),
     notes:
       "Useful early impact report. Resolve covered waste categories and contamination thresholds, then distinguish immediate US disruption from later market and municipal adaptation.",
   },
@@ -539,9 +484,18 @@ export const chinaHn300Leads = [
     reviewState: "supplied",
     topics: ["manufacturing-costs", "energy", "reshoring", "competitiveness"],
     evidenceStatus: "unverified",
-    hnStoryId: "9794694",
-    hnSnapshot: snapshot(318, 160),
     notes:
       "A dated cost-comparison thesis. Capture the underlying model, industry and regional mix, energy and labor assumptions, exchange rates, and whether ‘almost’ survives later data.",
   },
-];
+].map((item) => ({
+  ...item,
+  collectionId: "china-article-corpus-2026-07",
+  disposition: "withheld",
+  decisionReason:
+    accessDecisionById[item.id] ??
+    (item.paywall
+      ? "Full canonical text is paywalled; review stops before source-read until authorized full-text review and corroboration are complete."
+      : "The canonical URL resolves, but full-text and supporting-evidence review is incomplete; review stops before source-read."),
+  accessStatus:
+    accessStatusById[item.id] ?? (item.paywall ? "paywalled" : "reachable"),
+}));

@@ -50,6 +50,11 @@ export const ContentCatalogSchema = z
       ctx
     );
     addDuplicateIssues(
+      catalog.dispatches.map((item) => item.sourceLeadId),
+      "dispatch source lead",
+      ctx
+    );
+    addDuplicateIssues(
       catalog.comparisons.map((item) => item.slug),
       "comparison slug",
       ctx
@@ -101,14 +106,14 @@ export const ContentCatalogSchema = z
       }
       if (
         isPublicDispatch(dispatch) &&
-        new URL(dispatch.sourceUrl).hostname.endsWith("example.com")
+        new URL(dispatch.canonicalSource.url).hostname.endsWith("example.com")
       ) {
         ctx.addIssue({
           code: "custom",
           message: `${dispatch.id} cannot publish an example.com source`,
         });
       }
-      if (dispatch.sourceDate > dispatch.curatedAt) {
+      if (dispatch.canonicalSource.publishedAt > dispatch.curatedAt) {
         ctx.addIssue({
           code: "custom",
           message: `${dispatch.id} is curated before its source date`,
@@ -125,6 +130,65 @@ export const ContentCatalogSchema = z
         `${dispatch.id} relation`,
         ctx
       );
+      const dispatchSourceIdList = [
+        dispatch.canonicalSource.id,
+        ...dispatch.supportingSources.map((source) => source.id),
+      ];
+      addDuplicateIssues(
+        dispatchSourceIdList,
+        `${dispatch.id} evidence source id`,
+        ctx
+      );
+      const dispatchSourceIds = new Set(dispatchSourceIdList);
+      for (const claim of dispatch.claims) {
+        for (const sourceId of claim.sourceIds) {
+          if (!dispatchSourceIds.has(sourceId)) {
+            ctx.addIssue({
+              code: "custom",
+              message: `${dispatch.id} claim ${claim.id} references missing source ${sourceId}`,
+            });
+          }
+        }
+        if (
+          claim.status === "independentlyObserved" &&
+          claim.sourceIds.length < 2
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${dispatch.id} claim ${claim.id} needs corroborating evidence`,
+          });
+        }
+      }
+      for (const excerpt of dispatch.excerpts) {
+        if (!dispatchSourceIds.has(excerpt.sourceId)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${dispatch.id} excerpt references missing source ${excerpt.sourceId}`,
+          });
+        }
+      }
+      const canonicalLead = sourceLeadsById.get(dispatch.sourceLeadId);
+      if (!canonicalLead) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${dispatch.id} references missing source lead ${dispatch.sourceLeadId}`,
+        });
+      } else if (canonicalLead.url !== dispatch.canonicalSource.url) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${dispatch.id} does not preserve its reviewed canonical URL`,
+        });
+      } else if (
+        isPublicDispatch(dispatch) &&
+        (canonicalLead.reviewState !== "evidence-reviewed" ||
+          canonicalLead.disposition !== "drafted" ||
+          canonicalLead.dispatchId !== dispatch.id)
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${dispatch.id} cannot publish before evidence review and lead linkage`,
+        });
+      }
       for (const id of dispatch.relatedDispatchIds) {
         if (id === dispatch.id) {
           ctx.addIssue({
@@ -132,7 +196,7 @@ export const ContentCatalogSchema = z
             message: `${dispatch.id} cannot relate to itself`,
           });
         }
-        requireDispatch(id, dispatch.id);
+        requireDispatch(id, dispatch.id, isPublicDispatch(dispatch));
       }
     }
 
@@ -230,7 +294,7 @@ export const ContentCatalogSchema = z
             code: "custom",
             message: `${release.slug} source ${source.id} references missing lead ${source.sourceLeadId}`,
           });
-        } else if (lead.reviewState !== "source-read") {
+        } else if (lead.reviewState !== "evidence-reviewed") {
           ctx.addIssue({
             code: "custom",
             message: `${release.slug} source ${source.id} exposes lead ${source.sourceLeadId} before source review`,

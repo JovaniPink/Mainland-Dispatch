@@ -10,9 +10,29 @@ const validDraft = {
   summary: "Summary.",
   commentary: "Commentary.",
   whyItMatters: "It matters.",
-  source: "Test Wire",
-  sourceUrl: "https://example.com/new-story",
-  sourceDate: "2026-07-01",
+  sourceLeadId: "lead-test-wire",
+  canonicalSource: {
+    id: "source-canonical",
+    title: "A new dispatch",
+    publisher: "Test Wire",
+    url: "https://example.com/new-story",
+    publishedAt: "2026-07-01",
+    retrievedAt: "2026-07-21",
+    language: "en",
+    translationStatus: "original-english",
+    limitations: ["Test limitation."],
+  },
+  supportingSources: [],
+  claims: [
+    {
+      id: "claim-test",
+      statement: "A test claim.",
+      status: "reported",
+      sourceIds: ["source-canonical"],
+      limitations: [],
+    },
+  ],
+  excerpts: [],
   curatedAt: "2026-07-21",
   updatedAt: "2026-07-21",
   language: "en",
@@ -40,7 +60,10 @@ describe("intakeMachine", () => {
     actor.send({ type: "SUBMIT_URL", url: "https://example.com/x" });
     actor.send({
       type: "RESOLVED",
-      draft: { ...validDraft, sourceUrl: "not-a-url" },
+      draft: {
+        ...validDraft,
+        canonicalSource: { ...validDraft.canonicalSource, url: "not-a-url" },
+      },
     });
     const snap = actor.getSnapshot();
     expect(snap.value).toBe("invalid");
@@ -50,10 +73,16 @@ describe("intakeMachine", () => {
   it("flags a draft whose sourceUrl matches an existing dispatch", () => {
     const existing = dispatches[0];
     const actor = createActor(intakeMachine).start();
-    actor.send({ type: "SUBMIT_URL", url: existing.sourceUrl });
+    actor.send({ type: "SUBMIT_URL", url: existing.canonicalSource.url });
     actor.send({
       type: "RESOLVED",
-      draft: { ...validDraft, sourceUrl: existing.sourceUrl },
+      draft: {
+        ...validDraft,
+        canonicalSource: {
+          ...validDraft.canonicalSource,
+          url: existing.canonicalSource.url,
+        },
+      },
     });
     const snap = actor.getSnapshot();
     expect(snap.value).toBe("possibleDuplicate");

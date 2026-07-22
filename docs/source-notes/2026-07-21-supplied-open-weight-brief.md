@@ -9,9 +9,9 @@
 
 ## How it is being used
 
-The supplied brief extends the July 2026 Chinese-model intake with additional official statements, expert newsletters, reported articles, Hacker News discussions, vendor comparisons, and explicit gaps. Its tier system is useful as a record of what the compiler says it read and what remained blocked or snippet-only.
+The supplied brief extends the July 2026 Chinese-model intake with additional official statements, expert newsletters, reported articles, vendor comparisons, and explicit gaps. Its tier system is useful as a record of what the compiler says it read and what remained blocked or snippet-only.
 
-The tier labels are not imported as Mainland Dispatch verification. Any candidate still needs a direct source check in this repository’s workflow. Anonymous Hacker News anecdotes remain commentary prompts only, even when the brief labels the containing thread Tier 1.
+The tier labels are not imported as Mainland Dispatch verification. Any candidate still needs a direct canonical-source check in this repository's workflow. Anonymous anecdotes are excluded from the evidence ledger.
 
 The existing reviewed intake remains the controlling record for the current-cycle package:
 
@@ -24,7 +24,7 @@ The existing reviewed intake remains the controlling record for the current-cycl
 - The Reuters report about possible Chinese restrictions on overseas model access.
 - The Economist source behind the disputed startup-adoption claim.
 - Chinese-language reporting and original policy texts.
-- The additional Kimi and Qwen Hacker News threads, used only for paraphrased commentary after full retrieval.
+- Additional informal Kimi and Qwen discussion prompts, which are not retained as evidence.
 - Artificial Analysis and pricing dashboards, captured as dated snapshots rather than treated as timeless pages.
 
 ## Editorial decision for this pass

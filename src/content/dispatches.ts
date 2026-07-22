@@ -1,7 +1,73 @@
 import { z } from "zod";
 import { DispatchSchema, type Dispatch, type DispatchKind } from "./schema";
+import { sourceLeads } from "./source-leads";
 
-const seeds: unknown[] = [
+type DispatchSeed = Record<string, unknown> & {
+  id: string;
+  title: string;
+  summary: string;
+  commentary: string;
+  source: string;
+  sourceUrl: string;
+  sourceDate: string;
+  curatedAt: string;
+  language: string;
+  translationStatus: Dispatch["translationStatus"];
+  byline?: string;
+  pullQuote?: string;
+};
+
+function materializeDispatch(seed: DispatchSeed): unknown {
+  const { source, sourceUrl, sourceDate, byline, pullQuote, ...dispatch } =
+    seed;
+  const lead = sourceLeads.find((candidate) => candidate.url === sourceUrl);
+  if (!lead) {
+    throw new Error(`${seed.id} needs a source lead for ${sourceUrl}`);
+  }
+
+  const canonicalSourceId = "source-canonical";
+  const excerpt = pullQuote
+    ? [
+        {
+          sourceId: canonicalSourceId,
+          text: pullQuote,
+          context: "Short excerpt selected from the canonical source.",
+        },
+      ]
+    : [];
+
+  return {
+    ...dispatch,
+    sourceLeadId: lead.id,
+    canonicalSource: {
+      id: canonicalSourceId,
+      title: lead.title,
+      publisher: source,
+      byline,
+      url: sourceUrl,
+      publishedAt: sourceDate,
+      retrievedAt: lead.accessedAt,
+      language: seed.language,
+      translationStatus: seed.translationStatus,
+      limitations: [lead.notes],
+    },
+    supportingSources: [],
+    claims: [
+      {
+        id: "claim-source-report",
+        statement: seed.summary,
+        status: "reported",
+        sourceIds: [canonicalSourceId],
+        limitations: [
+          "This entry does not treat the canonical publisher as independent confirmation of its own report.",
+        ],
+      },
+    ],
+    excerpts: excerpt,
+  };
+}
+
+const rawSeeds: unknown[] = [
   {
     kind: "article",
     id: "d-013",
@@ -10,15 +76,7 @@ const seeds: unknown[] = [
     summary:
       "Ben Thompson argues that the durable contest is not API token price alone, but the cost of producing useful intelligence, the economics of inference, and control of the customer experience.",
     commentary:
-      "The useful challenge from the discussion is aimed at the essay’s least demonstrated premise: cheaper tokens are not necessarily cheaper completed work, but neither do we yet have a clean comparison of cost per successful task. Readers also pushed back on the assumed stickiness of coding harnesses and separated the economics of open weights from the legal and ethical dispute over distillation.",
-    commentaryReferences: [
-      {
-        label: "Hacker News discussion 48977128",
-        url: "https://news.ycombinator.com/item?id=48977128",
-        retrievedAt: "2026-07-21",
-        use: "commentary-context",
-      },
-    ],
+      "The essay’s least demonstrated premise is that cheaper tokens do not necessarily produce cheaper completed work. A defensible comparison still needs cost per successful task, workload mix, serving constraints, and switching costs; weight availability also remains distinct from legal openness and operational portability.",
     whyItMatters:
       "It reframes US–China model competition around serving economics and distribution, while leaving its central cost assumptions open to empirical testing.",
     source: "Stratechery",
@@ -46,15 +104,7 @@ const seeds: unknown[] = [
     summary:
       "Ben Werdmuller argues that open-weight Chinese models can erode the strategic position of closed US labs by making model access more portable and reducing dependence on a single provider.",
     commentary:
-      "The discussion supplies the caveats the headline omits. Open weights are not the same as open source; many enterprises care more about data handling, support, and jurisdiction than weight availability; and a model can be downloadable without being economical to host. The essay is best read as a warning about ecosystem strategy, not evidence that a winner has already been determined.",
-    commentaryReferences: [
-      {
-        label: "Hacker News discussion 48979269",
-        url: "https://news.ycombinator.com/item?id=48979269",
-        retrievedAt: "2026-07-21",
-        use: "commentary-context",
-      },
-    ],
+      "The headline outruns the available evidence. Open weights are not the same as open source; enterprises may value data handling, support, jurisdiction, and predictable operating cost more than weight availability. The essay is best treated as an ecosystem-strategy argument, not proof that a winner has been determined.",
     whyItMatters:
       "The argument captures a growing narrative about Chinese model diffusion, but its strongest claims require adoption, revenue, operating-cost, and deployment evidence that the article does not provide.",
     source: "Werd.io",
@@ -168,15 +218,7 @@ const seeds: unknown[] = [
     summary:
       "The official English text of Xi Jinping’s World AI Conference keynote calls for open source, international collaboration, and wider diffusion of AI benefits.",
     commentary:
-      "The Hacker News discussion often treats Chinese model releases as a single coordinated state strategy. This speech establishes high-level policy language, but it does not prove why a particular company chose a license, whether promised weights will ship, or how the economics will work.",
-    commentaryReferences: [
-      {
-        label: "Hacker News discussion 48979269",
-        url: "https://news.ycombinator.com/item?id=48979269",
-        retrievedAt: "2026-07-21",
-        use: "commentary-context",
-      },
-    ],
+      "The speech establishes high-level policy language, but it does not prove why a particular company chose a license, whether promised weights will ship, or how deployment economics work. Company decisions and implementation evidence must be reviewed separately from the state’s stated position.",
     whyItMatters:
       "Primary policy language lets readers distinguish an explicit government position from broader claims about state direction that remain interpretation.",
     source: "State Council Information Office of the PRC",
@@ -704,7 +746,9 @@ const seeds: unknown[] = [
   },
 ];
 
-export const dispatches: Dispatch[] = z.array(DispatchSchema).parse(seeds);
+export const dispatches: Dispatch[] = z
+  .array(DispatchSchema)
+  .parse(rawSeeds.map((seed) => materializeDispatch(seed as DispatchSeed)));
 
 const publicStatuses = new Set<Dispatch["editorialStatus"]>([
   "published",

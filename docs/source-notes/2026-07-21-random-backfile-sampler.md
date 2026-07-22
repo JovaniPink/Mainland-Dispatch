@@ -11,7 +11,7 @@
 
 This is not a statistically random sample of everything written about China. It is a deliberately varied backfile: older pieces were chosen for surprise, durable editorial value, readable full text, and coverage across everyday life, culture, labor, technology, education, religion, advocacy, and platform economics.
 
-Selection did not optimize for current relevance, Hacker News score, or a single political thesis. It did exclude low-substance listicles, undated pages, inaccessible stories that could not be read, and articles whose main value was a now-stale numerical claim.
+Selection did not optimize for current relevance, popularity, or a single political thesis. It did exclude low-substance listicles, undated pages, inaccessible stories that could not be read, and articles whose main value was a now-stale numerical claim.
 
 ## Selection method and stopping point
 
@@ -44,7 +44,7 @@ The search was intentionally not exhaustive. No claim is made that these are the
 - Several pieces are arguments or viewpoints. Their Dispatch commentary identifies that posture instead of presenting them as neutral reference works.
 - Older numerical claims remain claims about the period in which the piece was published. They must not be silently reused as current statistics.
 - ChinaFile republishes some work first published by Tea Leaf Nation or Foreign Policy. The queue records name that lineage where the page discloses it.
-- No Hacker News commentary was used in this sampler.
+- No informal discussion material was used as evidence in this sampler.
 
 ## Where this leaves off
 

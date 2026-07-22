@@ -4,7 +4,7 @@ import { kindLabels } from "@/content/site";
 export function metaParts(d: Dispatch): string[] {
   const parts = [
     kindLabels[d.kind],
-    d.source,
+    d.canonicalSource.publisher,
     d.language,
     d.provenance === "prototype" ? "demo" : null,
   ].filter((part): part is string => part !== null);

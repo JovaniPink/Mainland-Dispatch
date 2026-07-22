@@ -981,7 +981,7 @@ const openModelRelease = {
   summary:
     "A source-led atlas separating model announcements, API access, downloadable weights, licenses, technical disclosure, and independent evaluation across the recent US–China open-weight cycle.",
   methodology:
-    "This release uses only source-read first-party records, technical papers, and a reviewed annotated translation. A company can establish what it released or promised, but its benchmark, cost, safety, and strategy claims remain attributed. The supplied sourcebook guides the questions; it is not itself treated as evidence, and no review-stage Dispatch or Hacker News commentary is exposed.",
+    "This release uses only evidence-reviewed first-party records, technical papers, and a reviewed annotated translation. A company can establish what it released or promised, but its benchmark, cost, safety, and strategy claims remain attributed. The supplied sourcebook guides the questions; it is not itself treated as evidence, and no review-stage Dispatch or informal commentary is exposed.",
   publishedAt: "2026-07-22",
   retrievedAt: "2026-07-22",
   evidenceThrough: "2026-07-18",

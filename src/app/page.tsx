@@ -8,7 +8,10 @@ export default function HomePage() {
     (typeof publishedDispatches)[number] | undefined
   >(
     (latest, dispatch) =>
-      !latest || dispatch.sourceDate > latest.sourceDate ? dispatch : latest,
+      !latest ||
+      dispatch.canonicalSource.publishedAt > latest.canonicalSource.publishedAt
+        ? dispatch
+        : latest,
     undefined
   );
   const counts = countsByVertical();

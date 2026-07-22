@@ -58,9 +58,9 @@ usable without WebGL or a network request.
 
 The release `open-model-release-ledger` turns the supplied research sourcebook
 into a set of questions, not a public evidence source. Its seven public source
-records all resolve to leads already marked `source-read`; the sourcebook itself,
-review-stage Dispatches, supplied-only links, and Hacker News discussion remain
-outside the release.
+records all resolve to leads already marked `evidence-reviewed`; the sourcebook
+itself, review-stage Dispatches, supplied-only links, and informal research
+prompts remain outside the release.
 
 The case asks three narrower questions:
 

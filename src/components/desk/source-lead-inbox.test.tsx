@@ -6,14 +6,16 @@ describe("SourceLeadInbox", () => {
   it("presents the long chronology as collapsed decade groups", () => {
     render(<SourceLeadInbox />);
 
-    expect(screen.getByText(/139 lightweight leads/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/165 canonical-source candidates/)
+    ).toBeInTheDocument();
     expect(screen.getByText("2000s")).toBeInTheDocument();
     expect(screen.getByText("2010s")).toBeInTheDocument();
     expect(screen.getByText("2020s")).toBeInTheDocument();
     expect(screen.queryByText("Date pending")).not.toBeInTheDocument();
   });
 
-  it("retains original links and labels HN as commentary-only", () => {
+  it("retains canonical links and shows evidence dispositions", () => {
     render(<SourceLeadInbox />);
 
     expect(
@@ -26,12 +28,12 @@ describe("SourceLeadInbox", () => {
       "href",
       "https://www.itu.int/en/ITU-D/Cybersecurity/Documents/National_Strategies_Repository/China_2006.pdf"
     );
-    expect(screen.getByText(/HN is commentary only/)).toBeInTheDocument();
     expect(
-      screen.getAllByRole("link", {
-        name: /HN discussion · commentary only/i,
-      })
-    ).toHaveLength(58);
+      screen.getByText(/Canonical articles · fail closed/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Disposition" })
+    ).toBeInTheDocument();
   });
 
   it("filters a large inbox without changing its publication boundary", () => {
@@ -42,7 +44,7 @@ describe("SourceLeadInbox", () => {
       { target: { value: "no-source-can-match-this" } }
     );
 
-    expect(screen.getByText("0 of 139 leads shown")).toBeInTheDocument();
+    expect(screen.getByText("0 of 165 leads shown")).toBeInTheDocument();
     expect(
       screen.getByText("No source leads match this editorial filter.")
     ).toBeInTheDocument();

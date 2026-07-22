@@ -15,18 +15,17 @@ relationships.
 ## Required checks before publication
 
 1. **Canonical source read.** Open and read the source itself. A search result,
-   social summary, Hacker News submission, or syndication headline is discovery
-   evidence only.
+   social summary, discussion link, or syndication headline is discovery only.
 2. **Identity and date.** Check the canonical URL, publisher, title, byline when
    available, publication date, and source language. Preserve the original date
    even when the Dispatch is curated years later.
 3. **Faithful summary.** Summarize the source's actual scope and avoid turning a
    period report into a timeless claim. Attribute first-party benchmarks,
    company motives, official statements, and forecasts to their speakers.
-4. **Separate commentary.** `summary` describes the source; `commentary` is the
-   editorial reading; `whyItMatters` explains the selection. Discussion links
-   may inform commentary but are labeled `commentary-context` and never treated
-   as proof.
+4. **Separate commentary.** `summary` describes what the canonical source
+   reports; `commentary` is Mainland Dispatch's independently written analysis;
+   `whyItMatters` explains why the reviewed evidence matters. Research prompts
+   are never treated as proof or retained as public citations.
 5. **Limitations visible.** Record paywall, translation, archival, methodology,
    denominator, or future-verification limits where they affect interpretation.
    A promised release is `officiallyAnnounced`, not `implemented`.
@@ -40,25 +39,19 @@ relationships.
 8. **Quality gate.** Run the complete repository gate and inspect production at
    desktop and mobile widths for changes to public content or navigation.
 
-## Discussion-source review
+## Article-to-Dispatch review
 
-Hacker News points, comment counts, rank, and usernames are provenance for how a
-lead was discovered, not measures of truth, expertise, consensus, or editorial
-importance. The external article remains the candidate source; its HN thread is
-a separately labeled `commentary-context` record. A direct Ask HN or Tell HN
-submission is anecdotal discussion, not independent reporting.
+Every external article is reviewed as its own candidate. A candidate advances
+only after its canonical metadata, full text, necessary primary records,
+independent corroboration, later developments, and limitations have been
+reviewed. Paywalled, dead, unstable, derivative, duplicate, or materially
+misleading candidates are withheld or rejected rather than drafted from a
+headline or snippet.
 
-Before using a discussion theme, review the complete relevant tree rather than
-only the highest-ranked comments. Retain only concrete corrections, checkable
-references, relevant firsthand experience with its limits stated, exposed
-assumptions, or distinctions and uncertainties that improve the reporting. Drop
-jokes, slogans, repetition, unsupported national generalizations, personal
-attacks, popularity arguments, and claims that votes establish consensus.
-
-Commentary themes should normally be paraphrased without usernames. They cannot
-verify a factual claim, satisfy an Atlas artifact's source requirement, or
-create a relationship in the public graph. If a comment supplies a useful
-primary record, review and cite that record directly.
+The public record contains only canonical and supporting evidence. Informal
+research prompts cannot verify a claim, satisfy an Atlas source requirement, or
+create a public relationship. If a prompt surfaces a useful primary record, the
+editor reviews and cites that record directly.
 
 ## Evidence status vocabulary
 
