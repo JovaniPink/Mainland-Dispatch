@@ -3,8 +3,8 @@
 **Current as of:** July 22, 2026  
 **Public Dispatches:** 13 published or corrected records  
 **Evidence-reviewed lead-to-Dispatch mappings:** 24  
-**Source-lead catalog:** 431 records
-**General-China article audit:** 354 external candidates — 327 withheld, 27
+**Source-lead catalog:** 461 records
+**General-China article audit:** 384 external candidates — 355 withheld, 29
 rejected, 0 drafted, 0 public
 
 ## Governing documents
@@ -36,7 +36,8 @@ snapshots unless a factual correction is explicitly recorded.
 | Batch 10 | 29 | 26 | 3 | 0 |
 | Batch 11 | 28 | 28 | 0 | 0 |
 | Batch 12 | 29 | 26 | 3 | 0 |
-| **Total** | **354** | **327** | **27** | **0** |
+| Batch 13 | 30 | 28 | 2 | 0 |
+| **Total** | **384** | **355** | **29** | **0** |
 
 The remaining 77 catalog records comprise existing Dispatch canonical sources,
 supporting research, policy records, open-model intake and Atlas evidence
@@ -55,6 +56,7 @@ catalog entry or drafted mapping is not a publication count.
 - [Batch 10](source-notes/2026-07-22-china-article-corpus-batch-10-review.md)
 - [Batch 11](source-notes/2026-07-22-china-article-corpus-batch-11-review.md)
 - [Batch 12](source-notes/2026-07-22-china-article-corpus-batch-12-review.md)
+- [Batch 13](source-notes/2026-07-22-china-article-corpus-batch-13-review.md)
 
 Each record documents access state, disposition, exact stopping point and the
 checks required before an individual article may advance. These are review
@@ -76,4 +78,4 @@ ledgers, not public summaries.
 
 These files preserve what was known and counted at their recorded review time.
 Counts such as 44 or 56 describe those historical snapshots, not the current
-431-record catalog.
+461-record catalog.

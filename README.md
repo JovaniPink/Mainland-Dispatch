@@ -146,8 +146,8 @@ limitations.
 
 The current documentation map, governing-methodology precedence, and catalog
 rollup are maintained in [`docs/README.md`](docs/README.md). The source-lead
-catalog contains 431 records. The twelve general-China intake batches cover 354
-external article candidates: 327 withheld, 27 rejected, and none drafted or
+catalog contains 461 records. The thirteen general-China intake batches cover
+384 external article candidates: 355 withheld, 29 rejected, and none drafted or
 public.
 
 Topic-specific intake logs record source quality, exclusions, open checks, and
@@ -210,3 +210,7 @@ one exact duplicate already tracked in batch 05. It adds law, finance, energy,
 mapping, media, conservation, technology, and everyday-life leads with three
 documented rejections in
 [`docs/source-notes/2026-07-22-china-article-corpus-batch-12-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-12-review.md).
+The thirteenth supplied group adds 30 distinct infrastructure, trade, protest,
+media, space, sports, daily-life, maritime, technology, and legal candidates,
+with two documented rejections in
+[`docs/source-notes/2026-07-22-china-article-corpus-batch-13-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-13-review.md).
