@@ -2,7 +2,7 @@ import { sourceLeads, SourceLeadCatalogSchema } from "./source-leads";
 
 describe("editorial article-candidate catalog", () => {
   it("holds a chronological article-source inbox", () => {
-    expect(sourceLeads).toHaveLength(225);
+    expect(sourceLeads).toHaveLength(255);
     const datedYears = sourceLeads
       .map((lead) =>
         String(lead.publicationYear ?? lead.publishedAt?.slice(0, 4))
@@ -11,6 +11,23 @@ describe("editorial article-candidate catalog", () => {
     expect(datedYears[0]).toBe("2006");
     expect(datedYears.at(-1)).toBe("2026");
     expect(datedYears).not.toContain("undefined");
+  });
+
+  it("accounts for the sixth 30-article batch without publishing it", () => {
+    const corpus = sourceLeads.filter(
+      (lead) => lead.collectionId === "china-article-corpus-2026-07-06"
+    );
+
+    expect(corpus).toHaveLength(30);
+    expect(
+      corpus.filter((lead) => lead.disposition === "withheld")
+    ).toHaveLength(26);
+    expect(
+      corpus.filter((lead) => lead.disposition === "rejected")
+    ).toHaveLength(4);
+    expect(
+      corpus.every((lead) => Boolean(lead.decisionReason) && !lead.dispatchId)
+    ).toBe(true);
   });
 
   it("accounts for the fifth 30-article batch without publishing it", () => {

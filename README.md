@@ -168,3 +168,7 @@ and article-specific review blockers, is recorded in
 The fifth 30-candidate batch adds legal, technical, culture, infrastructure,
 finance, and everyday-life leads with six documented rejections in
 [`docs/source-notes/2026-07-22-china-article-corpus-batch-05-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-05-review.md).
+The sixth 30-candidate batch adds space, mobility, labor, education, media,
+science, legal-case, and everyday-life leads with source-specific corrections
+and four documented rejections in
+[`docs/source-notes/2026-07-22-china-article-corpus-batch-06-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-06-review.md).
