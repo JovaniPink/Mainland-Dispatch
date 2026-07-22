@@ -172,3 +172,7 @@ The sixth 30-candidate batch adds space, mobility, labor, education, media,
 science, legal-case, and everyday-life leads with source-specific corrections
 and four documented rejections in
 [`docs/source-notes/2026-07-22-china-article-corpus-batch-06-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-06-review.md).
+The seventh 30-candidate batch adds archaeology, infrastructure, environment,
+cybersecurity, research, finance, culture, and maritime leads with three
+documented rejections in
+[`docs/source-notes/2026-07-22-china-article-corpus-batch-07-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-07-review.md).

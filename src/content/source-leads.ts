@@ -6,6 +6,7 @@ import { chinaArticleIntake03 } from "./source-lead-batches/china-article-intake
 import { chinaArticleIntake04 } from "./source-lead-batches/china-article-intake-04";
 import { chinaArticleIntake05 } from "./source-lead-batches/china-article-intake-05";
 import { chinaArticleIntake06 } from "./source-lead-batches/china-article-intake-06";
+import { chinaArticleIntake07 } from "./source-lead-batches/china-article-intake-07";
 import { existingDispatchCanonicalSources } from "./source-lead-batches/existing-dispatch-canonical-sources";
 
 const draftedDispatchByLeadId = new Map<string, string>([
@@ -55,6 +56,7 @@ const leads = [
   ...chinaArticleIntake04,
   ...chinaArticleIntake05,
   ...chinaArticleIntake06,
+  ...chinaArticleIntake07,
   ...existingDispatchCanonicalSources,
   {
     id: "lead-2006-science-plan",
