@@ -4,6 +4,7 @@ import { comparisons } from "./comparisons";
 import { traces } from "./traces";
 import { dossiers } from "./dossiers";
 import { atlasReleases } from "./atlas";
+import { sourceLeads } from "./source-leads";
 import {
   AtlasReleaseSchema,
   ComparisonSchema,
@@ -75,6 +76,7 @@ export const ContentCatalogSchema = z
     );
     const traceSlugs = new Set(catalog.traces.map((item) => item.slug));
     const dossierSlugs = new Set(catalog.dossiers.map((item) => item.slug));
+    const sourceLeadsById = new Map(sourceLeads.map((item) => [item.id, item]));
 
     const requireDispatch = (id: string, owner: string, publicOnly = false) => {
       if (!byId.has(id)) {
@@ -170,7 +172,7 @@ export const ContentCatalogSchema = z
       const chainSlugs = new Set(release.chains.map((item) => item.slug));
       const seriesIds = new Set(release.series.map((item) => item.id));
 
-      if (!dossierSlugs.has(release.dossierSlug)) {
+      if (release.dossierSlug && !dossierSlugs.has(release.dossierSlug)) {
         ctx.addIssue({
           code: "custom",
           message: `${release.slug} references missing dossier ${release.dossierSlug}`,
@@ -186,6 +188,27 @@ export const ContentCatalogSchema = z
         `${release.slug} source id`,
         ctx
       );
+
+      for (const source of release.sources) {
+        if (!source.sourceLeadId) continue;
+        const lead = sourceLeadsById.get(source.sourceLeadId);
+        if (!lead) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${release.slug} source ${source.id} references missing lead ${source.sourceLeadId}`,
+          });
+        } else if (lead.reviewState !== "source-read") {
+          ctx.addIssue({
+            code: "custom",
+            message: `${release.slug} source ${source.id} exposes lead ${source.sourceLeadId} before source review`,
+          });
+        } else if (lead.url !== source.canonicalUrl) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${release.slug} source ${source.id} does not preserve the reviewed canonical URL`,
+          });
+        }
+      }
       addDuplicateIssues(
         release.places.map((item) => item.id),
         `${release.slug} place id`,

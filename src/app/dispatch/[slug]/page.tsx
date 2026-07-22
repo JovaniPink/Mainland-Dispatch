@@ -152,6 +152,27 @@ export default async function DispatchPage({
           <p className="mt-2 font-serif text-lg leading-relaxed">
             {d.commentary}
           </p>
+          {d.commentaryReferences.length > 0 && (
+            <div className="mt-3 border-l-2 border-rule pl-3">
+              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+                Commentary context · paraphrased, not evidence
+              </p>
+              <ul className="mt-1 space-y-1">
+                {d.commentaryReferences.map((reference) => (
+                  <li key={reference.url}>
+                    <a
+                      href={reference.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-[0.65rem] uppercase tracking-widest text-jade hover:text-signal"
+                    >
+                      {reference.label} ↗
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
         <div className="border border-rule bg-paper-warm/40 p-4">
           <p className="font-mono text-xs uppercase tracking-widest text-signal">

@@ -133,3 +133,22 @@ Before changing a record from `prototype` to `verified`, replace every sample
 claim, URL, media identifier, and attribution with reviewed source material,
 verify translations and archival captures, and move the record through the
 editorial state machine.
+
+Topic-specific intake logs record source quality, exclusions, open checks, and
+the exact research stopping point. The current Chinese open-model package is
+documented in
+[`docs/source-notes/2026-07-21-chinese-open-models.md`](docs/source-notes/2026-07-21-chinese-open-models.md).
+The user-supplied follow-up brief is tracked separately in
+[`docs/source-notes/2026-07-21-supplied-open-weight-brief.md`](docs/source-notes/2026-07-21-supplied-open-weight-brief.md),
+and the deliberately varied historical intake is recorded in
+[`docs/source-notes/2026-07-21-random-backfile-sampler.md`](docs/source-notes/2026-07-21-random-backfile-sampler.md).
+The larger editorial-only link backlog and its 2006–2026 chronology are
+documented in
+[`docs/source-notes/2026-07-21-open-model-sourcebook-expanding-time.md`](docs/source-notes/2026-07-21-open-model-sourcebook-expanding-time.md).
+The follow-up global-architecture dossier, claim audit, withheld assertions, and
+recommended evidence-first article structure are documented in
+[`docs/source-notes/2026-07-21-global-ai-architectures-dossier-audit.md`](docs/source-notes/2026-07-21-global-ai-architectures-dossier-audit.md).
+The revised Kimi K3 sourcing brief, canonical-source corrections, six historical
+drafts, source-inbox expansion, and exact research stopping point are documented
+in
+[`docs/source-notes/2026-07-22-kimi-k3-sourcing-brief-intake.md`](docs/source-notes/2026-07-22-kimi-k3-sourcing-brief-intake.md).

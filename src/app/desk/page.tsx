@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Composer } from "@/components/desk/composer";
 import { ReviewQueue } from "@/components/desk/review-queue";
+import { SourceLeadInbox } from "@/components/desk/source-lead-inbox";
 
 export const metadata: Metadata = {
   title: "Desk · Mainland Dispatch",
@@ -33,6 +34,7 @@ export default function DeskPage() {
 
       <div className="mt-8 space-y-6">
         <Composer />
+        <SourceLeadInbox />
         <ReviewQueue />
       </div>
     </div>

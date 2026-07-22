@@ -219,7 +219,7 @@ export function MapDialog({
           )}
 
           <p className="absolute right-2 bottom-2 left-2 z-10 bg-paper/90 px-2 py-1 text-center font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
-            Documented regulatory reach—not a shipment or facility route
+            Source-backed relationship—not a physical or inferred route
           </p>
         </div>
       </div>

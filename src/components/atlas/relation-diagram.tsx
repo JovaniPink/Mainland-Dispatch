@@ -179,8 +179,9 @@ export function RelationDiagram({
         </div>
       </div>
       <figcaption className="border-t border-rule px-4 py-3 text-xs leading-relaxed text-ink-muted">
-        Lines represent documented regulatory reach or disclosed exposure. They
-        do not represent physical shipments or inferred movement.
+        Lines represent only the relationship named in the source ledger. They
+        do not imply physical routes, volumes, causation, or an unreported
+        connection.
       </figcaption>
     </figure>
   );

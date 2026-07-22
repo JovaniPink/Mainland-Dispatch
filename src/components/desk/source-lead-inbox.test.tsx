@@ -1,0 +1,45 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { SourceLeadInbox } from "./source-lead-inbox";
+
+describe("SourceLeadInbox", () => {
+  it("presents the long chronology as collapsed decade groups", () => {
+    render(<SourceLeadInbox />);
+
+    expect(screen.getByText(/79 lightweight leads/)).toBeInTheDocument();
+    expect(screen.getByText("2000s")).toBeInTheDocument();
+    expect(screen.getByText("2010s")).toBeInTheDocument();
+    expect(screen.getByText("2020s")).toBeInTheDocument();
+    expect(screen.queryByText("Date pending")).not.toBeInTheDocument();
+  });
+
+  it("retains original links and labels HN as commentary-only", () => {
+    render(<SourceLeadInbox />);
+
+    expect(
+      screen
+        .getByText(
+          /National Medium- and Long-Term Program for Science and Technology Development/
+        )
+        .closest("a")
+    ).toHaveAttribute(
+      "href",
+      "https://www.itu.int/en/ITU-D/Cybersecurity/Documents/National_Strategies_Repository/China_2006.pdf"
+    );
+    expect(screen.getByText(/HN is commentary only/)).toBeInTheDocument();
+  });
+
+  it("filters a large inbox without changing its publication boundary", () => {
+    render(<SourceLeadInbox />);
+
+    fireEvent.change(
+      screen.getByRole("searchbox", { name: "Search source leads" }),
+      { target: { value: "no-source-can-match-this" } }
+    );
+
+    expect(screen.getByText("0 of 79 leads shown")).toBeInTheDocument();
+    expect(
+      screen.getByText("No source leads match this editorial filter.")
+    ).toBeInTheDocument();
+  });
+});

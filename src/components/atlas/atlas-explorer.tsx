@@ -528,7 +528,11 @@ export function AtlasExplorer({ release }: { release: AtlasRelease }) {
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
           Sources are derived from the selected step, its events and
-          relationships, the focused place, and the selected chart observation.
+          relationships{release.places.length > 0 ? ", the focused place" : ""}
+          {release.series.length > 0
+            ? ", and the selected chart observation"
+            : ""}
+          .
         </p>
         <div className="mt-5 divide-y divide-rule border-y border-rule">
           {sources.map((source) => (

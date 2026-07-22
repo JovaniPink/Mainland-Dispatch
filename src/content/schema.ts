@@ -57,6 +57,13 @@ const slug = nonEmpty.regex(
 /** Items must be non-empty strings; the list itself may be empty (defaults to []). */
 const nonEmptyList = z.array(nonEmpty).default([]);
 
+export const CommentaryReferenceSchema = z.object({
+  label: nonEmpty,
+  url: z.url(),
+  retrievedAt: isoDate,
+  use: z.literal("commentary-context"),
+});
+
 const DispatchBase = z.object({
   id: nonEmpty.regex(
     /^d-[a-z0-9]+(?:-[a-z0-9]+)*$/,
@@ -66,6 +73,7 @@ const DispatchBase = z.object({
   title: nonEmpty,
   summary: nonEmpty,
   commentary: nonEmpty,
+  commentaryReferences: z.array(CommentaryReferenceSchema).default([]),
   whyItMatters: nonEmpty,
   source: nonEmpty,
   sourceUrl: z.url(),
@@ -156,6 +164,47 @@ export type DispatchKind = Dispatch["kind"];
 export type EditorialStatus = z.infer<typeof EditorialStatusSchema>;
 export type EvidenceStatus = z.infer<typeof EvidenceStatusSchema>;
 export type Vertical = z.infer<typeof VerticalSchema>;
+
+/* ── Editorial source leads ─────────────────────────────────────── */
+
+export const SourceLeadSchema = z.object({
+  id: nonEmpty.regex(
+    /^lead-[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "expected a lead- prefixed id"
+  ),
+  title: nonEmpty,
+  url: z.url(),
+  publisher: nonEmpty,
+  publishedAt: isoDate.optional(),
+  publicationYear: z.number().int().min(1900).max(2100).optional(),
+  accessedAt: isoDate,
+  contentType: z.enum([
+    "primary",
+    "research",
+    "reporting",
+    "analysis",
+    "podcast",
+    "discussion",
+  ]),
+  claimedGrade: z.enum(["A", "B", "C", "D"]).optional(),
+  sourceOrigin: z.enum(["user-sourcebook", "web-research", "prior-intake"]),
+  reviewState: z.enum(["supplied", "metadata-checked", "source-read"]),
+  topics: z.array(nonEmpty).min(1),
+  evidenceStatus: z.enum([
+    "confirmed",
+    "vendor-claim",
+    "disputed",
+    "pending",
+    "unverified",
+  ]),
+  paywall: z.boolean().default(false),
+  archiveUrl: z.url().optional(),
+  hnStoryId: nonEmpty.regex(/^\d+$/).optional(),
+  notes: nonEmpty,
+  nextReviewAt: isoDate.optional(),
+});
+
+export type SourceLead = z.infer<typeof SourceLeadSchema>;
 
 /* ── Compare ──────────────────────────────────────────────────────── */
 
@@ -252,6 +301,10 @@ export type Dossier = z.infer<typeof DossierSchema>;
 export const AtlasSourceClassSchema = z.enum([
   "policy",
   "legal-record",
+  "product-release",
+  "technical-paper",
+  "reporting",
+  "analysis",
   "screening-data",
   "trade-data",
   "methodology",
@@ -274,19 +327,26 @@ export const AtlasLifecycleStageSchema = z.enum([
 ]);
 
 export const AtlasStepKindSchema = z.enum([
+  "announcement",
   "rule",
   "scope",
   "entity",
   "date",
   "location",
   "trade",
+  "observation",
+  "implementation",
   "disclosure",
   "effect",
   "question",
   "caveat",
 ]);
 
-export const AtlasRelationKindSchema = z.enum(["regulatory-reach"]);
+export const AtlasRelationKindSchema = z.enum([
+  "regulatory-reach",
+  "commercial-management",
+  "audience-reach",
+]);
 
 const sha256 = nonEmpty.regex(/^[a-f0-9]{64}$/, "expected a SHA-256 checksum");
 
@@ -318,6 +378,9 @@ export const AtlasSourceRecordSchema = z.object({
   language: nonEmpty,
   translationStatus: TranslationStatusSchema,
   recordId: nonEmpty,
+  sourceLeadId: nonEmpty
+    .regex(/^lead-[a-z0-9]+(?:-[a-z0-9]+)*$/, "expected a lead- prefixed id")
+    .optional(),
   artifact: AtlasSourceArtifactSchema.optional(),
   query: AtlasSourceQuerySchema.optional(),
   notes: nonEmpty,
@@ -333,7 +396,7 @@ export const AtlasPlaceSchema = z.object({
     z.number().min(-180).max(180),
     z.number().min(-90).max(90),
   ]),
-  precision: z.enum(["exact", "city", "country"]),
+  precision: z.enum(["exact", "city", "region", "country"]),
   role: nonEmpty,
   sourceIds: z.array(nonEmpty).min(1),
 });
@@ -431,7 +494,7 @@ export const AtlasSeriesSchema = z.object({
 
 export const AtlasReleaseSchema = z.object({
   slug,
-  dossierSlug: slug,
+  dossierSlug: slug.optional(),
   version: nonEmpty,
   title: nonEmpty,
   summary: nonEmpty,
@@ -439,17 +502,17 @@ export const AtlasReleaseSchema = z.object({
   publishedAt: isoDate,
   retrievedAt: isoDate,
   evidenceThrough: isoDate,
-  seriesThrough: isoDate,
+  seriesThrough: isoDate.optional(),
   editorialStatus: EditorialStatusSchema,
   provenance: z.literal("prototype"),
   reviewState: z.literal("source-snapshot"),
   relatedDispatchIds: nonEmptyList,
   sources: z.array(AtlasSourceRecordSchema).min(1),
   chains: z.array(SignalChainSchema).min(1),
-  places: z.array(AtlasPlaceSchema).min(1),
+  places: z.array(AtlasPlaceSchema).default([]),
   relations: z.array(AtlasRelationSchema),
-  events: z.array(AtlasEventSchema).length(4),
-  series: z.array(AtlasSeriesSchema).min(1),
+  events: z.array(AtlasEventSchema).min(1),
+  series: z.array(AtlasSeriesSchema).default([]),
 });
 
 export type AtlasSourceRecord = z.infer<typeof AtlasSourceRecordSchema>;

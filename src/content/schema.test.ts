@@ -9,7 +9,11 @@ import {
   isPublicDispatch,
   publishedDispatches,
 } from "./dispatches";
-import { atlasReleases, publishedAtlasReleases } from "./atlas";
+import {
+  atlasReleases,
+  getAtlasRelease,
+  publishedAtlasReleases,
+} from "./atlas";
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
@@ -38,7 +42,53 @@ const validArticle = {
 
 describe("DispatchSchema", () => {
   it("accepts a valid article dispatch", () => {
-    expect(DispatchSchema.safeParse(validArticle).success).toBe(true);
+    const result = DispatchSchema.safeParse(validArticle);
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.commentaryReferences).toEqual([]);
+  });
+
+  it("accepts a labeled HN commentary reference without treating it as evidence", () => {
+    const result = DispatchSchema.safeParse({
+      ...validArticle,
+      commentaryReferences: [
+        {
+          label: "Hacker News discussion 123",
+          url: "https://news.ycombinator.com/item?id=123",
+          retrievedAt: "2026-07-21",
+          use: "commentary-context",
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects an unlabeled or evidentiary commentary reference", () => {
+    expect(
+      DispatchSchema.safeParse({
+        ...validArticle,
+        commentaryReferences: [
+          {
+            label: " ",
+            url: "https://news.ycombinator.com/item?id=123",
+            retrievedAt: "2026-07-21",
+            use: "commentary-context",
+          },
+        ],
+      }).success
+    ).toBe(false);
+    expect(
+      DispatchSchema.safeParse({
+        ...validArticle,
+        commentaryReferences: [
+          {
+            label: "Hacker News discussion 123",
+            url: "https://news.ycombinator.com/item?id=123",
+            retrievedAt: "2026-07-21",
+            use: "evidence",
+          },
+        ],
+      }).success
+    ).toBe(false);
   });
 
   it("rejects an invalid sourceUrl", () => {
@@ -113,8 +163,93 @@ describe("DispatchSchema", () => {
 });
 
 describe("seed content", () => {
-  it("ships exactly twelve dispatches, all schema-valid", () => {
-    expect(dispatches).toHaveLength(12);
+  it("ships thirty schema-valid dispatches", () => {
+    expect(dispatches).toHaveLength(36);
+  });
+
+  it("keeps the Chinese-model source package behind editorial review", () => {
+    const packageIds = new Set([
+      "d-013",
+      "d-014",
+      "d-015",
+      "d-016",
+      "d-017",
+      "d-018",
+      "d-019",
+      "d-020",
+    ]);
+    const packageRecords = dispatches.filter((dispatch) =>
+      packageIds.has(dispatch.id)
+    );
+
+    expect(packageRecords).toHaveLength(packageIds.size);
+    expect(
+      packageRecords.every(
+        (dispatch) => dispatch.editorialStatus === "sourceReview"
+      )
+    ).toBe(true);
+    expect(
+      publishedDispatches.some((dispatch) => packageIds.has(dispatch.id))
+    ).toBe(false);
+    expect(getPublicDispatch("whos-afraid-of-chinese-models")).toBeUndefined();
+  });
+
+  it("uses supplied Hacker News links only as commentary context", () => {
+    const suppliedHnUrls = new Set([
+      "https://news.ycombinator.com/item?id=48977128",
+      "https://news.ycombinator.com/item?id=48979269",
+    ]);
+
+    expect(
+      dispatches.some((dispatch) => suppliedHnUrls.has(dispatch.sourceUrl))
+    ).toBe(false);
+    const hnReferences = dispatches
+      .flatMap((dispatch) => dispatch.commentaryReferences)
+      .filter((reference) => suppliedHnUrls.has(reference.url));
+    expect(new Set(hnReferences.map((reference) => reference.url))).toEqual(
+      suppliedHnUrls
+    );
+    expect(
+      hnReferences.every((reference) => reference.use === "commentary-context")
+    ).toBe(true);
+  });
+
+  it("keeps the random historical backfile behind editorial review", () => {
+    const backfileIds = new Set([
+      "d-021",
+      "d-022",
+      "d-023",
+      "d-024",
+      "d-025",
+      "d-026",
+      "d-027",
+      "d-028",
+      "d-029",
+      "d-030",
+    ]);
+    const backfileRecords = dispatches.filter((dispatch) =>
+      backfileIds.has(dispatch.id)
+    );
+
+    expect(backfileRecords).toHaveLength(backfileIds.size);
+    expect(
+      backfileRecords.every(
+        (dispatch) =>
+          dispatch.editorialStatus === "sourceReview" &&
+          dispatch.provenance === "verified" &&
+          dispatch.commentaryReferences.length === 0
+      )
+    ).toBe(true);
+    expect(
+      publishedDispatches.some((dispatch) => backfileIds.has(dispatch.id))
+    ).toBe(false);
+    expect(
+      new Set(
+        backfileRecords.map((dispatch) => dispatch.sourceDate.slice(0, 4))
+      )
+    ).toEqual(
+      new Set(["2012", "2016", "2017", "2018", "2019", "2020", "2021", "2022"])
+    );
   });
 
   it("covers every dispatch kind", () => {
@@ -200,6 +335,8 @@ describe("publication boundary", () => {
 
 describe("Evidence Atlas schema and graph", () => {
   const release = atlasReleases[0];
+  const cultureRelease = getAtlasRelease("rural-creator-platform-chain")!;
+  const openModelRelease = getAtlasRelease("open-model-release-ledger")!;
 
   it("ships one source-snapshot release with four-step chains", () => {
     expect(release.reviewState).toBe("source-snapshot");
@@ -208,6 +345,76 @@ describe("Evidence Atlas schema and graph", () => {
       true
     );
     expect(release.series[0].observations).toHaveLength(24);
+  });
+
+  it("ships a second source-backed culture case without exposing review-stage Dispatches", () => {
+    expect(atlasReleases).toHaveLength(3);
+    expect(cultureRelease.dossierSlug).toBeUndefined();
+    expect(cultureRelease.series).toEqual([]);
+    expect(cultureRelease.relatedDispatchIds).toEqual([]);
+    expect(cultureRelease.chains).toHaveLength(3);
+    expect(cultureRelease.sources.every((source) => source.sourceLeadId)).toBe(
+      true
+    );
+    expect(cultureRelease.relations.map((relation) => relation.kind)).toEqual([
+      "commercial-management",
+      "audience-reach",
+    ]);
+  });
+
+  it("ships a source-backed open-model case without inventing geography, relations, or a benchmark series", () => {
+    expect(openModelRelease.dossierSlug).toBeUndefined();
+    expect(openModelRelease.places).toEqual([]);
+    expect(openModelRelease.relations).toEqual([]);
+    expect(openModelRelease.series).toEqual([]);
+    expect(openModelRelease.relatedDispatchIds).toEqual([]);
+    expect(openModelRelease.sources).toHaveLength(7);
+    expect(
+      openModelRelease.sources.every((source) => source.sourceLeadId)
+    ).toBe(true);
+    expect(openModelRelease.chains).toHaveLength(3);
+    expect(
+      openModelRelease.chains.every((chain) => chain.steps.length === 4)
+    ).toBe(true);
+  });
+
+  it("keeps the promised Kimi weight release as a future review gate", () => {
+    const kimiSource = openModelRelease.sources.find(
+      (source) => source.id === "source-kimi-k3-launch"
+    )!;
+    const verification = openModelRelease.chains
+      .flatMap((chain) => chain.steps)
+      .find((step) => step.id === "step-release-verification")!;
+
+    expect(kimiSource.revisionPolicy).toMatch(/recheck on or after july 27/i);
+    expect(kimiSource.notes).toMatch(/does not establish that weights/i);
+    expect(verification.kind).toBe("question");
+    expect(verification.date).toBeUndefined();
+  });
+
+  it("rejects Atlas promotion of a lead that has not been source-read", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[1].sources[0].sourceLeadId =
+      "lead-2025-kimi-k2-repository";
+    invalid.atlasReleases[1].sources[0].canonicalUrl =
+      "https://github.com/MoonshotAI/Kimi-K2";
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("also rejects unreviewed promotion in the open-model ledger", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[2].sources[0].sourceLeadId =
+      "lead-2025-kimi-k2-repository";
+    invalid.atlasReleases[2].sources[0].canonicalUrl =
+      "https://github.com/MoonshotAI/Kimi-K2";
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects a promoted source whose URL differs from the reviewed lead", () => {
+    const invalid = clone(catalog);
+    invalid.atlasReleases[1].sources[0].canonicalUrl =
+      "https://example.com/unreviewed-copy";
+    expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
   });
 
   it("rejects invalid coordinates and malformed artifact metadata", () => {

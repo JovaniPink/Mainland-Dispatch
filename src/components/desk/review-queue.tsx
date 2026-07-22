@@ -117,6 +117,22 @@ export function ReviewQueue() {
                 <p className="mt-1 font-serif text-sm leading-relaxed">
                   {selected.commentary}
                 </p>
+                {selected.commentaryReferences.length > 0 && (
+                  <ul className="mt-3 space-y-1 border-t border-rule pt-3 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+                    {selected.commentaryReferences.map((reference) => (
+                      <li key={reference.url}>
+                        <a
+                          href={reference.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-signal"
+                        >
+                          Commentary context · {reference.label} ↗
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <p className="border-l-2 border-jade pl-3 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
                 Public route remains closed until this entry reaches Published

@@ -2,10 +2,11 @@
 
 ## Status and editorial boundary
 
-The semiconductor Evidence Atlas is a dossier-first, single-case research
-prototype. It is public and crawlable at `/atlas`, but it is not a mature
-publication vertical and is deliberately absent from global navigation. Its
-release remains:
+The Evidence Atlas is a three-case research prototype: one dossier-linked
+policy case, one culture/everyday-life case, and one open-model release-state
+case built from the source-review queue. It is public and crawlable at `/atlas`,
+but it is not a mature publication vertical and remains deliberately absent
+from global navigation. All three releases remain:
 
 ```text
 provenance: prototype
@@ -14,26 +15,167 @@ reviewState: source-snapshot
 
 The primary records below are real. The selection, grouping, relationship
 labels, conclusions, and caveats remain editorial interpretation and are not
-represented as verified reporting.
+represented as verified reporting. Publishing an Atlas source does not publish
+the related Desk record: review-stage Dispatches remain excluded from public
+lookups, relations, and route generation.
+
+## Source-review promotion boundary
+
+The culture and open-model releases use the source-lead inbox as an intake
+boundary, not as a public feed. A lead may enter an Atlas source ledger only
+when:
+
+1. its `reviewState` is `source-read`;
+2. the Atlas record preserves the reviewed canonical URL;
+3. the Atlas record states the source's evidentiary role and limitations; and
+4. every public event, place, step, and relation resolves to that source record.
+
+The catalog validates the first two conditions at build time. Leads marked
+`supplied` or `metadata-checked` cannot be promoted through a `sourceLeadId`.
+Both source-review-derived releases deliberately have no `relatedDispatchIds`:
+their backfile cards remain in `sourceReview` and are not exposed by the Atlas.
 
 ## Governing source hierarchy
 
 Atlas records identify both a source class and an evidence role. They are not
 interchangeable.
 
-| Evidence role | Meaning | Permitted use |
-| --- | --- | --- |
-| `controlling` | Authoritative legal text | Governs legal scope, effective dates, named parties, and compliance instructions |
-| `supporting` | Primary announcement, official response, or attributed filing | Supports what the publisher or filer stated |
-| `context` | Quantitative or descriptive context | Shows measured context without proving causation |
-| `methodology` | Definition, API contract, classification, or revision policy | Explains how another record was obtained or interpreted |
-| `enrichment` | Search, alias, or screening helper | Assists discovery but never replaces the controlling record |
+| Evidence role | Meaning                                                       | Permitted use                                                                    |
+| ------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `controlling` | Authoritative legal text                                      | Governs legal scope, effective dates, named parties, and compliance instructions |
+| `supporting`  | Primary announcement, official response, or attributed filing | Supports what the publisher or filer stated                                      |
+| `context`     | Quantitative or descriptive context                           | Shows measured context without proving causation                                 |
+| `methodology` | Definition, API contract, classification, or revision policy  | Explains how another record was obtained or interpreted                          |
+| `enrichment`  | Search, alias, or screening helper                            | Assists discovery but never replaces the controlling record                      |
 
 Live map tiles are infrastructure and do not appear in the editorial source
 ledger. The local relation diagram, location list, steps, and sources remain
 usable without WebGL or a network request.
 
 ## Current source inventory
+
+### Open-model release-state ledger
+
+The release `open-model-release-ledger` turns the supplied research sourcebook
+into a set of questions, not a public evidence source. Its seven public source
+records all resolve to leads already marked `source-read`; the sourcebook itself,
+review-stage Dispatches, supplied-only links, and Hacker News discussion remain
+outside the release.
+
+The case asks three narrower questions:
+
+1. Which release state is actually evidenced: announcement, product or API
+   access, downloadable weights, license, technical disclosure, or independent
+   evaluation?
+2. Which precedents are present in the reviewed chronology without converting
+   chronology into a US-versus-China scoreboard?
+3. Which claims belong to an official policy text, an individual company, or a
+   founder's attributed account?
+
+The release intentionally has no places, geographic relations, or quantitative
+series. Model-company nationality is not a source-backed route, API pricing is
+not total deployment cost, and first-party benchmark tables are not a comparable
+independent dataset. Empty structures are more accurate than manufactured map
+lines or a false-precision leaderboard.
+
+#### Completed release precedents
+
+- [Meta's Llama 2 release](https://ai.meta.com/blog/llama-2/) supports the July
+  18, 2023 release of weights and starting code for research and most commercial
+  use. Meta's “open source” label is preserved as its language; the Atlas uses
+  the narrower `open-weight` description because separate license and use-policy
+  conditions still require review.
+- [DeepSeek-V2's technical paper](https://arxiv.org/abs/2405.04434) supports the
+  architecture and experiment description, including the stated mixture-of-
+  experts configuration. Comparative performance and efficiency results remain
+  author-reported until reproduced independently.
+- [Qwen2's release post](https://qwenlm.github.io/blog/qwen2/) links five model
+  sizes to GitHub, Hugging Face, and ModelScope. Those links support artifact
+  availability; the post's benchmark tables remain vendor evaluation.
+- [Meta's Llama 3.1 release](https://ai.meta.com/blog/meta-llama-3-1/) supports
+  downloadable 8B, 70B, and 405B models, partner availability, supporting tools,
+  and changed derivative-use terms. Capability, cost, safety, and download-count
+  statements remain attributed to Meta.
+
+#### Strategy and policy context
+
+- [ChinaTalk's annotated DeepSeek interview translation](https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas)
+  preserves Liang Wenfeng's first-person account of research, pricing, talent,
+  and open-release strategy. His statements establish a stated position, not
+  independently verified motive or industry-wide behavior; translator notes are
+  commentary.
+- The [official English World AI Conference address](https://english.scio.gov.cn/topnews/2026-07/18/content_118605932.html)
+  records policy language advocating openness, collaboration, application, and
+  international governance. It does not establish why a lab released a model,
+  what a license permits, or whether an artifact shipped.
+
+#### Kimi K3 checkpoint
+
+The [July 16, 2026 Kimi K3 launch post](https://www.kimi.com/blog/kimi-k3)
+supports product and API availability and Moonshot's promise to release full
+weights by July 27 with a technical report. This Atlas snapshot predates that
+date. It therefore does **not** report the weights, license, model card,
+inference code, checksums, or report as shipped and does not convert vendor
+performance or economics claims into independent findings.
+
+The source record has an explicit revision policy: recheck on or after July 27,
+inspect the actual artifacts and legal terms, and require independent workload
+or safety evidence before making a verification claim. The future date appears
+as a review obligation in prose, not as a completed timeline event.
+
+### Culture and everyday-life release
+
+The release `rural-creator-platform-chain` uses three reviewed leads and no
+downloaded media, scraped audience dataset, or review-stage Dispatch artifact.
+
+#### Li Ziqi and the managed creator brand
+
+- Record: `source-li-ziqi-platform-economy`
+- Role: supporting reported essay
+- Published: November 1, 2021
+- Canonical source: [Rest of World on Li Ziqi](https://restofworld.org/2021/tiktok-china-influencer-liziqi/)
+- Supported relationship: rural Mianyang creator setting to Hangzhou Weinian's
+  reported management of social campaigns and the food brand.
+- Boundary: the article's account of the setting, management relationship,
+  e-commerce operation, hiatus, and lawsuit is reported evidence. Its framing
+  of pastoral fantasy, politics, and freedom remains attributed analysis. The
+  Atlas does not adjudicate the dispute or generalize from Li to all rural
+  creators.
+
+#### Factory TikTok and cross-border marketing
+
+- Record: `source-factory-tiktok`
+- Role: supporting reporting
+- Published: June 24, 2021
+- Canonical source: [Rest of World on Factory TikTok](https://restofworld.org/2021/the-chinese-content-farms-behind-factory-tiktok/)
+- Supported relationship: a spokesperson's account of a Hubei-based Bioa Mall
+  operation whose largest customer base was in North America, specifically the
+  United States.
+- Boundary: the team size, account count, view count, filming practice, and
+  customer geography are attributed period claims. They are not a durable
+  quantitative series and do not establish the scale or labor conditions of
+  Factory TikTok as a whole.
+
+#### Algorithmic recommendation provisions
+
+- Record: `source-algorithm-provisions-translation`
+- Role: supporting bilingual legal translation
+- Published: January 10, 2022; effective March 1, 2022
+- Canonical source: [DigiChina translation and Chinese text](https://digichina.stanford.edu/work/translation-internet-information-service-algorithmic-recommendation-management-provisions-effective-march-1-2022/)
+- Supported claims: mainland scope; disclosure of basic recommendation
+  mechanisms; a non-personalized or disable option; complaint channels; and the
+  effective date.
+- Boundary: the Chinese original controls legal interpretation. The rules
+  postdate both 2021 reports and are a separate legal layer, not evidence that
+  regulation caused either creator case or that a platform complied.
+
+The two geographic lines are source-backed editorial diagrams. Mianyang to
+Hangzhou means the reported creator-management relationship. Hubei to the
+United States means the spokesperson's reported customer-market relationship.
+Neither line is a physical route, shipment record, traffic measurement, or
+claim about every creator or factory account.
+
+### Semiconductor release
 
 ### BIS announcement
 
@@ -220,9 +362,10 @@ ambiguous "data through" date is not used.
 
 ## Reader behavior
 
-The source ledger is derived from the selected step, its declared events and
-relations, the selected place, and the selected chart observation. Unrelated
-sources do not remain visible merely because they belong to the release.
+The source ledger is derived from the selected step and its declared events,
+relations, places, and chart observation when those structures exist. Unrelated
+sources do not remain visible merely because they belong to the release. A case
+does not gain empty map or chart controls merely to match another release.
 
 The chart appears only on a step that explicitly references a series. Month is
 a chart cursor and does not reconstruct the evidence available as of that date.
@@ -231,9 +374,11 @@ spatial explanation. MapLibre is optional, consent-gated, and disposable.
 
 ## Release threshold and deferred work
 
-Atlas should return to global navigation only after a separately reviewed
-culture or everyday-life case demonstrates that the model generalizes beyond
-semiconductor controls.
+The additional cases demonstrate that the interaction can represent a culture
+and everyday-life chain or a non-geographic release-state ledger without
+requiring a dossier or manufacturing a quantitative series. That implementation
+milestone does not itself authorize a global-navigation change: all three cases
+remain `prototype` / `source-snapshot` and need a separate publication review.
 
 Before promoting this case from `prototype` or `source-snapshot`:
 
@@ -245,3 +390,7 @@ Before promoting this case from `prototype` or `source-snapshot`:
 5. Add independently observed outcome evidence before changing any company
    statement from `reported`.
 6. Review every conclusion and caveat through the publication workflow.
+7. Add Chinese-language or first-party companion sources for the culture case
+   where they materially strengthen a relationship or legal interpretation.
+8. Re-audit the Kimi K3 source on or after July 27, 2026, and add artifacts only
+   after directly reviewing their availability, terms, and technical contents.

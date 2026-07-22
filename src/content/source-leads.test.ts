@@ -1,0 +1,75 @@
+import { sourceLeads, SourceLeadCatalogSchema } from "./source-leads";
+
+describe("editorial source lead catalog", () => {
+  it("holds a large chronological inbox without creating public Dispatches", () => {
+    expect(sourceLeads).toHaveLength(79);
+    const datedYears = sourceLeads
+      .map((lead) =>
+        String(lead.publicationYear ?? lead.publishedAt?.slice(0, 4))
+      )
+      .sort();
+    expect(datedYears[0]).toBe("2006");
+    expect(datedYears.at(-1)).toBe("2026");
+    expect(new Set(datedYears).size).toBeGreaterThanOrEqual(12);
+    expect(datedYears).not.toContain("undefined");
+  });
+
+  it("keeps Hacker News leads in commentary-only posture", () => {
+    const hackerNews = sourceLeads.filter(
+      (lead) => lead.publisher === "Hacker News"
+    );
+    expect(hackerNews).toHaveLength(11);
+    expect(
+      hackerNews.every(
+        (lead) =>
+          lead.contentType === "discussion" &&
+          lead.claimedGrade === "D" &&
+          lead.evidenceStatus === "unverified" &&
+          lead.hnStoryId
+      )
+    ).toBe(true);
+  });
+
+  it("distinguishes supplied leads from sources read in this workflow", () => {
+    expect(
+      sourceLeads.some(
+        (lead) =>
+          lead.sourceOrigin === "user-sourcebook" &&
+          lead.reviewState === "supplied"
+      )
+    ).toBe(true);
+    expect(
+      sourceLeads.some(
+        (lead) =>
+          lead.sourceOrigin === "web-research" &&
+          lead.reviewState === "source-read"
+      )
+    ).toBe(true);
+  });
+
+  it("rejects duplicate URLs and invalid review chronology", () => {
+    expect(
+      SourceLeadCatalogSchema.safeParse([sourceLeads[0], sourceLeads[0]])
+        .success
+    ).toBe(false);
+    expect(
+      SourceLeadCatalogSchema.safeParse([
+        {
+          ...sourceLeads[0],
+          id: "lead-invalid-review-date",
+          nextReviewAt: "2005-01-01",
+        },
+      ]).success
+    ).toBe(false);
+    expect(
+      SourceLeadCatalogSchema.safeParse([
+        {
+          ...sourceLeads[0],
+          id: "lead-missing-publication-year",
+          publishedAt: undefined,
+          publicationYear: undefined,
+        },
+      ]).success
+    ).toBe(false);
+  });
+});

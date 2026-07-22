@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { atlasRelease } from "@/content/atlas";
+import { atlasRelease, getAtlasRelease } from "@/content/atlas";
 import { AtlasExplorer } from "./atlas-explorer";
 
 jest.mock("./map-dialog", () => ({
@@ -147,5 +147,74 @@ describe("AtlasExplorer", () => {
       0
     );
     expect(screen.queryByText(/asml 2024 form 20-f/i)).not.toBeInTheDocument();
+  });
+
+  it("renders the culture case with source-backed relations and no invented series", async () => {
+    const cultureRelease = getAtlasRelease("rural-creator-platform-chain")!;
+    window.history.replaceState(
+      {},
+      "",
+      "/atlas?case=rural-creator-platform-chain"
+    );
+    render(<AtlasExplorer release={cultureRelease} />);
+
+    expect(
+      screen.getByRole("heading", {
+        name: /from pastoral image to managed brand/i,
+      })
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: /monthly value/i })).toBeNull();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /management and commerce/i })
+    );
+    expect(
+      screen.getAllByText(/creator management and brand operations/i)
+    ).toHaveLength(2);
+    expect(
+      screen.getByText(/li ziqi's rural fantasy and the platform economy/i)
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(window.location.search).toContain(
+        "case=rural-creator-platform-chain"
+      );
+      expect(window.location.search).toContain("step=step-managed-brand");
+    });
+  });
+
+  it("renders the open-model ledger as a non-geographic release-state case", async () => {
+    const openModelRelease = getAtlasRelease("open-model-release-ledger")!;
+    window.history.replaceState(
+      {},
+      "",
+      "/atlas?case=open-model-release-ledger"
+    );
+    render(<AtlasExplorer release={openModelRelease} />);
+
+    expect(
+      screen.getByRole("heading", {
+        name: /a release is a stack of separate evidence/i,
+      })
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: /monthly value/i })).toBeNull();
+    expect(screen.queryByText(/map view/i)).not.toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /weights and license require direct artifact evidence/i,
+      })
+    );
+    expect(screen.getAllByText(/kimi k3 launch/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getByText(/meta and microsoft introduce llama 2/i)
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(window.location.search).toContain(
+        "case=open-model-release-ledger"
+      );
+      expect(window.location.search).toContain(
+        "step=step-release-weights-license"
+      );
+    });
   });
 });
