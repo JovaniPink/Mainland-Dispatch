@@ -165,3 +165,6 @@ The three supplied general-China article batches are consolidated into one
 The fourth 30-candidate batch, including redirect corrections, two rejections,
 and article-specific review blockers, is recorded in
 [`docs/source-notes/2026-07-22-china-article-corpus-batch-04-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-04-review.md).
+The fifth 30-candidate batch adds legal, technical, culture, infrastructure,
+finance, and everyday-life leads with six documented rejections in
+[`docs/source-notes/2026-07-22-china-article-corpus-batch-05-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-05-review.md).
