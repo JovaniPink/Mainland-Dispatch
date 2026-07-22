@@ -40,6 +40,26 @@ relationships.
 8. **Quality gate.** Run the complete repository gate and inspect production at
    desktop and mobile widths for changes to public content or navigation.
 
+## Discussion-source review
+
+Hacker News points, comment counts, rank, and usernames are provenance for how a
+lead was discovered, not measures of truth, expertise, consensus, or editorial
+importance. The external article remains the candidate source; its HN thread is
+a separately labeled `commentary-context` record. A direct Ask HN or Tell HN
+submission is anecdotal discussion, not independent reporting.
+
+Before using a discussion theme, review the complete relevant tree rather than
+only the highest-ranked comments. Retain only concrete corrections, checkable
+references, relevant firsthand experience with its limits stated, exposed
+assumptions, or distinctions and uncertainties that improve the reporting. Drop
+jokes, slogans, repetition, unsupported national generalizations, personal
+attacks, popularity arguments, and claims that votes establish consensus.
+
+Commentary themes should normally be paraphrased without usernames. They cannot
+verify a factual claim, satisfy an Atlas artifact's source requirement, or
+create a relationship in the public graph. If a comment supplies a useful
+primary record, review and cite that record directly.
+
 ## Evidence status vocabulary
 
 - `reported`: a named source reports the claim; it has not been independently

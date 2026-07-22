@@ -162,3 +162,7 @@ in
 The 30-item general-China HN discovery batch, unresolved URLs, and comment
 selection rule are recorded in
 [`docs/source-notes/2026-07-22-china-hn-300-intake.md`](docs/source-notes/2026-07-22-china-hn-300-intake.md).
+The following 30-item HN discovery batch, including corrections for social-credit
+framing, preliminary policy announcements, historical estimates, and anecdotal
+lockdown testimony, is recorded in
+[`docs/source-notes/2026-07-22-china-hn-288-316-intake.md`](docs/source-notes/2026-07-22-china-hn-288-316-intake.md).

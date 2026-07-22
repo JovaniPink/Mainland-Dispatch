@@ -1,9 +1,11 @@
 import { z } from "zod";
 import { SourceLeadSchema } from "./schema";
 import { chinaHn300Leads } from "./source-lead-batches/china-hn-300";
+import { chinaHn288To316Leads } from "./source-lead-batches/china-hn-288-316";
 
 const leads = [
   ...chinaHn300Leads,
+  ...chinaHn288To316Leads,
   {
     id: "lead-2006-science-plan",
     title:

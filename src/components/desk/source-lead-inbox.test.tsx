@@ -6,7 +6,7 @@ describe("SourceLeadInbox", () => {
   it("presents the long chronology as collapsed decade groups", () => {
     render(<SourceLeadInbox />);
 
-    expect(screen.getByText(/109 lightweight leads/)).toBeInTheDocument();
+    expect(screen.getByText(/139 lightweight leads/)).toBeInTheDocument();
     expect(screen.getByText("2000s")).toBeInTheDocument();
     expect(screen.getByText("2010s")).toBeInTheDocument();
     expect(screen.getByText("2020s")).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("SourceLeadInbox", () => {
       screen.getAllByRole("link", {
         name: /HN discussion · commentary only/i,
       })
-    ).toHaveLength(29);
+    ).toHaveLength(58);
   });
 
   it("filters a large inbox without changing its publication boundary", () => {
@@ -42,7 +42,7 @@ describe("SourceLeadInbox", () => {
       { target: { value: "no-source-can-match-this" } }
     );
 
-    expect(screen.getByText("0 of 109 leads shown")).toBeInTheDocument();
+    expect(screen.getByText("0 of 139 leads shown")).toBeInTheDocument();
     expect(
       screen.getByText("No source leads match this editorial filter.")
     ).toBeInTheDocument();
