@@ -1,14 +1,34 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** July 22, 2026  
-**Public Dispatches:** 13 published or corrected records  
-**Evidence-reviewed lead-to-Dispatch mappings:** 24  
+**Current as of:** July 23, 2026
+**Public Dispatches:** 13 published or corrected records
+**Public Notebook entries:** 1 founding inquiry
+**Evidence-reviewed lead-to-Dispatch mappings:** 24
 **Source-lead catalog:** 461 records
 **General-China article audit:** 384 external candidates — 355 withheld, 29
 rejected, 0 drafted, 0 public
 
+## Season Zero boundary
+
+[The Season Zero editorial
+contract](decisions/2026-07-23-season-zero.md) freezes additional source intake
+and product-surface expansion. The existing architecture remains available, but
+the public Notebook is the dominant reader journey. Publication is intentionally
+irregular, recurring editorial work is capped at 8–10 hours per entry, and each
+entry must earn the next one.
+
+The founding inquiry is supported by the
+[“What Xi Jinping Wants” source
+ledger](source-notes/2026-07-23-what-xi-jinping-wants-ledger.md), which records
+format-specific metadata, corrected timecodes, claim classifications,
+institutional context, counter-readings, access limitations and the exact
+research stopping point.
+
 ## Governing documents
 
+- [Season Zero editorial contract](decisions/2026-07-23-season-zero.md) defines
+  the current audience, primary object, cadence, time budget, intake freeze and
+  decision rule.
 - [Publication methodology](publication-methodology.md) defines the
   article-to-Dispatch evidence gate, claim statuses, correction practice and
   search-publication boundary.

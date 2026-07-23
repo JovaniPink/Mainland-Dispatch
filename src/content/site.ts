@@ -2,18 +2,15 @@ export const site = {
   name: "Mainland Dispatch",
   url: "https://mainlanddispatch.com",
   tagline:
-    "Curated reporting on China and the US–China relationship, with sources, context, and history preserved.",
+    "A public research notebook following consequential conversations about China into their sources, assumptions, and unresolved questions.",
   volume: "VOL. 001",
   nav: [
-    { label: "Dispatches", href: "/" },
-    { label: "Crosscurrents", href: "/compare/open-weight-release-postures" },
-    { label: "Mainland Pulse", href: "/trace/open-model-release-chronology" },
-    { label: "Dossiers", href: "/dossiers/open-model-release-record" },
-    { label: "Evidence Atlas", href: "/atlas" },
+    { label: "Notebook", href: "/" },
+    { label: "Source Archive", href: "/archive" },
     { label: "Saved", href: "/saved" },
   ],
   principle:
-    "Every source gets context; every conclusion shows its evidence; every developing story preserves its history.",
+    "Concern begins the inquiry; sources, counterarguments, and uncertainty keep it honest.",
 } as const;
 
 export const verticals = [

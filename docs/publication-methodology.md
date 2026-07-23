@@ -12,6 +12,13 @@ public content. Only records with `editorialStatus: published` or `corrected`
 can enter public streams, routes, saved views, Compare, Trace, or Dossier
 relationships.
 
+During Season Zero, a public Notebook entry is the primary editorial object. It
+may bring several reviewed records into one coherent inquiry, but it must
+preserve the same distinctions between source report, observation,
+interpretation, official position, contested claim and scenario. The Notebook
+does not weaken the Dispatch evidence boundary or make review-stage leads
+public.
+
 ## Required checks before publication
 
 1. **Canonical source read.** Open and read the source itself. A search result,
@@ -58,6 +65,33 @@ research prompts cannot verify a claim, satisfy an Atlas source requirement, or
 create a public relationship. If a prompt surfaces a useful primary record, the
 editor reviews and cites that record directly.
 
+## Notebook-entry review
+
+A Notebook entry begins with one consequential source, not with an intake
+quota. Before prose is written, its working ledger must record:
+
+- canonical distribution formats and any differences in titles, durations or
+  edits;
+- the precise passages or timecodes the entry analyzes;
+- the originating speaker’s argument in attributed language;
+- primary records and independent evidence needed to test observable claims;
+- serious complications or counter-readings;
+- relevant institutional context written without insinuation;
+- a separate line for each prediction, scenario or inferred timetable; and
+- access, transcript, translation and review-stopping limitations.
+
+Mainland Dispatch synthesis must remain visibly distinct from the source’s
+argument. A Notebook page can link to existing Dispatch, Compare, Trace,
+Dossier or Atlas material when it improves comprehension; it must not create
+separate versions of those products merely to display the same inquiry.
+
+Season Zero publication is intentionally irregular. Recurring research,
+verification, writing and editing are capped at 8–10 hours per entry. No
+additional article-intake batches, automated transcript ingestion, generalized
+CMS or new top-level product area may be added until the founding entry is
+evaluated under the
+[Season Zero decision rule](decisions/2026-07-23-season-zero.md).
+
 ## Evidence status vocabulary
 
 - `reported`: a named source reports the claim; it has not been independently
@@ -92,6 +126,11 @@ The wider source-lead catalog currently contains 461 records. The thirteen
 general-China article batches account for 384 external candidates: 355 are
 withheld and 29 rejected. None is drafted or public. These figures describe
 editorial intake, not the size of the public archive.
+
+The first public Notebook entry, “What Xi Jinping Wants,” is supported by a
+bounded [source
+ledger](source-notes/2026-07-23-what-xi-jinping-wants-ledger.md). It does not
+change the disposition of any general-China article candidate.
 
 ## Search and indexing boundary
 

@@ -3,8 +3,7 @@ import "./globals.css";
 import { site } from "@/content/site";
 import { Masthead } from "@/components/shell/masthead";
 import { Footer } from "@/components/shell/footer";
-import { PrototypeNotice } from "@/components/shell/prototype-notice";
-import { catalog, isPrototypeCatalog } from "@/content/catalog";
+import { catalog } from "@/content/catalog";
 import { JsonLd } from "@/components/seo/json-ld";
 import { siteUrl, socialImage } from "@/lib/seo";
 
@@ -21,14 +20,16 @@ export const metadata: Metadata = {
   authors: [{ name: site.name, url: siteUrl }],
   creator: site.name,
   publisher: site.name,
-  category: "News and media",
+  category: "Research and analysis",
   keywords: [
     "China",
     "US-China relations",
     "Chinese culture",
     "China technology",
     "China economy",
-    "evidence-led journalism",
+    "China research notebook",
+    "podcast analysis",
+    "evidence-led analysis",
     "source transparency",
   ],
   icons: { icon: "/favicon.ico" },
@@ -110,7 +111,6 @@ export default function RootLayout({
         <div className="notebook-margin min-h-screen lg:pl-24">
           <div className="mx-auto max-w-6xl">
             <Masthead />
-            {isPrototypeCatalog && <PrototypeNotice />}
             <main id="main-content" tabIndex={-1}>
               {children}
             </main>

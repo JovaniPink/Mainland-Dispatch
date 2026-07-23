@@ -115,7 +115,7 @@ export function Stream() {
           }
           className="w-full max-w-xs border border-rule bg-paper px-3 py-1.5 font-mono text-xs tracking-wide placeholder:text-ink-muted focus:border-jade focus:outline-none"
         />
-        <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
+        <p className="whitespace-nowrap font-mono text-xs uppercase tracking-widest text-ink-muted">
           {visible.length} / {publishedDispatches.length}
         </p>
       </div>

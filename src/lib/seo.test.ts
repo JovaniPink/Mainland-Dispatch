@@ -3,6 +3,7 @@ import robots from "@/app/robots";
 import manifest from "@/app/manifest";
 import { publishedDispatches } from "@/content/dispatches";
 import { atlasRelease, publishedAtlasReleases } from "@/content/atlas";
+import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
 import { generateMetadata as generateDispatchMetadata } from "@/app/dispatch/[slug]/page";
@@ -43,6 +44,8 @@ describe("SEO publication contract", () => {
 
     expect(new Set(urls).size).toBe(urls.length);
     expect(urls).toContain(siteUrl);
+    expect(urls).toContain(`${siteUrl}/notebook/${whatXiJinpingWants.slug}`);
+    expect(urls).toContain(`${siteUrl}/archive`);
     expect(urls).toContain(`${siteUrl}/atlas`);
     expect(
       publishedAtlasReleases.every((release) =>

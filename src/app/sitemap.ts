@@ -5,6 +5,7 @@ import { traces } from "@/content/traces";
 import { dossiers } from "@/content/dossiers";
 import { atlasRelease, publishedAtlasReleases } from "@/content/atlas";
 import { siteUrl } from "@/lib/seo";
+import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 
 const newest = (dates: string[]) => [...dates].sort().at(-1);
 
@@ -54,17 +55,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
           ? `${siteUrl}/atlas`
           : `${siteUrl}/atlas?case=${encodeURIComponent(release.slug)}`,
       lastModified: release.retrievedAt,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      changeFrequency: "monthly",
+      priority: 0.4,
     })
   );
 
   return [
     {
       url: siteUrl,
-      lastModified: archiveUpdated,
-      changeFrequency: "daily",
+      lastModified: whatXiJinpingWants.updatedAt,
+      changeFrequency: "monthly",
       priority: 1,
+    },
+    {
+      url: `${siteUrl}/notebook/${whatXiJinpingWants.slug}`,
+      lastModified: whatXiJinpingWants.updatedAt,
+      changeFrequency: "monthly",
+      priority: 0.95,
+    },
+    {
+      url: `${siteUrl}/archive`,
+      lastModified: archiveUpdated,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     ...atlasEntries,
     ...dispatchEntries,

@@ -1,9 +1,9 @@
 # Mainland Dispatch
 
-An editorial product prototype for context-rich coverage of China and the
-US–China relationship. The governing principle is simple: every source gets
-context, every conclusion shows its evidence, and every developing story keeps
-its history.
+A public research notebook for understanding contemporary China and the
+U.S.–China relationship. Each inquiry begins with a consequential conversation,
+document or development and follows it into its sources, assumptions, competing
+interpretations, historical context and unresolved questions.
 
 > **Editorial boundary:** public Dispatches, Compare sources, Trace entries, and
 > Dossier documents use reviewed public records and live source URLs. Evidence
@@ -28,8 +28,12 @@ claim-safety posture from `handoff-navigator`.
 
 ## Reader experiences
 
-- **Read** — source metadata, commentary, “Why it matters,” entities, tags, and
-  separate source/curation dates.
+- **Notebook** — the dominant public journey. A bounded inquiry combines
+  personal motivation, a faithful reconstruction of an argument, timecoded
+  turning points, claim labels, pushback, institutional context, a short source
+  trail and one unresolved question.
+- **Source Archive** — reviewed source metadata, commentary, “Why it matters,”
+  entities, tags, and separate source/curation dates.
 - **Compare** — mainland, US, and primary-document framing with shared facts,
   differing emphasis, and no synthetic bias score. Mobile uses state-driven
   source tabs.
@@ -123,9 +127,10 @@ Current regression coverage includes catalog integrity, publication boundaries,
 reader/media/explorer/intake machines, consent-gated external media, saved
 reading, stream filtering, and exclusion of review-stage content.
 
-Atlas now includes semiconductor policy, culture/everyday life, and open-model
-release-state cases. It is linked in global navigation, while each release keeps
-its source-snapshot warning and review state.
+Atlas includes semiconductor policy, culture/everyday life, and open-model
+release-state cases. It remains an experimental source lab reached
+contextually, while each release keeps its source-snapshot warning and review
+state.
 
 ## Content workflow
 
@@ -143,6 +148,13 @@ Research prompts remain private and cannot support public claims. The tracked
 catalog distinguishes supplied article URLs from publisher-verified canonical
 URLs and retains reviewed supporting records, explicit claim statuses, and
 limitations.
+
+**Season Zero intake freeze:** effective July 23, 2026, no additional
+article-intake batches, automated ingestion pipeline, generalized CMS or new
+top-level product area will be added. The existing 461-lead catalog is
+sufficient. Work is concentrated on publishing and testing one consequential
+Notebook entry. The full decision is recorded in
+[`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md).
 
 The current documentation map, governing-methodology precedence, and catalog
 rollup are maintained in [`docs/README.md`](docs/README.md). The source-lead
@@ -214,3 +226,7 @@ The thirteenth supplied group adds 30 distinct infrastructure, trade, protest,
 media, space, sports, daily-life, maritime, technology, and legal candidates,
 with two documented rejections in
 [`docs/source-notes/2026-07-22-china-article-corpus-batch-13-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-13-review.md).
+The founding Notebook’s verified formats, corrected timecodes, claim
+classifications, source trail, access limitations and exact research stopping
+point are recorded in
+[`docs/source-notes/2026-07-23-what-xi-jinping-wants-ledger.md`](docs/source-notes/2026-07-23-what-xi-jinping-wants-ledger.md).

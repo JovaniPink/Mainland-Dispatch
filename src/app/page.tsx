@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { publishedDispatches, countsByVertical } from "@/content/dispatches";
-import { verticals } from "@/content/site";
-import { Stream } from "@/components/dispatch/stream";
+import { publishedDispatches } from "@/content/dispatches";
+import { whatXiJinpingWants as notebook } from "@/content/notebook/what-xi-jinping-wants";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -16,78 +15,119 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const lead = publishedDispatches.reduce<
-    (typeof publishedDispatches)[number] | undefined
-  >(
-    (latest, dispatch) =>
-      !latest ||
-      dispatch.canonicalSource.publishedAt > latest.canonicalSource.publishedAt
-        ? dispatch
-        : latest,
-    undefined
-  );
-  const counts = countsByVertical();
-
-  if (!lead) {
-    return (
-      <p className="py-16 text-center font-serif text-lg italic text-ink-muted">
-        No dispatches available yet.
-      </p>
-    );
-  }
+  const selectedSources = publishedDispatches.slice(0, 3);
 
   return (
-    <div className="pb-8">
-      <section className="grid gap-8 border-b border-rule px-4 py-10 sm:px-6 lg:grid-cols-[1fr_16rem]">
-        <div className="rise-in">
+    <div>
+      <section className="grid min-h-[34rem] gap-10 border-b border-rule px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
+        <div className="rise-in max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-widest text-signal">
-            From the source archive
+            China beyond the headline
           </p>
-          <h1 className="mt-3 max-w-2xl font-serif text-3xl leading-tight sm:text-5xl">
-            {lead.title}
+          <h1 className="mt-4 font-serif text-4xl leading-[1.04] sm:text-6xl">
+            Understand the argument.
+            <br />
+            Follow the evidence.
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-muted">
-            {lead.summary}
-          </p>
-          <p className="mt-4 max-w-xl font-serif text-lg italic leading-relaxed">
-            <span className="editorial-underline">{lead.whyItMatters}</span>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-muted">
+            Mainland Dispatch is a public research notebook for readers trying
+            to understand contemporary China and the U.S.–China relationship.
+            Each inquiry follows a consequential source into its assumptions,
+            counterarguments, history, and unresolved questions.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              href={`/dispatch/${lead.slug}`}
+              href={`/notebook/${notebook.slug}`}
               className="border border-ink bg-ink px-4 py-2 font-mono text-xs uppercase tracking-widest text-paper hover:bg-signal hover:border-signal"
             >
-              Read dispatch
+              Start with “What Xi Jinping Wants”
             </Link>
             <Link
-              href="/trace/open-model-release-chronology"
-              className="border border-ink px-4 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal hover:text-signal"
+              href="/archive"
+              className="border border-rule px-4 py-2 font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-signal hover:text-signal"
             >
-              Trace story
+              Explore the source archive
             </Link>
           </div>
         </div>
-        <aside className="rise-in self-start border border-rule bg-paper-warm/40 p-4">
-          <p className="font-mono text-xs uppercase tracking-widest text-jade">
-            Signals today
+        <aside className="rise-in border-l-2 border-signal bg-signal-soft/30 p-5">
+          <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
+            The first inquiry
           </p>
-          <ul className="mt-3 space-y-2">
-            {verticals.map((v) => (
-              <li
-                key={v.id}
-                className="flex items-baseline justify-between border-b border-rule pb-2 last:border-0"
-              >
-                <span className="font-serif text-sm">{v.label}</span>
-                <span className="font-mono text-xs text-ink-muted">
-                  {String(counts[v.id] ?? 0).padStart(2, "0")}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <h2 className="mt-3 font-serif text-2xl leading-tight">
+            {notebook.title}
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-ink-muted">
+            {notebook.subtitle}
+          </p>
+          <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+            {notebook.readTime} · {notebook.sourceTrail.length} source stops
+          </p>
         </aside>
       </section>
 
-      <Stream />
+      <section className="grid gap-8 border-b border-rule px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-widest text-jade">
+            Why this exists
+          </p>
+          <h2 className="mt-3 max-w-xl font-serif text-3xl leading-tight">
+            Concern begins the inquiry. It does not decide the conclusion.
+          </h2>
+        </div>
+        <div className="space-y-4 text-sm leading-7 text-ink-muted">
+          <p>
+            Mainland Dispatch began after a conversation about Xi Jinping made
+            me realize how little conceptual equipment an ordinary headline
+            provides. I wanted a place to reconstruct serious arguments fairly,
+            test them against records and competing interpretations, and say
+            what changed in my own thinking.
+          </p>
+          <p>
+            This is intentionally irregular work. A new entry appears only when
+            a source genuinely changes or complicates my understanding—and when
+            its evidence trail can survive public scrutiny.
+          </p>
+        </div>
+      </section>
+
+      <section className="px-4 py-10 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-jade">
+              From the supporting archive
+            </p>
+            <h2 className="mt-2 font-serif text-2xl">
+              Reviewed source records
+            </h2>
+          </div>
+          <Link
+            href="/archive"
+            className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
+          >
+            View all {publishedDispatches.length} ↗
+          </Link>
+        </div>
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {selectedSources.map((dispatch) => (
+            <Link
+              key={dispatch.id}
+              href={`/dispatch/${dispatch.slug}`}
+              className="border border-rule p-4 hover:border-jade"
+            >
+              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                {dispatch.verticals.join(" · ")} · {dispatch.kind}
+              </p>
+              <h3 className="mt-3 font-serif text-lg leading-snug">
+                {dispatch.title}
+              </h3>
+              <p className="mt-3 line-clamp-3 text-xs leading-6 text-ink-muted">
+                {dispatch.summary}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

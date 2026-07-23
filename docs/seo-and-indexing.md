@@ -13,7 +13,9 @@ a large-image social card.
 
 ## Indexable surfaces
 
-- `/` — public Dispatch archive;
+- `/` — the public Notebook landing page;
+- `/notebook/what-xi-jinping-wants` — the founding public inquiry;
+- `/archive` — the reviewed public Dispatch archive;
 - `/dispatch/[slug]` — only published or corrected Dispatches;
 - `/compare/[slug]` — validated public comparisons;
 - `/trace/[slug]` — validated public chronologies;
@@ -58,6 +60,12 @@ Structured data does not claim that an external byline authored Mainland
 Dispatch's editorial analysis, that Mainland Dispatch authored the canonical
 source, or that a review-stage candidate is published.
 
+The public Notebook entry emits `Article` JSON-LD with Mainland Dispatch as the
+author, its own publication and revision dates, the three canonical conversation
+formats and the bounded supporting source trail as citations. It does not
+represent Kevin Rudd, Ezra Klein, *The New York Times*, Apple or YouTube as the
+author of Mainland Dispatch’s synthesis.
+
 ## Sitemap policy
 
 The sitemap is constructed only from validated public content selectors. It
@@ -65,17 +73,21 @@ contains stable canonical URLs, meaningful last-modified dates, conservative
 change frequencies and relative priorities. It never imports the entire Desk
 catalog.
 
-The homepage last-modified date follows the newest public Dispatch revision.
-Dispatches use `updatedAt`; comparisons use the newest linked public Dispatch;
-traces use the newest timeline entry; dossiers use `lastReviewed`; and each
-Atlas case uses its own published release retrieval date.
+The homepage and founding Notebook last-modified dates follow the Notebook
+revision. `/archive` follows the newest public Dispatch revision. Dispatches use
+`updatedAt`; comparisons use the newest linked public Dispatch; traces use the
+newest timeline entry; dossiers use `lastReviewed`; and each Atlas case uses its
+own published release retrieval date. Atlas is assigned a lower sitemap
+priority because it is an experimental source lab, not the dominant reader
+journey.
 
 ## Validation
 
 The SEO regression suite checks canonical URL construction, description length,
-unique sitemap URLs, inclusion of every public Dispatch, exclusion of `/desk`
-and `/saved`, meaningful revision dates, crawler directives and manifest
-identity. The full gate then builds every public route.
+unique sitemap URLs, inclusion of the Notebook, archive and every public
+Dispatch, exclusion of `/desk` and `/saved`, meaningful revision dates,
+crawler directives and manifest identity. The full gate then builds every
+public route.
 
 For metadata or layout changes, inspect rendered HTML at desktop and 390px
 mobile widths and confirm canonical, robots, Open Graph and JSON-LD output.
