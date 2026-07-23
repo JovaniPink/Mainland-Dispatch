@@ -17,6 +17,12 @@ the public Notebook is the dominant reader journey. Publication is intentionally
 irregular, recurring editorial work is capped at 8–10 hours per entry, and each
 entry must earn the next one.
 
+The existing `/archive` route is the connected public evidence surface. It
+offers filters, a source chronology and explicit relationship views over the 13
+published records. It may show the audited corpus totals below, but it never
+imports the 461 private leads into a public stream. Withheld and rejected
+figures communicate editorial provenance, not endorsement.
+
 The founding inquiry is supported by the
 [“What Xi Jinping Wants” source
 ledger](source-notes/2026-07-23-what-xi-jinping-wants-ledger.md), which records

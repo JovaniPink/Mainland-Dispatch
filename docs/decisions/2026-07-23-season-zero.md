@@ -32,9 +32,24 @@ entries over 90 days**; this is a ceiling, not a promise to publish three.
   remain available as supporting capabilities. They do not compete with the
   Notebook as seven co-equal products.
 - The Desk remains private. Evidence Atlas remains an experimental source lab.
+- The existing `/archive` route may evolve into a more useful interactive
+  evidence surface. It may visualize only published records plus an audited
+  aggregate corpus snapshot; it may not expose withheld, rejected or
+  source-review leads as public recommendations.
 
 The existing 461-lead catalog is sufficient. Its backlog is not a publication
 obligation and is not a measure of reader value.
+
+## Connected public model
+
+The Notebook is where the editor explains what he is learning. The Source
+Archive is where readers explore reviewed evidence behind that work. The
+private source-lead catalog is editorial memory feeding both.
+
+Interactive views follow the question. Chronology and claim relationships are
+the default Archive lenses; geography is used only when location materially
+helps explain the evidence. No visualization may turn an inferred relationship
+into a sourced fact.
 
 ## Publication definition
 

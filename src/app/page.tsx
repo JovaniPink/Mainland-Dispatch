@@ -33,7 +33,8 @@ export default function HomePage() {
             Mainland Dispatch is a public research notebook for readers trying
             to understand contemporary China and the U.S.–China relationship.
             Each inquiry follows a consequential source into its assumptions,
-            counterarguments, history, and unresolved questions.
+            counterarguments, history, and unresolved questions—while the
+            evidence archive keeps every public claim close to its source.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -46,7 +47,7 @@ export default function HomePage() {
               href="/archive"
               className="border border-rule px-4 py-2 font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-signal hover:text-signal"
             >
-              Explore the source archive
+              Explore the evidence archive
             </Link>
           </div>
         </div>
@@ -95,17 +96,17 @@ export default function HomePage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-jade">
-              From the supporting archive
+              Interactive evidence archive
             </p>
             <h2 className="mt-2 font-serif text-2xl">
-              Reviewed source records
+              Sources become explorable records
             </h2>
           </div>
           <Link
             href="/archive"
             className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
           >
-            View all {publishedDispatches.length} ↗
+            Explore {publishedDispatches.length} published records ↗
           </Link>
         </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-3">

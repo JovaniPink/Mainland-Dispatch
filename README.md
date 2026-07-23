@@ -1,9 +1,10 @@
 # Mainland Dispatch
 
-A public research notebook for understanding contemporary China and the
-U.S.–China relationship. Each inquiry begins with a consequential conversation,
-document or development and follows it into its sources, assumptions, competing
-interpretations, historical context and unresolved questions.
+A public research notebook built on a transparent, interactive evidence archive
+for understanding contemporary China and the U.S.–China relationship. Each
+inquiry begins with a consequential conversation, document or development and
+follows it into its sources, assumptions, competing interpretations, historical
+context and unresolved questions.
 
 > **Editorial boundary:** public Dispatches, Compare sources, Trace entries, and
 > Dossier documents use reviewed public records and live source URLs. Evidence
@@ -32,8 +33,11 @@ claim-safety posture from `handoff-navigator`.
   personal motivation, a faithful reconstruction of an argument, timecoded
   turning points, claim labels, pushback, institutional context, a short source
   trail and one unresolved question.
-- **Source Archive** — reviewed source metadata, commentary, “Why it matters,”
-  entities, tags, and separate source/curation dates.
+- **Source Archive** — an interactive public evidence surface with faceted
+  search, chronological and relationship views, reviewed source metadata,
+  classified claims, explicit limitations and shareable URL state. It exposes
+  only published records; aggregate corpus counts explain the private reservoir
+  without rendering withheld or rejected leads as recommendations.
 - **Compare** — mainland, US, and primary-document framing with shared facts,
   differing emphasis, and no synthetic bias score. Mobile uses state-driven
   source tabs.
@@ -79,6 +83,8 @@ claim-safety posture from `handoff-navigator`.
   `gallery`, `data`, and `original` dispatches.
 - XState owns real interaction state:
   - stream filtering/search;
+  - Archive view selection, faceted filters, relationship focus, query
+    hydration and shareable URL state;
   - Compare source selection;
   - Trace entry selection;
   - media poster → loading → playing/unavailable/retry;
@@ -124,8 +130,9 @@ commands are also available as `npm run format:check`, `npm run lint`,
 `npm run typecheck`, `npm test`, and `npm run build`.
 
 Current regression coverage includes catalog integrity, publication boundaries,
-reader/media/explorer/intake machines, consent-gated external media, saved
-reading, stream filtering, and exclusion of review-stage content.
+reader/media/explorer/intake machines, Archive timelines and relationships,
+consent-gated external media, saved reading, stream filtering, and exclusion of
+review-stage content.
 
 Atlas includes semiconductor policy, culture/everyday life, and open-model
 release-state cases. It remains an experimental source lab reached
@@ -153,7 +160,9 @@ limitations.
 article-intake batches, automated ingestion pipeline, generalized CMS or new
 top-level product area will be added. The existing 461-lead catalog is
 sufficient. Work is concentrated on publishing and testing one consequential
-Notebook entry. The full decision is recorded in
+Notebook entry and making its existing supporting Archive more legible. The
+Archive refinement is not a second intake system: it visualizes only the
+reviewed public boundary. The full decision is recorded in
 [`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md).
 
 The current documentation map, governing-methodology precedence, and catalog

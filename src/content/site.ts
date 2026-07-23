@@ -2,11 +2,11 @@ export const site = {
   name: "Mainland Dispatch",
   url: "https://mainlanddispatch.com",
   tagline:
-    "A public research notebook following consequential conversations about China into their sources, assumptions, and unresolved questions.",
+    "A public research notebook built on a transparent, interactive evidence archive for understanding contemporary China.",
   volume: "VOL. 001",
   nav: [
     { label: "Notebook", href: "/" },
-    { label: "Source Archive", href: "/archive" },
+    { label: "Explore", href: "/archive" },
     { label: "Saved", href: "/saved" },
   ],
   principle:

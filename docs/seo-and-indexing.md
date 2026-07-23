@@ -15,7 +15,8 @@ a large-image social card.
 
 - `/` — the public Notebook landing page;
 - `/notebook/what-xi-jinping-wants` — the founding public inquiry;
-- `/archive` — the reviewed public Dispatch archive;
+- `/archive` — the interactive reviewed Dispatch archive; its filter, timeline
+  and relationship state canonicalize to the base route;
 - `/dispatch/[slug]` — only published or corrected Dispatches;
 - `/compare/[slug]` — validated public comparisons;
 - `/trace/[slug]` — validated public chronologies;
@@ -23,9 +24,10 @@ a large-image social card.
 - `/atlas` — default Evidence Atlas source snapshot; and
 - `/atlas?case=[release-slug]` — a non-default published Atlas release.
 
-Filters, selected steps, places and chart months are interaction state, not
-separate documents. They do not enter the sitemap and canonicalize to their
-published Atlas case.
+Archive filters and relationship focus, plus Atlas steps, places and chart
+months, are interaction state rather than separate documents. They do not enter
+the sitemap. Archive state canonicalizes to `/archive`; Atlas state canonicalizes
+to its published case.
 
 ## Non-indexable surfaces
 

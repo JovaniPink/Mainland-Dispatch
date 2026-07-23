@@ -127,6 +127,12 @@ general-China article batches account for 384 external candidates: 355 are
 withheld and 29 rejected. None is drafted or public. These figures describe
 editorial intake, not the size of the public archive.
 
+The public Archive may report these figures as a validated aggregate snapshot,
+but it may not render the underlying private candidates, their URLs or their
+relationships. Its interactive filters, timeline and relationship view operate
+only on published or corrected Dispatches. This preserves research memory
+without converting collection into recommendation.
+
 The first public Notebook entry, “What Xi Jinping Wants,” is supported by a
 bounded [source
 ledger](source-notes/2026-07-23-what-xi-jinping-wants-ledger.md). It does not
