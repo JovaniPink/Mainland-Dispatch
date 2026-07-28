@@ -73,7 +73,7 @@ export const chinaArticleIntake12 = [
     urlStatus: "redirect-resolved",
     disposition: "rejected",
     decisionReason:
-      "Rejected because the blanket headline materially overstates a targeted regulatory action affecting particular services and content. Any future treatment must start from the regulator's notice, named platforms, legal scope and subsequent licensing and enforcement—not from a nationwide claim that livestreaming itself was banned.",
+      "Rejected because the blanket headline materially overstates a targeted regulatory action affecting particular services and content. Any future treatment must start from the regulator's notice, named platforms, legal scope, and subsequent licensing and enforcement. It must not start from a nationwide claim that livestreaming itself was banned.",
     notes:
       "Locate the regulator's original notice and platform responses and distinguish service suspension, licensing, content restrictions and an industry-wide prohibition.",
   }),

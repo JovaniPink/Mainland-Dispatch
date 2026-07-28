@@ -237,7 +237,7 @@ export function TradeChart({
                                 ((point.value - prior.value) / prior.value) *
                                   100
                               )
-                            : "—";
+                            : "Not available";
                         })()}
                   </td>
                 </tr>

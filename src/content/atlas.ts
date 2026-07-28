@@ -269,7 +269,7 @@ const release = {
       evidenceStatus: "implemented",
       title: "FN5-linked compliance date arrives",
       detail:
-        "December 31 applies to the amendatory instructions and Entity List requirements linked to Footnote 5—not every addition to the Entity List.",
+        "December 31 applies to the amendatory instructions and Entity List requirements linked to Footnote 5, not every addition to the Entity List.",
       sourceIds: [
         "source-federal-register-sme-rule",
         "source-federal-register-entity-rule",
@@ -581,7 +581,7 @@ const cultureRelease = {
   version: "2026.07.22-1",
   title: "The rural creator platform chain",
   summary:
-    "A source-led atlas of how pastoral and factory-life images moved through creator management, short-video distribution, and cross-border commerce—and how later algorithm rules defined platform responsibilities.",
+    "A source-led atlas of how pastoral and factory-life images moved through creator management, short-video distribution, and cross-border commerce. It also examines how later algorithm rules defined platform responsibilities.",
   methodology:
     "This release promotes only source-read leads into its public ledger. Reporting supports attributed observations and the two drawn commercial relationships; the translated rules support only their stated scope, user protections, and effective date. No review-stage Dispatch record is linked or exposed, and no audience count is treated as a durable dataset.",
   publishedAt: "2026-07-22",
@@ -881,7 +881,7 @@ const cultureRelease = {
           kind: "trade",
           label: "The reported customer base reaches the United States",
           detail:
-            "The spokesperson described North America—specifically the United States—as the operation's largest customer base.",
+            "The spokesperson described North America, specifically the United States, as the operation's largest customer base.",
           evidenceStatus: "reported",
           sourceIds: ["source-factory-tiktok"],
           placeIds: ["place-hubei", "place-united-states"],
@@ -902,7 +902,7 @@ const cultureRelease = {
       eyebrow: "Platform rules",
       title: "From recommendation systems to stated user rights",
       summary:
-        "Read the later algorithm provisions as a separate legal layer around platform recommendation—not as proof of what caused either reported creator case.",
+        "Read the later algorithm provisions as a separate legal layer around platform recommendation, not as proof of what caused either reported creator case.",
       steps: [
         {
           id: "step-rule-scope",
@@ -1281,7 +1281,7 @@ const openModelRelease = {
         },
       ],
       conclusion:
-        "The record supports saying Kimi K3 had launched through products and API and was announced for a later weight release—not that every open-model artifact was already available.",
+        "The record supports saying Kimi K3 had launched through products and API and was announced for a later weight release. It does not establish that every open-model artifact was already available.",
       caveat:
         "This snapshot predates July 27. It cannot establish whether Moonshot fulfilled the promise, what the final license permits, or how the downloadable artifact performs.",
       evidenceStatus: "officiallyAnnounced",

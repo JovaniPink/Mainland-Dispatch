@@ -37,8 +37,8 @@ export default function HomePage() {
             Mainland Dispatch is a public research notebook for readers trying
             to understand contemporary China and the U.S.–China relationship.
             Each inquiry follows a consequential source into its assumptions,
-            counterarguments, history, and unresolved questions—while the
-            evidence archive keeps every public claim close to its source.
+            counterarguments, history, and unresolved questions. The evidence
+            archive keeps every public claim close to its source.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -115,8 +115,8 @@ export default function HomePage() {
           </p>
           <p>
             This is intentionally irregular work. A new entry appears only when
-            a source genuinely changes or complicates my understanding—and when
-            its evidence trail can survive public scrutiny.
+            a source genuinely changes or complicates my understanding, and its
+            evidence trail can survive public scrutiny.
           </p>
         </div>
       </section>

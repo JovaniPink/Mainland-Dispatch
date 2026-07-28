@@ -150,8 +150,8 @@ export function MediaFacade({ dispatch: d }: { dispatch: Dispatch }) {
             </span>
             <span className="border border-paper/40 px-3 py-1 font-mono text-[0.65rem] uppercase tracking-widest text-paper/70">
               {prototypeMedia
-                ? "Demo interaction — no third party loads"
-                : "External source — loads on play"}
+                ? "Demo interaction. No third party loads."
+                : "External source. Loads on play."}
             </span>
           </button>
         )}

@@ -31,11 +31,12 @@ export function StateLab({
           <span className="text-ink-muted">state:</span> {JSON.stringify(state)}
         </p>
         <p>
-          <span className="text-ink-muted">last event:</span> {lastEvent ?? "—"}
+          <span className="text-ink-muted">last event:</span>{" "}
+          {lastEvent ?? "None"}
         </p>
         <p>
           <span className="text-ink-muted">available events:</span>{" "}
-          {nextEvents.join(", ") || "—"}
+          {nextEvents.join(", ") || "None"}
         </p>
         {history.length > 0 && (
           <div>

@@ -156,7 +156,7 @@ const rawSeeds: unknown[] = [
     kind: "article",
     id: "d-016",
     slug: "kimi-k3-pelican-benchmark",
-    title: "What one hands-on Kimi K3 test can—and cannot—show",
+    title: "What one hands-on Kimi K3 test can and cannot show",
     summary:
       "Simon Willison documents an API test that exposes Kimi K3’s high reasoning-token use, current max-effort behavior, vision capability, and the limits of a deliberately informal benchmark.",
     commentary:
@@ -559,7 +559,7 @@ const rawSeeds: unknown[] = [
     summary:
       "Interviews with laid-off employees and recruiters document the collision of the internet-sector slowdown, regulatory change, zero-COVID disruption, and disillusionment with 996 work culture.",
     commentary:
-      "The article is a period account, not a permanent verdict on Chinese technology. Its lasting value is the workers' shift in imagination—from private-sector prestige and upside toward stability, civil-service exams, and relief at leaving punishing jobs.",
+      "The article is a period account, not a permanent verdict on Chinese technology. Its lasting value is the workers' shift in imagination: from private-sector prestige and upside toward stability, civil-service exams, and relief at leaving punishing jobs.",
     whyItMatters:
       "Industry cycles change social aspirations as well as balance sheets; the meaning of a desirable career can reverse within a generation.",
     source: "Rest of World",
@@ -615,7 +615,7 @@ const rawSeeds: unknown[] = [
     summary:
       "Meta's July 2023 announcement made Llama 2 weights and starting code available for research and most commercial uses through a custom community license.",
     commentary:
-      "Meta repeatedly called the release open source, but the license included use restrictions and a large-platform condition. The historically accurate description is an unusually broad open-weight release—not an unqualified open-source baseline.",
+      "Meta repeatedly called the release open source, but the license included use restrictions and a large-platform condition. The historically accurate description is an unusually broad open-weight release, not an unqualified open-source baseline.",
     whyItMatters:
       "Chinese labs did not invent open-weight distribution. Llama 2 shows that a major American platform company pursued the same ecosystem strategy before the present US–China framing hardened.",
     source: "Meta AI",
@@ -727,7 +727,7 @@ const rawSeeds: unknown[] = [
     commentary:
       "This is the controlling source for Anthropic's timeline and position, not an independent account of the government's reasoning or the disputed bypass. The useful record is the sequence of access restrictions, mitigation, testing, and redeployment; causal motives must remain attributed.",
     whyItMatters:
-      "The incident shows that access to a proprietary model can become a live export-control and operational dependency—not merely a pricing or product choice.",
+      "The incident shows that access to a proprietary model can become a live export-control and operational dependency, not merely a pricing or product choice.",
     source: "Anthropic",
     sourceUrl: "https://www.anthropic.com/news/redeploying-fable-5",
     sourceDate: "2026-06-30",

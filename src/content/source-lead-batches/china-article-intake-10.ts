@@ -45,7 +45,7 @@ const candidate = (item: Candidate) => ({
 export const chinaArticleIntake10 = [
   candidate({
     id: "lead-2025-usni-qian-xuesen-history",
-    title: "The missile genius America lost—and China gained",
+    title: "The missile genius America lost, and China gained",
     url: "https://www.usni.org/magazines/naval-history/2025/december/missile-genius-america-lost-and-china-gained",
     publisher: "U.S. Naval Institute",
     publishedAt: "2025-12-01",

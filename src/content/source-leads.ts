@@ -102,7 +102,7 @@ const leads = [
   },
   {
     id: "lead-2015-made-in-china-2025",
-    title: "Made in China 2025 — English translation",
+    title: "Made in China 2025 (English translation)",
     url: "https://cset.georgetown.edu/wp-content/uploads/t0432_made_in_china_2025_EN.pdf",
     publisher: "State Council of the PRC / CSET translation",
     accessedAt: "2026-07-21",
@@ -149,7 +149,7 @@ const leads = [
   {
     id: "lead-2017-ai-plan-original",
     title:
-      "New Generation Artificial Intelligence Development Plan — Chinese original",
+      "New Generation Artificial Intelligence Development Plan (Chinese original)",
     url: "https://www.nhc.gov.cn/bgt/gwywj2/201707/3b2a93a71c794d9c8137ab394b21d8f3.shtml",
     publisher: "State Council of the PRC",
     accessedAt: "2026-07-21",
@@ -283,7 +283,7 @@ const leads = [
   },
   {
     id: "lead-2021-fourteenth-five-year-plan",
-    title: "China’s 14th Five-Year Plan — CSET translation",
+    title: "China’s 14th Five-Year Plan (CSET translation)",
     url: "https://cset.georgetown.edu/publication/china-14th-five-year-plan/",
     publisher: "National People’s Congress / CSET translation",
     accessedAt: "2026-07-21",
@@ -329,7 +329,7 @@ const leads = [
   {
     id: "lead-2022-algorithm-rules",
     title:
-      "Algorithmic Recommendation Management Provisions — English translation",
+      "Algorithmic Recommendation Management Provisions (English translation)",
     url: "https://digichina.stanford.edu/work/translation-internet-information-service-algorithmic-recommendation-management-provisions-effective-march-1-2022/",
     publisher: "CAC and partner ministries / DigiChina translation",
     accessedAt: "2026-07-21",
@@ -358,7 +358,7 @@ const leads = [
   },
   {
     id: "lead-2023-generative-ai-rules-original",
-    title: "Interim Measures for Generative AI Services — Chinese original",
+    title: "Interim Measures for Generative AI Services (Chinese original)",
     url: "https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm",
     publisher: "Cyberspace Administration of China",
     accessedAt: "2026-07-21",
@@ -373,7 +373,7 @@ const leads = [
   {
     id: "lead-2023-generative-ai-rules-translation",
     title:
-      "Interim Measures for the Management of Generative AI Services — translation",
+      "Interim Measures for the Management of Generative AI Services (translation)",
     url: "https://www.chinalawtranslate.com/en/generative-ai-interim/",
     publisher: "China Law Translate",
     accessedAt: "2026-07-21",
@@ -1003,7 +1003,7 @@ const leads = [
   },
   {
     id: "lead-2026-hugging-face-security-incident",
-    title: "Security Incident Disclosure — July 2026",
+    title: "Security Incident Disclosure (July 2026)",
     url: "https://huggingface.co/blog/security-incident-july-2026",
     publisher: "Hugging Face",
     accessedAt: "2026-07-22",

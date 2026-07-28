@@ -402,7 +402,7 @@ export function Composer() {
       {state.matches("saved") && state.context.savedJson && (
         <div className="mt-4">
           <p className="font-mono text-xs uppercase tracking-widest text-jade">
-            Validated dispatch — copy into src/content/dispatches.ts
+            Validated dispatch. Copy into src/content/dispatches.ts
           </p>
           <pre className="chip-row mt-2 max-h-80 overflow-auto border border-rule bg-paper-warm/60 p-3 font-mono text-xs leading-relaxed">
             {state.context.savedJson}

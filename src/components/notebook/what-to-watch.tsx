@@ -227,7 +227,7 @@ function WatchList({ label, items }: { label: string; items: string[] }) {
           {items.map((item) => (
             <li key={item} className="flex gap-3">
               <span className="text-signal" aria-hidden>
-                —
+                •
               </span>
               <span>{item}</span>
             </li>

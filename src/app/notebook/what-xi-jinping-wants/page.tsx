@@ -267,7 +267,7 @@ export default function WhatXiJinpingWantsPage() {
 
           <section className="mt-12">
             <NotebookSectionHeading id="context" eyebrow="Source provenance">
-              Who Rudd is—and why that context matters
+              Who Rudd is, and why that context matters
             </NotebookSectionHeading>
             <div className="mt-6">
               <NotebookProse paragraphs={entry.sections.context} />
@@ -317,7 +317,7 @@ export default function WhatXiJinpingWantsPage() {
               {entry.limitations.map((limitation) => (
                 <li key={limitation} className="flex gap-3">
                   <span className="text-signal" aria-hidden>
-                    —
+                    •
                   </span>
                   <span>{limitation}</span>
                 </li>

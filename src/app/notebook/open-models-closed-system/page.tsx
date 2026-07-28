@@ -392,7 +392,7 @@ export default function OpenModelsClosedSystemPage() {
               {entry.limitations.map((limitation) => (
                 <li key={limitation} className="flex gap-3">
                   <span className="text-signal" aria-hidden>
-                    —
+                    •
                   </span>
                   <span>{limitation}</span>
                 </li>
