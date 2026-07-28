@@ -6,11 +6,10 @@ inquiry begins with a consequential conversation, document or development and
 follows it into its sources, assumptions, competing interpretations, historical
 context and unresolved questions.
 
-> **Editorial boundary:** public Dispatches, Compare sources, Trace entries, and
-> Dossier documents use reviewed public records and live source URLs. Evidence
-> Atlas groupings remain provisional editorial source snapshots even though
-> their underlying records are real. Desk leads do not become public merely by
-> entering the review queue.
+> **Editorial boundary:** every public Dispatch, Compare source, Trace entry,
+> Dossier document, and Notebook inquiry has passed its stated review boundary.
+> Prototype and source-snapshot records remain local research fixtures. Desk
+> leads do not become public merely by entering the review queue.
 
 ## Design direction
 
@@ -50,9 +49,9 @@ claim-safety posture from `handoff-navigator`.
   independently observed, contested, superseded, and corrected. The
   current open-model record links directly to its chronology and source-backed
   Dispatches.
-- **Evidence view** — a crawlable `/atlas` source lab with three cases. Each
-  chain uses four complete, inspectable steps and preserves the difference
-  between source facts and editorial relationships.
+- **Evidence view** — three local research cases used to test evidence-chain,
+  relationship, chart, and map interactions. `/atlas` returns not found until a
+  case completes a separate publication review.
 - **Saved** — a browser-local reading collection implemented as an external
   store, so all Save controls stay synchronized.
 - **Desk** — a local editorial sandbox with link intake, live Zod feedback, and
@@ -67,8 +66,8 @@ claim-safety posture from `handoff-navigator`.
 - Review-stage records remain available to the local Desk but do not resolve on
   public dispatch routes.
 - Every record declares `provenance: "verified" | "prototype"`. Public reader
-  records are verified; Atlas releases remain labeled prototypes because their
-  grouping and interpretation are still provisional.
+  records are verified. Prototype Atlas releases are excluded from public
+  selectors, routes, dossier modules, metadata, and the sitemap.
 - `src/content/catalog.ts` validates the complete graph at import time: schema
   variants, real calendar dates, route-safe slugs, unique IDs/slugs, date order,
   chronological trace entries, and every dispatch/trace/dossier relation.
@@ -99,7 +98,7 @@ claim-safety posture from `handoff-navigator`.
 - Media embeds are consent-gated. A verified external video creates its iframe
   only after consent and reports readiness through iframe load/error events.
   Prototype media exercises the same machine without contacting a third party.
-- Atlas geography follows the same privacy contract. A local labeled SVG and
+- Local Atlas geography follows the same privacy contract. A labeled SVG and
   semantic relationship list carry the evidence by default; MapLibre and
   OpenFreeMap load only after the reader opens the optional geographic dialog.
   Paper uses Positron and Night uses the native Dark style. Closing the dialog
@@ -142,9 +141,9 @@ consent-gated external media, saved reading, stream filtering, and exclusion of
 review-stage content.
 
 Atlas includes semiconductor policy, culture/everyday life, and open-model
-release-state cases. It remains an experimental source lab reached
-contextually, while each release keeps its source-snapshot warning and review
-state.
+release-state cases. It remains an unpublished experimental source lab; its
+prototype/source-snapshot releases are retained for local development and
+methodology review only.
 
 ## Content workflow
 

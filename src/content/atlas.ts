@@ -12,7 +12,7 @@ const release = {
   retrievedAt: "2026-07-21",
   evidenceThrough: "2026-03-02",
   seriesThrough: "2025-12-31",
-  editorialStatus: "published",
+  editorialStatus: "archived",
   provenance: "prototype",
   reviewState: "source-snapshot",
   relatedDispatchIds: [],
@@ -587,7 +587,7 @@ const cultureRelease = {
   publishedAt: "2026-07-22",
   retrievedAt: "2026-07-22",
   evidenceThrough: "2022-03-01",
-  editorialStatus: "published",
+  editorialStatus: "archived",
   provenance: "prototype",
   reviewState: "source-snapshot",
   relatedDispatchIds: [],
@@ -985,7 +985,7 @@ const openModelRelease = {
   publishedAt: "2026-07-22",
   retrievedAt: "2026-07-22",
   evidenceThrough: "2026-07-18",
-  editorialStatus: "published",
+  editorialStatus: "archived",
   provenance: "prototype",
   reviewState: "source-snapshot",
   relatedDispatchIds: [],
@@ -1445,14 +1445,21 @@ export const atlasReleases: AtlasRelease[] = [
   AtlasReleaseSchema.parse(openModelRelease),
 ];
 
-export const publishedAtlasReleases = atlasReleases.filter(
-  (item) =>
-    item.editorialStatus === "published" || item.editorialStatus === "corrected"
-);
+/**
+ * Atlas releases remain local research fixtures until a separate publication
+ * review replaces their prototype/source-snapshot posture.
+ */
+export const publishedAtlasReleases: AtlasRelease[] = [];
 
 export const atlasRelease = publishedAtlasReleases[0];
 
 export function getAtlasRelease(slug: string): AtlasRelease | undefined {
+  return atlasReleases.find((item) => item.slug === slug);
+}
+
+export function getPublishedAtlasRelease(
+  slug: string
+): AtlasRelease | undefined {
   return publishedAtlasReleases.find((item) => item.slug === slug);
 }
 

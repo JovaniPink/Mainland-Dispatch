@@ -336,10 +336,10 @@ export default function WhatXiJinpingWantsPage() {
               Explore the source archive
             </Link>
             <Link
-              href="/atlas"
+              href="/notebook/open-models-closed-system"
               className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
             >
-              Open the experimental source lab
+              Read Inquiry 02
             </Link>
           </nav>
         </div>

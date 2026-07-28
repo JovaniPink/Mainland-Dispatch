@@ -12,6 +12,8 @@ import {
 import {
   atlasReleases,
   getAtlasRelease,
+  getAtlasReleaseForDossier,
+  getPublishedAtlasRelease,
   publishedAtlasReleases,
 } from "./atlas";
 
@@ -435,12 +437,22 @@ describe("publication boundary", () => {
     expect(ContentCatalogSchema.safeParse(invalid).success).toBe(false);
   });
 
-  it("publishes only public Atlas releases", () => {
+  it("keeps prototype Atlas releases out of every public selector", () => {
+    expect(atlasReleases.every((item) => item.provenance === "prototype")).toBe(
+      true
+    );
     expect(
-      publishedAtlasReleases.every((item) =>
-        ["published", "corrected"].includes(item.editorialStatus)
+      atlasReleases.every((item) => item.editorialStatus === "archived")
+    ).toBe(true);
+    expect(publishedAtlasReleases).toEqual([]);
+    expect(
+      atlasReleases.every(
+        (item) => getPublishedAtlasRelease(item.slug) === undefined
       )
     ).toBe(true);
+    expect(
+      getAtlasReleaseForDossier("open-model-release-record")
+    ).toBeUndefined();
   });
 });
 

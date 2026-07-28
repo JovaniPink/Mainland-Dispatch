@@ -21,14 +21,11 @@ a large-image social card.
 - `/dispatch/[slug]` — only published or corrected Dispatches;
 - `/compare/[slug]` — validated public comparisons;
 - `/trace/[slug]` — validated public chronologies;
-- `/dossiers/[slug]` — validated public dossiers;
-- `/atlas` — default Evidence Atlas source snapshot; and
-- `/atlas?case=[release-slug]` — a non-default published Atlas release.
+- `/dossiers/[slug]` — validated public dossiers.
 
-Archive filters, relationship focus and selected Notebook inquiry, plus Atlas steps, places and chart
-months, are interaction state rather than separate documents. They do not enter
-the sitemap. Archive state canonicalizes to `/archive`; Atlas state canonicalizes
-to its published case.
+Archive filters, relationship focus and selected Notebook inquiry are
+interaction state rather than separate documents. They do not enter the
+sitemap. Archive state canonicalizes to `/archive`.
 
 Notebook Two’s `promise` selection and incoming `utm_*` parameters are also
 interaction/attribution state. The address bar may retain a valid `promise` and
@@ -44,6 +41,9 @@ JSON-LD citations, or internal navigation.
   `noarchive` when explicitly enabled.
 - `/saved` stores browser-local state. It is absent from the sitemap and marked
   `noindex`, `nofollow`, `noarchive`.
+- `/atlas` and every Atlas query variant return not found because all current
+  releases remain `prototype` / `source-snapshot`. They are absent from the
+  sitemap and cannot contribute metadata or dossier modules.
 - Review-stage Dispatches have no generated public route and therefore cannot
   emit metadata or structured data.
 
@@ -100,20 +100,19 @@ change frequencies and relative priorities. It never imports the entire Desk
 catalog.
 
 The homepage last-modified date follows the latest published Notebook revision.
-Each Notebook uses its own revision. `/archive` follows the newest public Dispatch revision. Dispatches use
-`updatedAt`; comparisons use the newest linked public Dispatch; traces use the
-newest timeline entry; dossiers use `lastReviewed`; and each Atlas case uses its
-own published release retrieval date. Atlas is assigned a lower sitemap
-priority because it is an experimental source lab, not the dominant reader
-journey.
+Each Notebook uses its own revision. `/archive` follows the newest public
+Dispatch revision. Dispatches use `updatedAt`; comparisons use the newest
+linked public Dispatch; traces use the newest timeline entry; and dossiers use
+`lastReviewed`. Atlas releases are absent because they remain unpublished
+prototype/source-snapshot records.
 
 ## Validation
 
 The SEO regression suite checks canonical URL construction, description length,
-unique sitemap URLs, inclusion of every published Notebook, archive and every public
-Dispatch, exclusion of `/desk` and `/saved`, meaningful revision dates,
-crawler directives and manifest identity. The full gate then builds every
-public route.
+unique sitemap URLs, inclusion of every published Notebook, archive and every
+public Dispatch, exclusion of `/atlas`, `/desk` and `/saved`, meaningful
+revision dates, crawler directives and manifest identity. The full gate then
+builds every public route.
 
 For metadata or layout changes, inspect rendered HTML at desktop and 390px
 mobile widths and confirm canonical, robots, Open Graph and JSON-LD output.

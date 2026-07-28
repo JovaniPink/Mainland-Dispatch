@@ -38,9 +38,9 @@ public.
    denominator, or future-verification limits where they affect interpretation.
    A promised release is `officiallyAnnounced`, not `implemented`.
 6. **Relationship review.** Every relation exposed by Compare, Trace, Dossier,
-   related Dispatches, or Atlas must resolve to a public record or a directly
-   cited source. Review-stage Dispatches cannot be used as hidden public graph
-   nodes.
+   or related Dispatches must resolve to a public record or a directly cited
+   source. Review-stage Dispatches and local Atlas fixtures cannot be used as
+   hidden public graph nodes.
 7. **No synthetic details.** Do not infer quotations, page counts, people,
    locations, dates, media IDs, or quantitative values to make a component look
    complete. An empty optional structure is preferable to invented precision.
@@ -81,9 +81,9 @@ quota. Before prose is written, its working ledger must record:
 - access, transcript, translation and review-stopping limitations.
 
 Mainland Dispatch synthesis must remain visibly distinct from the source’s
-argument. A Notebook page can link to existing Dispatch, Compare, Trace,
-Dossier or Atlas material when it improves comprehension; it must not create
-separate versions of those products merely to display the same inquiry.
+argument. A Notebook page can link to existing public Dispatch, Compare, Trace,
+or Dossier material when it improves comprehension; it must not expose local
+Atlas fixtures or create separate products merely to display the same inquiry.
 
 Season Zero publication is intentionally irregular. Recurring research,
 verification, writing and editing are capped at 8–10 hours per entry. No
@@ -156,9 +156,9 @@ Dispatch structured data identifies the external canonical source through
 `isBasedOn` without representing the source publisher's work as Mainland
 Dispatch authorship.
 
-Atlas filters and selected steps are interaction state, not independent search
-documents. The default release canonicalizes to `/atlas`; each additional
-published case canonicalizes to its `case` URL. See
+Atlas releases remain local prototype/source-snapshot records. `/atlas` returns
+not found, and no Atlas state enters route generation, the sitemap, canonical
+metadata, structured data, or a public Dossier module. See
 [`seo-and-indexing.md`](seo-and-indexing.md) for the full contract.
 
 ## Revision discipline

@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { atlasRelease } from "@/content/atlas";
+import { atlasReleases } from "@/content/atlas";
 import { MapDialog } from "./map-dialog";
 
 jest.mock("./context-map", () => ({
   ContextMap: () => <div>Mock ContextMap mounted</div>,
 }));
 
-const places = atlasRelease!.places.slice(0, 2);
-const relations = atlasRelease!.relations.slice(0, 1);
+const places = atlasReleases[0].places.slice(0, 2);
+const relations = atlasReleases[0].relations.slice(0, 1);
 
 function props() {
   return {

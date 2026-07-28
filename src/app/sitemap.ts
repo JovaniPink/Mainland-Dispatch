@@ -3,7 +3,6 @@ import { publishedDispatches } from "@/content/dispatches";
 import { comparisons } from "@/content/comparisons";
 import { traces } from "@/content/traces";
 import { dossiers } from "@/content/dossiers";
-import { atlasRelease, publishedAtlasReleases } from "@/content/atlas";
 import { siteUrl } from "@/lib/seo";
 import {
   latestNotebookEntry,
@@ -51,17 +50,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const archiveUpdated = newest(
     publishedDispatches.map((item) => item.updatedAt)
   );
-  const atlasEntries: MetadataRoute.Sitemap = publishedAtlasReleases.map(
-    (release) => ({
-      url:
-        release.slug === atlasRelease.slug
-          ? `${siteUrl}/atlas`
-          : `${siteUrl}/atlas?case=${encodeURIComponent(release.slug)}`,
-      lastModified: release.retrievedAt,
-      changeFrequency: "monthly",
-      priority: 0.4,
-    })
-  );
   const notebookEntries: MetadataRoute.Sitemap = publishedNotebookEntries.map(
     (entry) => ({
       url: `${siteUrl}/notebook/${entry.slug}`,
@@ -85,7 +73,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    ...atlasEntries,
     ...dispatchEntries,
     ...comparisonEntries,
     ...traceEntries,

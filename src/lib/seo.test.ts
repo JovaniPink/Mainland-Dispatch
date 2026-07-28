@@ -2,12 +2,12 @@ import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
 import manifest from "@/app/manifest";
 import { publishedDispatches } from "@/content/dispatches";
-import { atlasRelease, publishedAtlasReleases } from "@/content/atlas";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
 import { publishedNotebookEntries } from "@/content/notebook";
 import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
 import { metadata as homeMetadata } from "@/app/page";
+import { metadata as atlasMetadata } from "@/app/atlas/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
 import { generateMetadata as generateDispatchMetadata } from "@/app/dispatch/[slug]/page";
 import { absoluteUrl, pageMetadata, seoDescription, siteUrl } from "./seo";
@@ -27,16 +27,16 @@ describe("SEO publication contract", () => {
 
   it("builds absolute canonicals and social metadata", () => {
     const metadata = pageMetadata({
-      title: "Evidence Atlas",
-      description: "A source-led evidence view.",
-      path: "/atlas",
+      title: "Source Archive",
+      description: "A reviewed source archive.",
+      path: "/archive",
     });
 
-    expect(absoluteUrl("/atlas")).toBe(`${siteUrl}/atlas`);
-    expect(metadata.alternates).toEqual({ canonical: `${siteUrl}/atlas` });
+    expect(absoluteUrl("/archive")).toBe(`${siteUrl}/archive`);
+    expect(metadata.alternates).toEqual({ canonical: `${siteUrl}/archive` });
     expect(metadata.openGraph).toMatchObject({
-      url: `${siteUrl}/atlas`,
-      title: "Evidence Atlas",
+      url: `${siteUrl}/archive`,
+      title: "Source Archive",
     });
     expect(metadata.twitter).toMatchObject({ card: "summary_large_image" });
   });
@@ -57,16 +57,8 @@ describe("SEO publication contract", () => {
       )
     ).toBe(true);
     expect(urls).toContain(`${siteUrl}/archive`);
-    expect(urls).toContain(`${siteUrl}/atlas`);
-    expect(
-      publishedAtlasReleases.every((release) =>
-        urls.includes(
-          release.slug === atlasRelease.slug
-            ? `${siteUrl}/atlas`
-            : `${siteUrl}/atlas?case=${encodeURIComponent(release.slug)}`
-        )
-      )
-    ).toBe(true);
+    expect(urls).not.toContain(`${siteUrl}/atlas`);
+    expect(urls.some((url) => url.includes("/atlas?"))).toBe(false);
     expect(urls).not.toContain(`${siteUrl}/saved`);
     expect(urls.some((url) => url.includes("/desk"))).toBe(false);
     expect(
@@ -104,6 +96,11 @@ describe("SEO publication contract", () => {
     });
     expect(homeMetadata.title).toEqual({ absolute: "Mainland Dispatch" });
     expect(savedMetadata.robots).toMatchObject({
+      index: false,
+      follow: false,
+      noarchive: true,
+    });
+    expect(atlasMetadata.robots).toMatchObject({
       index: false,
       follow: false,
       noarchive: true,

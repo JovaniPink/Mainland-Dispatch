@@ -48,8 +48,11 @@ was conducted.
   article-to-Dispatch evidence gate, claim statuses, correction practice and
   search-publication boundary.
 - [Evidence Atlas methodology](evidence-atlas-source-methodology.md) defines
-  source roles, promotion requirements, artifacts, limitations and canonical
-  indexing behavior for the three public source snapshots.
+  source roles, promotion requirements, artifacts, limitations and the
+  unpublished boundary for the three local source snapshots.
+- [Public prototype withdrawal](decisions/2026-07-28-public-prototype-withdrawal.md)
+  records the decision that no prototype or source-snapshot content may resolve
+  on the production site.
 - [SEO and indexing](seo-and-indexing.md) defines indexable routes, canonical
   URLs, metadata, structured data, sitemap policy and validation.
 

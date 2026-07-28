@@ -43,13 +43,14 @@ describe("What Xi Jinping Wants Notebook page", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("keeps the Atlas contextual rather than in the primary navigation", () => {
+  it("keeps unpublished Atlas work out of the public reading path", () => {
     render(<WhatXiJinpingWantsPage />);
 
     expect(
       screen.getByRole("link", {
-        name: "Open the experimental source lab",
+        name: "Read Inquiry 02",
       })
-    ).toHaveAttribute("href", "/atlas");
+    ).toHaveAttribute("href", "/notebook/open-models-closed-system");
+    expect(screen.queryByRole("link", { name: /source lab/i })).toBeNull();
   });
 });

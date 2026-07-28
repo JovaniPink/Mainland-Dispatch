@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { atlasRelease, getAtlasRelease } from "@/content/atlas";
+import { atlasReleases, getAtlasRelease } from "@/content/atlas";
 import { AtlasExplorer } from "./atlas-explorer";
+
+const atlasRelease = atlasReleases[0];
 
 jest.mock("./map-dialog", () => ({
   MapDialog: ({

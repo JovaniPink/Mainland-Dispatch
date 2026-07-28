@@ -4,20 +4,22 @@
 
 The Evidence Atlas is a three-case research prototype: one dossier-linked
 policy case, one culture/everyday-life case, and one open-model release-state
-case built from the source-review queue. It is public, crawlable, and linked at
-`/atlas`, but it is still a source lab rather than a mature publication
-vertical. All three releases remain:
+case built from the source-review queue. It is an unpublished local source lab,
+not a publication vertical. `/atlas` returns not found and no release enters a
+public selector, dossier module, sitemap, canonical, or structured-data record.
+All three releases remain:
 
 ```text
 provenance: prototype
 reviewState: source-snapshot
+editorialStatus: archived
 ```
 
 The primary records below are real. The selection, grouping, relationship
 labels, conclusions, and caveats remain editorial interpretation and are not
-represented as verified reporting. Publishing an Atlas source does not publish
-the related Desk record: review-stage Dispatches remain excluded from public
-lookups, relations, and route generation.
+represented as verified reporting. Adding an Atlas source does not publish the
+related Desk record: review-stage Dispatches and Atlas releases remain excluded
+from public lookups, relations, and route generation.
 
 ## Source-review promotion boundary
 
@@ -29,7 +31,7 @@ when:
 2. its URL is recorded as `publisher-canonical` and the Atlas record preserves
    that reviewed URL;
 3. the Atlas record states the source's evidentiary role and limitations; and
-4. every public event, place, step, and relation resolves to that source record.
+4. every Atlas event, place, step, and relation resolves to that source record.
 
 The catalog validates the first two conditions at build time. Leads marked
 `supplied`, `metadata-checked`, `source-read`, `redirect-resolved`, or with only
@@ -39,16 +41,11 @@ their backfile cards remain in `sourceReview` and are not exposed by the Atlas.
 
 ## Search and canonical boundary
 
-The default published release uses `/atlas` as its canonical URL. A non-default
-published release uses `/atlas?case=[release-slug]`. Chain, step, place and month
-parameters are reader interaction state; they do not create separate sitemap
-entries or independent canonical documents. Invalid case values return not
-found rather than canonicalizing unpublished material.
-
-Atlas metadata uses the selected published release's title and summary. Its
-prototype and source-snapshot labels remain visible and are not weakened for
-search presentation. Review-stage leads never appear in sitemap, page metadata
-or structured data merely because they are present in the Desk catalog.
+There is no published Atlas canonical. `/atlas` and all query variants return
+not found while the releases remain `prototype` / `source-snapshot`. Atlas
+releases are absent from the sitemap, page metadata, structured data, dossier
+modules, and internal navigation. Review-stage leads likewise never become
+public merely because they are present in the Desk catalog.
 
 ## Governing source hierarchy
 
@@ -72,7 +69,7 @@ usable without WebGL or a network request.
 ### Open-model release-state ledger
 
 The release `open-model-release-ledger` turns the supplied research sourcebook
-into a set of questions, not a public evidence source. Its seven public source
+into a set of questions, not a public evidence source. Its seven local source
 records all resolve to leads already marked `evidence-reviewed`; the sourcebook
 itself, review-stage Dispatches, supplied-only links, and informal research
 prompts remain outside the release.
