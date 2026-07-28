@@ -15,6 +15,7 @@ a large-image social card.
 
 - `/` — the public Notebook landing page;
 - `/notebook/what-xi-jinping-wants` — the founding public inquiry;
+- `/notebook/open-models-closed-system` — the second public inquiry;
 - `/archive` — the interactive reviewed Dispatch archive; its filter, timeline
   and relationship state canonicalize to the base route;
 - `/dispatch/[slug]` — only published or corrected Dispatches;
@@ -24,10 +25,17 @@ a large-image social card.
 - `/atlas` — default Evidence Atlas source snapshot; and
 - `/atlas?case=[release-slug]` — a non-default published Atlas release.
 
-Archive filters and relationship focus, plus Atlas steps, places and chart
+Archive filters, relationship focus and selected Notebook inquiry, plus Atlas steps, places and chart
 months, are interaction state rather than separate documents. They do not enter
 the sitemap. Archive state canonicalizes to `/archive`; Atlas state canonicalizes
 to its published case.
+
+Notebook Two’s `promise` selection and incoming `utm_*` parameters are also
+interaction/attribution state. The address bar may retain a valid `promise` and
+incoming UTMs so selection remains shareable, while canonical metadata always
+resolves to the clean Notebook route. Invalid `promise` values are removed
+without disturbing unrelated parameters. Query state never enters the sitemap,
+JSON-LD citations, or internal navigation.
 
 ## Non-indexable surfaces
 
@@ -62,11 +70,27 @@ Structured data does not claim that an external byline authored Mainland
 Dispatch's editorial analysis, that Mainland Dispatch authored the canonical
 source, or that a review-stage candidate is published.
 
-The public Notebook entry emits `Article` JSON-LD with Mainland Dispatch as the
-author, its own publication and revision dates, the three canonical conversation
-formats and the bounded supporting source trail as citations. It does not
-represent Kevin Rudd, Ezra Klein, *The New York Times*, Apple or YouTube as the
+Each public Notebook entry emits `Article` JSON-LD with Mainland Dispatch as the
+author, its own publication and revision dates, canonical conversation
+formats, and its bounded supporting source trail as citations. It does not
+represent Kevin Rudd, Ezra Klein, _The New York Times_, Apple or YouTube as the
 author of Mainland Dispatch’s synthesis.
+
+## First-party share attribution
+
+Share actions use ordinary links and no third-party script. Only the return URL
+to Mainland Dispatch receives parameters:
+
+- `utm_campaign=open-models-closed-system`;
+- channel-specific `utm_source`;
+- `utm_medium=reader-share` for copy/email or `social` for LinkedIn/Bluesky;
+  and
+- `utm_content=notebook-header` or the selected `promise-*` ID.
+
+Canonical URLs, internal navigation, sitemap entries, JSON-LD citations, and
+outbound evidence links never receive UTMs. This prepares attribution for
+future analytics; no analytics service is installed and no measurement is
+claimed.
 
 ## Sitemap policy
 
@@ -75,8 +99,8 @@ contains stable canonical URLs, meaningful last-modified dates, conservative
 change frequencies and relative priorities. It never imports the entire Desk
 catalog.
 
-The homepage and founding Notebook last-modified dates follow the Notebook
-revision. `/archive` follows the newest public Dispatch revision. Dispatches use
+The homepage last-modified date follows the latest published Notebook revision.
+Each Notebook uses its own revision. `/archive` follows the newest public Dispatch revision. Dispatches use
 `updatedAt`; comparisons use the newest linked public Dispatch; traces use the
 newest timeline entry; dossiers use `lastReviewed`; and each Atlas case uses its
 own published release retrieval date. Atlas is assigned a lower sitemap
@@ -86,7 +110,7 @@ journey.
 ## Validation
 
 The SEO regression suite checks canonical URL construction, description length,
-unique sitemap URLs, inclusion of the Notebook, archive and every public
+unique sitemap URLs, inclusion of every published Notebook, archive and every public
 Dispatch, exclusion of `/desk` and `/saved`, meaningful revision dates,
 crawler directives and manifest identity. The full gate then builds every
 public route.

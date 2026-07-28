@@ -25,6 +25,7 @@ describe("archiveMachine", () => {
         view: "relationships",
         publisher: "ChinaFile",
         year: "2016",
+        inquirySlug: "what-xi-jinping-wants",
       },
     });
     expect(actor.getSnapshot().context).toEqual(
@@ -32,6 +33,7 @@ describe("archiveMachine", () => {
         view: "relationships",
         publisher: "ChinaFile",
         year: "2016",
+        inquirySlug: "what-xi-jinping-wants",
       })
     );
 
@@ -41,7 +43,21 @@ describe("archiveMachine", () => {
         view: "cards",
         publisher: "all",
         year: "all",
+        inquirySlug: "open-models-closed-system",
       })
+    );
+  });
+
+  it("owns Notebook inquiry selection", () => {
+    const actor = createActor(archiveMachine).start();
+
+    actor.send({
+      type: "SELECT_INQUIRY",
+      inquirySlug: "what-xi-jinping-wants",
+    });
+
+    expect(actor.getSnapshot().context.inquirySlug).toBe(
+      "what-xi-jinping-wants"
     );
   });
 });

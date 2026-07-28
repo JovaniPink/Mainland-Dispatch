@@ -5,7 +5,10 @@ import { traces } from "@/content/traces";
 import { dossiers } from "@/content/dossiers";
 import { atlasRelease, publishedAtlasReleases } from "@/content/atlas";
 import { siteUrl } from "@/lib/seo";
-import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
+import {
+  latestNotebookEntry,
+  publishedNotebookEntries,
+} from "@/content/notebook";
 
 const newest = (dates: string[]) => [...dates].sort().at(-1);
 
@@ -59,20 +62,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
     })
   );
+  const notebookEntries: MetadataRoute.Sitemap = publishedNotebookEntries.map(
+    (entry) => ({
+      url: `${siteUrl}/notebook/${entry.slug}`,
+      lastModified: entry.updatedAt,
+      changeFrequency: "monthly",
+      priority: entry.slug === latestNotebookEntry.slug ? 0.95 : 0.85,
+    })
+  );
 
   return [
     {
       url: siteUrl,
-      lastModified: whatXiJinpingWants.updatedAt,
+      lastModified: latestNotebookEntry.updatedAt,
       changeFrequency: "monthly",
       priority: 1,
     },
-    {
-      url: `${siteUrl}/notebook/${whatXiJinpingWants.slug}`,
-      lastModified: whatXiJinpingWants.updatedAt,
-      changeFrequency: "monthly",
-      priority: 0.95,
-    },
+    ...notebookEntries,
     {
       url: `${siteUrl}/archive`,
       lastModified: archiveUpdated,

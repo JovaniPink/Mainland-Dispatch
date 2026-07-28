@@ -13,6 +13,7 @@ export type ArchiveContext = {
   year: string;
   query: string;
   focusId: string;
+  inquirySlug: string;
 };
 
 export type ArchiveEvent =
@@ -25,6 +26,7 @@ export type ArchiveEvent =
   | { type: "FILTER_YEAR"; year: string }
   | { type: "SEARCH"; query: string }
   | { type: "SELECT_FOCUS"; focusId: string }
+  | { type: "SELECT_INQUIRY"; inquirySlug: string }
   | { type: "RESET" }
   | {
       type: "HYDRATE";
@@ -41,6 +43,7 @@ const initialContext: ArchiveContext = {
   year: "all",
   query: "",
   focusId: "",
+  inquirySlug: "open-models-closed-system",
 };
 
 export const archiveMachine = setup({
@@ -81,6 +84,9 @@ export const archiveMachine = setup({
         },
         SELECT_FOCUS: {
           actions: assign({ focusId: ({ event }) => event.focusId }),
+        },
+        SELECT_INQUIRY: {
+          actions: assign({ inquirySlug: ({ event }) => event.inquirySlug }),
         },
         HYDRATE: {
           actions: assign(({ context, event }) => ({

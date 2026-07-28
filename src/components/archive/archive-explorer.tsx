@@ -5,7 +5,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { publishedDispatches } from "@/content/dispatches";
 import { evidenceStatusLabels } from "@/content/dossiers";
-import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
+import {
+  latestNotebookEntry,
+  publishedNotebookEntries,
+} from "@/content/notebook";
+import type { NotebookEntry } from "@/content/notebook/schema";
 import {
   type Dispatch,
   type DispatchKind,
@@ -197,23 +201,22 @@ function Timeline({ records }: { records: Dispatch[] }) {
   );
 }
 
-function RuddInquiryMap() {
+function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
   return (
     <section className="border border-rule bg-paper-warm/20 p-4 sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
-            First inquiry center
+            Notebook inquiry center
           </p>
-          <h3 className="mt-2 font-serif text-2xl">What Xi Jinping Wants</h3>
+          <h3 className="mt-2 font-serif text-2xl">{entry.title}</h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-muted">
-            The Notebook keeps a compelling argument connected to its
-            interpretations, complications, source trail, and unresolved
-            question.
+            The Notebook keeps a consequential conversation connected to its
+            interpretations, corrections, source trail, and unresolved question.
           </p>
         </div>
         <Link
-          href={`/notebook/${whatXiJinpingWants.slug}`}
+          href={`/notebook/${entry.slug}`}
           className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
         >
           Open the inquiry ↗
@@ -225,9 +228,9 @@ function RuddInquiryMap() {
           <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
             Root source
           </p>
-          <p className="mt-2 font-serif text-xl">Ezra Klein with Kevin Rudd</p>
+          <p className="mt-2 font-serif text-xl">{entry.formats[0].title}</p>
           <p className="mt-2 text-xs leading-5 text-ink-muted">
-            One conversation available to listen, watch, or read.
+            {entry.formats[0].publisher}
           </p>
         </div>
         <div
@@ -237,8 +240,8 @@ function RuddInquiryMap() {
           →
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
-          {whatXiJinpingWants.turningPoints.map((point) => (
-            <article key={point.timecode} className="border border-rule p-3">
+          {entry.turningPoints.map((point) => (
+            <article key={point.id} className="border border-rule p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-mono text-[0.6rem] text-signal">
                   {point.timecode}
@@ -253,10 +256,10 @@ function RuddInquiryMap() {
 
       <div className="mt-5 border-t border-rule pt-4">
         <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
-          Evidence trail · {whatXiJinpingWants.sourceTrail.length} source stops
+          Evidence trail · {entry.sourceTrail.length} source stops
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          {whatXiJinpingWants.sourceTrail.map((source) => (
+          {entry.sourceTrail.map((source) => (
             <span
               key={source.id}
               className="border border-rule px-2 py-1 text-xs text-ink-muted"
@@ -437,6 +440,11 @@ export function ArchiveExplorer() {
         )
           ? { focusId: params.get("focus")! }
           : {}),
+        ...(publishedNotebookEntries.some(
+          (entry) => entry.slug === params.get("inquiry")
+        )
+          ? { inquirySlug: params.get("inquiry")! }
+          : {}),
       };
       dispatch({ type: "HYDRATE", filters });
       setHydrated(true);
@@ -461,9 +469,15 @@ export function ArchiveExplorer() {
       year: context.year,
       q: context.query,
       focus: context.focusId,
+      inquiry: context.inquirySlug,
     };
     for (const [key, value] of Object.entries(values)) {
-      if (!value || value === "all" || (key === "view" && value === "cards")) {
+      if (
+        !value ||
+        value === "all" ||
+        (key === "view" && value === "cards") ||
+        (key === "inquiry" && value === latestNotebookEntry.slug)
+      ) {
         url.searchParams.delete(key);
       } else {
         url.searchParams.set(key, value);
@@ -537,6 +551,10 @@ export function ArchiveExplorer() {
       context.place,
       context.year,
     ].some((value) => value !== "all") || Boolean(context.query);
+  const selectedInquiry =
+    publishedNotebookEntries.find(
+      (entry) => entry.slug === context.inquirySlug
+    ) ?? latestNotebookEntry;
 
   return (
     <section aria-labelledby="archive-explorer-title">
@@ -689,7 +707,33 @@ export function ArchiveExplorer() {
         {context.view === "timeline" && <Timeline records={visible} />}
         {context.view === "relationships" && (
           <>
-            <RuddInquiryMap />
+            <div className="mb-4 grid gap-2 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-end">
+              <label
+                htmlFor="archive-inquiry"
+                className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted"
+              >
+                Notebook inquiry
+              </label>
+              <select
+                id="archive-inquiry"
+                value={selectedInquiry.slug}
+                onChange={(event) =>
+                  dispatch({
+                    type: "SELECT_INQUIRY",
+                    inquirySlug: event.target.value,
+                  })
+                }
+                className="min-w-0 border border-rule bg-paper px-3 py-2 text-sm focus:border-jade focus:outline-none"
+              >
+                {publishedNotebookEntries.map((entry) => (
+                  <option key={entry.slug} value={entry.slug}>
+                    Inquiry {String(entry.ordinal).padStart(2, "0")} ·{" "}
+                    {entry.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <NotebookInquiryMap entry={selectedInquiry} />
             <PublishedRelationshipMap
               records={visible}
               focusId={context.focusId}
@@ -715,6 +759,7 @@ export function ArchiveExplorer() {
           "FILTER_YEAR",
           "SEARCH",
           "SELECT_FOCUS",
+          "SELECT_INQUIRY",
           "RESET",
         ]}
         history={history}

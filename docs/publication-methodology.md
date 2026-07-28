@@ -88,9 +88,10 @@ separate versions of those products merely to display the same inquiry.
 Season Zero publication is intentionally irregular. Recurring research,
 verification, writing and editing are capped at 8–10 hours per entry. No
 additional article-intake batches, automated transcript ingestion, generalized
-CMS or new top-level product area may be added until the founding entry is
-evaluated under the
-[Season Zero decision rule](decisions/2026-07-23-season-zero.md).
+CMS or new top-level product area may be added. On July 28 the editor explicitly
+commissioned Notebook Two; that is a “continue” instruction, not evidence that
+the founding reader study was conducted. See the
+[Notebook Two decision note](decisions/2026-07-28-notebook-two.md).
 
 ## Evidence status vocabulary
 
@@ -137,6 +138,14 @@ The first public Notebook entry, “What Xi Jinping Wants,” is supported by a
 bounded [source
 ledger](source-notes/2026-07-23-what-xi-jinping-wants-ledger.md). It does not
 change the disposition of any general-China article candidate.
+
+The second public entry, “Open Models, Closed System?,” uses a separate
+[13-stop source
+ledger](source-notes/2026-07-28-open-models-closed-system-ledger.md) and a
+six-record “What to Watch” register. It distinguishes future commitments,
+institutional facts, observed conditions, policy principles, and reported
+proposals instead of presenting them as one class of promise. Notebook source stops are not Dispatch mappings and
+do not change the 13-record public Archive count.
 
 ## Search and indexing boundary
 

@@ -1,4 +1,4 @@
-import type { NotebookEvidenceStatus } from "@/content/notebook/what-xi-jinping-wants";
+import type { NotebookEvidenceStatus } from "@/content/notebook/schema";
 import { cn } from "@/lib/utils";
 
 const labels: Record<NotebookEvidenceStatus, string> = {

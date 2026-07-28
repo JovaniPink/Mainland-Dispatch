@@ -1,42 +1,45 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { JsonLd } from "@/components/seo/json-ld";
-import { NotebookStatus } from "@/components/notebook/notebook-status";
+import { NotebookAudioFacade } from "@/components/notebook/notebook-audio-facade";
 import {
   NotebookFormats,
   NotebookProse,
   NotebookSectionHeading,
   NotebookSourceTrail,
 } from "@/components/notebook/notebook-components";
-import { whatXiJinpingWants as entry } from "@/content/notebook/what-xi-jinping-wants";
-import { formatDate, site } from "@/content/site";
+import { NotebookShare } from "@/components/notebook/notebook-share";
+import { NotebookStatus } from "@/components/notebook/notebook-status";
+import { WhatToWatch } from "@/components/notebook/what-to-watch";
+import { JsonLd } from "@/components/seo/json-ld";
+import { evidenceStatusLabels } from "@/content/dossiers";
+import { openModelsClosedSystem as entry } from "@/content/notebook/open-models-closed-system";
+import { site, formatDate } from "@/content/site";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
   ["why", "Why this stayed with me"],
-  ["turning-points", "Three turning points"],
-  ["model", "Rudd’s model"],
-  ["explains", "What it explains"],
-  ["pushback", "Where I push back"],
-  ["context", "Who Rudd is"],
-  ["source-trail", "A short source trail"],
+  ["proposal", "What Xi proposed"],
+  ["strongest", "Where Yu is strongest"],
+  ["overreach", "Where it overreaches"],
+  ["noul", "Noul as a test"],
+  ["talent", "Wang and Deng"],
+  ["what-to-watch", "What to watch"],
+  ["source-trail", "Thirteen source stops"],
   ["changed", "What changed"],
-  ["question", "An open question"],
+  ["question", "Unresolved question"],
 ] as const;
 
+const articleMetadata = pageMetadata({
+  title: entry.title,
+  description: entry.description,
+  path: pagePath,
+});
+
 export const metadata: Metadata = {
-  ...pageMetadata({
-    title: entry.title,
-    description: entry.description,
-    path: pagePath,
-  }),
+  ...articleMetadata,
   openGraph: {
-    ...pageMetadata({
-      title: entry.title,
-      description: entry.description,
-      path: pagePath,
-    }).openGraph,
+    ...articleMetadata.openGraph,
     type: "article",
     publishedTime: `${entry.publishedAt}T00:00:00.000Z`,
     modifiedTime: `${entry.updatedAt}T00:00:00.000Z`,
@@ -45,7 +48,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WhatXiJinpingWantsPage() {
+export default function OpenModelsClosedSystemPage() {
   return (
     <article>
       <JsonLd
@@ -82,12 +85,12 @@ export default function WhatXiJinpingWantsPage() {
       <header className="rise-in border-b border-rule px-4 py-10 sm:px-6 sm:py-14">
         <div className="max-w-4xl">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">
-            Notebook · Founding inquiry
+            Notebook · Inquiry 02
           </p>
-          <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-[1.05] sm:text-6xl">
+          <h1 className="mt-4 max-w-4xl font-serif text-4xl leading-[1.05] sm:text-6xl">
             {entry.title}
           </h1>
-          <p className="mt-5 max-w-2xl font-serif text-xl italic leading-relaxed text-ink-muted sm:text-2xl">
+          <p className="mt-5 max-w-3xl font-serif text-xl italic leading-relaxed text-ink-muted sm:text-2xl">
             {entry.subtitle}
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
@@ -95,7 +98,7 @@ export default function WhatXiJinpingWantsPage() {
             <span aria-hidden>·</span>
             <span>{entry.readTime}</span>
             <span aria-hidden>·</span>
-            <span>Public research notebook</span>
+            <span>Source-backed interpretation</span>
           </div>
           <ul className="mt-5 flex flex-wrap gap-2" aria-label="Topics">
             {entry.tags.map((tag) => (
@@ -107,10 +110,17 @@ export default function WhatXiJinpingWantsPage() {
               </li>
             ))}
           </ul>
+          <div className="mt-6">
+            <NotebookShare
+              title={entry.title}
+              path={pagePath}
+              campaign={entry.slug}
+            />
+          </div>
         </div>
       </header>
 
-      <div className="grid gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[13rem_minmax(0,44rem)] lg:justify-between lg:gap-16">
+      <div className="grid gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[13rem_minmax(0,46rem)] lg:justify-between lg:gap-16">
         <aside className="self-start lg:sticky lg:top-5">
           <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
             In this inquiry
@@ -134,16 +144,26 @@ export default function WhatXiJinpingWantsPage() {
           </nav>
           <div className="mt-6 border-l-2 border-signal bg-signal-soft/30 p-3">
             <p className="font-mono text-[0.6rem] uppercase tracking-widest text-signal">
-              Reading rule
+              Editorial posture
             </p>
             <p className="mt-2 font-serif text-sm italic leading-relaxed">
-              A persuasive model is not the same thing as a settled fact.
+              Useful public goods and strategic influence can be true at the
+              same time.
             </p>
           </div>
         </aside>
 
         <div className="min-w-0">
-          <section>
+          <aside className="border-y border-rule bg-jade-soft/25 px-5 py-6">
+            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              Working thesis
+            </p>
+            <p className="mt-3 font-serif text-xl italic leading-relaxed">
+              {entry.thesis}
+            </p>
+          </aside>
+
+          <section className="mt-12">
             <NotebookSectionHeading id="why" eyebrow="The starting point">
               Why this stayed with me
             </NotebookSectionHeading>
@@ -155,49 +175,51 @@ export default function WhatXiJinpingWantsPage() {
           <section className="mt-12">
             <NotebookSectionHeading
               id="formats"
-              eyebrow="One conversation · three formats"
+              eyebrow="One conversation · primary records"
             >
-              Listen, watch, or read
+              Listen, read, or watch
             </NotebookSectionHeading>
             <div className="mt-6">
               <NotebookFormats formats={entry.formats} />
+            </div>
+            <div className="mt-4">
+              <NotebookAudioFacade
+                title={entry.formats[0].title}
+                audio={entry.audio}
+              />
             </div>
           </section>
 
           <section className="mt-12">
             <NotebookSectionHeading
               id="turning-points"
-              eyebrow="Timecoded argument map"
+              eyebrow="Reviewed listening map"
             >
-              Three turning points
+              Three useful turning points
             </NotebookSectionHeading>
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 grid gap-4">
               {entry.turningPoints.map((point, index) => (
                 <article
-                  key={point.timecode}
+                  key={point.id}
                   className="border border-rule bg-paper-warm/25 p-5"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <a
-                      href={`https://www.youtube.com/watch?v=DprKDXRlubw&t=${point.seconds}s`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
-                    >
-                      {String(index + 1).padStart(2, "0")} · {point.timecode} ↗
-                    </a>
+                    <span className="font-mono text-xs uppercase tracking-widest text-signal">
+                      {String(index + 1).padStart(2, "0")} · {point.timecode}–
+                      {point.endTimecode}
+                    </span>
                     <NotebookStatus status={point.status} />
                   </div>
                   <h3 className="mt-4 font-serif text-xl leading-snug">
                     {point.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7">
-                    <strong className="font-semibold">Rudd’s argument:</strong>{" "}
+                    <strong className="font-semibold">Episode argument:</strong>{" "}
                     {point.argument}
                   </p>
                   <p className="mt-3 border-l-2 border-jade pl-3 text-sm leading-7 text-ink-muted">
                     <strong className="font-semibold text-ink">
-                      My reading:
+                      Editorial reading:
                     </strong>{" "}
                     {point.reading}
                   </p>
@@ -207,79 +229,132 @@ export default function WhatXiJinpingWantsPage() {
           </section>
 
           <section className="mt-12">
-            <NotebookSectionHeading id="model" eyebrow="Reconstruction">
-              Rudd’s model of Xi
+            <NotebookSectionHeading id="proposal" eyebrow="The official record">
+              What Xi actually proposed
             </NotebookSectionHeading>
             <div className="mt-6">
-              <NotebookProse paragraphs={entry.sections.model} />
-            </div>
-          </section>
-
-          <section className="mt-12">
-            <NotebookSectionHeading id="explains" eyebrow="Explanatory value">
-              What the model explains well
-            </NotebookSectionHeading>
-            <div className="mt-6">
-              <NotebookProse paragraphs={entry.sections.explains} />
-            </div>
-          </section>
-
-          <section className="mt-12">
-            <NotebookSectionHeading id="pushback" eyebrow="Friction">
-              Where I would push back
-            </NotebookSectionHeading>
-            <div className="mt-6">
-              <NotebookProse paragraphs={entry.sections.pushback} />
+              <NotebookProse paragraphs={entry.sections.proposal} />
             </div>
           </section>
 
           <section className="mt-12">
             <NotebookSectionHeading
-              id="dates"
-              eyebrow="Do not collapse these dates"
+              id="strongest"
+              eyebrow="The strongest criticism"
             >
-              2027, 2028, and 2049 are different claims
+              Where Miles Yu’s criticism is strongest
             </NotebookSectionHeading>
-            <div className="mt-6 grid gap-3">
-              {entry.timeline.map((item) => (
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.strongest} />
+            </div>
+            <aside className="mt-6 border-l-2 border-jade bg-jade-soft/25 p-4">
+              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                Institutional context
+              </p>
+              <p className="mt-2 text-sm leading-7">
+                Yu directs Hudson’s China Center, teaches at the US Naval
+                Academy, and previously advised Secretary of State Mike Pompeo.
+                Hudson describes the center as developing American responses to
+                the “China challenge.” That supplies relevant expertise and an
+                explicitly strategic lens.
+              </p>
+              <a
+                href="https://www.hudson.org/experts/1356-miles-yu"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-block font-mono text-[0.65rem] uppercase tracking-widest text-signal hover:text-ink"
+              >
+                Inspect the source context ↗
+              </a>
+            </aside>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="overreach" eyebrow="Claim discipline">
+              Where the episode overreaches
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.overreach} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="claim-audit" eyebrow="Ten claim checks">
+              What survives the source audit
+            </NotebookSectionHeading>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {entry.claimAudit.map((item) => (
                 <article
-                  key={item.year}
-                  className="grid gap-3 border border-rule p-4 sm:grid-cols-[5rem_minmax(0,1fr)]"
+                  key={item.id}
+                  className="flex min-w-0 flex-col border border-rule p-4"
                 >
-                  <div>
-                    <p className="font-serif text-3xl text-signal">
-                      {item.year}
-                    </p>
-                    <div className="mt-2">
-                      <NotebookStatus status={item.status} />
-                    </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                      {evidenceStatusLabels[item.status]}
+                    </span>
+                    <span className="border border-rule px-2 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-ink-muted">
+                      {item.decision}
+                    </span>
                   </div>
-                  <div>
-                    <h3 className="font-serif text-lg">{item.label}</h3>
-                    <p className="mt-2 text-sm leading-7 text-ink-muted">
-                      {item.explanation}
-                    </p>
-                  </div>
+                  <h3 className="mt-3 font-serif text-lg leading-snug">
+                    {item.decision === "exclude"
+                      ? "Excluded overstatement"
+                      : item.claim}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-ink-muted">
+                    {item.assessment}
+                  </p>
+                  <p className="mt-auto pt-4 font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                    {item.sourceIds.length} displayed{" "}
+                    {item.sourceIds.length === 1 ? "source" : "sources"}
+                  </p>
                 </article>
               ))}
             </div>
           </section>
 
           <section className="mt-12">
-            <NotebookSectionHeading id="context" eyebrow="Source provenance">
-              Who Rudd is—and why that context matters
+            <NotebookSectionHeading id="noul" eyebrow="Evidence test one">
+              Noul as a state-capacity and information-quality test
             </NotebookSectionHeading>
             <div className="mt-6">
-              <NotebookProse paragraphs={entry.sections.context} />
+              <NotebookProse paragraphs={entry.sections.noul} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="talent" eyebrow="Evidence test two">
+              Wang and Deng as a transnational research pipeline
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.talent} />
             </div>
           </section>
 
           <section className="mt-12">
             <NotebookSectionHeading
-              id="source-trail"
-              eyebrow="Eight places to continue"
+              id="what-to-watch"
+              eyebrow="Remember the baseline"
             >
-              A short, real source trail
+              What to watch
+            </NotebookSectionHeading>
+            <p className="mt-5 text-sm leading-7 text-ink-muted">
+              These are not six interchangeable promises or a truth score. Each
+              record names its claim type, responsible actor, baseline, delivery
+              window, current evidence, unknowns, and the observations that
+              would strengthen or weaken the assessment.
+            </p>
+            <div className="mt-6">
+              <WhatToWatch entry={entry} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="source-trail-heading"
+              eyebrow="Thirteen bounded stops"
+            >
+              Source trail and review boundary
             </NotebookSectionHeading>
             <div className="mt-6">
               <NotebookSourceTrail sources={entry.sourceTrail} />
@@ -327,19 +402,19 @@ export default function WhatXiJinpingWantsPage() {
 
           <nav
             aria-label="Continue reading"
-            className="mt-12 flex flex-col gap-3 border-t border-rule pt-6 sm:flex-row"
+            className="mt-12 grid gap-3 border-t border-rule pt-6 sm:grid-cols-2"
           >
             <Link
-              href="/archive"
+              href="/archive?view=relationships&inquiry=open-models-closed-system"
               className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
             >
-              Explore the source archive
+              Explore its source relationships
             </Link>
             <Link
-              href="/atlas"
+              href="/notebook/what-xi-jinping-wants"
               className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
             >
-              Open the experimental source lab
+              Read the founding inquiry
             </Link>
           </nav>
         </div>

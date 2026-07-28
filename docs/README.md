@@ -1,8 +1,8 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** July 23, 2026
+**Current as of:** July 28, 2026
 **Public Dispatches:** 13 published or corrected records
-**Public Notebook entries:** 1 founding inquiry
+**Public Notebook entries:** 2 source-reviewed inquiries
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
 **Source-lead catalog:** 461 records
 **General-China article audit:** 384 external candidates — 355 withheld, 29
@@ -30,11 +30,20 @@ format-specific metadata, corrected timecodes, claim classifications,
 institutional context, counter-readings, access limitations and the exact
 research stopping point.
 
+The second inquiry is supported by the
+[“Open Models, Closed System?” source
+ledger](source-notes/2026-07-28-open-models-closed-system-ledger.md). The
+[July 28 commission](decisions/2026-07-28-notebook-two.md) records the editor’s
+explicit “continue” decision without claiming that the founding reader study
+was conducted.
+
 ## Governing documents
 
 - [Season Zero editorial contract](decisions/2026-07-23-season-zero.md) defines
   the current audience, primary object, cadence, time budget, intake freeze and
   decision rule.
+- [Notebook Two commission](decisions/2026-07-28-notebook-two.md) records the
+  explicit publication decision and its unchanged intake/product boundaries.
 - [Publication methodology](publication-methodology.md) defines the
   article-to-Dispatch evidence gate, claim statuses, correction practice and
   search-publication boundary.

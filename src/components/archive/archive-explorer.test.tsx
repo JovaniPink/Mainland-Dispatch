@@ -27,9 +27,19 @@ describe("ArchiveExplorer publication boundary and views", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Relationships" }));
     expect(
+      screen.getByRole("heading", { name: "Open Models, Closed System?" })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/notebook inquiry center/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
+      "open-models-closed-system"
+    );
+
+    fireEvent.change(screen.getByLabelText("Notebook inquiry"), {
+      target: { value: "what-xi-jinping-wants" },
+    });
+    expect(
       screen.getByRole("heading", { name: "What Xi Jinping Wants" })
     ).toBeInTheDocument();
-    expect(screen.getByText(/first inquiry center/i)).toBeInTheDocument();
   });
 
   it("filters by evidence status and writes shareable URL state", async () => {

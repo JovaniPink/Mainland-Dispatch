@@ -4,6 +4,9 @@ import manifest from "@/app/manifest";
 import { publishedDispatches } from "@/content/dispatches";
 import { atlasRelease, publishedAtlasReleases } from "@/content/atlas";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
+import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
+import { publishedNotebookEntries } from "@/content/notebook";
+import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
 import { generateMetadata as generateDispatchMetadata } from "@/app/dispatch/[slug]/page";
@@ -45,6 +48,14 @@ describe("SEO publication contract", () => {
     expect(new Set(urls).size).toBe(urls.length);
     expect(urls).toContain(siteUrl);
     expect(urls).toContain(`${siteUrl}/notebook/${whatXiJinpingWants.slug}`);
+    expect(urls).toContain(
+      `${siteUrl}/notebook/${openModelsClosedSystem.slug}`
+    );
+    expect(
+      publishedNotebookEntries.every((entry) =>
+        urls.includes(`${siteUrl}/notebook/${entry.slug}`)
+      )
+    ).toBe(true);
     expect(urls).toContain(`${siteUrl}/archive`);
     expect(urls).toContain(`${siteUrl}/atlas`);
     expect(
@@ -64,6 +75,19 @@ describe("SEO publication contract", () => {
       )
     ).toBe(true);
     expect(entries.every((entry) => Boolean(entry.lastModified))).toBe(true);
+  });
+
+  it("keeps Notebook Two canonical and article metadata free of query state", () => {
+    expect(notebookTwoMetadata.alternates).toEqual({
+      canonical: `${siteUrl}/notebook/open-models-closed-system`,
+    });
+    expect(notebookTwoMetadata.openGraph).toMatchObject({
+      type: "article",
+      url: `${siteUrl}/notebook/open-models-closed-system`,
+      publishedTime: "2026-07-28T00:00:00.000Z",
+    });
+    expect(JSON.stringify(notebookTwoMetadata)).not.toContain("utm_");
+    expect(JSON.stringify(notebookTwoMetadata)).not.toContain("promise=");
   });
 
   it("publishes consistent crawler and application metadata", () => {

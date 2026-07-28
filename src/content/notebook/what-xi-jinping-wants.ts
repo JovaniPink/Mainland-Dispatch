@@ -1,71 +1,11 @@
-export type NotebookEvidenceStatus =
-  | "observed"
-  | "official-position"
-  | "interpretation"
-  | "contested"
-  | "scenario";
+import {
+  parseNotebookEntry,
+  type ArgumentNotebookEntry,
+} from "@/content/notebook/schema";
 
-type NotebookFormat = {
-  label: string;
-  title: string;
-  publisher: string;
-  duration?: string;
-  url: string;
-  note: string;
-};
-
-type NotebookTurningPoint = {
-  timecode: string;
-  seconds: number;
-  title: string;
-  status: NotebookEvidenceStatus;
-  argument: string;
-  reading: string;
-};
-
-type NotebookTrailItem = {
-  id: string;
-  role: string;
-  title: string;
-  publisher: string;
-  author?: string;
-  publishedAt?: string;
-  links: { label: string; url: string }[];
-  context: string;
-  limitation?: string;
-};
-
-export type NotebookEntry = {
-  slug: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  publishedAt: string;
-  updatedAt: string;
-  readTime: string;
-  tags: string[];
-  formats: NotebookFormat[];
-  turningPoints: NotebookTurningPoint[];
-  timeline: {
-    year: string;
-    label: string;
-    status: NotebookEvidenceStatus;
-    explanation: string;
-  }[];
-  sections: {
-    why: string[];
-    model: string[];
-    explains: string[];
-    pushback: string[];
-    context: string[];
-    changed: string[];
-  };
-  sourceTrail: NotebookTrailItem[];
-  unresolvedQuestion: string;
-  limitations: string[];
-};
-
-export const whatXiJinpingWants: NotebookEntry = {
+export const whatXiJinpingWants = parseNotebookEntry({
+  variant: "argument-model",
+  ordinal: 1,
   slug: "what-xi-jinping-wants",
   title: "What Xi Jinping Wants",
   subtitle:
@@ -75,9 +15,12 @@ export const whatXiJinpingWants: NotebookEntry = {
   publishedAt: "2026-07-23",
   updatedAt: "2026-07-23",
   readTime: "14 min",
+  editorialStatus: "published",
+  reviewState: "source-reviewed",
   tags: ["Xi Jinping", "Kevin Rudd", "Ideology", "Political economy", "Taiwan"],
   formats: [
     {
+      id: "format-rudd-listen",
       label: "Listen",
       title: "What Xi Jinping Wants",
       publisher: "The Ezra Klein Show · Apple Podcasts",
@@ -86,6 +29,7 @@ export const whatXiJinpingWants: NotebookEntry = {
       note: "The publisher’s episode listing and the clearest canonical metadata record.",
     },
     {
+      id: "format-rudd-watch",
       label: "Watch",
       title: "What Americans Need to Understand About China",
       publisher: "The Ezra Klein Show · YouTube",
@@ -94,6 +38,7 @@ export const whatXiJinpingWants: NotebookEntry = {
       note: "The timecodes on this page point to this version.",
     },
     {
+      id: "format-rudd-read",
       label: "Read",
       title: "What Xi Jinping Wants",
       publisher: "The New York Times",
@@ -103,6 +48,7 @@ export const whatXiJinpingWants: NotebookEntry = {
   ],
   turningPoints: [
     {
+      id: "turning-rudd-ideology",
       timecode: "00:45:49",
       seconds: 2749,
       title: "Ideology as an operating framework",
@@ -111,8 +57,13 @@ export const whatXiJinpingWants: NotebookEntry = {
         "Rudd argues that Xi uses Marxist-Leninist categories—not merely ceremonial vocabulary—to interpret historical change, political struggle, and China’s position in the world.",
       reading:
         "This is the conversation’s most consequential move. It asks listeners to treat ideology as evidence about how Xi organizes problems. It does not prove that doctrine mechanically determines each policy choice.",
+      sourceIds: [
+        "notebook-source-rudd-book-dissertation",
+        "notebook-source-blanchette-xi-thought",
+      ],
     },
     {
+      id: "turning-rudd-private-capital",
       timecode: "01:03:44",
       seconds: 3824,
       title: "Private capital remains useful, but subordinate",
@@ -121,8 +72,13 @@ export const whatXiJinpingWants: NotebookEntry = {
         "Rudd reads the disciplining of Jack Ma and large platform companies as a reassertion that private wealth and influence cannot become autonomous from Party control.",
       reading:
         "The regulatory actions are observable. Their full causal story is not. Security, monopoly concerns, financial risk, bureaucratic incentives, and political control can operate together; the record does not require one exclusive motive.",
+      sourceIds: [
+        "notebook-source-rudd-book-dissertation",
+        "notebook-source-new-productive-forces",
+      ],
     },
     {
+      id: "turning-rudd-2028",
       timecode: "01:35:16",
       seconds: 5716,
       title: "A 2028 risk of political miscalculation",
@@ -131,6 +87,10 @@ export const whatXiJinpingWants: NotebookEntry = {
         "Rudd identifies the overlap between Taiwan’s 2028 presidential cycle and the United States’ election as a period in which Beijing could misread resolve or political capacity.",
       reading:
         "This is a scenario about incentives and perception, not a forecast that an invasion will occur in 2028. Keeping that grammar intact is essential.",
+      sourceIds: [
+        "notebook-source-rudd-book-dissertation",
+        "notebook-source-cia-2027",
+      ],
     },
   ],
   timeline: [
@@ -194,7 +154,7 @@ export const whatXiJinpingWants: NotebookEntry = {
   },
   sourceTrail: [
     {
-      id: "rudd-book-dissertation",
+      id: "notebook-source-rudd-book-dissertation",
       role: "The argument in full",
       title:
         "On Xi Jinping: How Xi’s Marxist Nationalism Is Shaping China and the World",
@@ -217,7 +177,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "An extended interpretive argument by the interview guest, not independent corroboration of his thesis.",
     },
     {
-      id: "blanchette-xi-thought",
+      id: "notebook-source-blanchette-xi-thought",
       role: "Competing interpretations and critique",
       title: "Is Xi Jinping a Marxist?",
       publisher: "China Books Review",
@@ -239,7 +199,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "The FISC essay is an explicit critique, not a neutral adjudication between the competing models.",
     },
     {
-      id: "torigian-family-party",
+      id: "notebook-source-torigian-family-party",
       role: "Biographical complication",
       title: "Family Line, Party Line",
       publisher: "National Committee on U.S.-China Relations",
@@ -254,7 +214,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "Torigian’s “idealistic pragmatist” description complicates a simple causal story from Xi’s family suffering to ideological rigidity.",
     },
     {
-      id: "rudd-ambassador-context",
+      id: "notebook-source-rudd-ambassador-context",
       role: "Institutional context",
       title: "Australia’s Ambassador to the United States of America",
       publisher: "Australian Minister for Foreign Affairs",
@@ -272,7 +232,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "An official account of service and achievements, not an independent evaluation.",
     },
     {
-      id: "cia-2027",
+      id: "notebook-source-cia-2027",
       role: "2027 distinction",
       title: "Trainor Award Ceremony Transcript",
       publisher: "Central Intelligence Agency",
@@ -289,7 +249,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "A public statement by the U.S. intelligence chief; the underlying intelligence is not disclosed.",
     },
     {
-      id: "new-productive-forces",
+      id: "notebook-source-new-productive-forces",
       role: "Official economic language",
       title: "Xi stresses developing new productive forces",
       publisher: "The State Council of the People’s Republic of China",
@@ -306,7 +266,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "Evidence of a stated priority, not proof of implementation or economic effect.",
     },
     {
-      id: "reunification-rejuvenation",
+      id: "notebook-source-reunification-rejuvenation",
       role: "2049 distinction",
       title: "Full text of the report to the 20th National Congress",
       publisher: "The State Council of the People’s Republic of China",
@@ -321,7 +281,7 @@ export const whatXiJinpingWants: NotebookEntry = {
         "Links complete reunification to national rejuvenation while stopping short of announcing a 2049 invasion or unification deadline.",
     },
     {
-      id: "csis-pla-purges",
+      id: "notebook-source-csis-pla-purges",
       role: "Observable personnel record",
       title: "Chinese PLA Military Purges",
       publisher: "ChinaPower · Center for Strategic and International Studies",
@@ -346,4 +306,4 @@ export const whatXiJinpingWants: NotebookEntry = {
     "Claims about Xi’s motives remain attributed to Rudd or labeled as interpretation; public texts cannot provide direct access to private intent.",
     "The public evidence reviewed here cannot establish a hard timetable for action against Taiwan.",
   ],
-};
+}) as ArgumentNotebookEntry;

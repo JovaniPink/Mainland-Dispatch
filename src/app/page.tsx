@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { publishedDispatches } from "@/content/dispatches";
-import { whatXiJinpingWants as notebook } from "@/content/notebook/what-xi-jinping-wants";
+import {
+  latestNotebookEntry as notebook,
+  publishedNotebookEntries,
+} from "@/content/notebook";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -16,6 +19,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const selectedSources = publishedDispatches.slice(0, 3);
+  const previousNotebook = publishedNotebookEntries.at(-2);
 
   return (
     <div>
@@ -41,7 +45,7 @@ export default function HomePage() {
               href={`/notebook/${notebook.slug}`}
               className="border border-ink bg-ink px-4 py-2 font-mono text-xs uppercase tracking-widest text-paper hover:bg-signal hover:border-signal"
             >
-              Start with “What Xi Jinping Wants”
+              Read “{notebook.title}”
             </Link>
             <Link
               href="/archive"
@@ -53,7 +57,7 @@ export default function HomePage() {
         </div>
         <aside className="rise-in border-l-2 border-signal bg-signal-soft/30 p-5">
           <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
-            The first inquiry
+            The latest inquiry
           </p>
           <h2 className="mt-3 font-serif text-2xl leading-tight">
             {notebook.title}
@@ -66,6 +70,31 @@ export default function HomePage() {
           </p>
         </aside>
       </section>
+
+      {previousNotebook && (
+        <section className="border-b border-rule px-4 py-7 sm:px-6">
+          <div className="grid gap-4 border-l-2 border-jade pl-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+            <div>
+              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+                Previous inquiry · Notebook{" "}
+                {String(previousNotebook.ordinal).padStart(2, "0")}
+              </p>
+              <h2 className="mt-2 font-serif text-2xl">
+                {previousNotebook.title}
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-muted">
+                {previousNotebook.subtitle}
+              </p>
+            </div>
+            <Link
+              href={`/notebook/${previousNotebook.slug}`}
+              className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
+            >
+              Read the founding inquiry ↗
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="grid gap-8 border-b border-rule px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div>

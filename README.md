@@ -33,6 +33,9 @@ claim-safety posture from `handoff-navigator`.
   personal motivation, a faithful reconstruction of an argument, timecoded
   turning points, claim labels, pushback, institutional context, a short source
   trail and one unresolved question.
+  The newest entry, “Open Models, Closed System?,” adds a source-audited claim
+  review and six-record “What to Watch” evidence register while the founding Rudd inquiry
+  remains public.
 - **Source Archive** — an interactive public evidence surface with faceted
   search, chronological and relationship views, reviewed source metadata,
   classified claims, explicit limitations and shareable URL state. It exposes
@@ -84,11 +87,15 @@ claim-safety posture from `handoff-navigator`.
 - XState owns real interaction state:
   - stream filtering/search;
   - Archive view selection, faceted filters, relationship focus, query
-    hydration and shareable URL state;
+    hydration, Notebook inquiry selection and shareable URL state;
+  - Notebook consent-gated audio;
   - Compare source selection;
   - Trace entry selection;
   - media poster → loading → playing/unavailable/retry;
   - Desk intake → validation → duplicate check → editing → saved JSON.
+- Notebook `promise` selection is deliberately URL-derived state rather than a
+  statechart. XState is reserved for lifecycle behavior; pure functions validate
+  and update selection while preserving unrelated query parameters.
 - Media embeds are consent-gated. A verified external video creates its iframe
   only after consent and reports readiness through iframe load/error events.
   Prototype media exercises the same machine without contacting a third party.
@@ -160,10 +167,14 @@ limitations.
 article-intake batches, automated ingestion pipeline, generalized CMS or new
 top-level product area will be added. The existing 461-lead catalog is
 sufficient. Work is concentrated on publishing and testing one consequential
-Notebook entry and making its existing supporting Archive more legible. The
+Notebook entries and making their existing supporting Archive more legible. On
+July 28 the editor explicitly commissioned Notebook Two; this is documented as
+a “continue” decision without claiming the founding reader study occurred. The
 Archive refinement is not a second intake system: it visualizes only the
 reviewed public boundary. The full decision is recorded in
-[`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md).
+[`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md)
+and
+[`docs/decisions/2026-07-28-notebook-two.md`](docs/decisions/2026-07-28-notebook-two.md).
 
 The current documentation map, governing-methodology precedence, and catalog
 rollup are maintained in [`docs/README.md`](docs/README.md). The source-lead
@@ -239,3 +250,6 @@ The founding Notebook’s verified formats, corrected timecodes, claim
 classifications, source trail, access limitations and exact research stopping
 point are recorded in
 [`docs/source-notes/2026-07-23-what-xi-jinping-wants-ledger.md`](docs/source-notes/2026-07-23-what-xi-jinping-wants-ledger.md).
+Notebook Two’s audio boundary, 13 source stops, claim decisions, promise
+baselines, excluded assertions, and exact July 28 stopping point are recorded in
+[`docs/source-notes/2026-07-28-open-models-closed-system-ledger.md`](docs/source-notes/2026-07-28-open-models-closed-system-ledger.md).
