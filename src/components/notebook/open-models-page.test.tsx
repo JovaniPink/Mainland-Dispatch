@@ -102,6 +102,52 @@ describe("Open Models, Closed System Notebook", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("preserves baselines and renders an explicit dated no-change review", () => {
+    render(<WhatToWatch entry={entry} />);
+
+    expect(screen.getByText("No verified change")).toBeInTheDocument();
+    expect(screen.getByText("Reviewed 2026-07-28")).toBeInTheDocument();
+    expect(screen.getByText("Exact baseline")).toBeInTheDocument();
+    expect(screen.getByText("Baseline supporting records")).toBeInTheDocument();
+    expect(
+      screen.getByText(/The original baseline remains intact/)
+    ).toBeInTheDocument();
+  });
+
+  it("renders dated updates with their own status and source boundary", () => {
+    const updatedEntry = JSON.parse(JSON.stringify(entry)) as typeof entry;
+    updatedEntry.watchItems[0].updateState = {
+      state: "verified-change",
+      reviewedAt: "2026-07-29",
+      updates: [
+        {
+          id: "update-training-program",
+          date: "2026-07-29",
+          status: "officiallyAnnounced",
+          summary:
+            "A named training program was announced; participation and completion remain unverified.",
+          sourceIds: ["notebook-source-xi-waic-address"],
+        },
+      ],
+    };
+
+    render(<WhatToWatch entry={updatedEntry} />);
+
+    expect(
+      screen.getByText(
+        "A named training program was announced; participation and completion remain unverified."
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByText("2026-07-29")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Update source: Ministry of Foreign Affairs of the People’s Republic of China ↗"
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByText("Baseline supporting records")).toBeInTheDocument();
+    expect(screen.queryByText("No verified change")).not.toBeInTheDocument();
+  });
+
   it("removes invalid promise state while preserving unrelated query state", async () => {
     window.history.replaceState(
       {},

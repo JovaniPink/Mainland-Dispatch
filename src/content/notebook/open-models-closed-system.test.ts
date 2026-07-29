@@ -21,6 +21,9 @@ const editorialText = [
     ...item.whatRemainsUnknown,
     ...item.wouldStrengthen,
     ...item.wouldWeaken,
+    ...(item.updateState.state === "verified-change"
+      ? item.updateState.updates.map((update) => update.summary)
+      : []),
   ]),
   ...entry.sourceTrail.flatMap((source) => [
     source.context,
@@ -37,6 +40,13 @@ describe("Open Models, Closed System Notebook registry", () => {
     expect(entry.turningPoints).toHaveLength(3);
     expect(entry.claimAudit).toHaveLength(10);
     expect(entry.watchItems).toHaveLength(6);
+    expect(
+      entry.watchItems.every(
+        (item) =>
+          item.updateState.state === "no-verified-change" &&
+          item.updateState.reviewedAt === "2026-07-28"
+      )
+    ).toBe(true);
     expect(new Set(entry.watchItems.map((item) => item.claimType))).toEqual(
       new Set([
         "commitment",
@@ -134,6 +144,85 @@ describe("Open Models, Closed System Notebook registry", () => {
       noWeakeningEvidence.watchItems as Array<Record<string, unknown>>
     )[0].wouldWeaken = [];
     expect(() => NotebookEntrySchema.parse(noWeakeningEvidence)).toThrow();
+  });
+
+  it("keeps later updates dated, sourced, and separate from the baseline", () => {
+    const validUpdate = copyEntry();
+    validUpdate.updatedAt = "2026-07-29";
+    (validUpdate.watchItems as Array<Record<string, unknown>>)[0].updateState =
+      {
+        state: "verified-change",
+        reviewedAt: "2026-07-29",
+        updates: [
+          {
+            id: "update-training-program",
+            date: "2026-07-29",
+            status: "officiallyAnnounced",
+            summary:
+              "A named program was announced; delivery remains unverified.",
+            sourceIds: ["notebook-source-xi-waic-address"],
+          },
+        ],
+      };
+    expect(() => NotebookEntrySchema.parse(validUpdate)).not.toThrow();
+
+    const staleEntryDate = copyEntry();
+    (
+      staleEntryDate.watchItems as Array<Record<string, unknown>>
+    )[0].updateState = {
+      state: "no-verified-change",
+      reviewedAt: "2026-07-29",
+    };
+    expect(() => NotebookEntrySchema.parse(staleEntryDate)).toThrow(
+      /watch review date must not follow entry updatedAt/
+    );
+
+    const noEvidence = copyEntry();
+    (noEvidence.watchItems as Array<Record<string, unknown>>)[0].updateState = {
+      state: "verified-change",
+      reviewedAt: "2026-07-29",
+      updates: [],
+    };
+    expect(() => NotebookEntrySchema.parse(noEvidence)).toThrow();
+
+    const brokenSource = copyEntry();
+    (brokenSource.watchItems as Array<Record<string, unknown>>)[0].updateState =
+      {
+        state: "verified-change",
+        reviewedAt: "2026-07-29",
+        updates: [
+          {
+            id: "update-training-program",
+            date: "2026-07-29",
+            status: "officiallyAnnounced",
+            summary: "A later claim without a registry source.",
+            sourceIds: ["notebook-source-missing"],
+          },
+        ],
+      };
+    expect(() => NotebookEntrySchema.parse(brokenSource)).toThrow(
+      /unknown Notebook source reference/
+    );
+
+    const beforeBaseline = copyEntry();
+    (
+      beforeBaseline.watchItems as Array<Record<string, unknown>>
+    )[0].updateState = {
+      state: "verified-change",
+      reviewedAt: "2026-07-29",
+      updates: [
+        {
+          id: "update-training-program",
+          date: "2026-07-16",
+          status: "officiallyAnnounced",
+          summary: "This predates the promise baseline.",
+          sourceIds: ["notebook-source-xi-waic-address"],
+        },
+      ],
+    };
+    expect(() => NotebookEntrySchema.parse(beforeBaseline)).toThrow(
+      /watch update date must not precede its baseline/
+    );
   });
 
   it("keeps non-public entries out of the published selector contract", () => {

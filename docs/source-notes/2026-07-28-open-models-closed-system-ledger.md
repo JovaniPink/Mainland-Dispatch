@@ -118,6 +118,15 @@ delivery window, evidence status, what has happened, what remains unknown, and
 evidence that would strengthen or weaken the assessment. A selected record is
 URL state, not a new document. `?promise=` accepts only a registry ID.
 
+Each record also carries an explicit update state. At this ledger’s July 28
+stopping point, all six render `no-verified-change`: that state records the date
+of review but does not imply that nothing happened outside the bounded source
+trail. A later `verified-change` must be a dated, status-labeled update with its
+own source references. The schema rejects unknown sources, empty change sets,
+updates before the baseline, updates after the review date, and review dates
+later than the entry revision date. Baseline and update links remain visibly
+separate in the public register.
+
 Selection uses pure parsing and URL-update functions rather than XState.
 XState remains responsible for audio lifecycle behavior. Valid `promise` and
 incoming UTM parameters may remain in the address bar; canonical metadata
