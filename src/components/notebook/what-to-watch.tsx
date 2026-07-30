@@ -55,6 +55,13 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
     if (!source) throw new Error(`Unresolved watch source: ${sourceId}`);
     return source;
   });
+  const updateSources = (sourceIds: string[]) =>
+    sourceIds.map((sourceId) => {
+      const source = entry.sourceTrail.find((item) => item.id === sourceId);
+      if (!source)
+        throw new Error(`Unresolved watch update source: ${sourceId}`);
+      return source;
+    });
 
   function select(promiseId: string) {
     if (!validIds.has(promiseId)) return;
@@ -167,6 +174,74 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
               {selected.whatHasHappened}
             </dd>
           </div>
+          <div>
+            <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              Update record
+            </dt>
+            <dd className="mt-2">
+              {selected.updateState.state === "no-verified-change" ? (
+                <div className="border border-rule bg-paper/70 p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <strong className="font-serif text-lg">
+                      No verified change
+                    </strong>
+                    <time
+                      dateTime={selected.updateState.reviewedAt}
+                      className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted"
+                    >
+                      Reviewed {selected.updateState.reviewedAt}
+                    </time>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-ink-muted">
+                    No later evidence in the reviewed source trail changes this
+                    record’s assessment. The original baseline remains intact.
+                  </p>
+                </div>
+              ) : (
+                <ol className="grid gap-3" aria-label="Dated verified updates">
+                  {selected.updateState.updates.map((update) => {
+                    const sourcesForUpdate = updateSources(update.sourceIds);
+                    return (
+                      <li
+                        key={update.id}
+                        className="border border-rule bg-paper/70 p-4"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <time
+                            dateTime={update.date}
+                            className="font-mono text-[0.6rem] uppercase tracking-widest text-signal"
+                          >
+                            {update.date}
+                          </time>
+                          <span className="font-mono text-[0.55rem] uppercase tracking-widest text-ink-muted">
+                            {evidenceStatusLabels[update.status]}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm leading-6">
+                          {update.summary}
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+                          {sourcesForUpdate.flatMap((source) =>
+                            source.links.slice(0, 1).map((link) => (
+                              <a
+                                key={source.id}
+                                href={link.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="font-mono text-[0.6rem] uppercase tracking-widest text-signal hover:text-ink"
+                              >
+                                Update source: {source.publisher} ↗
+                              </a>
+                            ))
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
+            </dd>
+          </div>
           <WatchList
             label="What remains unknown"
             items={selected.whatRemainsUnknown}
@@ -183,7 +258,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
           </div>
           <div>
             <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
-              Supporting records
+              Baseline supporting records
             </dt>
             <dd className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
               {sources.flatMap((source) =>

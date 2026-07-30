@@ -98,6 +98,26 @@ const NotebookClaimAuditSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+const NotebookWatchUpdateSchema = z.object({
+  id: nonEmpty.regex(/^update-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  date: isoDate,
+  status: EvidenceStatusSchema,
+  summary: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookWatchUpdateStateSchema = z.discriminatedUnion("state", [
+  z.object({
+    state: z.literal("no-verified-change"),
+    reviewedAt: isoDate,
+  }),
+  z.object({
+    state: z.literal("verified-change"),
+    reviewedAt: isoDate,
+    updates: z.array(NotebookWatchUpdateSchema).min(1),
+  }),
+]);
+
 const NotebookWatchItemSchema = z.object({
   id: nonEmpty.regex(/^promise-[a-z0-9]+(?:-[a-z0-9]+)*$/),
   claimType: z.enum([
@@ -119,6 +139,7 @@ const NotebookWatchItemSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
   wouldStrengthen: z.array(nonEmpty).min(1),
   wouldWeaken: z.array(nonEmpty).min(1),
+  updateState: NotebookWatchUpdateStateSchema,
 });
 
 const NotebookAudioSchema = z.object({
@@ -227,6 +248,11 @@ export const NotebookEntrySchema = z
             entry.audio.sourceId,
             ...entry.claimAudit.flatMap((item) => item.sourceIds),
             ...entry.watchItems.flatMap((item) => item.sourceIds),
+            ...entry.watchItems.flatMap((item) =>
+              item.updateState.state === "verified-change"
+                ? item.updateState.updates.flatMap((update) => update.sourceIds)
+                : []
+            ),
           ]
         : []),
     ];
@@ -251,6 +277,59 @@ export const NotebookEntrySchema = z
         ["watchItems"],
         "watch-item IDs must be unique"
       );
+      entry.watchItems.forEach((item, itemIndex) => {
+        if (item.updateState.reviewedAt > entry.updatedAt) {
+          ctx.addIssue({
+            code: "custom",
+            message: "watch review date must not follow entry updatedAt",
+            path: ["watchItems", itemIndex, "updateState", "reviewedAt"],
+          });
+        }
+        if (item.updateState.reviewedAt < item.baselineDate) {
+          ctx.addIssue({
+            code: "custom",
+            message: "watch review date must not precede its baseline",
+            path: ["watchItems", itemIndex, "updateState", "reviewedAt"],
+          });
+        }
+        if (item.updateState.state !== "verified-change") return;
+
+        checkUnique(
+          item.updateState.updates.map((update) => update.id),
+          ["watchItems", itemIndex, "updateState", "updates"],
+          "watch-update IDs must be unique within a watch item"
+        );
+        item.updateState.updates.forEach((update, updateIndex) => {
+          if (update.date < item.baselineDate) {
+            ctx.addIssue({
+              code: "custom",
+              message: "watch update date must not precede its baseline",
+              path: [
+                "watchItems",
+                itemIndex,
+                "updateState",
+                "updates",
+                updateIndex,
+                "date",
+              ],
+            });
+          }
+          if (update.date > item.updateState.reviewedAt) {
+            ctx.addIssue({
+              code: "custom",
+              message: "watch update date must not follow its review date",
+              path: [
+                "watchItems",
+                itemIndex,
+                "updateState",
+                "updates",
+                updateIndex,
+                "date",
+              ],
+            });
+          }
+        });
+      });
     }
   });
 

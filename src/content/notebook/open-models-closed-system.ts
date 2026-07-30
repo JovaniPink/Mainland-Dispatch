@@ -298,6 +298,10 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "Repeated announcements without auditable delivery records",
         "Counting short invitations or duplicate attendance as completed training",
       ],
+      updateState: {
+        state: "no-verified-change",
+        reviewedAt: "2026-07-28",
+      },
     },
     {
       id: "promise-centers",
@@ -326,6 +330,10 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "Centers that remain ceremonial or exist only in repeated speeches",
         "Opaque terms that reserve standards or infrastructure control to Beijing",
       ],
+      updateState: {
+        state: "no-verified-change",
+        reviewedAt: "2026-07-28",
+      },
     },
     {
       id: "promise-mazu",
@@ -354,6 +362,10 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "Access that consists only of demonstrations or inaccessible pilots",
         "No auditable performance record or unclear control of local weather data",
       ],
+      updateState: {
+        state: "no-verified-change",
+        reviewedAt: "2026-07-28",
+      },
     },
     {
       id: "promise-waico",
@@ -384,6 +396,10 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "Persistent absence of basic governance documents",
         "Decision-making concentrated in a host state despite multilateral language",
       ],
+      updateState: {
+        state: "no-verified-change",
+        reviewedAt: "2026-07-28",
+      },
     },
     {
       id: "promise-open-models",
@@ -415,6 +431,10 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "License tightening, incomplete artifacts, or non-reproducible performance",
         "Enacted controls that reserve leading models for domestic users",
       ],
+      updateState: {
+        state: "no-verified-change",
+        reviewedAt: "2026-07-28",
+      },
     },
     {
       id: "promise-security",
@@ -448,6 +468,10 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "Broad or indefinite restrictions justified by undefined security claims",
         "A widening difference between official openness and implemented access",
       ],
+      updateState: {
+        state: "no-verified-change",
+        reviewedAt: "2026-07-28",
+      },
     },
   ],
   sourceTrail: [

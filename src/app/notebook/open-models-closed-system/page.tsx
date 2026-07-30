@@ -342,7 +342,10 @@ export default function OpenModelsClosedSystemPage() {
               These are not six interchangeable promises or a truth score. Each
               record names its claim type, responsible actor, baseline, delivery
               window, current evidence, unknowns, and the observations that
-              would strengthen or weaken the assessment.
+              would strengthen or weaken the assessment. Dated updates cite
+              their own records; where the reviewed trail establishes no later
+              change, the register says so explicitly without rewriting the
+              original inquiry.
             </p>
             <div className="mt-6">
               <WhatToWatch entry={entry} />
