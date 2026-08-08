@@ -80,7 +80,7 @@ claim-safety posture from `handoff-navigator`.
 
 ## Architecture
 
-- Next.js 16.2, React 19, Tailwind CSS 4, TypeScript 6, XState 5, and Zod 4.
+- Next.js 16.3, React 19.2, Tailwind CSS 4, TypeScript 6, XState 5, and Zod 4.
 - Zod discriminated union for `article`, `video`, `audio`, `document`, `social`,
   `gallery`, `data`, and `original` dispatches.
 - XState owns real interaction state:
@@ -134,6 +134,12 @@ It runs formatting, ESLint, strict TypeScript, Jest/Testing Library coverage,
 and a production build. The same gate runs in GitHub Actions. Individual
 commands are also available as `npm run format:check`, `npm run lint`,
 `npm run typecheck`, `npm test`, and `npm run build`.
+
+Dependency changes must also pass `npm audit --omit=dev --audit-level=high` for
+the deployed graph and `npm audit --audit-level=high` for the complete toolchain.
+Next.js and `eslint-config-next` move together, React and React DOM stay on the
+same exact version, and transitive advisory fixes are resolved through a
+compatible lockfile refresh without forced major upgrades or audit exclusions.
 
 Current regression coverage includes catalog integrity, publication boundaries,
 reader/media/explorer/intake machines, Archive timelines and relationships,
