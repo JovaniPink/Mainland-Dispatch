@@ -40,11 +40,12 @@ describe("Open Models, Closed System Notebook registry", () => {
     expect(entry.turningPoints).toHaveLength(3);
     expect(entry.claimAudit).toHaveLength(10);
     expect(entry.watchItems).toHaveLength(6);
+    expect(entry.updatedAt).toBe("2026-08-08");
     expect(
       entry.watchItems.every(
         (item) =>
           item.updateState.state === "no-verified-change" &&
-          item.updateState.reviewedAt === "2026-07-28"
+          item.updateState.reviewedAt === "2026-08-08"
       )
     ).toBe(true);
     expect(new Set(entry.watchItems.map((item) => item.claimType))).toEqual(
@@ -58,6 +59,30 @@ describe("Open Models, Closed System Notebook registry", () => {
     expect(entry.sourceTrail).toHaveLength(13);
     expect(entry.editorialStatus).toBe("published");
     expect(entry.reviewState).toBe("source-reviewed");
+  });
+
+  it("advances every bounded review without inventing a verified change", () => {
+    expect(
+      entry.watchItems.map((item) => ({
+        id: item.id,
+        updateState: item.updateState,
+      }))
+    ).toEqual(
+      [
+        "promise-training",
+        "promise-centers",
+        "promise-mazu",
+        "promise-waico",
+        "promise-open-models",
+        "promise-security",
+      ].map((id) => ({
+        id,
+        updateState: {
+          state: "no-verified-change",
+          reviewedAt: "2026-08-08",
+        },
+      }))
+    );
   });
 
   it("publishes both inquiries and resolves the latest by slug", () => {
@@ -148,7 +173,6 @@ describe("Open Models, Closed System Notebook registry", () => {
 
   it("keeps later updates dated, sourced, and separate from the baseline", () => {
     const validUpdate = copyEntry();
-    validUpdate.updatedAt = "2026-07-29";
     (validUpdate.watchItems as Array<Record<string, unknown>>)[0].updateState =
       {
         state: "verified-change",
@@ -171,7 +195,7 @@ describe("Open Models, Closed System Notebook registry", () => {
       staleEntryDate.watchItems as Array<Record<string, unknown>>
     )[0].updateState = {
       state: "no-verified-change",
-      reviewedAt: "2026-07-29",
+      reviewedAt: "2026-08-09",
     };
     expect(() => NotebookEntrySchema.parse(staleEntryDate)).toThrow(
       /watch review date must not follow entry updatedAt/
