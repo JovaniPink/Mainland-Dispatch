@@ -106,7 +106,7 @@ describe("Open Models, Closed System Notebook", () => {
     render(<WhatToWatch entry={entry} />);
 
     expect(screen.getByText("No verified change")).toBeInTheDocument();
-    expect(screen.getByText("Reviewed 2026-07-28")).toBeInTheDocument();
+    expect(screen.getByText("Reviewed 2026-08-08")).toBeInTheDocument();
     expect(screen.getByText("Exact baseline")).toBeInTheDocument();
     expect(screen.getByText("Baseline supporting records")).toBeInTheDocument();
     expect(

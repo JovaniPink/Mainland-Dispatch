@@ -18,7 +18,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
   thesis:
     "China’s open-AI strategy is neither altruistic openness nor simple deception. It offers real technical and institutional goods through a politically controlled system; the decisive questions are where that openness ends, what dependencies it creates, and who governs the resulting order.",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   readTime: "18 min",
   tags: [
     "AI governance",
@@ -300,7 +300,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       ],
       updateState: {
         state: "no-verified-change",
-        reviewedAt: "2026-07-28",
+        reviewedAt: "2026-08-08",
       },
     },
     {
@@ -332,7 +332,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       ],
       updateState: {
         state: "no-verified-change",
-        reviewedAt: "2026-07-28",
+        reviewedAt: "2026-08-08",
       },
     },
     {
@@ -364,7 +364,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       ],
       updateState: {
         state: "no-verified-change",
-        reviewedAt: "2026-07-28",
+        reviewedAt: "2026-08-08",
       },
     },
     {
@@ -398,7 +398,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       ],
       updateState: {
         state: "no-verified-change",
-        reviewedAt: "2026-07-28",
+        reviewedAt: "2026-08-08",
       },
     },
     {
@@ -433,7 +433,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       ],
       updateState: {
         state: "no-verified-change",
-        reviewedAt: "2026-07-28",
+        reviewedAt: "2026-08-08",
       },
     },
     {
@@ -470,7 +470,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       ],
       updateState: {
         state: "no-verified-change",
-        reviewedAt: "2026-07-28",
+        reviewedAt: "2026-08-08",
       },
     },
   ],
@@ -742,7 +742,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
     "Where will China’s technological openness stop when it conflicts with Party control or strategic advantage? Who will govern the dependencies created before that boundary is reached?",
   limitations: [
     "No publisher transcript or chapter file was available when reviewed on July 28, 2026. Runtime was verified against the public page, RSS record, and media metadata; the three time ranges come from the commissioned editorial review and are not quoted verbatim.",
-    "The review stopped with the 13 source-trail records shown here on July 28, 2026. It did not audit private deliberations, every WAICO signatory, or future implementation.",
+    "The baseline review stopped with the 13 source-trail records shown here on July 28, 2026. A bounded review of authoritative records published or updated after that date found no verified change through August 8, 2026; it did not audit private deliberations, every WAICO signatory, or unpublished implementation.",
     "Noul relocation totals were still event reporting. They establish mobilization scale, not response effectiveness, climate causation, or supply-chain effects.",
     "Reported Chinese restrictions on overseas model access remained under consideration. The inquiry does not describe them as enacted policy.",
     "No sample Notebook content, Dispatch, or hidden motive was promoted to verified original reporting.",

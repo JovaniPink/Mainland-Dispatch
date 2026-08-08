@@ -118,11 +118,11 @@ delivery window, evidence status, what has happened, what remains unknown, and
 evidence that would strengthen or weaken the assessment. A selected record is
 URL state, not a new document. `?promise=` accepts only a registry ID.
 
-Each record also carries an explicit update state. At this ledger’s July 28
-stopping point, all six render `no-verified-change`: that state records the date
-of review but does not imply that nothing happened outside the bounded source
-trail. A later `verified-change` must be a dated, status-labeled update with its
-own source references. The schema rejects unknown sources, empty change sets,
+Each record also carries an explicit update state. The August 8 review advances
+all six to `no-verified-change`: that state records the date of review but does
+not imply that nothing happened outside the bounded review described below. A
+later `verified-change` must be a dated, status-labeled update with its own
+source references. The schema rejects unknown sources, empty change sets,
 updates before the baseline, updates after the review date, and review dates
 later than the entry revision date. Baseline and update links remain visibly
 separate in the public register.
@@ -133,9 +133,33 @@ incoming UTM parameters may remain in the address bar; canonical metadata
 always points to the query-free Notebook URL. Invalid promise values are
 removed while unrelated parameters remain.
 
+## August 8 bounded change review
+
+The follow-up considered only authoritative records published or updated after
+July 28, 2026 and available by August 8. The search covered the responsible
+Chinese government and meteorological bodies, the six named counterpart
+organizations, WAICO and U.N. institutional records, and official Chinese model
+developer release and model-card surfaces.
+
+| Record | Post-cutoff result | Update decision |
+| --- | --- | --- |
+| 5,000 training opportunities | A [July 29 Xinhua report](https://en.people.cn/n3/2026/0729/c90000-20482868.html) repeated the numerical pledge but supplied no named program, participant, curriculum, completion, or outcome record. | No verified change through August 8 |
+| Six cooperation-center relationships | No post-cutoff executed agreement, host, budget, staffing record, or delivered program was located from the Chinese government or the six named counterpart organizations. | No verified change through August 8 |
+| MAZU access in 30 countries | No eligible post-cutoff deployment inventory or independent country-level performance record was located from the China Meteorological Administration or World Meteorological Organization. A July 28 state-media feature was outside this review’s date boundary and was not promoted into a later update. | No verified change through August 8 |
+| WAICO governance | No post-cutoff complete agreement, membership rules, budget, operational secretariat record, or substantive governance output was located from WAICO, founding-government, or U.N. records. | No verified change through August 8 |
+| Open-model capability and licensing | Later activity on [Qwen’s official model registry](https://huggingface.co/Qwen/models) concerned model-card and usage support. It did not establish a new comparable frontier benchmark, license change, artifact-access change, or enacted overseas restriction. | No verified change through August 8 |
+| National-security restriction principle | No post-cutoff enacted Chinese restriction on overseas access to leading models, or official disposition of the reported proposal, was located. | No verified change through August 8 |
+
+This is a bounded absence-of-evidence finding, not a claim that no activity
+occurred. Sources dated July 28 or earlier remain part of the baseline and were
+not relabeled as later changes. Search-result snippets, commentary, proposed
+policy, repository documentation churn, and repeated announcements were not
+treated as delivery or implementation.
+
 ## Exact stopping point
 
-Review stopped on July 28, 2026 after the 13 displayed source stops. It did not:
+The baseline review stopped on July 28, 2026 after the 13 displayed source
+stops. The bounded change review stopped on August 8, 2026. It did not:
 
 - audit private Chinese or American policy deliberations;
 - verify delivery, operation, or later change across the six heterogeneous
