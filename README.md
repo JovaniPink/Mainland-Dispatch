@@ -127,19 +127,28 @@ npm run dev
 The complete quality gate is:
 
 ```bash
+npm run audit:production
+npm run audit:toolchain
 npm run test-all
 ```
 
-It runs formatting, ESLint, strict TypeScript, Jest/Testing Library coverage,
-and a production build. The same gate runs in GitHub Actions. Individual
-commands are also available as `npm run format:check`, `npm run lint`,
-`npm run typecheck`, `npm test`, and `npm run build`.
+It rejects high-severity advisories in both the deployed and complete dependency
+graphs, then runs formatting, ESLint, strict TypeScript, Jest/Testing Library
+coverage, and a production build. The same gates run in GitHub Actions.
+Individual commands remain available for formatting (`npm run format:check`),
+lint (`npm run lint`), types (`npm run typecheck`), tests (`npm test`), and the
+production build (`npm run build`).
 
-Dependency changes must also pass `npm audit --omit=dev --audit-level=high` for
-the deployed graph and `npm audit --audit-level=high` for the complete toolchain.
+Dependency changes must keep both audit scripts green. The production audit
+covers the deployed graph; the toolchain audit covers development and build
+dependencies as well.
 Next.js and `eslint-config-next` move together, React and React DOM stay on the
 same exact version, and transitive advisory fixes are resolved through a
 compatible lockfile refresh without forced major upgrades or audit exclusions.
+
+The hosted workflow pins third-party actions to immutable commits, grants only
+read access to repository contents, and cancels superseded runs for the same
+branch or pull request.
 
 Current regression coverage includes catalog integrity, publication boundaries,
 reader/media/explorer/intake machines, Archive timelines and relationships,

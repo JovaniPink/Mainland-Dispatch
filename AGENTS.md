@@ -15,15 +15,17 @@ verified reporting.
 
 ## Canonical commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Start local development with State Lab inspectors |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run strict TypeScript checks |
-| `npm test` | Run Jest and Testing Library tests |
-| `npm run build` | Build and validate the Next.js production artifact |
-| `npm run test-all` | Run the complete required quality gate |
-| `npm run format` | Format source files with Prettier |
+| Command                    | Purpose                                                          |
+| -------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`              | Start local development with State Lab inspectors                |
+| `npm run lint`             | Run ESLint                                                       |
+| `npm run typecheck`        | Run strict TypeScript checks                                     |
+| `npm test`                 | Run Jest and Testing Library tests                               |
+| `npm run audit:production` | Reject high-severity advisories in deployed dependencies         |
+| `npm run audit:toolchain`  | Reject high-severity advisories in the complete dependency graph |
+| `npm run build`            | Build and validate the Next.js production artifact               |
+| `npm run test-all`         | Run formatting, lint, types, tests, and the production build     |
+| `npm run format`           | Format source files with Prettier                                |
 
 ## Working rules
 
@@ -44,6 +46,7 @@ verified reporting.
 
 ## Quality gate
 
-Before finishing any change, run `npm run test-all`. For changes that affect
-layout, themes, media, Compare, Trace, or the Desk, also inspect the production
-build at desktop and mobile widths.
+Before finishing any change, run `npm run audit:production`,
+`npm run audit:toolchain`, and `npm run test-all`. For changes that affect layout,
+themes, media, Compare, Trace, or the Desk, also inspect the production build at
+desktop and mobile widths.
