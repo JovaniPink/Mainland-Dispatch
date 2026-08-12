@@ -80,7 +80,8 @@ claim-safety posture from `handoff-navigator`.
 
 ## Architecture
 
-- Next.js 16.3, React 19.2, Tailwind CSS 4, TypeScript 6, XState 5, and Zod 4.
+- Next.js 16.3, React 19.2, Tailwind CSS 4, a TypeScript 7 CLI with TypeScript 6
+  compiler-API compatibility, XState 5, and Zod 4.
 - Zod discriminated union for `article`, `video`, `audio`, `document`, `social`,
   `gallery`, `data`, and `original` dispatches.
 - XState owns real interaction state:
@@ -133,11 +134,25 @@ npm run test-all
 ```
 
 It rejects high-severity advisories in both the deployed and complete dependency
-graphs, then runs formatting, ESLint, strict TypeScript, Jest/Testing Library
-coverage, and a production build. The same gates run in GitHub Actions.
+graphs, then runs formatting, ESLint, the fail-closed compiler contract, strict
+checks with TypeScript 7 and TypeScript 6, Jest/Testing Library coverage, and a
+production build. The same gates run on Node 22 and Node 24 in GitHub Actions.
 Individual commands remain available for formatting (`npm run format:check`),
-lint (`npm run lint`), types (`npm run typecheck`), tests (`npm test`), and the
-production build (`npm run build`).
+lint (`npm run lint`), compiler validation (`npm run toolchain:check`), primary
+types (`npm run typecheck`), compatibility types (`npm run typecheck:compat`),
+tests (`npm test`), and the production build (`npm run build`).
+
+### TypeScript transition contract
+
+The repository follows Microsoft's
+[side-by-side TypeScript 7 transition guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-60).
+`@typescript/native` supplies the TypeScript 7 CLI used by the primary check,
+while the ordinary `typescript` package stays on the TypeScript 6 line for
+Next.js, ESLint, Jest, and other tools that still require the compiler API.
+Both commands use explicit package paths so npm binary-link ordering cannot
+silently select the wrong compiler. `npm run toolchain:check` verifies the
+package identities, major versions, and script contract before either typecheck
+runs.
 
 Dependency changes must keep both audit scripts green. The production audit
 covers the deployed graph; the toolchain audit covers development and build
@@ -145,6 +160,10 @@ dependencies as well.
 Next.js and `eslint-config-next` move together, React and React DOM stay on the
 same exact version, and transitive advisory fixes are resolved through a
 compatible lockfile refresh without forced major upgrades or audit exclusions.
+TypeScript major updates require compatibility review across the native CLI and
+compiler-API lines; a new major must not be merged merely because it installs.
+Renovate groups routine non-major updates, while every major waits for explicit
+Dependency Dashboard approval before opening a compatibility change.
 
 The hosted workflow pins third-party actions to immutable commits, grants only
 read access to repository contents, and cancels superseded runs for the same
@@ -181,7 +200,7 @@ limitations.
 article-intake batches, automated ingestion pipeline, generalized CMS or new
 top-level product area will be added. The existing 461-lead catalog is
 sufficient. Work is concentrated on publishing and testing one consequential
-Notebook entries and making their existing supporting Archive more legible. On
+Notebook entry and making its existing supporting Archive more legible. On
 July 28 the editor explicitly commissioned Notebook Two; this is documented as
 a “continue” decision without claiming the founding reader study occurred. The
 Archive refinement is not a second intake system: it visualizes only the
