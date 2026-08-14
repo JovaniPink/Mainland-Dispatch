@@ -1,26 +1,27 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** July 28, 2026
+**Current as of:** August 14, 2026
 **Public Dispatches:** 13 published or corrected records
 **Public Notebook entries:** 2 source-reviewed inquiries
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
-**Source-lead catalog:** 461 records
-**General-China article audit:** 384 external candidates — 355 withheld, 29
+**Source-lead catalog:** 481 records
+**General-China article audit:** 404 external candidates — 375 withheld, 29
 rejected, 0 drafted, 0 public
 
 ## Season Zero boundary
 
 [The Season Zero editorial
-contract](decisions/2026-07-23-season-zero.md) freezes additional source intake
-and product-surface expansion. The existing architecture remains available, but
-the public Notebook is the dominant reader journey. Publication is intentionally
-irregular, recurring editorial work is capped at 8–10 hours per entry, and each
-entry must earn the next one.
+contract](decisions/2026-07-23-season-zero.md) froze additional source intake
+and product-surface expansion. The [August 14 curated-intake
+decision](decisions/2026-08-14-curated-source-intake-resumption.md) narrowly
+reopened one manually reviewed quality-link batch. It did not authorize
+automatic scraping, recurring ingestion, public publication or a new product
+surface. The public Notebook remains the dominant reader journey.
 
 The existing `/archive` route is the connected public evidence surface. It
 offers filters, a source chronology and explicit relationship views over the 13
 published records. It may show the audited corpus totals below, but it never
-imports the 461 private leads into a public stream. Withheld and rejected
+imports the 481 private leads into a public stream. Withheld and rejected
 figures communicate editorial provenance, not endorsement.
 
 The founding inquiry is supported by the
@@ -44,6 +45,9 @@ was conducted.
   decision rule.
 - [Notebook Two commission](decisions/2026-07-28-notebook-two.md) records the
   explicit publication decision and its unchanged intake/product boundaries.
+- [Curated source-intake resumption](decisions/2026-08-14-curated-source-intake-resumption.md)
+  authorizes one bounded manual quality-link batch without changing the
+  publication gate.
 - [Publication methodology](publication-methodology.md) defines the
   article-to-Dispatch evidence gate, claim statuses, correction practice and
   search-publication boundary.
@@ -75,7 +79,8 @@ snapshots unless a factual correction is explicitly recorded.
 | Batch 11 | 28 | 28 | 0 | 0 |
 | Batch 12 | 29 | 26 | 3 | 0 |
 | Batch 13 | 30 | 28 | 2 | 0 |
-| **Total** | **384** | **355** | **29** | **0** |
+| Aug. 14 quality links | 20 | 20 | 0 | 0 |
+| **Total** | **404** | **375** | **29** | **0** |
 
 The remaining 77 catalog records comprise existing Dispatch canonical sources,
 supporting research, policy records, open-model intake and Atlas evidence
@@ -95,6 +100,7 @@ catalog entry or drafted mapping is not a publication count.
 - [Batch 11](source-notes/2026-07-22-china-article-corpus-batch-11-review.md)
 - [Batch 12](source-notes/2026-07-22-china-article-corpus-batch-12-review.md)
 - [Batch 13](source-notes/2026-07-22-china-article-corpus-batch-13-review.md)
+- [August 14 quality links](source-notes/2026-08-14-china-quality-links-review.md)
 
 Each record documents access state, disposition, exact stopping point and the
 checks required before an individual article may advance. These are review
@@ -116,4 +122,4 @@ ledgers, not public summaries.
 
 These files preserve what was known and counted at their recorded review time.
 Counts such as 44 or 56 describe those historical snapshots, not the current
-461-record catalog.
+481-record catalog.

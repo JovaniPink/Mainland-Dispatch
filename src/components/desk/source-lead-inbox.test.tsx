@@ -7,7 +7,7 @@ describe("SourceLeadInbox", () => {
     render(<SourceLeadInbox />);
 
     expect(
-      screen.getByText(/461 article-source candidates/)
+      screen.getByText(/481 article-source candidates/)
     ).toBeInTheDocument();
     expect(screen.getByText("2000s")).toBeInTheDocument();
     expect(screen.getByText("2010s")).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe("SourceLeadInbox", () => {
       { target: { value: "no-source-can-match-this" } }
     );
 
-    expect(screen.getByText("0 of 461 leads shown")).toBeInTheDocument();
+    expect(screen.getByText("0 of 481 leads shown")).toBeInTheDocument();
     expect(
       screen.getByText("No source leads match this editorial filter.")
     ).toBeInTheDocument();
