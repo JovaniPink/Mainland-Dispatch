@@ -1,0 +1,466 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { NotebookAudioFacade } from "@/components/notebook/notebook-audio-facade";
+import {
+  NotebookFormats,
+  NotebookProse,
+  NotebookSectionHeading,
+  NotebookSourceTrail,
+} from "@/components/notebook/notebook-components";
+import {
+  ChinaConcentrationBars,
+  DemographicProfiles,
+  PairedPowerMetrics,
+} from "@/components/notebook/power-balance-graphics";
+import { NotebookShare } from "@/components/notebook/notebook-share";
+import { NotebookStatus } from "@/components/notebook/notebook-status";
+import { JsonLd } from "@/components/seo/json-ld";
+import { evidenceStatusLabels } from "@/content/dossiers";
+import { dominanceIsADashboard as entry } from "@/content/notebook/dominance-is-a-dashboard";
+import { formatDate, site } from "@/content/site";
+import { absoluteUrl, pageMetadata } from "@/lib/seo";
+
+const pagePath = `/notebook/${entry.slug}`;
+const sectionLinks = [
+  ["why", "Why this question matters"],
+  ["verdict", "The short answer"],
+  ["dashboard", "Eight paired indicators"],
+  ["industry", "Industrial power"],
+  ["science", "Science and technology"],
+  ["leverage", "Military and money"],
+  ["demography", "Demographic constraints"],
+  ["timeline", "History of the balance"],
+  ["claim-audit", "Eight claim checks"],
+  ["source-trail", "Twenty-three source stops"],
+  ["changed", "What changed"],
+  ["question", "Unresolved question"],
+] as const;
+
+const articleMetadata = pageMetadata({
+  title: entry.title,
+  description: entry.description,
+  path: pagePath,
+});
+
+export const metadata: Metadata = {
+  ...articleMetadata,
+  openGraph: {
+    ...articleMetadata.openGraph,
+    type: "article",
+    publishedTime: `${entry.publishedAt}T00:00:00.000Z`,
+    modifiedTime: `${entry.updatedAt}T00:00:00.000Z`,
+    authors: [site.name],
+    tags: entry.tags,
+  },
+};
+
+export default function DominanceIsADashboardPage() {
+  return (
+    <article>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: entry.title,
+          description: entry.description,
+          datePublished: entry.publishedAt,
+          dateModified: entry.updatedAt,
+          mainEntityOfPage: absoluteUrl(pagePath),
+          url: absoluteUrl(pagePath),
+          author: {
+            "@type": "Organization",
+            name: site.name,
+            url: absoluteUrl("/"),
+          },
+          publisher: {
+            "@type": "Organization",
+            name: site.name,
+            url: absoluteUrl("/"),
+          },
+          about: entry.tags,
+          citation: [
+            ...entry.formats.map((format) => format.url),
+            ...entry.sourceTrail.flatMap((source) =>
+              source.links.map((link) => link.url)
+            ),
+          ],
+          inLanguage: "en-US",
+        }}
+      />
+
+      <header className="rise-in border-b border-rule px-4 py-10 sm:px-6 sm:py-14">
+        <div className="max-w-5xl">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">
+            Notebook · Inquiry 03
+          </p>
+          <h1 className="mt-4 max-w-5xl font-serif text-4xl leading-[1.05] sm:text-6xl">
+            {entry.title}
+          </h1>
+          <p className="mt-5 max-w-4xl font-serif text-xl italic leading-relaxed text-ink-muted sm:text-2xl">
+            {entry.subtitle}
+          </p>
+          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+            <span>{formatDate(entry.publishedAt)}</span>
+            <span aria-hidden>·</span>
+            <span>{entry.readTime}</span>
+            <span aria-hidden>·</span>
+            <span>Source-backed interpretation</span>
+          </div>
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Topics">
+            {entry.tags.map((tag) => (
+              <li
+                key={tag}
+                className="border border-rule px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6">
+            <NotebookShare
+              title={entry.title}
+              path={pagePath}
+              campaign={entry.slug}
+            />
+          </div>
+        </div>
+      </header>
+
+      <div className="grid gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[13rem_minmax(0,52rem)] lg:justify-between lg:gap-16">
+        <aside className="self-start lg:sticky lg:top-5">
+          <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+            In this inquiry
+          </p>
+          <nav aria-label="Notebook sections">
+            <ol className="mt-3 grid gap-2 border-l border-rule pl-3">
+              {sectionLinks.map(([id, label], index) => (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    className="font-serif text-sm leading-snug text-ink-muted hover:text-signal"
+                  >
+                    <span className="mr-2 font-mono text-[0.6rem] text-jade">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <div className="mt-6 border-l-2 border-signal bg-signal-soft/30 p-3">
+            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-signal">
+              Reading rule
+            </p>
+            <p className="mt-2 font-serif text-sm italic leading-relaxed">
+              Compare like with like. Do not add unlike forms of power into one
+              score.
+            </p>
+          </div>
+        </aside>
+
+        <div className="min-w-0">
+          <aside className="border-y border-rule bg-jade-soft/25 px-5 py-6">
+            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              Working thesis
+            </p>
+            <p className="mt-3 font-serif text-xl italic leading-relaxed">
+              {entry.thesis}
+            </p>
+          </aside>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="why" eyebrow="The initiating question">
+              Why this question matters
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.why} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="formats"
+              eyebrow="One interview · one feature · primary records"
+            >
+              Listen and read at the source
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookFormats formats={entry.formats} />
+            </div>
+            <div className="mt-4">
+              <NotebookAudioFacade
+                title={entry.formats[0].title}
+                audio={entry.audio}
+              />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="turning-points"
+              eyebrow="Publisher transcript map"
+            >
+              Four turns worth separating
+            </NotebookSectionHeading>
+            <p className="mt-5 text-sm leading-7 text-ink-muted">
+              NPR’s transcript does not publish chapter timecodes. These are
+              section locators, not invented timestamps; the audio remains the
+              controlling record.
+            </p>
+            <div className="mt-6 grid gap-4">
+              {entry.turningPoints.map((point, index) => (
+                <article
+                  key={point.id}
+                  className="border border-rule bg-paper-warm/25 p-5"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <span className="font-mono text-xs uppercase tracking-widest text-signal">
+                      {String(index + 1).padStart(2, "0")} · {point.timecode}
+                    </span>
+                    <NotebookStatus status={point.status} />
+                  </div>
+                  <h3 className="mt-4 font-serif text-xl leading-snug">
+                    {point.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7">
+                    <strong className="font-semibold">
+                      Interview argument:
+                    </strong>{" "}
+                    {point.argument}
+                  </p>
+                  <p className="mt-3 border-l-2 border-jade pl-3 text-sm leading-7 text-ink-muted">
+                    <strong className="font-semibold text-ink">
+                      Editorial reading:
+                    </strong>{" "}
+                    {point.reading}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="verdict" eyebrow="The short answer">
+              No single handoff, and no room for complacency
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.verdict} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="dashboard"
+              eyebrow="Scale, frontier capacity, force, and finance"
+            >
+              The power dashboard
+            </NotebookSectionHeading>
+            <p className="mt-5 text-sm leading-7 text-ink-muted">
+              Each card preserves one unit, one year, and one methodological
+              warning. Longer bars indicate only the larger value inside that
+              card. There is no weighting system and no overall score.
+            </p>
+            <div className="mt-7">
+              <PairedPowerMetrics metrics={entry.comparisons} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="industry" eyebrow="Material power">
+              The factory system is the strongest case
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.industry} />
+            </div>
+            <div className="mt-8 border-y border-rule bg-paper-warm/20 px-4 py-7 sm:px-6">
+              <ChinaConcentrationBars concentrations={entry.concentrations} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="science" eyebrow="Frontier capacity">
+              Science is becoming plural, not uniform
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.science} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="leverage"
+              eyebrow="Other forms of reach"
+            >
+              Military resources and monetary power
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.leverage} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="demography"
+              eyebrow="Constraint, response, and time"
+            >
+              Demography changes the problem; it does not solve it
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.demography} />
+            </div>
+            <div className="mt-8">
+              <DemographicProfiles profiles={entry.demographicProfiles} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="timeline"
+              eyebrow="1971–2026 · institutional history"
+            >
+              The balance was built, not inherited
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.history} />
+            </div>
+            <ol className="mt-8 grid gap-0 border-l-2 border-jade pl-5">
+              {entry.timeline.map((item) => (
+                <li
+                  key={`${item.date}-${item.label}`}
+                  className="relative pb-7"
+                >
+                  <span
+                    className="absolute -left-[1.62rem] top-1 h-3 w-3 rounded-full border-2 border-jade bg-paper"
+                    aria-hidden
+                  />
+                  <div className="flex flex-wrap items-center gap-3">
+                    <time className="font-mono text-xs uppercase tracking-widest text-signal">
+                      {item.date}
+                    </time>
+                    <NotebookStatus status={item.status} />
+                  </div>
+                  <h3 className="mt-2 font-serif text-xl leading-snug">
+                    {item.label}
+                  </h3>
+                  <p className="mt-2 text-sm leading-7 text-ink-muted">
+                    {item.explanation}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="claim-audit" eyebrow="Claim discipline">
+              What survives the source audit
+            </NotebookSectionHeading>
+            <p className="mt-5 text-sm leading-7 text-ink-muted">
+              A correction can preserve the direction of an argument while
+              rejecting its denominator, scope, or implied certainty. Excluded
+              claims do not enter the published conclusion or graphics.
+            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {entry.claimAudit.map((item) => (
+                <article
+                  key={item.id}
+                  className="flex min-w-0 flex-col border border-rule p-4"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                      {evidenceStatusLabels[item.status]}
+                    </span>
+                    <span className="border border-rule px-2 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-ink-muted">
+                      {item.decision}
+                    </span>
+                  </div>
+                  <h3 className="mt-3 font-serif text-lg leading-snug">
+                    {item.decision === "exclude"
+                      ? "Excluded overstatement"
+                      : item.claim}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-ink-muted">
+                    {item.assessment}
+                  </p>
+                  <p className="mt-auto pt-4 font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                    {item.sourceIds.length} displayed{" "}
+                    {item.sourceIds.length === 1 ? "source" : "sources"}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading
+              id="source-trail-heading"
+              eyebrow="Twenty-three bounded stops"
+            >
+              Source trail and review boundary
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookSourceTrail sources={entry.sourceTrail} />
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <NotebookSectionHeading id="changed" eyebrow="Synthesis">
+              What I understand differently now
+            </NotebookSectionHeading>
+            <div className="mt-6">
+              <NotebookProse paragraphs={entry.sections.changed} />
+            </div>
+          </section>
+
+          <section
+            id="question"
+            className="mt-12 scroll-mt-32 border-y border-rule bg-jade-soft/35 px-5 py-8"
+          >
+            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+              One unresolved question
+            </p>
+            <p className="mt-4 font-serif text-2xl italic leading-relaxed">
+              <span className="editorial-underline">
+                {entry.unresolvedQuestion}
+              </span>
+            </p>
+          </section>
+
+          <section className="mt-12">
+            <h2 className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+              Review limitations
+            </h2>
+            <ul className="mt-4 space-y-3 text-sm leading-6 text-ink-muted">
+              {entry.limitations.map((limitation) => (
+                <li key={limitation} className="flex gap-3">
+                  <span className="text-signal" aria-hidden>
+                    •
+                  </span>
+                  <span>{limitation}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <nav
+            aria-label="Continue reading"
+            className="mt-12 grid gap-3 border-t border-rule pt-6 sm:grid-cols-2"
+          >
+            <Link
+              href="/archive?view=relationships&inquiry=dominance-is-a-dashboard"
+              className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
+            >
+              Explore its source relationships
+            </Link>
+            <Link
+              href="/notebook/open-models-closed-system"
+              className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
+            >
+              Read Notebook Two
+            </Link>
+          </nav>
+        </div>
+      </div>
+    </article>
+  );
+}

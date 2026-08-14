@@ -85,12 +85,13 @@ describe("Open Models, Closed System Notebook registry", () => {
     );
   });
 
-  it("publishes both inquiries and resolves the latest by slug", () => {
+  it("publishes all inquiries and resolves this entry by slug", () => {
     expect(publishedNotebookEntries.map((item) => item.slug)).toEqual([
       "what-xi-jinping-wants",
       "open-models-closed-system",
+      "dominance-is-a-dashboard",
     ]);
-    expect(latestNotebookEntry.slug).toBe("open-models-closed-system");
+    expect(latestNotebookEntry.slug).toBe("dominance-is-a-dashboard");
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

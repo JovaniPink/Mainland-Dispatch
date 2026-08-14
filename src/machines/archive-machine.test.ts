@@ -43,7 +43,7 @@ describe("archiveMachine", () => {
         view: "cards",
         publisher: "all",
         year: "all",
-        inquirySlug: "open-models-closed-system",
+        inquirySlug: "dominance-is-a-dashboard",
       })
     );
   });

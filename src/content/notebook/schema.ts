@@ -151,6 +151,59 @@ const NotebookAudioSchema = z.object({
   transcriptAvailable: z.boolean(),
 });
 
+const NotebookComparisonMetricSchema = z.object({
+  id: nonEmpty.regex(/^metric-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  asOf: sourceDate,
+  unit: nonEmpty,
+  china: z.object({ display: nonEmpty, value: z.number().nonnegative() }),
+  unitedStates: z.object({
+    display: nonEmpty,
+    value: z.number().nonnegative(),
+  }),
+  reading: nonEmpty,
+  caveat: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookConcentrationMetricSchema = z.object({
+  id: nonEmpty.regex(/^concentration-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  display: nonEmpty,
+  value: z.number().min(0).max(100),
+  asOf: sourceDate,
+  reading: nonEmpty,
+  caveat: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookDemographicProfileSchema = z.object({
+  country: z.enum(["China", "United States"]),
+  asOf: sourceDate,
+  totalDisplay: nonEmpty,
+  annualChangeDisplay: nonEmpty,
+  migrationDisplay: nonEmpty.optional(),
+  ageBands: z
+    .array(
+      z.object({
+        label: nonEmpty,
+        display: nonEmpty,
+        value: z.number().min(0).max(100),
+      })
+    )
+    .length(3),
+  sourceIds: z.array(sourceId).min(1),
+  note: nonEmpty,
+});
+
+const NotebookPowerTimelineItemSchema = z.object({
+  date: sourceDate,
+  label: nonEmpty,
+  status: NotebookEvidenceStatusSchema,
+  explanation: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -200,10 +253,32 @@ const EvidenceWatchNotebookSchema = NotebookBaseSchema.extend({
   }),
 });
 
+const PowerBalanceNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("power-balance"),
+  thesis: nonEmpty,
+  audio: NotebookAudioSchema,
+  claimAudit: z.array(NotebookClaimAuditSchema).min(1),
+  comparisons: z.array(NotebookComparisonMetricSchema).min(6),
+  concentrations: z.array(NotebookConcentrationMetricSchema).min(4),
+  demographicProfiles: z.array(NotebookDemographicProfileSchema).length(2),
+  timeline: z.array(NotebookPowerTimelineItemSchema).min(6),
+  sections: z.object({
+    why: z.array(nonEmpty).min(1),
+    verdict: z.array(nonEmpty).min(1),
+    industry: z.array(nonEmpty).min(1),
+    science: z.array(nonEmpty).min(1),
+    leverage: z.array(nonEmpty).min(1),
+    demography: z.array(nonEmpty).min(1),
+    history: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+});
+
 export const NotebookEntrySchema = z
   .discriminatedUnion("variant", [
     ArgumentNotebookSchema,
     EvidenceWatchNotebookSchema,
+    PowerBalanceNotebookSchema,
   ])
   .superRefine((entry, ctx) => {
     if (entry.updatedAt < entry.publishedAt) {
@@ -254,7 +329,16 @@ export const NotebookEntrySchema = z
                 : []
             ),
           ]
-        : []),
+        : entry.variant === "power-balance"
+          ? [
+              entry.audio.sourceId,
+              ...entry.claimAudit.flatMap((item) => item.sourceIds),
+              ...entry.comparisons.flatMap((item) => item.sourceIds),
+              ...entry.concentrations.flatMap((item) => item.sourceIds),
+              ...entry.demographicProfiles.flatMap((item) => item.sourceIds),
+              ...entry.timeline.flatMap((item) => item.sourceIds),
+            ]
+          : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -331,6 +415,29 @@ export const NotebookEntrySchema = z
         });
       });
     }
+
+    if (entry.variant === "power-balance") {
+      checkUnique(
+        entry.claimAudit.map((item) => item.id),
+        ["claimAudit"],
+        "claim-audit IDs must be unique"
+      );
+      checkUnique(
+        entry.comparisons.map((item) => item.id),
+        ["comparisons"],
+        "comparison metric IDs must be unique"
+      );
+      checkUnique(
+        entry.concentrations.map((item) => item.id),
+        ["concentrations"],
+        "concentration metric IDs must be unique"
+      );
+      checkUnique(
+        entry.demographicProfiles.map((item) => item.country),
+        ["demographicProfiles"],
+        "demographic countries must be unique"
+      );
+    }
   });
 
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
@@ -341,6 +448,10 @@ export type ArgumentNotebookEntry = Extract<
 export type EvidenceWatchNotebookEntry = Extract<
   NotebookEntry,
   { variant: "evidence-watch" }
+>;
+export type PowerBalanceNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "power-balance" }
 >;
 export type NotebookEvidenceStatus = z.infer<
   typeof NotebookEvidenceStatusSchema
