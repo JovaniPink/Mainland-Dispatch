@@ -4,8 +4,10 @@ import manifest from "@/app/manifest";
 import { publishedDispatches } from "@/content/dispatches";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
+import { dominanceIsADashboard } from "@/content/notebook/dominance-is-a-dashboard";
 import { publishedNotebookEntries } from "@/content/notebook";
 import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
+import { metadata as notebookThreeMetadata } from "@/app/notebook/dominance-is-a-dashboard/page";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as atlasMetadata } from "@/app/atlas/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
@@ -56,6 +58,7 @@ describe("SEO publication contract", () => {
         urls.includes(`${siteUrl}/notebook/${entry.slug}`)
       )
     ).toBe(true);
+    expect(urls).toContain(`${siteUrl}/notebook/${dominanceIsADashboard.slug}`);
     expect(urls).toContain(`${siteUrl}/archive`);
     expect(urls).not.toContain(`${siteUrl}/atlas`);
     expect(urls.some((url) => url.includes("/atlas?"))).toBe(false);
@@ -80,6 +83,18 @@ describe("SEO publication contract", () => {
     });
     expect(JSON.stringify(notebookTwoMetadata)).not.toContain("utm_");
     expect(JSON.stringify(notebookTwoMetadata)).not.toContain("promise=");
+  });
+
+  it("publishes query-free article metadata for Notebook Three", () => {
+    expect(notebookThreeMetadata.alternates).toEqual({
+      canonical: `${siteUrl}/notebook/dominance-is-a-dashboard`,
+    });
+    expect(notebookThreeMetadata.openGraph).toMatchObject({
+      type: "article",
+      url: `${siteUrl}/notebook/dominance-is-a-dashboard`,
+      publishedTime: "2026-08-14T00:00:00.000Z",
+    });
+    expect(JSON.stringify(notebookThreeMetadata)).not.toContain("utm_");
   });
 
   it("publishes consistent crawler and application metadata", () => {

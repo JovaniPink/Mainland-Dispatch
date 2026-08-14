@@ -27,11 +27,13 @@ describe("ArchiveExplorer publication boundary and views", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Relationships" }));
     expect(
-      screen.getByRole("heading", { name: "Open Models, Closed System?" })
+      screen.getByRole("heading", {
+        name: "Dominance Is a Dashboard, Not a Crown",
+      })
     ).toBeInTheDocument();
     expect(screen.getByText(/notebook inquiry center/i)).toBeInTheDocument();
     expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
-      "open-models-closed-system"
+      "dominance-is-a-dashboard"
     );
 
     fireEvent.change(screen.getByLabelText("Notebook inquiry"), {

@@ -43,7 +43,7 @@ const initialContext: ArchiveContext = {
   year: "all",
   query: "",
   focusId: "",
-  inquirySlug: "open-models-closed-system",
+  inquirySlug: "dominance-is-a-dashboard",
 };
 
 export const archiveMachine = setup({

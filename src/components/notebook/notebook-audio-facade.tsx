@@ -1,7 +1,10 @@
 "use client";
 
 import { useMachine } from "@xstate/react";
-import type { EvidenceWatchNotebookEntry } from "@/content/notebook/schema";
+import type {
+  EvidenceWatchNotebookEntry,
+  PowerBalanceNotebookEntry,
+} from "@/content/notebook/schema";
 import { notebookAudioMachine } from "@/machines/notebook-audio-machine";
 
 export function NotebookAudioFacade({
@@ -9,7 +12,8 @@ export function NotebookAudioFacade({
   audio,
 }: {
   title: string;
-  audio: EvidenceWatchNotebookEntry["audio"];
+  audio:
+    EvidenceWatchNotebookEntry["audio"] | PowerBalanceNotebookEntry["audio"];
 }) {
   const [state, send] = useMachine(notebookAudioMachine);
   const loadAudio = state.matches("loading") || state.matches("playing");
@@ -65,7 +69,8 @@ export function NotebookAudioFacade({
             </p>
             <p className="max-w-xl text-sm leading-6 text-[#c9cec9]">
               The source page and the full written evidence trail remain
-              available. Retrying will make another request to Simplecast.
+              available. Retrying will make another request to {audio.publisher}
+              .
             </p>
             <div className="flex flex-wrap gap-3">
               <button
@@ -101,14 +106,17 @@ export function NotebookAudioFacade({
               {title}
             </span>
             <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[#c9cec9]">
-              {audio.publisher} · {audio.duration} · No publisher transcript
-              available when reviewed July 28, 2026
+              {audio.publisher} · {audio.duration} ·{" "}
+              {audio.transcriptAvailable
+                ? "Publisher transcript available"
+                : "No publisher transcript available when reviewed July 28, 2026"}
             </span>
             <span className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest">
               Load external audio
             </span>
             <span className="max-w-xl text-xs leading-5 text-[#c9cec9]">
-              No Simplecast audio request is made until you choose to load it.
+              No {audio.publisher} audio request is made until you choose to
+              load it.
             </span>
           </button>
         )}

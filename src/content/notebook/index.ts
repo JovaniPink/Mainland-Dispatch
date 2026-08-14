@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
+import { dominanceIsADashboard } from "@/content/notebook/dominance-is-a-dashboard";
 import {
   NotebookEntrySchema,
   type NotebookEntry,
@@ -39,6 +40,7 @@ export function parseNotebookRegistry(value: unknown): NotebookEntry[] {
 export const notebookEntries = parseNotebookRegistry([
   whatXiJinpingWants,
   openModelsClosedSystem,
+  dominanceIsADashboard,
 ]).sort((a, b) => a.ordinal - b.ordinal);
 
 export const publishedNotebookEntries = notebookEntries.filter(
