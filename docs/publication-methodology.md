@@ -86,11 +86,14 @@ or Dossier material when it improves comprehension; it must not expose local
 Atlas fixtures or create separate products merely to display the same inquiry.
 
 Season Zero publication is intentionally irregular. Recurring research,
-verification, writing and editing are capped at 8–10 hours per entry. No
-additional article-intake batches, automated transcript ingestion, generalized
-CMS or new top-level product area may be added. On July 28 the editor explicitly
-commissioned Notebook Two; that is a “continue” instruction, not evidence that
-the founding reader study was conducted. See the
+verification, writing and editing are capped at 8–10 hours per entry. Automated
+transcript ingestion, generalized CMS work and new top-level product areas
+remain out of scope. On August 14 the editor narrowly reopened one manually
+curated quality-link intake without authorizing recurring ingestion or public
+promotion. See the [curated-intake
+decision](decisions/2026-08-14-curated-source-intake-resumption.md). On July 28
+the editor explicitly commissioned Notebook Two; that is a “continue”
+instruction, not evidence that the founding reader study was conducted. See the
 [Notebook Two decision note](decisions/2026-07-28-notebook-two.md).
 
 ## Evidence status vocabulary
@@ -123,8 +126,9 @@ annotated translation of Liang Wenfeng's 2024 interview. Kimi K3 appears in the
 chronology and Dossier only as a sourced July 20 announcement with a July 27
 verification gate; its review-stage Dispatch remains outside public routes.
 
-The wider source-lead catalog currently contains 461 records. The thirteen
-general-China article batches account for 384 external candidates: 355 are
+The wider source-lead catalog currently contains 481 records. The thirteen
+general-China article batches plus the August 14 quality-link intake account for
+404 external candidates: 375 are
 withheld and 29 rejected. None is drafted or public. These figures describe
 editorial intake, not the size of the public archive.
 
