@@ -408,3 +408,71 @@ create a separate claim registry, replace or explicitly attribute every
 analysis-only statement, record retrieval dates, verify each outbound URL, and
 pass the repository's publication and quality gates. New evidence must be
 appended with its own date and must not silently overwrite this snapshot.
+
+## Expanded Notebook intake · 2026-08-18
+
+The second submitted draft was audited as a proposed public Notebook, not as a
+replacement for this ledger. The public artifact created from it uses only the
+claims and comparisons below; the remainder stays withheld or visibly
+qualified.
+
+### Additions admitted to the Notebook
+
+- EIA's quarterly series records an estimated 14.6 million b/d through Hormuz
+  in the first quarter of 2026, against quarterly 2025 estimates between 20.2
+  and 20.7 million b/d. The artifact does not transform that series into a
+  claim of complete closure.
+- EIA estimates China's combined government and commercial crude inventory at
+  1.541 billion barrels at the end of the first quarter of 2026, up from 1.397
+  billion barrels in the prior quarter. Both figures remain estimates because
+  China does not publish a complete inventory series.
+- UN Trade and Development estimates that 22% of global seaborne container
+  trade passed through the Suez Canal in 2023. This replaces the draft's
+  unsupported 30% Asia–Europe formulation.
+- The Centre for High North Logistics distinguishes about 3.2 million tonnes
+  of NSR transit cargo in 2025 from Rosatom's 37.89-million-tonne total NSR
+  cargo figure for 2024. The difference in scope is part of the published
+  comparison.
+- CHNL reports 15 container-ship transit voyages in 2025, up from 11 in 2024.
+  The submitted 23-from-15 series was not reproduced and is excluded.
+- NSIDC records the March 15, 2026 Arctic sea-ice maximum at 14.29 million
+  square kilometres, statistically tied with 2025 for the lowest maximum in
+  the satellite record. NSIDC also warns that the winter maximum does not
+  predict the September minimum.
+- Lloyd's List reporting places two COSCO-operated VLCC transits on July 23–24
+  before its July 27 report that Chinese state shipping groups pulled VLCCs
+  from the Red Sea. This chronology narrows the apparent conflict with Reuters'
+  "since late July" framing; it does not prove a group-wide rule for every
+  chartered vessel.
+
+### Corrections and exclusions added after the expanded draft
+
+- The two Bellona counts of 100 are different datasets: 100 non-Russian-flagged
+  vessels permitted in 2024, and 100 sanctioned or shadow vessels that Bellona
+  identified operating in 2025. They may not be substituted for each other.
+- The draft's specific two-million-dollar Hormuz toll remains unverified in the
+  reviewed record. AP supports the prospect of fees after the June agreement,
+  not that exact price as an established systemwide rate.
+- The official record reviewed here authorized Rosatom to negotiate and sign an
+  NSR memorandum with India in July 2026; it did not substantiate the draft's
+  statement that an August memorandum had already been signed.
+- The submitted claim that PRC companies supplied 2,000 tonnes of sodium
+  perchlorate, enough for 500 missiles, was not reproduced in a reviewed
+  committee record and is excluded. Treasury's November 12, 2025 designation
+  supports the narrower claim that named networks procured hundreds of metric
+  tonnes of specified missile-propellant ingredients from China for PCI.
+- Allianz's 2026 review supports the existence and risk significance of the
+  first 2025 China–Europe container transit, but the submitted 23-voyage count
+  was not located in the reviewed Allianz record. CHNL's 15-voyage series is
+  used instead.
+- Sea Legend's eight-sailing 2026 program remains an announced schedule. No
+  sentence in the Notebook describes all eight sailings as completed.
+
+### Publication boundary
+
+The resulting Notebook is source-reviewed interpretation, not a promotion of
+the submitted draft to verified reporting. Schematic map lines show corridor
+logic between source-backed places; they are not AIS tracks, navigation advice,
+or a claim that a named vessel followed the displayed geometry. Reuters'
+600,000 b/d STS estimate, vessel counts, routing guidance, and freight margins
+remain explicitly attributed to Reuters and its unnamed trade sources.

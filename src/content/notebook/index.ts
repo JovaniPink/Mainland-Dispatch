@@ -6,6 +6,7 @@ import {
   type NotebookEntry,
 } from "@/content/notebook/schema";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
+import { routingAroundRisk } from "@/content/notebook/routing-around-risk";
 
 const NotebookRegistrySchema = z
   .array(NotebookEntrySchema)
@@ -41,6 +42,7 @@ export const notebookEntries = parseNotebookRegistry([
   whatXiJinpingWants,
   openModelsClosedSystem,
   dominanceIsADashboard,
+  routingAroundRisk,
 ]).sort((a, b) => a.ordinal - b.ordinal);
 
 export const publishedNotebookEntries = notebookEntries.filter(
