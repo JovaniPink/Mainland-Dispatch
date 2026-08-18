@@ -1,8 +1,8 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** August 14, 2026
+**Current as of:** August 18, 2026
 **Public Dispatches:** 13 published or corrected records
-**Public Notebook entries:** 3 source-reviewed inquiries
+**Public Notebook entries:** 4 source-reviewed inquiries
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
 **Source-lead catalog:** 481 records
 **General-China article audit:** 404 external candidates — 375 withheld, 29
@@ -45,6 +45,14 @@ ledger](source-notes/2026-08-14-dominance-is-a-dashboard-ledger.md). The
 non-additive power dashboard, source hierarchy, excluded claims, and revision
 boundary.
 
+The fourth inquiry is supported by the
+[“Routing Around Risk” source
+ledger](source-notes/2026-08-18-strategic-rebalancing-research-ledger.md). The
+[August 18 commission](decisions/2026-08-18-notebook-four.md) defines its
+maritime-risk schema, click-to-load map, non-additive scale rule, claim-audit
+boundary, and distinction between source-reviewed interpretation and verified
+reporting.
+
 ## Governing documents
 
 - [Season Zero editorial contract](decisions/2026-07-23-season-zero.md) defines
@@ -54,6 +62,9 @@ boundary.
   explicit publication decision and its unchanged intake/product boundaries.
 - [Notebook Three commission](decisions/2026-08-14-notebook-three.md) records
   the power-dashboard method, publication decision, and source-review boundary.
+- [Notebook Four commission](decisions/2026-08-18-notebook-four.md) records the
+  chokepoint-portfolio method, interactive map boundary, and publication
+  decision.
 - [Curated source-intake resumption](decisions/2026-08-14-curated-source-intake-resumption.md)
   authorizes one bounded manual quality-link batch without changing the
   publication gate.
