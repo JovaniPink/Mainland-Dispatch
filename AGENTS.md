@@ -56,3 +56,20 @@ Before finishing any change, run `npm run audit:production`,
 closed unless the expected TypeScript majors and both compiler checks pass. For
 changes that affect layout, themes, media, Compare, Trace, or the Desk, also
 inspect the production build at desktop and mobile widths.
+
+## Publication safety
+
+- Inspect the staged diff and every commit being pushed. Do not publish credentials, private
+  data, unapproved source artifacts, or private workstation and user identifiers.
+- Use synthetic fixtures for public examples. Automated secret scanning is a backstop, not proof;
+  rotate or revoke an exposed credential before attempting history cleanup.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
