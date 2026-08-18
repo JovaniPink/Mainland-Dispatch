@@ -32,9 +32,10 @@ claim-safety posture from `handoff-navigator`.
   personal motivation, a faithful reconstruction of an argument, timecoded
   turning points, claim labels, pushback, institutional context, a short source
   trail and one unresolved question.
-  The newest entry, “Open Models, Closed System?,” adds a source-audited claim
-  review and six-record “What to Watch” evidence register while the founding Rudd inquiry
-  remains public.
+  The newest entry, “Dominance Is a Dashboard, Not a Crown,” separates
+  US–China power into non-additive industrial, economic, research, military,
+  currency, and demographic measures. “Open Models, Closed System?” and the
+  founding Rudd inquiry remain public as the first two entries.
 - **Source Archive** — an interactive public evidence surface with faceted
   search, chronological and relationship views, reviewed source metadata,
   classified claims, explicit limitations and shareable URL state. It exposes
@@ -196,24 +197,24 @@ catalog distinguishes supplied article URLs from publisher-verified canonical
 URLs and retains reviewed supporting records, explicit claim statuses, and
 limitations.
 
-**Season Zero intake freeze:** effective July 23, 2026, no additional
-article-intake batches, automated ingestion pipeline, generalized CMS or new
-top-level product area will be added. The existing 461-lead catalog is
-sufficient. Work is concentrated on publishing and testing one consequential
-Notebook entry and making its existing supporting Archive more legible. On
-July 28 the editor explicitly commissioned Notebook Two; this is documented as
-a “continue” decision without claiming the founding reader study occurred. The
-Archive refinement is not a second intake system: it visualizes only the
-reviewed public boundary. The full decision is recorded in
-[`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md)
+**Season Zero intake boundary:** the July 23 contract froze additional article
+intake, automated ingestion, generalized CMS work and new top-level product
+areas. On August 14 the editor narrowly reopened one manually curated
+quality-link batch from the supplied HN Algolia discovery query. The change does
+not authorize recurring scraping, public promotion or a second intake system.
+The Archive still visualizes only the reviewed public boundary. The governing
+decisions are recorded in
+[`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md),
+[`docs/decisions/2026-07-28-notebook-two.md`](docs/decisions/2026-07-28-notebook-two.md),
+[`docs/decisions/2026-08-14-notebook-three.md`](docs/decisions/2026-08-14-notebook-three.md),
 and
-[`docs/decisions/2026-07-28-notebook-two.md`](docs/decisions/2026-07-28-notebook-two.md).
+[`docs/decisions/2026-08-14-curated-source-intake-resumption.md`](docs/decisions/2026-08-14-curated-source-intake-resumption.md).
 
 The current documentation map, governing-methodology precedence, and catalog
 rollup are maintained in [`docs/README.md`](docs/README.md). The source-lead
-catalog contains 461 records. The thirteen general-China intake batches cover
-384 external article candidates: 355 withheld, 29 rejected, and none drafted or
-public.
+catalog contains 481 records. The thirteen general-China intake batches plus the
+August 14 quality-link intake cover 404 external article candidates: 375
+withheld, 29 rejected, and none drafted or public.
 
 Topic-specific intake logs record source quality, exclusions, open checks, and
 the exact research stopping point. They are dated snapshots, so earlier totals
@@ -279,6 +280,11 @@ The thirteenth supplied group adds 30 distinct infrastructure, trade, protest,
 media, space, sports, daily-life, maritime, technology, and legal candidates,
 with two documented rejections in
 [`docs/source-notes/2026-07-22-china-article-corpus-batch-13-review.md`](docs/source-notes/2026-07-22-china-article-corpus-batch-13-review.md).
+The August 14 quality-link intake records the exact HN Algolia query boundary,
+de-duplicates repeated publisher URLs, excludes discussion-only and weak or
+off-topic results, and adds 20 original-publisher leads without creating any
+public mapping in
+[`docs/source-notes/2026-08-14-china-quality-links-review.md`](docs/source-notes/2026-08-14-china-quality-links-review.md).
 The founding Notebook’s verified formats, corrected timecodes, claim
 classifications, source trail, access limitations and exact research stopping
 point are recorded in
@@ -286,3 +292,7 @@ point are recorded in
 Notebook Two’s audio boundary, 13 source stops, claim decisions, promise
 baselines, excluded assertions, and exact July 28 stopping point are recorded in
 [`docs/source-notes/2026-07-28-open-models-closed-system-ledger.md`](docs/source-notes/2026-07-28-open-models-closed-system-ledger.md).
+Notebook Three’s NPR audio boundary, 23 source stops, indicator methods,
+excluded composite-ranking claims, demographic derivation, and exact August 14
+stopping point are recorded in
+[`docs/source-notes/2026-08-14-dominance-is-a-dashboard-ledger.md`](docs/source-notes/2026-08-14-dominance-is-a-dashboard-ledger.md).
