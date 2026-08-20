@@ -18,7 +18,7 @@ export const routingAroundRisk = parseNotebookEntry({
   thesis:
     "China is not escaping maritime chokepoints. It is distributing exposure across estimated oil inventories, pipeline capacity, offshore cargo handoffs, state-linked shipping, supplier diversity, and an announced seasonal Arctic container service. Those measures buy time and relocate risk; none replaces the energy function of Hormuz or the container scale of Suez.",
   publishedAt: "2026-08-18",
-  updatedAt: "2026-08-18",
+  updatedAt: "2026-08-20",
   readTime: "26 min",
   tags: [
     "China",
@@ -166,7 +166,7 @@ export const routingAroundRisk = parseNotebookEntry({
       status: "reported",
       decision: "qualify",
       assessment:
-        "Reuters reports the estimate from Vortexa data and unnamed trade sources. The public sources reviewed here do not independently reproduce the series, vessel count, company schedule, or roughly $110,000-per-day margin.",
+        "Reuters reports the estimate from Kpler data and unnamed trade sources. The public sources reviewed here do not independently reproduce the series, vessel count, company schedule, or roughly $110,000-per-day margin.",
       sourceIds: ["notebook-source-risk-reuters-tankers"],
     },
     {
@@ -189,9 +189,10 @@ export const routingAroundRisk = parseNotebookEntry({
       status: "corrected",
       decision: "qualify",
       assessment:
-        "The reviewed schedule announces eight weekly departures from mid-August to early October 2026 using seven ships. That is a seasonal program, not evidence that all sailings were completed or that the route is year-round.",
+        "The reviewed schedule lists eight weekly departures from mid-August to early October 2026 using seven ships. On August 11, the operator told Global Times that the opening August 15 departure was being adjusted for weather. No later original-publisher record reviewed here confirms that sailing departed, and the schedule does not establish a year-round service.",
       sourceIds: [
         "notebook-source-risk-sea-legend",
+        "notebook-source-risk-global-times-sea-legend",
         "notebook-source-risk-aljazeera",
         "notebook-source-risk-guardian",
       ],
@@ -203,9 +204,9 @@ export const routingAroundRisk = parseNotebookEntry({
       status: "corrected",
       decision: "exclude",
       assessment:
-        "Rosatom reports 37.89 million tonnes of total NSR cargo in 2024, while CHNL reports only about 3.2 million tonnes of transit cargo in 2025. Domestic and destination traffic cannot be presented as through-transit.",
+        "Rosatom reports 37.02 million tonnes of total NSR cargo in 2025, while CHNL reports only about 3.2 million tonnes of transit cargo for the same year. Domestic and destination traffic cannot be presented as through-transit.",
       sourceIds: [
-        "notebook-source-risk-rosatom-2024",
+        "notebook-source-risk-rosatom-2025",
         "notebook-source-risk-chnl-2025",
       ],
     },
@@ -238,7 +239,7 @@ export const routingAroundRisk = parseNotebookEntry({
       status: "corrected",
       decision: "qualify",
       assessment:
-        "EIA estimates 1.541 billion barrels in combined government and commercial crude stocks. China does not publish a complete series, so the number is neither exact nor a measure of the government reserve alone.",
+        "EIA estimates 1.541 billion barrels in combined government and commercial crude stocks for the end of the first quarter of 2026, then 1.492 billion at the end of the second quarter. China does not publish a complete series, so neither number is exact nor a measure of the government reserve alone.",
       sourceIds: ["notebook-source-risk-eia-security"],
     },
     {
@@ -281,11 +282,11 @@ export const routingAroundRisk = parseNotebookEntry({
     {
       id: "scale-risk-inventory",
       label: "Estimated China crude stocks",
-      display: "1.541 billion",
+      display: "1.492 billion",
       unit: "barrels in storage",
-      asOf: "2026-03",
+      asOf: "2026-06",
       reading:
-        "EIA's estimate combines government and commercial inventories and shows the depth of the land-based buffer.",
+        "EIA's latest quarterly estimate combines government and commercial inventories and shows the depth of the land-based buffer after a first-quarter peak of 1.541 billion barrels.",
       caveat:
         "This is an estimated stock, not a flow and not China's disclosed government SPR alone.",
       sourceIds: ["notebook-source-risk-eia-security"],
@@ -317,26 +318,29 @@ export const routingAroundRisk = parseNotebookEntry({
     {
       id: "scale-risk-nsr-total",
       label: "Total NSR cargo",
-      display: "37.89 million",
+      display: "37.02 million",
       unit: "tonnes handled on the route",
-      asOf: "2024",
+      asOf: "2025",
       reading:
         "Rosatom's total includes destination and domestic traffic as well as transit.",
       caveat:
-        "It uses a different year and scope from CHNL's transit figure. It must not be relabelled as international through-cargo.",
-      sourceIds: ["notebook-source-risk-rosatom-2024"],
+        "It uses the same year but a broader scope than CHNL's transit figure. It must not be relabelled as international through-cargo.",
+      sourceIds: ["notebook-source-risk-rosatom-2025"],
     },
     {
       id: "scale-risk-sea-legend",
       label: "Sea Legend 2026 program",
-      display: "8 announced",
+      display: "8 scheduled",
       unit: "seasonal container sailings",
-      asOf: "2026-08-18",
+      asOf: "2026-08-20",
       reading:
-        "The operator-derived schedule runs from mid-August to early October and uses seven small-to-mid-sized ships.",
+        "The operator-derived schedule runs from mid-August to early October and uses seven small-to-mid-sized ships; the operator said weather affected the opening departure.",
       caveat:
-        "Announced departures are not completed voyages, and containers do not replace Gulf crude or LNG.",
-      sourceIds: ["notebook-source-risk-sea-legend"],
+        "Scheduled departures are not completed voyages, and containers do not replace Gulf crude or LNG.",
+      sourceIds: [
+        "notebook-source-risk-sea-legend",
+        "notebook-source-risk-global-times-sea-legend",
+      ],
     },
   ],
   routes: [
@@ -427,7 +431,7 @@ export const routingAroundRisk = parseNotebookEntry({
       category: "pipeline",
       status: "official-position",
       scale: "About 5 million b/d stated export capacity",
-      asOf: "2026-07",
+      asOf: "2026-06",
       reading:
         "The pipeline carries crude from eastern Saudi Arabia to Yanbu on the Red Sea.",
       caveat:
@@ -460,7 +464,7 @@ export const routingAroundRisk = parseNotebookEntry({
       category: "pipeline",
       status: "official-position",
       scale: "About 1.8 million b/d stated capacity",
-      asOf: "2026-07",
+      asOf: "2026-06",
       reading:
         "The Habshan–Fujairah link bypasses Hormuz for part of the UAE's crude exports.",
       caveat:
@@ -527,16 +531,16 @@ export const routingAroundRisk = parseNotebookEntry({
     },
     {
       id: "route-risk-arctic",
-      label: "Announced Arctic container hedge",
+      label: "Scheduled Arctic container hedge",
       lens: "arctic",
       category: "container",
       status: "official-position",
-      scale: "Eight announced sailings, August–October 2026",
-      asOf: "2026-08-18",
+      scale: "Eight scheduled sailings; opening departure weather-adjusted",
+      asOf: "2026-08-20",
       reading:
         "Sea Legend markets a seasonal Ningbo–Felixstowe service along Russia's Northern Sea Route.",
       caveat:
-        "This schematic is not a voyage track. The schedule is operator-derived and no line implies completed passage, ice condition, escort, or cargo.",
+        "This schematic is not a voyage track. The schedule is operator-derived; the reviewed record does not confirm the opening sailing departed, and no line implies completed passage, ice condition, escort, or cargo.",
       path: [
         [121.55, 29.87],
         [145, 44],
@@ -553,9 +557,12 @@ export const routingAroundRisk = parseNotebookEntry({
           id: "point-risk-ningbo",
           label: "Ningbo–Zhoushan",
           coordinates: [121.55, 29.87],
-          role: "Announced service origin",
-          note: "Industry coverage identifies Ningbo–Zhoushan as the aggregation and departure port for the 2026 program.",
-          sourceIds: ["notebook-source-risk-sea-legend"],
+          role: "Scheduled service origin",
+          note: "The operator-derived schedule identifies Ningbo–Zhoushan as the origin, while an August 11 operator update says weather was changing the opening departure sequence.",
+          sourceIds: [
+            "notebook-source-risk-sea-legend",
+            "notebook-source-risk-global-times-sea-legend",
+          ],
         },
         {
           id: "point-risk-bering",
@@ -576,6 +583,7 @@ export const routingAroundRisk = parseNotebookEntry({
       ],
       sourceIds: [
         "notebook-source-risk-sea-legend",
+        "notebook-source-risk-global-times-sea-legend",
         "notebook-source-risk-nsidc-passage",
         "notebook-source-risk-chnl-2025",
       ],
@@ -646,7 +654,7 @@ export const routingAroundRisk = parseNotebookEntry({
       label: "Military action sharply constricts Hormuz",
       status: "observed",
       explanation:
-        "EIA's quarterly estimate falls to 14.6 million b/d in the first quarter of 2026, while its market report describes a de facto closure after the strikes began.",
+        "EIA estimates 14.9 million b/d in the first quarter of 2026 and 4.9 million b/d in the second, while its market report describes a de facto closure after the strikes began.",
       sourceIds: [
         "notebook-source-risk-eia-security",
         "notebook-source-risk-eia-chokepoints",
@@ -661,12 +669,15 @@ export const routingAroundRisk = parseNotebookEntry({
       sourceIds: ["notebook-source-risk-lloyds-red-sea"],
     },
     {
-      date: "2026-08",
-      label: "Sea Legend announces an eight-sailing Arctic season",
+      date: "2026-08-11",
+      label: "Sea Legend adjusts its opening Arctic sailing",
       status: "official-position",
       explanation:
-        "The schedule is evidence of commercial experimentation, not yet proof of a delivered weekly service or a new Suez-scale corridor.",
-      sourceIds: ["notebook-source-risk-sea-legend"],
+        "The operator told Global Times that weather was changing the opening August 15 departure. The eight-sailing schedule remains evidence of commercial experimentation, not proof of a delivered weekly service or a new Suez-scale corridor.",
+      sourceIds: [
+        "notebook-source-risk-sea-legend",
+        "notebook-source-risk-global-times-sea-legend",
+      ],
     },
   ],
   sections: {
@@ -679,17 +690,17 @@ export const routingAroundRisk = parseNotebookEntry({
       "Each move also creates a dependency. Stocks run down. Pipelines have capacity and outlet constraints. Ship-to-ship transfers add handoffs, price, and counterparties. Passage carve-outs can change. The Northern Sea Route is administered by Russia, exposed to sanctions and insurance limits, and bounded by ice and a short operating season. Portfolio resilience is real; independence is not.",
     ],
     chokepoints: [
-      "EIA reports 20.9 million barrels per day of crude, condensate, and petroleum products through Hormuz in the first half of 2025. IEA's full-year measure is 19.87 million b/d and about a quarter of world seaborne oil trade. The small numerical difference is a period difference, not a contradiction. EIA also places first-quarter 2026 flow at 14.6 million b/d: severe constriction, but not zero.",
+      "EIA reports 20.9 million barrels per day of crude, condensate, and petroleum products through Hormuz in the first half of 2025. IEA's full-year measure is 19.87 million b/d and about a quarter of world seaborne oil trade. The small numerical difference is a period difference, not a contradiction. EIA's current quarterly series places flow at 14.9 million b/d in the first quarter of 2026 and 4.9 million b/d in the second: severe constriction, but not zero.",
       "The Red Sea baseline needs its own unit. UN Trade and Development estimates 22% of global seaborne container trade passed through Suez in 2023. That figure cannot be added to Hormuz oil. It establishes why ship operators care about a route that avoids Bab el-Mandeb and Suez even when it does nothing for Gulf energy supply.",
     ],
     portfolio: [
-      "The land buffer leads the hierarchy. EIA estimates China's government and commercial crude stocks at 1.541 billion barrels at the end of the first quarter of 2026, up from 1.397 billion one quarter earlier. Because China does not publish complete inventory data, those are estimates. They still show why Beijing can tolerate a temporary fall in imports better than a country operating close to just-in-time supply.",
-      "The next layer is physical bypass. IEA estimates 3.5–5.5 million b/d of available pipeline capacity around Hormuz. EIA's July 2026 update describes about 5 million b/d of Saudi export capacity toward Yanbu and 1.8 million b/d on the UAE line to Fujairah. The wider 6.8-million number is stated export capacity, not guaranteed available flow. Both are small beside the prewar strait baseline.",
+      "The land buffer leads the hierarchy. EIA estimates China's government and commercial crude stocks at 1.397 billion barrels at the end of 2025, 1.541 billion at the end of the first quarter of 2026, and 1.492 billion at the end of the second. Because China does not publish complete inventory data, those are estimates. They still show why Beijing can tolerate a temporary fall in imports better than a country operating close to just-in-time supply.",
+      "The next layer is physical bypass. IEA estimates 3.5–5.5 million b/d of available pipeline capacity around Hormuz. EIA's June 2026 update describes about 5 million b/d of Saudi export capacity toward Yanbu and 1.8 million b/d on the UAE line to Fujairah. The wider 6.8-million number is stated export capacity, not guaranteed available flow. Both are small beside the prewar strait baseline.",
       "Reuters' August 18 reporting supplies the tactical layer: outside-Gulf ship-to-ship transfers, high freight margins, and routing guidance to state-linked shipping groups. Those details are consequential and still single-source. The public Notebook therefore shows the mechanism, attributes the numbers, and refuses to convert unnamed-source reporting into an observed official directive.",
     ],
     arctic: [
-      "The essential correction is the denominator. Rosatom reports 37.89 million tonnes of total NSR cargo in 2024, but that total includes destination and domestic traffic. CHNL reports about 3.2 million tonnes of transit cargo in 2025 across 103 voyages, mostly Russian bulk energy moving east. It counts 15 container-ship transit voyages, up from 11, not the 23-from-15 series in the submitted draft.",
-      "Sea Legend's 2026 plan is commercially interesting on its own terms: eight announced sailings between mid-August and early October, using ships far smaller than today's largest container vessels. For time-sensitive EV, battery, solar, or electronics cargo, an operator-promoted voyage near 20 days can be valuable. That does not turn the service into a crude corridor or demonstrate hundreds of reliable annual liner departures.",
+      "The essential correction is the denominator. Rosatom reports 37.02 million tonnes of total NSR cargo in 2025, but that total includes destination and domestic traffic. CHNL reports about 3.2 million tonnes of transit cargo for the same year across 103 voyages, mostly Russian bulk energy moving east. It counts 15 container-ship transit voyages, up from 11, not the 23-from-15 series in the submitted draft.",
+      "Sea Legend's 2026 plan is commercially interesting on its own terms: eight scheduled sailings between mid-August and early October, using ships far smaller than today's largest container vessels. On August 11, the operator said weather was changing the opening August 15 departure; no later original-publisher record reviewed here confirms that sailing departed. For time-sensitive EV, battery, solar, or electronics cargo, an operator-promoted voyage near 20 days can be valuable. That does not turn the service into a crude corridor or demonstrate hundreds of reliable annual liner departures.",
       "Climate change widens the strategic horizon without erasing operational weather. NSIDC records the 2026 winter maximum as tied for the lowest in the satellite era, but cautions that winter maximum extent does not predict the summer minimum. Its practical Northeast Passage guidance remains July through October, with mid-September often most favorable and no segment guaranteed ice-free.",
     ],
     governance: [
@@ -703,7 +714,8 @@ export const routingAroundRisk = parseNotebookEntry({
     ],
     changed: [
       "This inquiry began with a draft that treated several reported numbers as settled and occasionally blended incompatible measures. The audit replaces a 30% Asia–Europe Suez claim with UNCTAD's 22% global seaborne-container baseline; replaces a 23-container-voyage NSR claim with CHNL's 15; separates total NSR cargo from transit cargo; and separates Bellona's two different counts of 100 vessels.",
-      "It also narrows an apparent Reuters–Lloyd's contradiction into a chronology: two reported COSCO-operated passages on July 23–24 precede a reported withdrawal decision on July 27. Exact STS volumes, vessel schedules, routing guidance, and margins remain attributed to Reuters. Announced Arctic sailings remain announcements until voyage-level evidence shows departure and arrival.",
+      "The August 20 recheck corrects EIA's first-quarter Hormuz estimate from 14.6 to 14.9 million b/d and adds its 4.9-million-b/d second-quarter estimate; advances the inventory series through the second quarter; updates total 2025 NSR cargo; and corrects Reuters' STS data attribution from Vortexa to Kpler.",
+      "It also narrows an apparent Reuters–Lloyd's contradiction into a chronology: two reported COSCO-operated passages on July 23–24 precede a reported withdrawal decision on July 27. Exact STS volumes, vessel schedules, routing guidance, and margins remain attributed to Reuters. Sea Legend's opening departure was weather-adjusted, and scheduled Arctic sailings remain schedules until voyage-level evidence shows departure and arrival.",
     ],
   },
   sourceTrail: [
@@ -712,8 +724,8 @@ export const routingAroundRisk = parseNotebookEntry({
       role: "Primary energy baseline",
       title: "World Oil Transit Chokepoints",
       publisher: "US Energy Information Administration",
-      publishedAt: "2026-03",
-      retrievedAt: "2026-08-18",
+      publishedAt: "2026-03-03",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Analysis",
@@ -730,15 +742,20 @@ export const routingAroundRisk = parseNotebookEntry({
       role: "Primary quarterly estimates",
       title: "Global Energy Security Data",
       publisher: "US Energy Information Administration",
-      retrievedAt: "2026-08-18",
+      publishedAt: "2026-08-12",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Quarterly report",
           url: "https://www.eia.gov/outlooks/steo/report/energysecurity/article.php",
         },
+        {
+          label: "August Short-Term Energy Outlook PDF",
+          url: "https://www.eia.gov/outlooks/steo/pdf/steo_full.pdf",
+        },
       ],
       context:
-        "Provides quarterly chokepoint flows and EIA estimates for China's combined government and commercial crude stocks.",
+        "Provides quarterly chokepoint flows, EIA estimates for China's combined government and commercial crude stocks, and the August disruption outlook.",
       limitation:
         "China does not publish a complete inventory series; the stock values are modelled estimates and may be revised.",
     },
@@ -749,7 +766,7 @@ export const routingAroundRisk = parseNotebookEntry({
         "The Strait of Hormuz is the world's most important oil chokepoint",
       publisher: "International Energy Agency",
       publishedAt: "2026-02",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Factsheet",
@@ -765,10 +782,10 @@ export const routingAroundRisk = parseNotebookEntry({
       id: "notebook-source-risk-eia-bypass",
       role: "Primary pipeline update",
       title:
-        "Saudi Arabia expands crude oil pipeline capacity to bypass the Strait of Hormuz",
+        "UAE's exit from OPEC+ reduced the group's share of crude oil production and capacity",
       publisher: "US Energy Information Administration",
-      publishedAt: "2026-07",
-      retrievedAt: "2026-08-18",
+      publishedAt: "2026-06-23",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Today in Energy",
@@ -786,7 +803,7 @@ export const routingAroundRisk = parseNotebookEntry({
       title: "Navigating Troubled Waters",
       publisher: "UN Trade and Development",
       publishedAt: "2024-02-22",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Report",
@@ -802,13 +819,13 @@ export const routingAroundRisk = parseNotebookEntry({
       id: "notebook-source-risk-reuters-tankers",
       role: "Direct current reporting",
       title:
-        "Chinese state shippers deploy oil tankers outside Gulf to avoid chokepoints",
+        "China's state shippers deploy oil tankers outside Gulf, avoid chokepoints, sources say",
       publisher: "Reuters",
       publishedAt: "2026-08-18",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [{ label: "Report", url: reutersTankerUrl }],
       context:
-        "Reports state-linked tanker redeployment, outside-Gulf STS volume, vessel schedules, and freight economics.",
+        "Reports state-linked tanker redeployment, Kpler's outside-Gulf STS estimate, vessel schedules, and freight economics.",
       limitation:
         "Several central details rely on unnamed trade sources and proprietary shipping data not independently reconstructed for this Notebook.",
     },
@@ -816,10 +833,10 @@ export const routingAroundRisk = parseNotebookEntry({
       id: "notebook-source-risk-reuters-saudi",
       role: "Direct current reporting",
       title:
-        "Saudi Arabia resumes oil loadings and sales inside Strait of Hormuz",
+        "Saudi Arabia resumes oil loadings, sales inside Strait of Hormuz, sources say",
       publisher: "Reuters",
       publishedAt: "2026-08-18",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Report",
@@ -836,7 +853,7 @@ export const routingAroundRisk = parseNotebookEntry({
       role: "Independent route accounting",
       title: "Main results of NSR transit navigation in 2025",
       publisher: "Centre for High North Logistics",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Results",
@@ -849,20 +866,20 @@ export const routingAroundRisk = parseNotebookEntry({
         "CHNL notes differences between its estimates and Rosatom's figures; both depend on public vessel and cargo records.",
     },
     {
-      id: "notebook-source-risk-rosatom-2024",
+      id: "notebook-source-risk-rosatom-2025",
       role: "Operator annual record",
-      title: "Rosatom annual report 2024",
+      title: "Rosatom Sustainability Report 2025",
       publisher: "Rosatom",
-      publishedAt: "2025",
-      retrievedAt: "2026-08-18",
+      publishedAt: "2026",
+      retrievedAt: "2026-08-20",
       links: [
         {
-          label: "Annual report PDF",
-          url: "https://report.rosatom.ru/go_eng/go_rosatom_eng_2024/rosatom_2024_eng.pdf",
+          label: "Sustainability report PDF",
+          url: "https://report.rosatom.ru/go_eng/go_rosatom_eng_2025/rosatom_esg_2025_eng.pdf",
         },
       ],
       context:
-        "Reports 37.89 million tonnes of total cargo on the Northern Sea Route in 2024.",
+        "Reports 37.02 million tonnes of total cargo on the Northern Sea Route in 2025.",
       limitation:
         "Rosatom administers the route; its total-cargo series is broader than international transit and carries institutional incentives.",
     },
@@ -871,8 +888,8 @@ export const routingAroundRisk = parseNotebookEntry({
       role: "Industry schedule",
       title: "Sea Legend announces eight 2026 China–Europe Arctic sailings",
       publisher: "Xinde Marine News",
-      publishedAt: "2026-08",
-      retrievedAt: "2026-08-18",
+      publishedAt: "2026-07-16",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Schedule report",
@@ -889,11 +906,30 @@ export const routingAroundRisk = parseNotebookEntry({
         "The central claims originate with the operator. A published schedule is not voyage-level evidence that every sailing departed or arrived.",
     },
     {
+      id: "notebook-source-risk-global-times-sea-legend",
+      role: "Original-publisher operator update",
+      title:
+        "First regular Arctic container service China-Europe Arctic Express set to debut this week, ship operator tells GT",
+      publisher: "Global Times",
+      publishedAt: "2026-08-11",
+      retrievedAt: "2026-08-20",
+      links: [
+        {
+          label: "Operator update",
+          url: "https://www.globaltimes.cn/page/202608/1367972.shtml",
+        },
+      ],
+      context:
+        "Quotes Sea Legend saying weather was changing the opening August 15 departure and that the final domestic port sequence could change because of typhoon conditions.",
+      limitation:
+        "This is the operator's pre-departure account, not voyage-level evidence that the ship later sailed or arrived.",
+    },
+    {
       id: "notebook-source-risk-nsidc-passage",
       role: "Scientific route constraint",
       title: "When is the Northeast Passage open for ship traffic?",
       publisher: "National Snow and Ice Data Center",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Scientist explainer",
@@ -911,7 +947,7 @@ export const routingAroundRisk = parseNotebookEntry({
       title: "Arctic sea ice record-low maximum strikes again",
       publisher: "National Snow and Ice Data Center",
       publishedAt: "2026-03",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Seasonal analysis",
@@ -928,7 +964,7 @@ export const routingAroundRisk = parseNotebookEntry({
       role: "Primary maritime rule",
       title: "Shipping in polar waters",
       publisher: "International Maritime Organization",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Polar rules",
@@ -945,7 +981,7 @@ export const routingAroundRisk = parseNotebookEntry({
       role: "NGO open-source audit",
       title: "Vessels on the Northern Sea Route",
       publisher: "Bellona Environmental Transparency Center",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "2024 permit analysis",
@@ -963,7 +999,7 @@ export const routingAroundRisk = parseNotebookEntry({
       title: "The Shadow Fleet sets sail to the Arctic",
       publisher: "Bellona Environmental Transparency Center",
       publishedAt: "2025-12-15",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "2025 analysis",
@@ -981,7 +1017,7 @@ export const routingAroundRisk = parseNotebookEntry({
       title: "Treasury targets Iran's missile and UAV procurement networks",
       publisher: "US Department of the Treasury",
       publishedAt: "2025-11-12",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Press release SB0313",
@@ -1000,7 +1036,7 @@ export const routingAroundRisk = parseNotebookEntry({
         "Russia provided Iran with information that could help strike US assets",
       publisher: "Associated Press",
       publishedAt: "2026-08",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Report",
@@ -1019,7 +1055,7 @@ export const routingAroundRisk = parseNotebookEntry({
         "Chinese state giants pull VLCCs from Red Sea as safety trumps commercial gains",
       publisher: "Lloyd's List",
       publishedAt: "2026-07-27",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Report",
@@ -1111,7 +1147,7 @@ export const routingAroundRisk = parseNotebookEntry({
         "China turns to Arctic 'Ice Silk Road' as Middle East routes constrict",
       publisher: "The Guardian",
       publishedAt: "2026-08-17",
-      retrievedAt: "2026-08-18",
+      retrievedAt: "2026-08-20",
       links: [
         {
           label: "Report",
@@ -1146,11 +1182,11 @@ export const routingAroundRisk = parseNotebookEntry({
   unresolvedQuestion:
     "Can a portfolio designed to buy weeks or months of resilience become a durable system without trading Middle Eastern exposure for deeper dependence on Russian-controlled Arctic infrastructure?",
   limitations: [
-    "The war and shipping picture changes daily; this inquiry stops at August 18, 2026.",
+    "The war and shipping picture changes daily; this inquiry stops at August 20, 2026.",
     "The interactive map uses schematic corridor geometry, not AIS tracks, navigational routes, security guidance, or proof of a named vessel's movement.",
     "Reuters' STS volumes, company counts, routing guidance, schedules, and margins were not independently reconstructed from proprietary Vortexa, Kpler, or LSEG data.",
     "Chinese inventory figures are EIA estimates because China does not publish a complete government-plus-commercial crude-stock series.",
-    "Sea Legend's eight-sailing schedule is operator-derived; announced departures are not treated as completed voyages.",
+    "Sea Legend's eight-sailing schedule is operator-derived; the opening departure was weather-adjusted, and no scheduled departure is treated as completed without voyage-level evidence.",
     "Bellona's permit and shadow-fleet datasets are open-source NGO analyses and require vessel-level audit for sanctions date, ownership, flag, ice class, and completed voyage.",
   ],
 }) as MaritimeRiskNotebookEntry;

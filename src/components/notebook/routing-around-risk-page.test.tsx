@@ -19,7 +19,9 @@ describe("Routing Around Risk Notebook page", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("20.9 million")).toBeInTheDocument();
     expect(screen.getByText("3.2 million")).toBeInTheDocument();
-    expect(screen.getAllByText("Retrieved 2026-08-18")).toHaveLength(24);
+    expect(screen.getAllByText(/^Retrieved 2026-08-/)).toHaveLength(25);
+    expect(screen.getAllByText("Retrieved 2026-08-20")).toHaveLength(20);
+    expect(screen.getByText("Current through 20 AUG 2026")).toBeInTheDocument();
     expect(screen.getByText("The Tanker War begins")).toBeInTheDocument();
   });
 
@@ -42,14 +44,14 @@ describe("Routing Around Risk Notebook page", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Arctic hedge" }));
     expect(
-      screen.getByRole("button", { name: /Announced Arctic container hedge/i })
+      screen.getByRole("button", { name: /Scheduled Arctic container hedge/i })
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /Hormuz energy artery/i })
     ).not.toBeInTheDocument();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Announced Arctic container hedge/i })
+      screen.getByRole("button", { name: /Scheduled Arctic container hedge/i })
     );
     expect(screen.getByText("Selected corridor")).toBeInTheDocument();
     expect(
