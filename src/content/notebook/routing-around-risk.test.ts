@@ -43,6 +43,18 @@ describe("Routing Around Risk Notebook registry", () => {
     }
   });
 
+  it("places the Bering Strait west of the antimeridian", () => {
+    const arcticRoute = entry.routes.find(
+      (route) => route.id === "route-risk-arctic"
+    );
+    const beringPoint = arcticRoute?.points.find(
+      (point) => point.id === "point-risk-bering"
+    );
+
+    expect(beringPoint?.coordinates).toEqual([-169, 65.8]);
+    expect(arcticRoute?.path).toContainEqual([-169, 65.8]);
+  });
+
   it("preserves unlike scale units and explicit limits", () => {
     expect(new Set(entry.scaleMetrics.map((metric) => metric.unit)).size).toBe(
       entry.scaleMetrics.length
@@ -117,6 +129,16 @@ describe("Routing Around Risk Notebook registry", () => {
     scales[1].id = scales[0].id;
     expect(() => NotebookEntrySchema.parse(duplicateScale)).toThrow(
       /scale metric IDs must be unique/
+    );
+  });
+
+  it("rejects an out-of-order maritime timeline", () => {
+    const outOfOrder = copyEntry();
+    const timeline = outOfOrder.timeline as Array<Record<string, unknown>>;
+    [timeline[0], timeline[1]] = [timeline[1], timeline[0]];
+
+    expect(() => NotebookEntrySchema.parse(outOfOrder)).toThrow(
+      /maritime timeline entries must be chronological/
     );
   });
 

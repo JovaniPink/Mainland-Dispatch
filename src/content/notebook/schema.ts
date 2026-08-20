@@ -540,6 +540,15 @@ export const NotebookEntrySchema = z
         ["scaleMetrics"],
         "scale metric IDs must be unique"
       );
+      for (let index = 1; index < entry.timeline.length; index += 1) {
+        if (entry.timeline[index - 1].date > entry.timeline[index].date) {
+          ctx.addIssue({
+            code: "custom",
+            message: "maritime timeline entries must be chronological",
+            path: ["timeline", index, "date"],
+          });
+        }
+      }
     }
   });
 

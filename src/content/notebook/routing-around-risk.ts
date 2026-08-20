@@ -540,7 +540,7 @@ export const routingAroundRisk = parseNotebookEntry({
       path: [
         [121.55, 29.87],
         [145, 44],
-        [169, 65.8],
+        [-169, 65.8],
         [160, 70],
         [120, 74],
         [90, 75],
@@ -560,7 +560,7 @@ export const routingAroundRisk = parseNotebookEntry({
         {
           id: "point-risk-bering",
           label: "Bering Strait",
-          coordinates: [169, 65.8],
+          coordinates: [-169, 65.8],
           role: "Arctic gateway",
           note: "The Northeast Passage enters the Arctic from the Pacific through the Bering Strait.",
           sourceIds: ["notebook-source-risk-nsidc-passage"],

@@ -3,7 +3,7 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef } from "react";
 import { useMachine } from "@xstate/react";
-import type { FeatureCollection, LineString, Point } from "geojson";
+import type { FeatureCollection, MultiLineString, Point } from "geojson";
 import type { MaritimeRiskNotebookEntry } from "@/content/notebook/schema";
 import {
   chokepointMapMachine,
@@ -11,13 +11,14 @@ import {
 } from "@/machines/chokepoint-map-machine";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { cn } from "@/lib/utils";
+import { splitAtAntimeridian } from "@/lib/antimeridian";
 
 type MaritimeRoute = MaritimeRiskNotebookEntry["routes"][number];
 type MapLibreModule = typeof import("maplibre-gl");
 type MapInstance = import("maplibre-gl").Map;
 type GeoJsonSource = import("maplibre-gl").GeoJSONSource;
 type RouteFeatureCollection = FeatureCollection<
-  LineString,
+  MultiLineString,
   {
     id: string;
     label: string;
@@ -45,7 +46,10 @@ function lineData(
     type: "FeatureCollection",
     features: routes.map((route) => ({
       type: "Feature",
-      geometry: { type: "LineString", coordinates: route.path },
+      geometry: {
+        type: "MultiLineString",
+        coordinates: splitAtAntimeridian(route.path),
+      },
       properties: {
         id: route.id,
         label: route.label,
