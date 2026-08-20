@@ -90,8 +90,9 @@ describe("Open Models, Closed System Notebook registry", () => {
       "what-xi-jinping-wants",
       "open-models-closed-system",
       "dominance-is-a-dashboard",
+      "routing-around-risk",
     ]);
-    expect(latestNotebookEntry.slug).toBe("dominance-is-a-dashboard");
+    expect(latestNotebookEntry.slug).toBe("routing-around-risk");
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

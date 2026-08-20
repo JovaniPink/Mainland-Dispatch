@@ -204,6 +204,56 @@ const NotebookPowerTimelineItemSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+const NotebookMaritimePointSchema = z.object({
+  id: nonEmpty.regex(/^point-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  coordinates: z.tuple([
+    z.number().min(-180).max(180),
+    z.number().min(-85).max(85),
+  ]),
+  role: nonEmpty,
+  note: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookMaritimeRouteSchema = z.object({
+  id: nonEmpty.regex(/^route-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  lens: z.enum(["gulf", "red-sea", "arctic", "portfolio"]),
+  category: z.enum(["energy", "container", "pipeline", "transfer"]),
+  status: NotebookEvidenceStatusSchema,
+  scale: nonEmpty,
+  asOf: sourceDate,
+  reading: nonEmpty,
+  caveat: nonEmpty,
+  path: z
+    .array(
+      z.tuple([z.number().min(-180).max(180), z.number().min(-85).max(85)])
+    )
+    .min(2),
+  points: z.array(NotebookMaritimePointSchema).min(1),
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookScaleMetricSchema = z.object({
+  id: nonEmpty.regex(/^scale-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  display: nonEmpty,
+  unit: nonEmpty,
+  asOf: sourceDate,
+  reading: nonEmpty,
+  caveat: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookMaritimeTimelineItemSchema = z.object({
+  date: sourceDate,
+  label: nonEmpty,
+  status: NotebookEvidenceStatusSchema,
+  explanation: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -274,11 +324,31 @@ const PowerBalanceNotebookSchema = NotebookBaseSchema.extend({
   }),
 });
 
+const MaritimeRiskNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("maritime-risk"),
+  thesis: nonEmpty,
+  claimAudit: z.array(NotebookClaimAuditSchema).min(6),
+  routes: z.array(NotebookMaritimeRouteSchema).min(5),
+  scaleMetrics: z.array(NotebookScaleMetricSchema).min(4),
+  timeline: z.array(NotebookMaritimeTimelineItemSchema).min(6),
+  sections: z.object({
+    why: z.array(nonEmpty).min(1),
+    verdict: z.array(nonEmpty).min(1),
+    chokepoints: z.array(nonEmpty).min(1),
+    portfolio: z.array(nonEmpty).min(1),
+    arctic: z.array(nonEmpty).min(1),
+    governance: z.array(nonEmpty).min(1),
+    history: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+});
+
 export const NotebookEntrySchema = z
   .discriminatedUnion("variant", [
     ArgumentNotebookSchema,
     EvidenceWatchNotebookSchema,
     PowerBalanceNotebookSchema,
+    MaritimeRiskNotebookSchema,
   ])
   .superRefine((entry, ctx) => {
     if (entry.updatedAt < entry.publishedAt) {
@@ -338,7 +408,17 @@ export const NotebookEntrySchema = z
               ...entry.demographicProfiles.flatMap((item) => item.sourceIds),
               ...entry.timeline.flatMap((item) => item.sourceIds),
             ]
-          : []),
+          : entry.variant === "maritime-risk"
+            ? [
+                ...entry.claimAudit.flatMap((item) => item.sourceIds),
+                ...entry.routes.flatMap((route) => route.sourceIds),
+                ...entry.routes.flatMap((route) =>
+                  route.points.flatMap((point) => point.sourceIds)
+                ),
+                ...entry.scaleMetrics.flatMap((item) => item.sourceIds),
+                ...entry.timeline.flatMap((item) => item.sourceIds),
+              ]
+            : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -438,6 +518,38 @@ export const NotebookEntrySchema = z
         "demographic countries must be unique"
       );
     }
+
+    if (entry.variant === "maritime-risk") {
+      checkUnique(
+        entry.claimAudit.map((item) => item.id),
+        ["claimAudit"],
+        "claim-audit IDs must be unique"
+      );
+      checkUnique(
+        entry.routes.map((route) => route.id),
+        ["routes"],
+        "route IDs must be unique"
+      );
+      checkUnique(
+        entry.routes.flatMap((route) => route.points.map((point) => point.id)),
+        ["routes"],
+        "map point IDs must be unique"
+      );
+      checkUnique(
+        entry.scaleMetrics.map((item) => item.id),
+        ["scaleMetrics"],
+        "scale metric IDs must be unique"
+      );
+      for (let index = 1; index < entry.timeline.length; index += 1) {
+        if (entry.timeline[index - 1].date > entry.timeline[index].date) {
+          ctx.addIssue({
+            code: "custom",
+            message: "maritime timeline entries must be chronological",
+            path: ["timeline", index, "date"],
+          });
+        }
+      }
+    }
   });
 
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
@@ -452,6 +564,10 @@ export type EvidenceWatchNotebookEntry = Extract<
 export type PowerBalanceNotebookEntry = Extract<
   NotebookEntry,
   { variant: "power-balance" }
+>;
+export type MaritimeRiskNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "maritime-risk" }
 >;
 export type NotebookEvidenceStatus = z.infer<
   typeof NotebookEvidenceStatusSchema

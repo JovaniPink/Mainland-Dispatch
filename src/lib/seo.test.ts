@@ -8,6 +8,7 @@ import { dominanceIsADashboard } from "@/content/notebook/dominance-is-a-dashboa
 import { publishedNotebookEntries } from "@/content/notebook";
 import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
 import { metadata as notebookThreeMetadata } from "@/app/notebook/dominance-is-a-dashboard/page";
+import { metadata as notebookFourMetadata } from "@/app/notebook/routing-around-risk/page";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as atlasMetadata } from "@/app/atlas/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
@@ -95,6 +96,18 @@ describe("SEO publication contract", () => {
       publishedTime: "2026-08-14T00:00:00.000Z",
     });
     expect(JSON.stringify(notebookThreeMetadata)).not.toContain("utm_");
+  });
+
+  it("publishes query-free article metadata for Notebook Four", () => {
+    expect(notebookFourMetadata.alternates).toEqual({
+      canonical: `${siteUrl}/notebook/routing-around-risk`,
+    });
+    expect(notebookFourMetadata.openGraph).toMatchObject({
+      type: "article",
+      url: `${siteUrl}/notebook/routing-around-risk`,
+      publishedTime: "2026-08-18T00:00:00.000Z",
+    });
+    expect(JSON.stringify(notebookFourMetadata)).not.toContain("utm_");
   });
 
   it("publishes consistent crawler and application metadata", () => {

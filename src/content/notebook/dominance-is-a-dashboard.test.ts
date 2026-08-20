@@ -91,13 +91,11 @@ describe("Dominance Is a Dashboard Notebook registry", () => {
     ).toMatch(/early-stage development programs/i);
   });
 
-  it("publishes Notebook Three as the latest registry entry", () => {
-    expect(publishedNotebookEntries.map((item) => item.slug)).toEqual([
-      "what-xi-jinping-wants",
-      "open-models-closed-system",
-      "dominance-is-a-dashboard",
-    ]);
-    expect(latestNotebookEntry.slug).toBe(entry.slug);
+  it("keeps Notebook Three published after later inquiries", () => {
+    expect(publishedNotebookEntries.map((item) => item.slug)).toContain(
+      "dominance-is-a-dashboard"
+    );
+    expect(latestNotebookEntry.ordinal).toBeGreaterThan(entry.ordinal);
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
