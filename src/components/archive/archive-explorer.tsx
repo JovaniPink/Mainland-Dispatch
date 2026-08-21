@@ -20,10 +20,11 @@ import { kindLabels, verticals } from "@/content/site";
 import {
   archiveMachine,
   type ArchiveEvent,
+  type ArchiveFilterKey,
   type ArchiveView,
 } from "@/machines/archive-machine";
 import { cn } from "@/lib/utils";
-import { DispatchCard } from "@/components/dispatch/dispatch-card";
+import { ArchiveRecordCard } from "@/components/archive/archive-record-card";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { StateLab } from "@/components/state-lab/state-lab";
 
@@ -493,6 +494,18 @@ export function ArchiveExplorer() {
     setHistory((items) => [...items.slice(-7), event]);
   }, [context]);
 
+  useEffect(() => {
+    const closeFiltersOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && context.filterPanelOpen) {
+        dispatch({ type: "CLOSE_FILTER_PANEL" });
+      }
+    };
+    window.addEventListener("keydown", closeFiltersOnEscape);
+    return () => window.removeEventListener("keydown", closeFiltersOnEscape);
+    // The machine context is the authority for the panel's visible state.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.filterPanelOpen]);
+
   const visible = useMemo(
     () =>
       publishedDispatches
@@ -551,6 +564,55 @@ export function ArchiveExplorer() {
       context.place,
       context.year,
     ].some((value) => value !== "all") || Boolean(context.query);
+  const appliedFilters: Array<{
+    filter: ArchiveFilterKey;
+    label: string;
+  }> = [
+    ...(context.query
+      ? [{ filter: "query" as const, label: `Search: ${context.query}` }]
+      : []),
+    ...(context.evidence !== "all"
+      ? [
+          {
+            filter: "evidence" as const,
+            label: `Evidence: ${evidenceStatusLabels[context.evidence]}`,
+          },
+        ]
+      : []),
+    ...(context.year !== "all"
+      ? [{ filter: "year" as const, label: `Year: ${context.year}` }]
+      : []),
+    ...(context.vertical !== "all"
+      ? [
+          {
+            filter: "vertical" as const,
+            label: `Topic: ${
+              verticals.find((item) => item.id === context.vertical)?.label ??
+              context.vertical
+            }`,
+          },
+        ]
+      : []),
+    ...(context.kind !== "all"
+      ? [
+          {
+            filter: "kind" as const,
+            label: `Format: ${kindLabels[context.kind]}`,
+          },
+        ]
+      : []),
+    ...(context.publisher !== "all"
+      ? [
+          {
+            filter: "publisher" as const,
+            label: `Publisher: ${context.publisher}`,
+          },
+        ]
+      : []),
+    ...(context.place !== "all"
+      ? [{ filter: "place" as const, label: `Place: ${context.place}` }]
+      : []),
+  ];
   const selectedInquiry =
     publishedNotebookEntries.find(
       (entry) => entry.slug === context.inquirySlug
@@ -579,38 +641,58 @@ export function ArchiveExplorer() {
           </p>
         </div>
 
-        <div className="chip-row scroll-affordance -mx-4 mt-5 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-          <div className="flex gap-2">
-            {views.map((view) => (
-              <Chip
-                key={view.id}
-                active={context.view === view.id}
-                onClick={() => dispatch({ type: "SET_VIEW", view: view.id })}
-              >
-                {view.label}
-              </Chip>
-            ))}
+        <label className="mt-5 grid gap-1">
+          <span className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+            Search
+          </span>
+          <input
+            type="search"
+            value={context.query}
+            placeholder="Sources, claims, people, places…"
+            onChange={(event) =>
+              dispatch({ type: "SEARCH", query: event.target.value })
+            }
+            className="min-w-0 border border-rule bg-paper px-3 py-3 text-sm placeholder:text-ink-muted focus:border-jade focus:outline-none"
+          />
+        </label>
+
+        <div className="mt-4 flex items-start justify-between gap-3">
+          <div className="chip-row scroll-affordance min-w-0 overflow-x-auto">
+            <div className="flex gap-2">
+              {views.map((view) => (
+                <Chip
+                  key={view.id}
+                  active={context.view === view.id}
+                  onClick={() => dispatch({ type: "SET_VIEW", view: view.id })}
+                >
+                  {view.label}
+                </Chip>
+              ))}
+            </div>
           </div>
+          <button
+            type="button"
+            aria-expanded={context.filterPanelOpen}
+            aria-controls="archive-filter-panel"
+            onClick={() => dispatch({ type: "TOGGLE_FILTER_PANEL" })}
+            className="shrink-0 border border-rule px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest hover:border-signal lg:hidden"
+          >
+            Filters ({appliedFilters.length})
+          </button>
         </div>
         <p className="mt-2 text-xs text-ink-muted">
           {views.find((view) => view.id === context.view)?.note}
         </p>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <label className="grid gap-1 sm:col-span-2">
-            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
-              Search
-            </span>
-            <input
-              type="search"
-              value={context.query}
-              placeholder="Sources, claims, people, places…"
-              onChange={(event) =>
-                dispatch({ type: "SEARCH", query: event.target.value })
-              }
-              className="min-w-0 border border-rule bg-paper px-3 py-2 text-xs placeholder:text-ink-muted focus:border-jade focus:outline-none"
-            />
-          </label>
+        <div
+          id="archive-filter-panel"
+          data-testid="archive-filter-panel"
+          data-state={context.filterPanelOpen ? "open" : "closed"}
+          className={cn(
+            "mt-5 gap-3 sm:grid-cols-2 lg:grid lg:grid-cols-3",
+            context.filterPanelOpen ? "grid" : "hidden"
+          )}
+        >
           <SelectFilter
             label="Evidence"
             value={context.evidence}
@@ -679,13 +761,30 @@ export function ArchiveExplorer() {
         </div>
 
         {filtersActive && (
-          <button
-            type="button"
-            onClick={() => dispatch({ type: "RESET" })}
-            className="mt-4 font-mono text-[0.65rem] uppercase tracking-widest text-signal hover:text-ink"
-          >
-            Reset filters
-          </button>
+          <div className="mt-4" aria-label="Applied filters">
+            <div className="flex flex-wrap gap-2">
+              {appliedFilters.map((item) => (
+                <button
+                  key={item.filter}
+                  type="button"
+                  aria-label={`Remove ${item.label}`}
+                  onClick={() =>
+                    dispatch({ type: "CLEAR_FILTER", filter: item.filter })
+                  }
+                  className="border border-signal bg-signal-soft/30 px-2 py-1.5 font-mono text-[0.6rem] uppercase tracking-widest text-signal hover:bg-signal-soft/60"
+                >
+                  {item.label} ×
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "CLEAR_ALL_FILTERS" })}
+              className="mt-3 font-mono text-[0.65rem] uppercase tracking-widest text-signal hover:text-ink"
+            >
+              Clear all filters
+            </button>
+          </div>
         )}
       </div>
 
@@ -694,7 +793,7 @@ export function ArchiveExplorer() {
           <>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {visible.map((record) => (
-                <DispatchCard key={record.id} dispatch={record} />
+                <ArchiveRecordCard key={record.id} record={record} />
               ))}
             </div>
             {visible.length === 0 && (
@@ -760,6 +859,11 @@ export function ArchiveExplorer() {
           "SEARCH",
           "SELECT_FOCUS",
           "SELECT_INQUIRY",
+          "OPEN_FILTER_PANEL",
+          "CLOSE_FILTER_PANEL",
+          "TOGGLE_FILTER_PANEL",
+          "CLEAR_FILTER",
+          "CLEAR_ALL_FILTERS",
           "RESET",
         ]}
         history={history}

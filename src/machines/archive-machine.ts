@@ -2,6 +2,8 @@ import { assign, setup } from "xstate";
 import type { DispatchKind, EvidenceStatus, Vertical } from "@/content/schema";
 
 export type ArchiveView = "cards" | "timeline" | "relationships";
+export type ArchiveFilterKey =
+  "vertical" | "kind" | "evidence" | "publisher" | "place" | "year" | "query";
 
 export type ArchiveContext = {
   view: ArchiveView;
@@ -14,6 +16,7 @@ export type ArchiveContext = {
   query: string;
   focusId: string;
   inquirySlug: string;
+  filterPanelOpen: boolean;
 };
 
 export type ArchiveEvent =
@@ -27,10 +30,15 @@ export type ArchiveEvent =
   | { type: "SEARCH"; query: string }
   | { type: "SELECT_FOCUS"; focusId: string }
   | { type: "SELECT_INQUIRY"; inquirySlug: string }
+  | { type: "OPEN_FILTER_PANEL" }
+  | { type: "CLOSE_FILTER_PANEL" }
+  | { type: "TOGGLE_FILTER_PANEL" }
+  | { type: "CLEAR_FILTER"; filter: ArchiveFilterKey }
+  | { type: "CLEAR_ALL_FILTERS" }
   | { type: "RESET" }
   | {
       type: "HYDRATE";
-      filters: Partial<ArchiveContext>;
+      filters: Partial<Omit<ArchiveContext, "filterPanelOpen">>;
     };
 
 const initialContext: ArchiveContext = {
@@ -44,6 +52,17 @@ const initialContext: ArchiveContext = {
   query: "",
   focusId: "",
   inquirySlug: "dominance-is-a-dashboard",
+  filterPanelOpen: false,
+};
+
+const archiveFilterDefaults: Pick<ArchiveContext, ArchiveFilterKey> = {
+  vertical: "all",
+  kind: "all",
+  evidence: "all",
+  publisher: "all",
+  place: "all",
+  year: "all",
+  query: "",
 };
 
 export const archiveMachine = setup({
@@ -87,6 +106,29 @@ export const archiveMachine = setup({
         },
         SELECT_INQUIRY: {
           actions: assign({ inquirySlug: ({ event }) => event.inquirySlug }),
+        },
+        OPEN_FILTER_PANEL: {
+          actions: assign({ filterPanelOpen: true }),
+        },
+        CLOSE_FILTER_PANEL: {
+          actions: assign({ filterPanelOpen: false }),
+        },
+        TOGGLE_FILTER_PANEL: {
+          actions: assign({
+            filterPanelOpen: ({ context }) => !context.filterPanelOpen,
+          }),
+        },
+        CLEAR_FILTER: {
+          actions: assign(({ context, event }) => ({
+            ...context,
+            [event.filter]: archiveFilterDefaults[event.filter],
+          })),
+        },
+        CLEAR_ALL_FILTERS: {
+          actions: assign(({ context }) => ({
+            ...context,
+            ...archiveFilterDefaults,
+          })),
         },
         HYDRATE: {
           actions: assign(({ context, event }) => ({
