@@ -76,6 +76,16 @@ that Chinese competition explains all manufacturing-job decline, that cheap
 clean technology is an unalloyed threat or benefit, and that an AI “third
 shock” is already observed are excluded.
 
+An adversarial review of three external editorial drafts sharpened four further
+boundaries. Competitiveness is not the same as macroeconomic imbalance; a
+current-account surplus is not a chokepoint or coercion index; accounting
+identities do not establish sectoral deindustrialization; and Mainland
+Dispatch's cultural reporting can provide context but cannot prove the trade
+mechanism. The review retains “Who Absorbs the Shock?” as the commissioned
+title and reserves “A Factory System Has a Balance of Payments” as a possible
+mechanism subheading. Its additional links remain a replacement queue rather
+than expanding the 24-stop evidence core.
+
 ## Product scope after approval
 
 Approval of the completed ledger would authorize:
