@@ -39,6 +39,9 @@ verified reporting.
   authenticated CMS.
 - Add content through the Zod schemas and preserve the catalog-level uniqueness,
   date-order, chronology, and cross-reference checks.
+- Keep public evidence URLs on HTTPS. Legacy HTTP records may remain in the
+  private source-lead inbox, but cannot be promoted directly into a Dispatch,
+  Compare, Trace, or Dossier.
 - XState must own real transition behavior. Do not add states that the interface
   cannot enter or report successful media loading before load/error evidence.
 - Preserve click-to-load privacy for third-party embeds.
