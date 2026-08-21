@@ -548,3 +548,28 @@ This verification pass stops on August 20, 2026. It did not buy proprietary
 tracking data, conduct interviews, reconstruct vessel tracks, or obtain a
 carrier or port departure record. Those limits continue to block promotion
 from source-reviewed interpretation to verified reporting.
+
+## Current-source verification pass · 2026-08-21
+
+This append-only pass corrects one statement invalidated by a public-authority
+record published after the August 20 review. The [Zhoushan Municipal People's
+Government report](https://www.ezhejiang.gov.cn/zhoushan/2026-08/17/c_1206032.htm)
+says `Dubai Tower` departed Ningbo–Zhoushan Port on August 15. That record is
+consistent with the operator's August 11 weather adjustment and is sufficient
+to report departure from the origin port.
+
+The record does not establish arrival, completed Northern Sea Route transit,
+AIS geometry, ice conditions, cargo particulars, or operation of the remaining
+weekly schedule. The Notebook therefore replaces “no confirmed departure”
+with the narrow port-backed observation and preserves every later voyage claim
+as unverified. It remains `source-reviewed` interpretation rather than verified
+reporting.
+
+This pass also downloaded and text-extracted Rosatom's cited 2025 Sustainability
+Report. The report states in two places that Northern Sea Route cargo traffic
+totalled 37.02 million tonnes in 2025, so the existing total-cargo figure and
+its broader-denominator warning remain unchanged.
+
+This verification pass stops on August 21, 2026. It did not buy proprietary
+tracking data, conduct interviews, reconstruct vessel tracks, or obtain an
+arrival or completed-transit record.

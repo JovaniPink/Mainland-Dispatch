@@ -19,9 +19,10 @@ describe("Routing Around Risk Notebook page", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("20.9 million")).toBeInTheDocument();
     expect(screen.getByText("3.2 million")).toBeInTheDocument();
-    expect(screen.getAllByText(/^Retrieved 2026-08-/)).toHaveLength(25);
+    expect(screen.getAllByText(/^Retrieved 2026-08-/)).toHaveLength(26);
     expect(screen.getAllByText("Retrieved 2026-08-20")).toHaveLength(20);
-    expect(screen.getByText("Current through 20 AUG 2026")).toBeInTheDocument();
+    expect(screen.getByText("Retrieved 2026-08-21")).toBeInTheDocument();
+    expect(screen.getByText("Current through 21 AUG 2026")).toBeInTheDocument();
     expect(screen.getByText("The Tanker War begins")).toBeInTheDocument();
   });
 

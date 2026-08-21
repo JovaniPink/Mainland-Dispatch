@@ -18,7 +18,7 @@ export const routingAroundRisk = parseNotebookEntry({
   thesis:
     "China is not escaping maritime chokepoints. It is distributing exposure across estimated oil inventories, pipeline capacity, offshore cargo handoffs, state-linked shipping, supplier diversity, and an announced seasonal Arctic container service. Those measures buy time and relocate risk; none replaces the energy function of Hormuz or the container scale of Suez.",
   publishedAt: "2026-08-18",
-  updatedAt: "2026-08-20",
+  updatedAt: "2026-08-21",
   readTime: "26 min",
   tags: [
     "China",
@@ -189,10 +189,11 @@ export const routingAroundRisk = parseNotebookEntry({
       status: "corrected",
       decision: "qualify",
       assessment:
-        "The reviewed schedule lists eight weekly departures from mid-August to early October 2026 using seven ships. On August 11, the operator told Global Times that the opening August 15 departure was being adjusted for weather. No later original-publisher record reviewed here confirms that sailing departed, and the schedule does not establish a year-round service.",
+        "The reviewed schedule lists eight weekly departures from mid-August to early October 2026 using seven ships. After an August 11 weather adjustment, Ningbo–Zhoushan Port reported that Dubai Tower departed on August 15. That record does not establish arrival, completed Arctic transit, reliable weekly operation, or a year-round service.",
       sourceIds: [
         "notebook-source-risk-sea-legend",
         "notebook-source-risk-global-times-sea-legend",
+        "notebook-source-risk-zhoushan-departure",
         "notebook-source-risk-aljazeera",
         "notebook-source-risk-guardian",
       ],
@@ -332,14 +333,15 @@ export const routingAroundRisk = parseNotebookEntry({
       label: "Sea Legend 2026 program",
       display: "8 scheduled",
       unit: "seasonal container sailings",
-      asOf: "2026-08-20",
+      asOf: "2026-08-21",
       reading:
-        "The operator-derived schedule runs from mid-August to early October and uses seven small-to-mid-sized ships; the operator said weather affected the opening departure.",
+        "The operator-derived schedule runs from mid-August to early October and uses seven small-to-mid-sized ships; Ningbo–Zhoushan Port reported the opening ship's August 15 departure after a weather adjustment.",
       caveat:
-        "Scheduled departures are not completed voyages, and containers do not replace Gulf crude or LNG.",
+        "One reported departure is not a completed Arctic voyage or evidence that the remaining schedule will operate, and containers do not replace Gulf crude or LNG.",
       sourceIds: [
         "notebook-source-risk-sea-legend",
         "notebook-source-risk-global-times-sea-legend",
+        "notebook-source-risk-zhoushan-departure",
       ],
     },
   ],
@@ -535,12 +537,12 @@ export const routingAroundRisk = parseNotebookEntry({
       lens: "arctic",
       category: "container",
       status: "official-position",
-      scale: "Eight scheduled sailings; opening departure weather-adjusted",
-      asOf: "2026-08-20",
+      scale: "Eight scheduled sailings; opening departure reported",
+      asOf: "2026-08-21",
       reading:
         "Sea Legend markets a seasonal Ningbo–Felixstowe service along Russia's Northern Sea Route.",
       caveat:
-        "This schematic is not a voyage track. The schedule is operator-derived; the reviewed record does not confirm the opening sailing departed, and no line implies completed passage, ice condition, escort, or cargo.",
+        "This schematic is not a voyage track. A port-backed report confirms departure from Ningbo–Zhoushan, but no line implies completed Arctic passage, arrival, ice condition, escort, or cargo.",
       path: [
         [121.55, 29.87],
         [145, 44],
@@ -557,11 +559,12 @@ export const routingAroundRisk = parseNotebookEntry({
           id: "point-risk-ningbo",
           label: "Ningbo–Zhoushan",
           coordinates: [121.55, 29.87],
-          role: "Scheduled service origin",
-          note: "The operator-derived schedule identifies Ningbo–Zhoushan as the origin, while an August 11 operator update says weather was changing the opening departure sequence.",
+          role: "Reported service origin",
+          note: "The operator-derived schedule identifies Ningbo–Zhoushan as the origin; after an August 11 weather adjustment, a port-backed public record reports Dubai Tower's August 15 departure.",
           sourceIds: [
             "notebook-source-risk-sea-legend",
             "notebook-source-risk-global-times-sea-legend",
+            "notebook-source-risk-zhoushan-departure",
           ],
         },
         {
@@ -584,6 +587,7 @@ export const routingAroundRisk = parseNotebookEntry({
       sourceIds: [
         "notebook-source-risk-sea-legend",
         "notebook-source-risk-global-times-sea-legend",
+        "notebook-source-risk-zhoushan-departure",
         "notebook-source-risk-nsidc-passage",
         "notebook-source-risk-chnl-2025",
       ],
@@ -679,6 +683,14 @@ export const routingAroundRisk = parseNotebookEntry({
         "notebook-source-risk-global-times-sea-legend",
       ],
     },
+    {
+      date: "2026-08-15",
+      label: "Dubai Tower departs Ningbo–Zhoushan",
+      status: "observed",
+      explanation:
+        "Ningbo–Zhoushan Port reports that Dubai Tower departed after the weather adjustment. The departure is observed in a public-authority record; arrival, completed Arctic transit, and later weekly sailings are not.",
+      sourceIds: ["notebook-source-risk-zhoushan-departure"],
+    },
   ],
   sections: {
     why: [
@@ -700,7 +712,7 @@ export const routingAroundRisk = parseNotebookEntry({
     ],
     arctic: [
       "The essential correction is the denominator. Rosatom reports 37.02 million tonnes of total NSR cargo in 2025, but that total includes destination and domestic traffic. CHNL reports about 3.2 million tonnes of transit cargo for the same year across 103 voyages, mostly Russian bulk energy moving east. It counts 15 container-ship transit voyages, up from 11, not the 23-from-15 series in the submitted draft.",
-      "Sea Legend's 2026 plan is commercially interesting on its own terms: eight scheduled sailings between mid-August and early October, using ships far smaller than today's largest container vessels. On August 11, the operator said weather was changing the opening August 15 departure; no later original-publisher record reviewed here confirms that sailing departed. For time-sensitive EV, battery, solar, or electronics cargo, an operator-promoted voyage near 20 days can be valuable. That does not turn the service into a crude corridor or demonstrate hundreds of reliable annual liner departures.",
+      "Sea Legend's 2026 plan is commercially interesting on its own terms: eight scheduled sailings between mid-August and early October, using ships far smaller than today's largest container vessels. After the operator's August 11 weather adjustment, Ningbo–Zhoushan Port reported that Dubai Tower departed on August 15. That report does not yet establish arrival, completed Arctic transit, or reliable weekly operation. For time-sensitive EV, battery, solar, or electronics cargo, an operator-promoted voyage near 20 days can be valuable. That does not turn the service into a crude corridor or demonstrate hundreds of reliable annual liner departures.",
       "Climate change widens the strategic horizon without erasing operational weather. NSIDC records the 2026 winter maximum as tied for the lowest in the satellite era, but cautions that winter maximum extent does not predict the summer minimum. Its practical Northeast Passage guidance remains July through October, with mid-September often most favorable and no segment guaranteed ice-free.",
     ],
     governance: [
@@ -715,7 +727,7 @@ export const routingAroundRisk = parseNotebookEntry({
     changed: [
       "This inquiry began with a draft that treated several reported numbers as settled and occasionally blended incompatible measures. The audit replaces a 30% Asia–Europe Suez claim with UNCTAD's 22% global seaborne-container baseline; replaces a 23-container-voyage NSR claim with CHNL's 15; separates total NSR cargo from transit cargo; and separates Bellona's two different counts of 100 vessels.",
       "The August 20 recheck corrects EIA's first-quarter Hormuz estimate from 14.6 to 14.9 million b/d and adds its 4.9-million-b/d second-quarter estimate; advances the inventory series through the second quarter; updates total 2025 NSR cargo; and corrects Reuters' STS data attribution from Vortexa to Kpler.",
-      "It also narrows an apparent Reuters–Lloyd's contradiction into a chronology: two reported COSCO-operated passages on July 23–24 precede a reported withdrawal decision on July 27. Exact STS volumes, vessel schedules, routing guidance, and margins remain attributed to Reuters. Sea Legend's opening departure was weather-adjusted, and scheduled Arctic sailings remain schedules until voyage-level evidence shows departure and arrival.",
+      "It also narrows an apparent Reuters–Lloyd's contradiction into a chronology: two reported COSCO-operated passages on July 23–24 precede a reported withdrawal decision on July 27. Exact STS volumes, vessel schedules, routing guidance, and margins remain attributed to Reuters. An August 21 recheck adds port-backed evidence that Sea Legend's opening ship departed on August 15 after a weather adjustment, while keeping arrival, completed transit, and the remaining schedule unverified.",
     ],
   },
   sourceTrail: [
@@ -923,6 +935,24 @@ export const routingAroundRisk = parseNotebookEntry({
         "Quotes Sea Legend saying weather was changing the opening August 15 departure and that the final domestic port sequence could change because of typhoon conditions.",
       limitation:
         "This is the operator's pre-departure account, not voyage-level evidence that the ship later sailed or arrived.",
+    },
+    {
+      id: "notebook-source-risk-zhoushan-departure",
+      role: "Public-authority departure record",
+      title: "New container lane to Europe halves transit time",
+      publisher: "Zhoushan Municipal People's Government",
+      publishedAt: "2026-08-17",
+      retrievedAt: "2026-08-21",
+      links: [
+        {
+          label: "Municipal report",
+          url: "https://www.ezhejiang.gov.cn/zhoushan/2026-08/17/c_1206032.htm",
+        },
+      ],
+      context:
+        "Reports that Dubai Tower departed Ningbo–Zhoushan Port on August 15, after the operator's earlier weather adjustment.",
+      limitation:
+        "The departure report does not provide AIS evidence, arrival confirmation, a completed Arctic-transit record, or proof that later weekly sailings operated.",
     },
     {
       id: "notebook-source-risk-nsidc-passage",
@@ -1182,11 +1212,11 @@ export const routingAroundRisk = parseNotebookEntry({
   unresolvedQuestion:
     "Can a portfolio designed to buy weeks or months of resilience become a durable system without trading Middle Eastern exposure for deeper dependence on Russian-controlled Arctic infrastructure?",
   limitations: [
-    "The war and shipping picture changes daily; this inquiry stops at August 20, 2026.",
+    "The war and shipping picture changes daily; this inquiry stops at August 21, 2026.",
     "The interactive map uses schematic corridor geometry, not AIS tracks, navigational routes, security guidance, or proof of a named vessel's movement.",
     "Reuters' STS volumes, company counts, routing guidance, schedules, and margins were not independently reconstructed from proprietary Vortexa, Kpler, or LSEG data.",
     "Chinese inventory figures are EIA estimates because China does not publish a complete government-plus-commercial crude-stock series.",
-    "Sea Legend's eight-sailing schedule is operator-derived; the opening departure was weather-adjusted, and no scheduled departure is treated as completed without voyage-level evidence.",
+    "Sea Legend's eight-sailing schedule is operator-derived. A port-backed report confirms the opening ship's departure, but arrival, completed Arctic transit, and later weekly sailings remain unverified.",
     "Bellona's permit and shadow-fleet datasets are open-source NGO analyses and require vessel-level audit for sanctions date, ownership, flag, ice class, and completed voyage.",
   ],
 }) as MaritimeRiskNotebookEntry;
