@@ -17,6 +17,17 @@ export const dominanceIsADashboard = parseNotebookEntry({
     "A source-audited field guide to the dimensions of US–China power: manufacturing, technology, science, finance, military capacity, history, and demography.",
   thesis:
     "There has been no single handoff of global dominance. China now holds extraordinary advantages in manufacturing scale, clean-technology supply chains, and parts of the scientific pipeline; the United States retains much larger nominal capital, military spending, reserve-currency reach, and private AI investment. The balance is a moving, non-additive dashboard whose consequences depend on institutions, alliances, bottlenecks, and political choices.",
+  frontPagePreview: {
+    finding:
+      "China's manufacturing scale is an observed strategic advantage, while finance, military spending, research impact, alliances, and private AI investment remain separate dimensions with different leaders.",
+    status: "observed",
+    caveat:
+      "The measures use different units, dates, and denominators; they cannot be added into one national-power score or a single date of succession.",
+    sourceIds: [
+      "notebook-source-unido-yearbook-2025",
+      "notebook-source-stanford-ai-2026",
+    ],
+  },
   publishedAt: "2026-08-14",
   updatedAt: "2026-08-14",
   readTime: "24 min",

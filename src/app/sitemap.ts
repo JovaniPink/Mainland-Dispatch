@@ -66,6 +66,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    {
+      url: `${siteUrl}/notebooks`,
+      lastModified: latestNotebookEntry.updatedAt,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     ...notebookEntries,
     {
       url: `${siteUrl}/archive`,

@@ -5,8 +5,9 @@ export const site = {
     "A public research notebook built on a transparent, interactive evidence archive for understanding contemporary China.",
   volume: "VOL. 001",
   nav: [
-    { label: "Notebook", href: "/" },
-    { label: "Explore", href: "/archive" },
+    { label: "Latest", href: "/" },
+    { label: "Notebooks", href: "/notebooks" },
+    { label: "Evidence", href: "/archive" },
     { label: "Saved", href: "/saved" },
   ],
   principle:
