@@ -73,6 +73,10 @@ claim-safety posture from `handoff-navigator`.
 - `src/content/catalog.ts` validates the complete graph at import time: schema
   variants, real calendar dates, route-safe slugs, unique IDs/slugs, date order,
   chronological trace entries, and every dispatch/trace/dossier relation.
+- Every URL exposed by a public Dispatch, Compare, Trace, or Dossier must use
+  HTTPS. Historical HTTP links can remain in the private source-lead inbox for
+  provenance, but they cannot cross the publication boundary until a reviewed
+  secure canonical record replaces them.
 - Atlas sources distinguish controlling records, supporting statements,
   contextual data, methodology, and enrichment. Stored artifacts declare a
   local path and SHA-256 that the test suite recomputes. The complete source

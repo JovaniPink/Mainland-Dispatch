@@ -30,6 +30,15 @@ function addDuplicateIssues(
   }
 }
 
+function requireHttpsUrl(value: string, owner: string, ctx: z.RefinementCtx) {
+  if (new URL(value).protocol !== "https:") {
+    ctx.addIssue({
+      code: "custom",
+      message: `${owner} requires an HTTPS publication URL`,
+    });
+  }
+}
+
 export const ContentCatalogSchema = z
   .object({
     dispatches: z.array(DispatchSchema),
@@ -112,6 +121,34 @@ export const ContentCatalogSchema = z
           code: "custom",
           message: `${dispatch.id} cannot publish an example.com source`,
         });
+      }
+      if (isPublicDispatch(dispatch)) {
+        requireHttpsUrl(
+          dispatch.canonicalSource.url,
+          `${dispatch.id} canonical source`,
+          ctx
+        );
+        for (const source of dispatch.supportingSources) {
+          requireHttpsUrl(
+            source.url,
+            `${dispatch.id} supporting source ${source.id}`,
+            ctx
+          );
+        }
+        if (dispatch.kind === "social") {
+          requireHttpsUrl(
+            dispatch.archivalUrl,
+            `${dispatch.id} social archive`,
+            ctx
+          );
+        }
+        if (dispatch.kind === "data" && dispatch.downloadUrl) {
+          requireHttpsUrl(
+            dispatch.downloadUrl,
+            `${dispatch.id} data download`,
+            ctx
+          );
+        }
       }
       if (dispatch.canonicalSource.publishedAt > dispatch.curatedAt) {
         ctx.addIssue({
@@ -223,6 +260,13 @@ export const ContentCatalogSchema = z
         `${comparison.slug} source role`,
         ctx
       );
+      for (const source of comparison.sources) {
+        requireHttpsUrl(
+          source.url,
+          `${comparison.slug} ${source.role} source`,
+          ctx
+        );
+      }
       for (const id of comparison.relatedDispatchIds) {
         requireDispatch(id, comparison.slug, true);
       }
@@ -249,6 +293,13 @@ export const ContentCatalogSchema = z
         }
       }
       for (const entry of trace.entries) {
+        if (entry.sourceUrl) {
+          requireHttpsUrl(
+            entry.sourceUrl,
+            `${trace.slug} trace entry ${entry.id}`,
+            ctx
+          );
+        }
         if (entry.dispatchId)
           requireDispatch(entry.dispatchId, trace.slug, true);
       }
@@ -260,6 +311,13 @@ export const ContentCatalogSchema = z
           code: "custom",
           message: `${dossier.slug} cannot publish prototype provenance`,
         });
+      }
+      for (const document of dossier.primaryDocuments) {
+        requireHttpsUrl(
+          document.url,
+          `${dossier.slug} primary document ${document.label}`,
+          ctx
+        );
       }
       for (const id of dossier.dispatchIds) {
         requireDispatch(id, dossier.slug, true);

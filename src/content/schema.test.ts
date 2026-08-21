@@ -358,6 +358,52 @@ describe("publication boundary", () => {
     );
   });
 
+  it("rejects insecure URLs across every public evidence surface", () => {
+    const insecureDispatch = clone(catalog);
+    const dispatch = insecureDispatch.dispatches.find(
+      (item) => item.editorialStatus === "published"
+    )!;
+    dispatch.supportingSources.push({
+      ...dispatch.canonicalSource,
+      id: "source-insecure-support",
+      url: "http://publisher.example/insecure-support",
+      role: "methodology",
+    });
+
+    const insecureComparison = clone(catalog);
+    insecureComparison.comparisons[0].sources[0].url =
+      "http://publisher.example/insecure-comparison";
+
+    const insecureTrace = clone(catalog);
+    insecureTrace.traces[0].entries[0].sourceUrl =
+      "http://publisher.example/insecure-trace";
+
+    const insecureDossier = clone(catalog);
+    insecureDossier.dossiers[0].primaryDocuments[0].url =
+      "http://publisher.example/insecure-document";
+
+    for (const invalid of [
+      insecureDispatch,
+      insecureComparison,
+      insecureTrace,
+      insecureDossier,
+    ]) {
+      const result = ContentCatalogSchema.safeParse(invalid);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              message: expect.stringContaining(
+                "requires an HTTPS publication URL"
+              ),
+            }),
+          ])
+        );
+      }
+    }
+  });
+
   it("rejects duplicate or unresolved evidence source ids", () => {
     const duplicate = clone(catalog);
     const dispatch = duplicate.dispatches.find(

@@ -13,6 +13,22 @@ describe("editorial article-candidate catalog", () => {
     expect(datedYears).not.toContain("undefined");
   });
 
+  it("retains insecure legacy URLs only inside the non-public review inbox", () => {
+    const legacyHttpLeads = sourceLeads.filter((lead) =>
+      lead.url.startsWith("http://")
+    );
+
+    expect(legacyHttpLeads.length).toBeGreaterThan(0);
+    expect(
+      legacyHttpLeads.every(
+        (lead) =>
+          (lead.disposition === "withheld" ||
+            lead.disposition === "rejected") &&
+          !lead.dispatchId
+      )
+    ).toBe(true);
+  });
+
   it("accounts for the bounded 20-link HN discovery batch without publishing it", () => {
     const corpus = sourceLeads.filter(
       (lead) => lead.collectionId === "china-quality-links-2026-08-14"
