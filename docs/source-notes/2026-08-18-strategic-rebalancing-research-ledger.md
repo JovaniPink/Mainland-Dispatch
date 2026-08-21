@@ -476,3 +476,100 @@ logic between source-backed places; they are not AIS tracks, navigation advice,
 or a claim that a named vessel followed the displayed geometry. Reuters'
 600,000 b/d STS estimate, vessel counts, routing guidance, and freight margins
 remain explicitly attributed to Reuters and its unnamed trade sources.
+
+## Current-source verification pass · 2026-08-20
+
+This pass re-opened every source carrying a claim that could have changed since
+the August 18 intake. It preserves the dated record above rather than silently
+rewriting it. The public Notebook remains `source-reviewed` interpretation: a
+current primary series can correct a number, and an original-publisher account
+can correct an attribution or schedule status, without promoting the artifact
+to verified reporting.
+
+### Claims corrected in the Notebook
+
+| Claim surface                     | August 18 rendering                                                                          | Current primary or original-publisher evidence                                                                                                                                                                                                                                                                                                                                                          | August 20 correction                                                                                                                                                                                                           |
+| --------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Hormuz quarterly flow             | EIA first-quarter 2026 flow of 14.6 million b/d                                              | [EIA Global Energy Security Data](https://www.eia.gov/outlooks/steo/report/energysecurity/article.php), released August 12, records 14.9 million b/d for the first quarter and 4.9 million b/d for the second                                                                                                                                                                                           | Replace 14.6 with 14.9 and add the second-quarter 4.9 estimate. Retain the warning that severe constriction is not zero flow.                                                                                                  |
+| Estimated China crude stocks      | 1.541 billion barrels at the end of the first quarter of 2026                                | The same EIA release records 1.397 billion barrels for fourth-quarter 2025, 1.541 billion for first-quarter 2026, and 1.492 billion for second-quarter 2026                                                                                                                                                                                                                                             | Advance the headline stock to the latest 1.492-billion estimate and preserve the full sequence. Continue to describe it as combined estimated government and commercial inventory, not a disclosed strategic reserve.          |
+| Total NSR cargo denominator       | Rosatom's 37.89 million tonnes for 2024 compared with CHNL's 2025 transit figure             | [Rosatom's 2025 Sustainability Report](https://report.rosatom.ru/go_eng/go_rosatom_eng_2025/rosatom_esg_2025_eng.pdf) records 37.02 million tonnes of total 2025 NSR cargo; [CHNL's 2025 accounting](https://chnl.no/news/main-results-of-nsr-transit-navigation-in-2025/) records about 3.2 million tonnes of transit cargo                                                                            | Use the two 2025 measures. The year now matches, but the denominator still does not: total route cargo remains broader than international transit.                                                                             |
+| Outside-Gulf STS data attribution | The Notebook said Reuters' June–July estimate came from Vortexa                              | [Reuters' original August 18 report](https://www.reuters.com/business/energy/chinas-state-shippers-deploy-oil-tankers-outside-gulf-avoid-chokepoints-sources-2026-08-18/) attributes the more-than-600,000-b/d estimate to Kpler                                                                                                                                                                        | Correct Vortexa to Kpler. Keep the estimate, company schedules, and freight margin attributed to Reuters and its proprietary or unnamed-source record.                                                                         |
+| Sea Legend opening sailing        | Eight departures were described only as announced, with no current departure-status evidence | [Xinde Marine News' operator-derived schedule](https://www.xindemarinenews.com/news/2077650383913914370) listed eight weekly sailings beginning August 15. On August 11, [Global Times quoted Sea Legend](https://www.globaltimes.cn/page/202608/1367972.shtml) saying the opening departure was being adjusted because of weather and the domestic sequence could change because of typhoon conditions | Describe eight sailings as scheduled, record the weather adjustment, and do not claim the opening ship departed. No later original-publisher record located in this pass supplied voyage-level departure and arrival evidence. |
+| EIA bypass-source metadata        | The source title and July publication month described a Saudi pipeline-expansion article     | The linked EIA page is [“UAE's exit from OPEC+ reduced the group's share of crude oil production and capacity,”](https://www.eia.gov/todayinenergy/detail.php?id=67804) published June 23, 2026                                                                                                                                                                                                         | Correct the title and date. The cited 1.8-million-b/d UAE line, 7-million-b/d Saudi design capacity, and about 5-million-b/d Saudi export capacity remain supported and qualified against realized throughput.                 |
+
+### Time-sensitive claims revalidated without a factual change
+
+- [EIA's March 3 chokepoint analysis](https://www.eia.gov/international/content/analysis/special_topics/World_Oil_Transit_Chokepoints/)
+  still supplies the 20.9-million-b/d first-half 2025 Hormuz baseline. The
+  current quarterly disruption series is kept separate from that baseline.
+- [IEA's Hormuz factsheet](https://www.iea.org/about/oil-security-and-emergency-response/strait-of-hormuz)
+  still reports 19.87 million b/d for 2025 and estimates 3.5–5.5 million b/d of
+  available bypass capacity. Available, nameplate, export, and realized
+  capacity remain different measures.
+- Reuters' August 18 tanker report still supports the attributed state-linked
+  routing, vessel-count, scheduling, and freight claims. Its more-than-600,000
+  b/d series is Kpler's estimate; Vortexa is used elsewhere in the article for
+  the operators' prewar import exposure.
+- [Reuters' Saudi-loading report](https://www.reuters.com/business/energy/saudi-arabia-resumes-oil-loadings-sales-inside-strait-hormuz-2026-08-18/)
+  still supports an upstream Gulf loading or feeder leg behind some
+  outside-Hormuz transfers. It does not make the receiving tanker independent
+  of Gulf production.
+- CHNL's 103 transit voyages, 3.2 million tonnes of transit cargo, and 15
+  container-ship transits in 2025 remain supported. Rosatom's updated total
+  does not change those transit counts.
+- NSIDC's July–October passage guidance, 14.29-million-square-kilometre 2026
+  winter maximum, and warning that the winter maximum does not predict the
+  summer minimum remain unchanged in the original scientific records.
+- The IMO heavy-fuel-oil rule, Bellona's two separate 100-vessel datasets,
+  Treasury's sanctions designation, AP's enablement-versus-command boundary,
+  and the Reuters–Lloyd's July chronology remain supported with their existing
+  institutional and evidentiary qualifications.
+
+### Evidence considered but not admitted
+
+- An August 19 Axios report relays unnamed US-official estimates of a protected
+  Hormuz corridor. This pass does not add those volatile estimates because the
+  underlying government series or compatible vessel-tracking methodology was
+  not public in the reviewed record.
+- Later secondary accounts that describe the first Arctic sailing as departed
+  were not used to override the operator's weather-adjustment statement. A
+  port, carrier, AIS, or other original voyage record is still required before
+  the Notebook reports departure or arrival as observed.
+
+### Repository and publication state
+
+GitHub's public PR record showed [PR #15](https://github.com/JovaniPink/Mainland-Dispatch/pull/15)
+as already merged on August 20, with head `a962a44` merged to `main` as
+`59e5ae7` and six checks marked passed. This verification pass is therefore a
+local, unpublished follow-up; it is not a draft-state change and does not claim
+deployment or live-site confirmation.
+
+This verification pass stops on August 20, 2026. It did not buy proprietary
+tracking data, conduct interviews, reconstruct vessel tracks, or obtain a
+carrier or port departure record. Those limits continue to block promotion
+from source-reviewed interpretation to verified reporting.
+
+## Current-source verification pass · 2026-08-21
+
+This append-only pass corrects one statement invalidated by a public-authority
+record published after the August 20 review. The [Zhoushan Municipal People's
+Government report](https://www.ezhejiang.gov.cn/zhoushan/2026-08/17/c_1206032.htm)
+says `Dubai Tower` departed Ningbo–Zhoushan Port on August 15. That record is
+consistent with the operator's August 11 weather adjustment and is sufficient
+to report departure from the origin port.
+
+The record does not establish arrival, completed Northern Sea Route transit,
+AIS geometry, ice conditions, cargo particulars, or operation of the remaining
+weekly schedule. The Notebook therefore replaces “no confirmed departure”
+with the narrow port-backed observation and preserves every later voyage claim
+as unverified. It remains `source-reviewed` interpretation rather than verified
+reporting.
+
+This pass also downloaded and text-extracted Rosatom's cited 2025 Sustainability
+Report. The report states in two places that Northern Sea Route cargo traffic
+totalled 37.02 million tonnes in 2025, so the existing total-cargo figure and
+its broader-denominator warning remain unchanged.
+
+This verification pass stops on August 21, 2026. It did not buy proprietary
+tracking data, conduct interviews, reconstruct vessel tracks, or obtain an
+arrival or completed-transit record.

@@ -32,7 +32,7 @@ const sectionLinks = [
   ["timeline", "A longer history"],
   ["claim-audit", "Twelve claim checks"],
   ["formats", "Three strong listens"],
-  ["source-trail-heading", "Twenty-four source stops"],
+  ["source-trail-heading", "Twenty-five source stops"],
   ["changed", "What changed"],
   ["question", "Unresolved question"],
 ] as const;
@@ -107,7 +107,7 @@ export default function RoutingAroundRiskPage() {
             <span aria-hidden>·</span>
             <span>Source-backed interpretation</span>
             <span aria-hidden>·</span>
-            <span>Current through August 18, 2026</span>
+            <span>Current through {formatDate(entry.updatedAt)}</span>
           </div>
           <ul className="mt-5 flex flex-wrap gap-2" aria-label="Topics">
             {entry.tags.map((tag) => (

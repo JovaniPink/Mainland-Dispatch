@@ -17,11 +17,11 @@ describe("Routing Around Risk Notebook registry", () => {
     expect(entry.claimAudit).toHaveLength(12);
     expect(entry.routes).toHaveLength(6);
     expect(entry.scaleMetrics).toHaveLength(6);
-    expect(entry.timeline).toHaveLength(10);
-    expect(entry.sourceTrail).toHaveLength(24);
+    expect(entry.timeline).toHaveLength(11);
+    expect(entry.sourceTrail).toHaveLength(26);
     expect(entry.editorialStatus).toBe("published");
     expect(entry.reviewState).toBe("source-reviewed");
-    expect(entry.updatedAt).toBe("2026-08-18");
+    expect(entry.updatedAt).toBe("2026-08-21");
   });
 
   it("keeps every route dated, sourced, and geographically bounded", () => {
@@ -72,6 +72,14 @@ describe("Routing Around Risk Notebook registry", () => {
         (metric) => metric.id === "scale-risk-nsr-transit"
       )?.display
     ).toBe("3.2 million");
+    expect(
+      entry.scaleMetrics.find((metric) => metric.id === "scale-risk-inventory")
+        ?.display
+    ).toBe("1.492 billion");
+    expect(
+      entry.scaleMetrics.find((metric) => metric.id === "scale-risk-nsr-total")
+        ?.display
+    ).toBe("37.02 million");
   });
 
   it("publishes corrections instead of laundering submitted numbers", () => {
@@ -92,6 +100,37 @@ describe("Routing Around Risk Notebook registry", () => {
       entry.claimAudit.find((item) => item.id === "audit-risk-bellona-counts")
         ?.assessment
     ).toMatch(/separate counts and years/i);
+  });
+
+  it("records current source corrections without promoting the evidence", () => {
+    expect(
+      entry.claimAudit.find((item) => item.id === "audit-risk-sts")?.assessment
+    ).toMatch(/Kpler data/i);
+    expect(
+      entry.claimAudit.find((item) => item.id === "audit-risk-arctic-schedule")
+        ?.assessment
+    ).toMatch(/Dubai Tower departed on August 15/i);
+    expect(
+      entry.claimAudit.find((item) => item.id === "audit-risk-arctic-schedule")
+        ?.assessment
+    ).toMatch(/does not establish arrival, completed Arctic transit/i);
+    expect(
+      entry.timeline.find((item) => item.date === "2026-02-28")?.explanation
+    ).toMatch(/14\.9 million b\/d.*4\.9 million b\/d/i);
+    expect(
+      entry.sourceTrail.find(
+        (source) => source.id === "notebook-source-risk-global-times-sea-legend"
+      )?.publisher
+    ).toBe("Global Times");
+    expect(
+      entry.sourceTrail.find(
+        (source) => source.id === "notebook-source-risk-zhoushan-departure"
+      )?.publisher
+    ).toBe("Zhoushan Municipal People's Government");
+    expect(
+      entry.timeline.find((item) => item.date === "2026-08-15")?.explanation
+    ).toMatch(/arrival, completed Arctic transit.*are not/i);
+    expect(entry.reviewState).toBe("source-reviewed");
   });
 
   it("publishes Notebook Four as the latest registry entry", () => {
