@@ -12,6 +12,11 @@ Archive selection, sitemap record, public Dispatch, or Desk record
 **Source ceiling:** 24 reviewed stops; platform mirrors are not additional
 factual sources
 
+**Link audit:** 56 unique external destinations checked on August 21, 2026; 55
+resolved directly or through browser verification, while the New York Times
+publisher transcript remained access-limited. The ledger's relative link to the
+commission also resolved locally.
+
 ## Editorial question and working answer
 
 How does China's renewed manufacturing and export expansion travel through the
@@ -234,8 +239,9 @@ original publisher, method, date, and claim boundary can be recovered.
 4. **A current-account surplus is not a chokepoint index.** China could reduce
    its aggregate surplus while retaining or increasing leverage in batteries,
    processed minerals, industrial components, shipping, or digital
-   infrastructure. Notebook Five should measure flows; Notebook Four's risk
-   logic is the better home for concentration and coercion.
+   infrastructure. Inquiry 05 should measure flows; [Inquiry 04, “Routing
+   Around Risk”](https://mainlanddispatch.com/notebook/routing-around-risk) is
+   the better home for concentration and coercion.
 5. **National totals do not determine local outcomes.** Aggregate output,
    productivity, prices, and welfare can improve while particular workers,
    suppliers, or regions lose income, investment, or political stability. The
@@ -248,7 +254,9 @@ original publisher, method, date, and claim boundary can be recovered.
 
 This review sharpens the Notebook's conceptual stack:
 
-`capability stock (Notebook Three) -> macro flow (Notebook Five) -> destination exposure -> local adjustment`
+[Inquiry 03](https://mainlanddispatch.com/notebook/dominance-is-a-dashboard)
+measures capability stock; proposed Inquiry 05 traces macro flow, destination
+exposure, and local adjustment.
 
 Supply-chain concentration and coercive leverage intersect with that stack but
 are not derived from the current-account balance. They require their own
@@ -449,22 +457,22 @@ creates a new distributional conflict.
 
 ## Claim decisions
 
-| Proposed claim                                                               | Decision               | Publication boundary                                                                                                         |
-| ---------------------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| A renewed Chinese export surge is occurring from a much larger base.         | Retain                 | Show the Fed's exact periods and separate export share, surplus dollars, and rest-of-world-GDP denominator.                  |
-| China Shock 2.0 has one cause: state subsidies.                              | Exclude                | Present productivity, innovation, demand, finance, industrial policy, import substitution, and currency channels separately. |
-| Chinese households are among those absorbing the adjustment.                 | Retain                 | Tie the claim to weak consumption, property exposure, precautionary saving, and specific social-policy evidence.             |
-| China has no social safety net.                                              | Exclude                | Replace the absolute with component-specific comparative evidence.                                                           |
-| China has economy-wide excess capacity.                                      | Qualify                | Use sector, capacity, utilization, demand, price, profit, and trade evidence; include MOFCOM's objection.                    |
-| China's currency is deliberately held 16%–30% undervalued.                   | Qualify                | Attribute each estimate and method; do not merge IMF and Setser/Tordoir claims.                                              |
-| Germany's 3% GDP net-export loss since 2023 was caused by China.             | Qualify                | Attribute the CER argument and present IMF/Bundesbank multi-causal assessments alongside it.                                 |
-| Cheap Chinese clean technology only threatens foreign economies.             | Exclude                | Include price, input, adoption, climate, displacement, concentration, and security channels.                                 |
-| Manufacturing output proves manufacturing workers were not harmed.           | Exclude                | Output, productivity, hours, employment, wages, and local exposure remain separate.                                          |
-| The first China shock proves the second will repeat its exact labor effects. | Exclude                | Use the first episode to establish plausible adjustment mechanisms and research questions, not a forecast.                   |
-| Targeted tariffs can raise domestic production in affected sectors.          | Retain                 | Preserve USITC's 2018–21 affected-sector scope and accompanying price effects.                                               |
-| Tariffs reliably eliminate aggregate current-account deficits.               | Exclude                | IMF finds effects modest and uncertain; saving and investment remain controlling macro identities.                           |
-| Industrial policy is either always necessary or always wasteful.             | Exclude                | Evaluate the target failure, discipline, spillovers, opportunity cost, and evidence by instrument.                           |
-| AI and software constitute China Shock 3.0 today.                            | Exclude as observation | May appear only as a scenario with triggers, disconfirming evidence, and explicit links to Notebooks Two and Three.          |
+| Proposed claim                                                               | Decision               | Publication boundary                                                                                                                                                                                                                                       |
+| ---------------------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A renewed Chinese export surge is occurring from a much larger base.         | Retain                 | Show the Fed's exact periods and separate export share, surplus dollars, and rest-of-world-GDP denominator.                                                                                                                                                |
+| China Shock 2.0 has one cause: state subsidies.                              | Exclude                | Present productivity, innovation, demand, finance, industrial policy, import substitution, and currency channels separately.                                                                                                                               |
+| Chinese households are among those absorbing the adjustment.                 | Retain                 | Tie the claim to weak consumption, property exposure, precautionary saving, and specific social-policy evidence.                                                                                                                                           |
+| China has no social safety net.                                              | Exclude                | Replace the absolute with component-specific comparative evidence.                                                                                                                                                                                         |
+| China has economy-wide excess capacity.                                      | Qualify                | Use sector, capacity, utilization, demand, price, profit, and trade evidence; include MOFCOM's objection.                                                                                                                                                  |
+| China's currency is deliberately held 16%–30% undervalued.                   | Qualify                | Attribute each estimate and method; do not merge IMF and Setser/Tordoir claims.                                                                                                                                                                            |
+| Germany's 3% GDP net-export loss since 2023 was caused by China.             | Qualify                | Attribute the CER argument and present IMF/Bundesbank multi-causal assessments alongside it.                                                                                                                                                               |
+| Cheap Chinese clean technology only threatens foreign economies.             | Exclude                | Include price, input, adoption, climate, displacement, concentration, and security channels.                                                                                                                                                               |
+| Manufacturing output proves manufacturing workers were not harmed.           | Exclude                | Output, productivity, hours, employment, wages, and local exposure remain separate.                                                                                                                                                                        |
+| The first China shock proves the second will repeat its exact labor effects. | Exclude                | Use the first episode to establish plausible adjustment mechanisms and research questions, not a forecast.                                                                                                                                                 |
+| Targeted tariffs can raise domestic production in affected sectors.          | Retain                 | Preserve USITC's 2018–21 affected-sector scope and accompanying price effects.                                                                                                                                                                             |
+| Tariffs reliably eliminate aggregate current-account deficits.               | Exclude                | IMF finds effects modest and uncertain; saving and investment remain controlling macro identities.                                                                                                                                                         |
+| Industrial policy is either always necessary or always wasteful.             | Exclude                | Evaluate the target failure, discipline, spillovers, opportunity cost, and evidence by instrument.                                                                                                                                                         |
+| AI and software constitute China Shock 3.0 today.                            | Exclude as observation | May appear only as a scenario with triggers, disconfirming evidence, and explicit links to [Inquiry 02](https://mainlanddispatch.com/notebook/open-models-closed-system) and [Inquiry 03](https://mainlanddispatch.com/notebook/dominance-is-a-dashboard). |
 
 ## Reader questions derived from Reddit
 

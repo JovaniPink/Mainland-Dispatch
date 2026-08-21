@@ -47,15 +47,25 @@ the costs shifted abroad.
 
 ## Relationship to existing Notebooks
 
-Notebook Three, “Dominance Is a Dashboard, Not a Crown,” measures separate
-capabilities without producing a composite winner. Notebook Five would explain
-how one capability—industrial scale—can become external adjustment pressure.
-It must link to Notebook Three rather than duplicate its power metrics.
+[Inquiry 03, “Dominance Is a Dashboard, Not a
+Crown”](https://mainlanddispatch.com/notebook/dominance-is-a-dashboard)
+measures separate capabilities without producing a composite winner. Inquiry
+05 would explain how one capability—industrial scale—can become external
+adjustment pressure. It must link to Inquiry 03 rather than duplicate its power
+metrics.
 
-Notebook Two remains the source for open-model context. A concluding “China
-Shock 3.0” section may describe AI and software competition only as an
-explicitly labeled scenario. Near-peer benchmark results are not evidence that
-an observed software labor-market shock has already occurred.
+[Inquiry 02, “Open Models, Closed
+System?”](https://mainlanddispatch.com/notebook/open-models-closed-system)
+remains the source for open-model context. A concluding “China Shock 3.0”
+section may describe AI and software competition only as an explicitly labeled
+scenario. Near-peer benchmark results are not evidence that an observed
+software labor-market shock has already occurred.
+
+[Inquiry 04, “Routing Around
+Risk”](https://mainlanddispatch.com/notebook/routing-around-risk) supplies the
+adjacent concentration and coercion-risk framework. Inquiry 05 should link to
+it when discussing chokepoints or diversification, rather than treating a
+current-account surplus as a supply-chain risk index.
 
 ## Claim decisions
 
@@ -101,7 +111,7 @@ Approval of the completed ledger would authorize:
 - one policy matrix that identifies the target problem, mechanism, payer,
   tradeoff, time horizon, evidence status, and remaining uncertainty;
 - one static public route at `/notebook/who-absorbs-the-shock` with internal
-  links to Notebooks Two and Three;
+  links to Inquiries 02, 03, and 04;
 - consent-gated publisher audio with request disclosure, real load/error/retry
   and unload behavior, and no request before consent; and
 - homepage, Archive, sitemap, canonical, social metadata, JSON-LD, tests, and
