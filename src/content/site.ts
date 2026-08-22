@@ -35,25 +35,36 @@ export const kindLabels: Record<string, string> = {
   original: "Original",
 };
 
+const monthLabels = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+] as const;
+
+function dateParts(iso: string) {
+  const [year, month, day] = iso.split("-");
+  const monthLabel = monthLabels[Number(month) - 1];
+  if (!year || !day || !monthLabel) {
+    throw new Error(`Expected an ISO date, received: ${iso}`);
+  }
+  return { year, month: monthLabel, day };
+}
+
 export function formatDate(iso: string): string {
-  const d = new Date(iso + "T00:00:00Z");
-  return d
-    .toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      timeZone: "UTC",
-    })
-    .toUpperCase();
+  const date = dateParts(iso);
+  return `${date.day} ${date.month} ${date.year}`;
 }
 
 export function formatDateShort(iso: string): string {
-  const d = new Date(iso + "T00:00:00Z");
-  return d
-    .toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      timeZone: "UTC",
-    })
-    .toUpperCase();
+  const date = dateParts(iso);
+  return `${date.day} ${date.month}`;
 }
