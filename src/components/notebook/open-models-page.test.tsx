@@ -174,6 +174,7 @@ describe("Open Models, Closed System Notebook", () => {
     );
     render(<OpenModelsClosedSystemPage />);
 
+    fireEvent.click(screen.getByRole("button", { name: "Share" }));
     const linkedInLinks = screen.getAllByRole("link", { name: "linkedin" });
     await waitFor(() => {
       expect(linkedInLinks[0].getAttribute("href")).toContain(
