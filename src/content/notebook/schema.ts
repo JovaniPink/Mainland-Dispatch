@@ -260,6 +260,13 @@ const NotebookBaseSchema = z.object({
   title: nonEmpty,
   subtitle: nonEmpty,
   description: nonEmpty,
+  thesis: nonEmpty,
+  frontPagePreview: z.object({
+    finding: nonEmpty,
+    status: NotebookEvidenceStatusSchema,
+    caveat: nonEmpty,
+    sourceIds: z.array(sourceId).min(1).max(2),
+  }),
   publishedAt: isoDate,
   updatedAt: isoDate,
   readTime: nonEmpty,
@@ -288,7 +295,6 @@ const ArgumentNotebookSchema = NotebookBaseSchema.extend({
 
 const EvidenceWatchNotebookSchema = NotebookBaseSchema.extend({
   variant: z.literal("evidence-watch"),
-  thesis: nonEmpty,
   audio: NotebookAudioSchema,
   claimAudit: z.array(NotebookClaimAuditSchema).min(1),
   watchItems: z.array(NotebookWatchItemSchema).length(6),
@@ -305,7 +311,6 @@ const EvidenceWatchNotebookSchema = NotebookBaseSchema.extend({
 
 const PowerBalanceNotebookSchema = NotebookBaseSchema.extend({
   variant: z.literal("power-balance"),
-  thesis: nonEmpty,
   audio: NotebookAudioSchema,
   claimAudit: z.array(NotebookClaimAuditSchema).min(1),
   comparisons: z.array(NotebookComparisonMetricSchema).min(6),
@@ -326,7 +331,6 @@ const PowerBalanceNotebookSchema = NotebookBaseSchema.extend({
 
 const MaritimeRiskNotebookSchema = NotebookBaseSchema.extend({
   variant: z.literal("maritime-risk"),
-  thesis: nonEmpty,
   claimAudit: z.array(NotebookClaimAuditSchema).min(6),
   routes: z.array(NotebookMaritimeRouteSchema).min(5),
   scaleMetrics: z.array(NotebookScaleMetricSchema).min(4),
@@ -387,6 +391,7 @@ export const NotebookEntrySchema = z
 
     const knownSources = new Set(entry.sourceTrail.map((source) => source.id));
     const references = [
+      ...entry.frontPagePreview.sourceIds,
       ...entry.turningPoints.flatMap((point) => point.sourceIds),
       ...(entry.variant === "evidence-watch"
         ? [

@@ -6,10 +6,10 @@ import { TodayDate } from "./today-date";
 export function Masthead() {
   return (
     <header className="border-b border-rule">
-      <div className="flex items-baseline justify-between gap-4 px-4 py-5 sm:px-6">
+      <div className="flex items-baseline justify-between gap-2 px-4 py-5 sm:gap-4 sm:px-6">
         <Link
           href="/"
-          className="font-serif text-2xl font-semibold tracking-tight sm:text-3xl"
+          className="whitespace-nowrap font-serif text-[clamp(1rem,5.5vw,1.5rem)] font-semibold tracking-tight sm:text-3xl"
         >
           {site.name.toUpperCase()}
         </Link>
@@ -21,8 +21,14 @@ export function Masthead() {
           <ThemeToggle />
         </div>
       </div>
-      <nav className="chip-row overflow-x-auto border-t border-rule px-4 sm:px-6">
-        <ul className="flex gap-6 py-2.5 whitespace-nowrap">
+      <p className="border-t border-rule px-4 py-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-ink-muted sm:px-6">
+        Understand the argument. Follow the evidence.
+      </p>
+      <nav
+        aria-label="Primary"
+        className="chip-row overflow-x-auto border-t border-rule px-4 sm:px-6"
+      >
+        <ul className="flex gap-5 py-2.5 whitespace-nowrap sm:gap-6">
           {site.nav.map((item) => (
             <li key={item.label}>
               <Link
