@@ -12,6 +12,19 @@ export const whatXiJinpingWants = parseNotebookEntry({
     "Following Kevin Rudd’s argument into its sources, complications, and unresolved questions.",
   description:
     "A public research notebook on Kevin Rudd’s model of Xi Jinping: what it explains, where the evidence stops, and why 2027, 2028, and 2049 are not the same claim.",
+  thesis:
+    "Xi Jinping's ideological language deserves to be treated as part of the machinery of rule, not dismissed as ceremony. It is still a disciplined hypothesis rather than a master key: public doctrine, institutional action, observed outcomes, and imagined futures must remain separate layers of evidence.",
+  frontPagePreview: {
+    finding:
+      "The strongest reading treats ideology as an operating framework while keeping the 2027 readiness benchmark, the 2028 miscalculation scenario, and the 2049 political horizon as different claims.",
+    status: "interpretation",
+    caveat:
+      "The model competes with explanations centered on regime security, bureaucratic incentives, nationalism, corruption, and material constraint.",
+    sourceIds: [
+      "notebook-source-rudd-book-dissertation",
+      "notebook-source-cia-2027",
+    ],
+  },
   publishedAt: "2026-07-23",
   updatedAt: "2026-07-23",
   readTime: "14 min",

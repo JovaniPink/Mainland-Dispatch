@@ -17,6 +17,17 @@ export const routingAroundRisk = parseNotebookEntry({
     "An interactive, source-audited field guide to China's chokepoint portfolio: oil inventories, bypass pipelines, tanker handoffs, Red Sea exposure, and the seasonal Northern Sea Route.",
   thesis:
     "China is not escaping maritime chokepoints. It is distributing exposure across estimated oil inventories, pipeline capacity, offshore cargo handoffs, state-linked shipping, supplier diversity, and an announced seasonal Arctic container service. Those measures buy time and relocate risk; none replaces the energy function of Hormuz or the container scale of Suez.",
+  frontPagePreview: {
+    finding:
+      "China's deepest near-term buffer is estimated crude inventory on land; pipelines, tanker handoffs, passage arrangements, and a seasonal Arctic service relocate narrower parts of the exposure.",
+    status: "interpretation",
+    caveat:
+      "Inventory is estimated, pipeline capacity is not realized flow, and container sailings cannot be compared directly with Gulf energy volumes.",
+    sourceIds: [
+      "notebook-source-risk-eia-security",
+      "notebook-source-risk-unctad-suez",
+    ],
+  },
   publishedAt: "2026-08-18",
   updatedAt: "2026-08-21",
   readTime: "26 min",
