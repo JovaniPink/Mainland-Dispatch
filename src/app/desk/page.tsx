@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Composer } from "@/components/desk/composer";
+import { NotebookFiveAudioAudit } from "@/components/desk/notebook-five-audio-audit";
 import { ReviewQueue } from "@/components/desk/review-queue";
 import { SourceLeadInbox } from "@/components/desk/source-lead-inbox";
 
@@ -34,6 +35,7 @@ export default function DeskPage() {
       </header>
 
       <div className="mt-8 space-y-6">
+        <NotebookFiveAudioAudit />
         <Composer />
         <SourceLeadInbox />
         <ReviewQueue />
