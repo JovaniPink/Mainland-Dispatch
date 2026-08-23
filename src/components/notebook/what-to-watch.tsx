@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useSyncExternalStore } from "react";
-import { NotebookShare } from "@/components/notebook/notebook-share";
 import type { EvidenceWatchNotebookEntry } from "@/content/notebook/schema";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import {
@@ -277,15 +276,6 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
             </dd>
           </div>
         </dl>
-        <div className="mt-6 border-t border-rule pt-4">
-          <NotebookShare
-            title={`${entry.title}: ${selected.label}`}
-            path={`/notebook/${entry.slug}`}
-            campaign={entry.slug}
-            content={selected.id}
-            promiseId={selected.id}
-          />
-        </div>
       </article>
     </div>
   );

@@ -193,6 +193,16 @@ a {
   }
 }
 
+@media print {
+  .notebook-secondary-details > :not(summary) {
+    display: block !important;
+  }
+
+  .notebook-secondary-details > summary {
+    display: none;
+  }
+}
+
 /* Horizontally scrolling chip rows on mobile */
 .chip-row {
   scrollbar-width: none;
