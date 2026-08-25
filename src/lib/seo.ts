@@ -12,10 +12,11 @@ export function seoDescription(value: string, maxLength = 160): string {
   const normalized = value.replace(/\s+/g, " ").trim();
   if (normalized.length <= maxLength) return normalized;
 
-  const candidate = normalized.slice(0, maxLength - 1);
+  const suffix = "...";
+  const candidate = normalized.slice(0, maxLength - suffix.length);
   const boundary = candidate.lastIndexOf(" ");
   const cut = boundary > 110 ? boundary : candidate.length;
-  return `${candidate.slice(0, cut)}…`;
+  return `${candidate.slice(0, cut)}${suffix}`;
 }
 
 export function pageMetadata({

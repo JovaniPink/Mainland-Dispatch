@@ -3,13 +3,13 @@ import { publishedNotebookEntries } from ".";
 
 describe("Notebook front-page contract", () => {
   it("requires a thesis and source-resolved evidence preview for every public entry", () => {
-    expect(publishedNotebookEntries).toHaveLength(4);
+    expect(publishedNotebookEntries).toHaveLength(5);
 
     for (const entry of publishedNotebookEntries) {
       expect(entry.thesis.length).toBeGreaterThan(80);
       expect(entry.frontPagePreview.finding.length).toBeGreaterThan(40);
       expect(entry.frontPagePreview.caveat.length).toBeGreaterThan(20);
-      expect([1, 2]).toContain(entry.frontPagePreview.sourceIds.length);
+      expect([1, 2, 3]).toContain(entry.frontPagePreview.sourceIds.length);
 
       const sourceIds = new Set(entry.sourceTrail.map((source) => source.id));
       for (const sourceId of entry.frontPagePreview.sourceIds) {

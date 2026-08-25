@@ -1,10 +1,7 @@
 "use client";
 
 import { useMachine } from "@xstate/react";
-import type {
-  EvidenceWatchNotebookEntry,
-  PowerBalanceNotebookEntry,
-} from "@/content/notebook/schema";
+import type { NotebookAudio } from "@/content/notebook/schema";
 import { notebookAudioMachine } from "@/machines/notebook-audio-machine";
 
 export function NotebookAudioFacade({
@@ -12,8 +9,7 @@ export function NotebookAudioFacade({
   audio,
 }: {
   title: string;
-  audio:
-    EvidenceWatchNotebookEntry["audio"] | PowerBalanceNotebookEntry["audio"];
+  audio: NotebookAudio;
 }) {
   const [state, send] = useMachine(notebookAudioMachine);
   const loadAudio = state.matches("loading") || state.matches("playing");
@@ -58,7 +54,7 @@ export function NotebookAudioFacade({
                 rel="noreferrer"
                 className="font-mono text-[0.65rem] uppercase tracking-widest text-[#d8aaa5] hover:text-[#f3f0e8]"
               >
-                Open canonical episode ↗
+                Open canonical episode
               </a>
             </div>
           </div>
@@ -97,7 +93,7 @@ export function NotebookAudioFacade({
             aria-label={`Load external audio: ${title}`}
           >
             <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#9ab9af]">
-              Listen at source · consent required
+              Listen at source - consent required
             </span>
             <span
               id="notebook-audio-title"
@@ -106,10 +102,10 @@ export function NotebookAudioFacade({
               {title}
             </span>
             <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[#c9cec9]">
-              {audio.publisher} · {audio.duration} ·{" "}
+              {audio.publisher} - {audio.duration} -{" "}
               {audio.transcriptAvailable
                 ? "Publisher transcript available"
-                : "No publisher transcript available when reviewed July 28, 2026"}
+                : `No publisher transcript available when reviewed ${audio.reviewedAt}`}
             </span>
             <span className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest">
               Load external audio

@@ -46,7 +46,7 @@ export function NotebookFormats({ formats }: { formats: NotebookFormat[] }) {
           className="group flex min-w-0 flex-col border border-rule bg-paper-warm/35 p-4 hover:border-signal"
         >
           <span className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
-            {format.label} ↗
+            {format.label}
           </span>
           <strong className="mt-3 font-serif text-lg leading-snug group-hover:text-signal">
             {format.title}
@@ -84,7 +84,7 @@ export function NotebookSourceTrail({
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
-              {String(index + 1).padStart(2, "0")} · {source.role}
+              {String(index + 1).padStart(2, "0")} - {source.role}
             </p>
             <div className="flex flex-wrap gap-x-3 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
               {source.publishedAt && <span>{source.publishedAt}</span>}
@@ -97,7 +97,7 @@ export function NotebookSourceTrail({
             {source.title}
           </h3>
           <p className="mt-1 text-xs text-ink-muted">
-            {[source.author, source.publisher].filter(Boolean).join(" · ")}
+            {[source.author, source.publisher].filter(Boolean).join(" - ")}
           </p>
           <p className="mt-3 text-sm leading-6">{source.context}</p>
           {source.limitation && (
@@ -114,7 +114,7 @@ export function NotebookSourceTrail({
                 rel="noreferrer"
                 className="font-mono text-[0.65rem] uppercase tracking-widest text-signal hover:text-ink"
               >
-                {link.label} ↗
+                {link.label}
               </a>
             ))}
           </div>

@@ -9,6 +9,7 @@ import { publishedNotebookEntries } from "@/content/notebook";
 import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
 import { metadata as notebookThreeMetadata } from "@/app/notebook/dominance-is-a-dashboard/page";
 import { metadata as notebookFourMetadata } from "@/app/notebook/routing-around-risk/page";
+import { metadata as notebookSixMetadata } from "@/app/notebook/what-gets-through/page";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as atlasMetadata } from "@/app/atlas/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
@@ -21,7 +22,7 @@ describe("SEO publication contract", () => {
     const result = seoDescription(long);
 
     expect(result.length).toBeLessThanOrEqual(160);
-    expect(result.endsWith("…")).toBe(true);
+    expect(result.endsWith("...")).toBe(true);
     expect(seoDescription("  A   concise description. ")).toBe(
       "A concise description."
     );
@@ -108,6 +109,18 @@ describe("SEO publication contract", () => {
       publishedTime: "2026-08-18T00:00:00.000Z",
     });
     expect(JSON.stringify(notebookFourMetadata)).not.toContain("utm_");
+  });
+
+  it("publishes query-free article metadata for Inquiry Six", () => {
+    expect(notebookSixMetadata.alternates).toEqual({
+      canonical: `${siteUrl}/notebook/what-gets-through`,
+    });
+    expect(notebookSixMetadata.openGraph).toMatchObject({
+      type: "article",
+      url: `${siteUrl}/notebook/what-gets-through`,
+      publishedTime: "2026-08-25T00:00:00.000Z",
+    });
+    expect(JSON.stringify(notebookSixMetadata)).not.toContain("utm_");
   });
 
   it("publishes consistent crawler and application metadata", () => {

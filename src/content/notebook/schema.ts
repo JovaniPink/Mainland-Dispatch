@@ -33,6 +33,18 @@ const sourceDate = z
     );
   }, "expected a real source date");
 const sourceId = nonEmpty.regex(/^notebook-source-[a-z0-9]+(?:-[a-z0-9]+)*$/);
+const cleanHttpsUrl = z
+  .url()
+  .refine((value) => new URL(value).protocol === "https:", {
+    message: "expected an HTTPS URL",
+  })
+  .refine(
+    (value) =>
+      ![...new URL(value).searchParams.keys()].some((key) =>
+        key.toLowerCase().startsWith("utm_")
+      ),
+    { message: "tracking parameters are not allowed" }
+  );
 
 export const NotebookEvidenceStatusSchema = z.enum([
   "observed",
@@ -48,7 +60,7 @@ const NotebookFormatSchema = z.object({
   title: nonEmpty,
   publisher: nonEmpty,
   duration: nonEmpty.optional(),
-  url: z.url(),
+  url: cleanHttpsUrl,
   note: nonEmpty,
 });
 
@@ -66,7 +78,7 @@ const NotebookTurningPointSchema = z.object({
 
 const NotebookSourceLinkSchema = z.object({
   label: nonEmpty,
-  url: z.url(),
+  url: cleanHttpsUrl,
 });
 
 const NotebookTrailItemSchema = z.object({
@@ -142,12 +154,13 @@ const NotebookWatchItemSchema = z.object({
   updateState: NotebookWatchUpdateStateSchema,
 });
 
-const NotebookAudioSchema = z.object({
+export const NotebookAudioSchema = z.object({
   sourceId,
-  canonicalUrl: z.url(),
-  mediaUrl: z.url(),
+  canonicalUrl: cleanHttpsUrl,
+  mediaUrl: cleanHttpsUrl,
   publisher: nonEmpty,
   duration: nonEmpty,
+  reviewedAt: isoDate,
   transcriptAvailable: z.boolean(),
 });
 
@@ -254,6 +267,19 @@ const NotebookMaritimeTimelineItemSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+export const NotebookCirculationGateSchema = z.object({
+  id: nonEmpty.regex(/^gate-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  domain: z.enum(["trade", "culture", "memory"]),
+  subject: nonEmpty,
+  gatekeeper: nonEmpty,
+  admissionRule: nonEmpty,
+  observedMovement: nonEmpty,
+  outcome: nonEmpty,
+  status: NotebookEvidenceStatusSchema,
+  caveat: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -265,7 +291,7 @@ const NotebookBaseSchema = z.object({
     finding: nonEmpty,
     status: NotebookEvidenceStatusSchema,
     caveat: nonEmpty,
-    sourceIds: z.array(sourceId).min(1).max(2),
+    sourceIds: z.array(sourceId).min(1).max(3),
   }),
   publishedAt: isoDate,
   updatedAt: isoDate,
@@ -347,12 +373,28 @@ const MaritimeRiskNotebookSchema = NotebookBaseSchema.extend({
   }),
 });
 
+const CirculationGatesNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("circulation-gates"),
+  audio: NotebookAudioSchema,
+  claimAudit: z.array(NotebookClaimAuditSchema).min(9),
+  gates: z.array(NotebookCirculationGateSchema).length(3),
+  sections: z.object({
+    lens: z.array(nonEmpty).min(1),
+    trade: z.array(nonEmpty).min(1),
+    culture: z.array(nonEmpty).min(1),
+    memory: z.array(nonEmpty).min(1),
+    limits: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+});
+
 export const NotebookEntrySchema = z
   .discriminatedUnion("variant", [
     ArgumentNotebookSchema,
     EvidenceWatchNotebookSchema,
     PowerBalanceNotebookSchema,
     MaritimeRiskNotebookSchema,
+    CirculationGatesNotebookSchema,
   ])
   .superRefine((entry, ctx) => {
     if (entry.updatedAt < entry.publishedAt) {
@@ -423,7 +465,13 @@ export const NotebookEntrySchema = z
                 ...entry.scaleMetrics.flatMap((item) => item.sourceIds),
                 ...entry.timeline.flatMap((item) => item.sourceIds),
               ]
-            : []),
+            : entry.variant === "circulation-gates"
+              ? [
+                  entry.audio.sourceId,
+                  ...entry.claimAudit.flatMap((item) => item.sourceIds),
+                  ...entry.gates.flatMap((gate) => gate.sourceIds),
+                ]
+              : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -555,6 +603,24 @@ export const NotebookEntrySchema = z
         }
       }
     }
+
+    if (entry.variant === "circulation-gates") {
+      checkUnique(
+        entry.claimAudit.map((item) => item.id),
+        ["claimAudit"],
+        "claim-audit IDs must be unique"
+      );
+      checkUnique(
+        entry.gates.map((gate) => gate.id),
+        ["gates"],
+        "gate IDs must be unique"
+      );
+      checkUnique(
+        entry.gates.map((gate) => gate.domain),
+        ["gates"],
+        "gate domains must be unique"
+      );
+    }
   });
 
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
@@ -574,10 +640,28 @@ export type MaritimeRiskNotebookEntry = Extract<
   NotebookEntry,
   { variant: "maritime-risk" }
 >;
+export type CirculationGatesNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "circulation-gates" }
+>;
+export type NotebookCirculationGate = z.infer<
+  typeof NotebookCirculationGateSchema
+>;
+export type NotebookAudio = z.infer<typeof NotebookAudioSchema>;
 export type NotebookEvidenceStatus = z.infer<
   typeof NotebookEvidenceStatusSchema
 >;
 
 export function parseNotebookEntry(value: unknown): NotebookEntry {
   return NotebookEntrySchema.parse(value);
+}
+
+export function parseCirculationGatesNotebookEntry(
+  value: unknown
+): CirculationGatesNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "circulation-gates") {
+    throw new Error("expected a circulation-gates Notebook entry");
+  }
+  return entry;
 }

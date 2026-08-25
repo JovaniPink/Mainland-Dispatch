@@ -91,8 +91,9 @@ describe("Open Models, Closed System Notebook registry", () => {
       "open-models-closed-system",
       "dominance-is-a-dashboard",
       "routing-around-risk",
+      "what-gets-through",
     ]);
-    expect(latestNotebookEntry.slug).toBe("routing-around-risk");
+    expect(latestNotebookEntry.slug).toBe("what-gets-through");
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

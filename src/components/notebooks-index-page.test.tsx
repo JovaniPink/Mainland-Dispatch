@@ -9,9 +9,9 @@ describe("Notebooks index", () => {
       screen.getByRole("heading", { level: 1, name: "Notebooks" })
     ).toBeInTheDocument();
     expect(screen.getByTestId("notebook-index-latest")).toHaveTextContent(
-      "Routing Around Risk"
+      "What Gets Through?"
     );
-    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(4);
+    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(5);
     expect(
       screen.queryByText("Who Absorbs the Shock?")
     ).not.toBeInTheDocument();

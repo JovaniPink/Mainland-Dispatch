@@ -2,7 +2,7 @@
 
 function formatToday(): string {
   return new Date()
-    .toLocaleDateString("en-GB", {
+    .toLocaleDateString("en-US", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -17,7 +17,7 @@ export function TodayDate() {
       dateTime={new Date().toISOString().slice(0, 10)}
       suppressHydrationWarning
     >
-      {formatToday()} ·{" "}
+      {formatToday()} -{" "}
     </time>
   );
 }
