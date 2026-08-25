@@ -140,6 +140,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       "https://ondemand.npr.org/anon.npr-mp3/npr/specials/2026/08/20260812_specials_has_the_u.s._lost_its_dominance_to_china.mp3?t=fullprog&e=g-s1-138410&p=13&seg=0&d=2669&size=42710040&sc=siteplayer&aw_0_1st.playerid=siteplayer",
     publisher: "NPR",
     duration: "44:29",
+    reviewedAt: "2026-08-14",
     transcriptAvailable: true,
   },
   claimAudit: [

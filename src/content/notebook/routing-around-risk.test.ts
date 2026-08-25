@@ -139,8 +139,9 @@ describe("Routing Around Risk Notebook registry", () => {
       "open-models-closed-system",
       "dominance-is-a-dashboard",
       "routing-around-risk",
+      "what-gets-through",
     ]);
-    expect(latestNotebookEntry.slug).toBe(entry.slug);
+    expect(latestNotebookEntry.slug).toBe("what-gets-through");
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

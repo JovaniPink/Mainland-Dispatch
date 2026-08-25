@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import DominanceIsADashboardPage from "@/app/notebook/dominance-is-a-dashboard/page";
 import OpenModelsClosedSystemPage from "@/app/notebook/open-models-closed-system/page";
 import RoutingAroundRiskPage from "@/app/notebook/routing-around-risk/page";
+import WhatGetsThroughPage from "@/app/notebook/what-gets-through/page";
 import WhatXiJinpingWantsPage from "@/app/notebook/what-xi-jinping-wants/page";
 
 const pages = [
@@ -9,6 +10,7 @@ const pages = [
   ["Inquiry 02", OpenModelsClosedSystemPage],
   ["Inquiry 03", DominanceIsADashboardPage],
   ["Inquiry 04", RoutingAroundRiskPage],
+  ["Inquiry 06", WhatGetsThroughPage],
 ] as const;
 
 describe("published Notebook reader routes", () => {

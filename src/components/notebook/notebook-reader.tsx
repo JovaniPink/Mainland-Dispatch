@@ -141,7 +141,7 @@ export function NotebookReaderShell({
       <header className="rise-in border-b border-rule px-4 py-7 sm:px-6 sm:py-12">
         <div className="max-w-5xl">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">
-            Notebook · Inquiry {String(ordinal).padStart(2, "0")}
+            Notebook - Inquiry {String(ordinal).padStart(2, "0")}
           </p>
           <h1 className="mt-3 max-w-5xl font-serif text-4xl leading-[1.05] sm:text-6xl">
             {title}
@@ -169,13 +169,13 @@ export function NotebookReaderShell({
             className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted"
           >
             <span>{formatDate(publishedAt)}</span>
-            <span aria-hidden>·</span>
+            <span aria-hidden>-</span>
             <span>{readTime}</span>
-            <span aria-hidden>·</span>
+            <span aria-hidden>-</span>
             <span>{editorialLabel}</span>
             {updatedAt !== publishedAt && (
               <>
-                <span aria-hidden>·</span>
+                <span aria-hidden>-</span>
                 <span>Current through {formatDate(updatedAt)}</span>
               </>
             )}

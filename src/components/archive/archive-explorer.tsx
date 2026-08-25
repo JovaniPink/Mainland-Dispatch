@@ -220,7 +220,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
           href={`/notebook/${entry.slug}`}
           className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
         >
-          Open the inquiry ↗
+          Open the inquiry
         </Link>
       </div>
 
@@ -238,7 +238,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
           className="hidden text-center font-mono text-xl text-signal lg:block"
           aria-hidden
         >
-          →
+          -&gt;
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
           {entry.turningPoints.map((point) => (
@@ -257,7 +257,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
 
       <div className="mt-5 border-t border-rule pt-4">
         <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
-          Evidence trail · {entry.sourceTrail.length} source stops
+          Evidence trail - {entry.sourceTrail.length} source stops
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {entry.sourceTrail.map((source) => (
@@ -338,7 +338,7 @@ function PublishedRelationshipMap({
           </h3>
           <p className="mt-3 text-xs leading-5 text-ink-muted">
             {focus.claims.length} classified{" "}
-            {focus.claims.length === 1 ? "claim" : "claims"} ·{" "}
+            {focus.claims.length === 1 ? "claim" : "claims"} -{" "}
             {focus.supportingSources.length + 1} cited{" "}
             {focus.supportingSources.length === 0 ? "source" : "sources"}
           </p>
@@ -357,7 +357,7 @@ function PublishedRelationshipMap({
           className="hidden text-center font-mono text-xl text-jade lg:block"
           aria-hidden
         >
-          ↔
+          &lt;-&gt;
         </div>
         <div>
           <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
@@ -648,7 +648,7 @@ export function ArchiveExplorer() {
           <input
             type="search"
             value={context.query}
-            placeholder="Sources, claims, people, places…"
+            placeholder="Sources, claims, people, places..."
             onChange={(event) =>
               dispatch({ type: "SEARCH", query: event.target.value })
             }
@@ -773,7 +773,7 @@ export function ArchiveExplorer() {
                   }
                   className="border border-signal bg-signal-soft/30 px-2 py-1.5 font-mono text-[0.6rem] uppercase tracking-widest text-signal hover:bg-signal-soft/60"
                 >
-                  {item.label} ×
+                  {item.label} x
                 </button>
               ))}
             </div>
@@ -826,7 +826,7 @@ export function ArchiveExplorer() {
               >
                 {publishedNotebookEntries.map((entry) => (
                   <option key={entry.slug} value={entry.slug}>
-                    Inquiry {String(entry.ordinal).padStart(2, "0")} ·{" "}
+                    Inquiry {String(entry.ordinal).padStart(2, "0")} -{" "}
                     {entry.title}
                   </option>
                 ))}

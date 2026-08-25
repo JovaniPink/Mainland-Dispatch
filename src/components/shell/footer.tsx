@@ -7,7 +7,7 @@ export function Footer() {
         {site.principle}
       </p>
       <p className="mt-4 font-mono text-xs uppercase tracking-widest text-ink-muted">
-        {site.name} · {site.volume}
+        {site.name} - {site.volume}
       </p>
     </footer>
   );

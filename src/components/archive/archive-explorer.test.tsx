@@ -35,6 +35,16 @@ describe("ArchiveExplorer publication boundary and views", () => {
     expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
       "dominance-is-a-dashboard"
     );
+    expect(
+      screen.getByRole("option", {
+        name: "Inquiry 06 - What Gets Through?",
+      })
+    ).toHaveValue("what-gets-through");
+    expect(
+      screen.queryByRole("option", {
+        name: /Inquiry 05|Who Absorbs the Shock/i,
+      })
+    ).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Notebook inquiry"), {
       target: { value: "what-xi-jinping-wants" },

@@ -6,18 +6,18 @@ describe("edition front page", () => {
     render(<HomePage />);
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Routing Around Risk" })
+      screen.getByRole("heading", { level: 1, name: "What Gets Through?" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Read the inquiry" })
-    ).toHaveAttribute("href", "/notebook/routing-around-risk");
+    ).toHaveAttribute("href", "/notebook/what-gets-through");
     expect(
       screen.getByRole("link", { name: "Examine the sources" })
-    ).toHaveAttribute("href", "/notebook/routing-around-risk#sources");
+    ).toHaveAttribute("href", "/notebook/what-gets-through#sources");
 
     const preview = screen.getByTestId("latest-evidence-preview");
     expect(within(preview).getByText("Interpretation")).toBeInTheDocument();
-    expect(within(preview).getAllByRole("link")).toHaveLength(2);
+    expect(within(preview).getAllByRole("link")).toHaveLength(3);
   });
 
   it("shows exactly two previous inquiries before the Archive and mission statement", () => {
@@ -26,10 +26,10 @@ describe("edition front page", () => {
     const previous = screen.getByTestId("previous-inquiries");
     expect(within(previous).getAllByRole("article")).toHaveLength(2);
     expect(
-      within(previous).getByText("Dominance Is a Dashboard, Not a Crown")
+      within(previous).getByText("Routing Around Risk")
     ).toBeInTheDocument();
     expect(
-      within(previous).getByText("Open Models, Closed System?")
+      within(previous).getByText("Dominance Is a Dashboard, Not a Crown")
     ).toBeInTheDocument();
 
     const archive = screen.getByTestId("home-archive-preview");

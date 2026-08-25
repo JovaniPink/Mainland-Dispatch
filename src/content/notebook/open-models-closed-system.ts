@@ -132,6 +132,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       "https://cdn.simplecast.com/media/audio/transcoded/8ba8b7ea-ada5-4d43-b4dd-cd106ac3d384/c74926bb-1945-46fc-a842-2ee2b1458a55/episodes/audio/group/e3039219-510f-4e98-917e-b39ba241836d/group-item/e359f4a4-1dd2-4ae2-af0e-ad8a94cc1e95/128_default_tc.mp3",
     publisher: "China Insider · Hudson Institute",
     duration: "36:58",
+    reviewedAt: "2026-07-28",
     transcriptAvailable: false,
   },
   sections: {
