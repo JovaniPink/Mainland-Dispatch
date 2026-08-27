@@ -30,7 +30,7 @@ describe("What Gets Through Notebook page", () => {
     expect(figure).toHaveTextContent("Official position");
   });
 
-  it("publishes corrections, the source trail, and no Inquiry 05 teaser", () => {
+  it("publishes corrections, the source trail, and an Inquiry 05 link", () => {
     render(<WhatGetsThroughPage />);
 
     expect(screen.getAllByText("Corrected").length).toBeGreaterThan(0);
@@ -41,11 +41,8 @@ describe("What Gets Through Notebook page", () => {
       screen.getByRole("heading", { name: /source trail and review boundary/i })
     ).toBeInTheDocument();
     expect(
-      screen.queryByText("Who Absorbs the Shock?")
-    ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: "Read Inquiry 04" })
-    ).toHaveAttribute("href", "/notebook/routing-around-risk");
+      screen.getByRole("link", { name: "Read Inquiry 05" })
+    ).toHaveAttribute("href", "/notebook/who-absorbs-the-shock");
   });
 
   it("keeps Simplecast private until consent and exposes every audio state", () => {
@@ -103,7 +100,7 @@ describe("What Gets Through Notebook page", () => {
     expect(sitemap().map((item) => item.url)).toContain(
       "https://mainlanddispatch.com/notebook/what-gets-through"
     );
-    expect(sitemap().map((item) => item.url)).not.toContain(
+    expect(sitemap().map((item) => item.url)).toContain(
       "https://mainlanddispatch.com/notebook/who-absorbs-the-shock"
     );
   });

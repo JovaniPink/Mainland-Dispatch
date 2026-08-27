@@ -133,12 +133,13 @@ describe("Routing Around Risk Notebook registry", () => {
     expect(entry.reviewState).toBe("source-reviewed");
   });
 
-  it("publishes Notebook Four as the latest registry entry", () => {
+  it("keeps Notebook Four in the complete published registry", () => {
     expect(publishedNotebookEntries.map((item) => item.slug)).toEqual([
       "what-xi-jinping-wants",
       "open-models-closed-system",
       "dominance-is-a-dashboard",
       "routing-around-risk",
+      "who-absorbs-the-shock",
       "what-gets-through",
     ]);
     expect(latestNotebookEntry.slug).toBe("what-gets-through");

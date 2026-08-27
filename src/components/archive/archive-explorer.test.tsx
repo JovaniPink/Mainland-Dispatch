@@ -41,10 +41,10 @@ describe("ArchiveExplorer publication boundary and views", () => {
       })
     ).toHaveValue("what-gets-through");
     expect(
-      screen.queryByRole("option", {
-        name: /Inquiry 05|Who Absorbs the Shock/i,
+      screen.getByRole("option", {
+        name: "Inquiry 05 - Who Absorbs the Shock?",
       })
-    ).not.toBeInTheDocument();
+    ).toHaveValue("who-absorbs-the-shock");
 
     fireEvent.change(screen.getByLabelText("Notebook inquiry"), {
       target: { value: "what-xi-jinping-wants" },

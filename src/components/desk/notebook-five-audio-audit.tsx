@@ -291,16 +291,17 @@ export function NotebookFiveAudioAudit() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-jade">
-            Withheld commission · manual evidence work
+            Published inquiry · retained audit worksheet
           </p>
           <h2 className="mt-2 font-serif text-2xl leading-tight">
             Notebook Five audio audit
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-muted">
-            Complete the six required passages for The Ezra Klein Show’s “The
-            China Shock 2.0.” This Desk worksheet does not load audio, embed a
-            player, or make a third-party request. Operate the publisher audio
-            separately and enter its displayed elapsed time below.
+            Notebook Five was published after all six required passages were
+            audited against The Ezra Klein Show&apos;s &quot;The China Shock
+            2.0.&quot; This local Desk worksheet remains available for follow-up
+            review. It does not load audio, embed a player, or make a
+            third-party request.
           </p>
         </div>
         <div className="border border-rule bg-paper-warm/50 px-3 py-2 text-right font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">

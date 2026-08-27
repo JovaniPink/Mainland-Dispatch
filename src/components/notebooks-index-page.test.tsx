@@ -11,10 +11,8 @@ describe("Notebooks index", () => {
     expect(screen.getByTestId("notebook-index-latest")).toHaveTextContent(
       "What Gets Through?"
     );
-    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(5);
-    expect(
-      screen.queryByText("Who Absorbs the Shock?")
-    ).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(6);
+    expect(screen.getByText("Who Absorbs the Shock?")).toBeInTheDocument();
   });
 
   it("publishes canonical and social metadata", () => {

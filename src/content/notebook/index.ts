@@ -8,6 +8,7 @@ import {
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { routingAroundRisk } from "@/content/notebook/routing-around-risk";
 import { whatGetsThrough } from "@/content/notebook/what-gets-through";
+import { whoAbsorbsTheShock } from "@/content/notebook/who-absorbs-the-shock";
 
 const NotebookRegistrySchema = z
   .array(NotebookEntrySchema)
@@ -44,6 +45,7 @@ export const notebookEntries = parseNotebookRegistry([
   openModelsClosedSystem,
   dominanceIsADashboard,
   routingAroundRisk,
+  whoAbsorbsTheShock,
   whatGetsThrough,
 ]).sort((a, b) => a.ordinal - b.ordinal);
 
