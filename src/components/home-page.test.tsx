@@ -2,17 +2,50 @@ import { render, screen, within } from "@testing-library/react";
 import HomePage from "@/app/page";
 
 describe("edition front page", () => {
-  it("leads with the latest inquiry and its reviewed evidence preview", () => {
+  it("orients a new reader before presenting the latest inquiry", () => {
     render(<HomePage />);
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "What Gets Through?" })
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Contemporary China, examined in public.",
+      })
     ).toBeInTheDocument();
+
+    const introduction = screen.getByTestId("home-introduction");
+    const entryPoints = within(introduction).getByTestId("home-entry-points");
+    const entryLinks = within(entryPoints).getAllByRole("link");
+    expect(entryLinks.map((link) => link.getAttribute("href"))).toEqual([
+      "/notebook/what-gets-through",
+      "/notebooks",
+      "/archive",
+    ]);
     expect(
-      screen.getByRole("link", { name: "Read the inquiry" })
+      within(entryPoints).getByRole("link", { name: /Latest inquiry/ })
     ).toHaveAttribute("href", "/notebook/what-gets-through");
     expect(
-      screen.getByRole("link", { name: "Examine the sources" })
+      within(entryPoints).getByRole("link", { name: /Notebook index/ })
+    ).toHaveAttribute("href", "/notebooks");
+    expect(
+      within(entryPoints).getByRole("link", { name: /Evidence archive/ })
+    ).toHaveAttribute("href", "/archive");
+
+    const latest = screen.getByTestId("latest-inquiry");
+    expect(
+      introduction.compareDocumentPosition(latest) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(
+      within(latest).getByRole("heading", {
+        level: 2,
+        name: "What Gets Through?",
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(latest).getByRole("link", { name: "Read Inquiry 06" })
+    ).toHaveAttribute("href", "/notebook/what-gets-through");
+    expect(
+      within(latest).getByRole("link", { name: "Examine the sources" })
     ).toHaveAttribute("href", "/notebook/what-gets-through#sources");
 
     const preview = screen.getByTestId("latest-evidence-preview");
@@ -20,7 +53,7 @@ describe("edition front page", () => {
     expect(within(preview).getAllByRole("link")).toHaveLength(3);
   });
 
-  it("shows exactly two previous inquiries before the Archive and mission statement", () => {
+  it("balances exactly two previous inquiries with three Archive records", () => {
     render(<HomePage />);
 
     const previous = screen.getByTestId("previous-inquiries");
@@ -34,11 +67,8 @@ describe("edition front page", () => {
 
     const archive = screen.getByTestId("home-archive-preview");
     expect(within(archive).getAllByRole("article")).toHaveLength(3);
-    const mission = screen.getByRole("heading", {
-      name: "Concern begins the inquiry. It does not decide the conclusion.",
-    });
     expect(
-      archive.compareDocumentPosition(mission) &
+      previous.compareDocumentPosition(archive) &
         Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
   });
