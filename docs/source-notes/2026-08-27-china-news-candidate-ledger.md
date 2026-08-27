@@ -5,7 +5,7 @@
 - Research date: August 27, 2026
 - Live-source recheck: August 27, 2026
 - Coverage window: January 1-August 27, 2026
-- Editorial state: Private research; withheld from public routes
+- Editorial state: Public repository research note; not published as a site article
 - Provenance: Source-audited research notes, not verified Mainland Dispatch reporting
 - Purpose: Test whether current China and US-China story candidates have enough quality links, commentary, and contrasting readings for the site
 
@@ -490,7 +490,7 @@ An HTTP 200 response establishes transport availability only. It does not valida
 5. Replace broad framing with the narrowest claim the evidence directly supports.
 6. Preserve official claims as attributed claims.
 7. Add a direct source next to every consequential number in the article.
-8. Run the public/private boundary review before moving any material out of this private ledger.
+8. Run the public/private boundary review before promoting any material from this research note into a public site article.
 
 ## Unresolved checks and stopping point
 
