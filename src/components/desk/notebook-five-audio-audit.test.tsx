@@ -47,11 +47,11 @@ describe("NotebookFiveAudioAudit", () => {
     expect(container.querySelector('a[href^="http"]')).toBeNull();
   });
 
-  it("remains absent from the public Notebook registry and sitemap", () => {
-    expect(publishedNotebookEntries.map((entry) => entry.slug)).not.toContain(
+  it("now resolves through the public Notebook registry and sitemap", () => {
+    expect(publishedNotebookEntries.map((entry) => entry.slug)).toContain(
       "who-absorbs-the-shock"
     );
-    expect(sitemap().map((entry) => entry.url)).not.toContain(
+    expect(sitemap().map((entry) => entry.url)).toContain(
       `${siteUrl}/notebook/who-absorbs-the-shock`
     );
   });

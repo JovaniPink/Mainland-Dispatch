@@ -15,7 +15,7 @@ function copyEntry(): CirculationGatesNotebookEntry {
 }
 
 describe("What Gets Through Notebook registry", () => {
-  it("publishes the intentionally gapped sixth inquiry", () => {
+  it("publishes the sixth inquiry after Notebook Five closes the gap", () => {
     expect(entry).toMatchObject({
       variant: "circulation-gates",
       ordinal: 6,
@@ -28,11 +28,11 @@ describe("What Gets Through Notebook registry", () => {
       reviewState: "source-reviewed",
     });
     expect(publishedNotebookEntries.map((item) => item.ordinal)).toEqual([
-      1, 2, 3, 4, 6,
+      1, 2, 3, 4, 5, 6,
     ]);
     expect(latestNotebookEntry).toStrictEqual(entry);
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
-    expect(publishedNotebookEntries.map((item) => item.slug)).not.toContain(
+    expect(publishedNotebookEntries.map((item) => item.slug)).toContain(
       "who-absorbs-the-shock"
     );
     expect(() =>

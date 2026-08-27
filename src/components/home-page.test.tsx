@@ -26,10 +26,10 @@ describe("edition front page", () => {
     const previous = screen.getByTestId("previous-inquiries");
     expect(within(previous).getAllByRole("article")).toHaveLength(2);
     expect(
-      within(previous).getByText("Routing Around Risk")
+      within(previous).getByText("Who Absorbs the Shock?")
     ).toBeInTheDocument();
     expect(
-      within(previous).getByText("Dominance Is a Dashboard, Not a Crown")
+      within(previous).getByText("Routing Around Risk")
     ).toBeInTheDocument();
 
     const archive = screen.getByTestId("home-archive-preview");

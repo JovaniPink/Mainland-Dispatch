@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CirculationGatesFigure } from "@/components/notebook/circulation-gates-figure";
 import { NotebookAudioFacade } from "@/components/notebook/notebook-audio-facade";
 import {
   NotebookFormats,
@@ -13,22 +12,28 @@ import {
   type NotebookSectionLink,
   NotebookSecondarySection,
 } from "@/components/notebook/notebook-reader";
-import { NotebookStatus } from "@/components/notebook/notebook-status";
+import {
+  AdjustmentChainFigure,
+  DistributionCasesFigure,
+  PolicyMatrixFigure,
+  ShockComparisonFigure,
+} from "@/components/notebook/trade-adjustment-graphics";
 import { JsonLd } from "@/components/seo/json-ld";
 import { evidenceStatusLabels } from "@/content/dossiers";
-import { whatGetsThrough as entry } from "@/content/notebook/what-gets-through";
+import { whoAbsorbsTheShock as entry } from "@/content/notebook/who-absorbs-the-shock";
 import { site } from "@/content/site";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
-  ["lens", "The circulation lens"],
-  ["trade", "Trade: origin"],
-  ["culture", "Culture: attention"],
-  ["memory", "Memory: legality"],
-  ["limits", "Comparison limits"],
-  ["claim-audit", "Thirteen claim checks"],
-  ["sources", "Fifteen source stops"],
+  ["why", "Why call it a shock?"],
+  ["mechanism", "Five-stage adjustment"],
+  ["comparison", "First and second shocks"],
+  ["distribution", "Who receives what"],
+  ["policy", "Policy targets"],
+  ["scenario", "AI scenario"],
+  ["claim-audit", "Fourteen claim checks"],
+  ["sources", "Twenty-four source stops"],
   ["changed", "What changed"],
   ["question", "Unresolved question"],
 ] as const satisfies readonly NotebookSectionLink[];
@@ -51,7 +56,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WhatGetsThroughPage() {
+export default function WhoAbsorbsTheShockPage() {
   return (
     <article>
       <JsonLd
@@ -98,22 +103,24 @@ export default function WhatGetsThroughPage() {
         path={pagePath}
         campaign={entry.slug}
         sections={sectionLinks}
-        readingRule="Compare the mechanics, not the moral weight. Origin, attention, and criminal liability use different authority and evidence."
-        contentClassName="lg:max-w-[58rem]"
+        readingRule="Keep the unit visible: household, firm, worker, place, product, and national balance can move in different directions."
+        contentClassName="lg:max-w-[68rem]"
       >
         <section className="mt-12">
-          <NotebookSectionHeading
-            id="lens"
-            eyebrow="One question - three mechanisms"
-          >
-            The circulation lens
+          <NotebookSectionHeading id="why" eyebrow="A definition with limits">
+            Why call it a shock?
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.lens} />
+            <NotebookProse paragraphs={entry.sections.why} />
           </div>
 
-          <div className="mt-9">
-            <CirculationGatesFigure gates={entry.gates} />
+          <div className="mt-8 border-l-4 border-signal bg-signal-soft/25 p-5">
+            <p className="font-mono text-[0.62rem] uppercase tracking-widest text-signal">
+              Working verdict
+            </p>
+            <div className="mt-4">
+              <NotebookProse paragraphs={entry.sections.verdict} />
+            </div>
           </div>
 
           <div className="mt-10">
@@ -121,9 +128,11 @@ export default function WhatGetsThroughPage() {
               Listen at the publisher
             </h3>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-ink-muted">
-              The publisher record has no transcript or chapters. Loading the
-              audio is optional; no Simplecast media request occurs before
-              consent.
+              The publisher transcript could not be accessed in this review. The
+              six passage locators below were checked against the official
+              audio, and the public copy uses attributed paraphrase rather than
+              quotation. Loading is optional; no Simplecast media request occurs
+              before consent.
             </p>
             <div className="mt-5">
               <NotebookFormats formats={entry.formats} />
@@ -138,35 +147,34 @@ export default function WhatGetsThroughPage() {
 
           <div className="mt-10">
             <h3 className="font-serif text-2xl leading-tight">
-              Three audited turns in the full episode
+              Six audited turns in the full episode
             </h3>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-ink-muted">
-              These manual locators mark the start of Miles Yu&apos;s answer in
-              each segment. Paraphrases are checked against the publisher audio;
-              they are not quotations or a substitute transcript.
+              The locators identify the reviewed spans. Each card preserves a
+              speaker, paraphrase, and claim boundary; none is a substitute
+              transcript.
             </p>
-            <ol className="mt-6 grid gap-4 md:grid-cols-3">
-              {entry.turningPoints.map((point, index) => (
-                <li
-                  key={point.id}
-                  className="flex min-w-0 flex-col border border-rule bg-paper-warm/25 p-5"
-                >
+            <ol className="mt-6 grid gap-4 md:grid-cols-2">
+              {entry.passageAudit.map((passage, index) => (
+                <li key={passage.id} className="border border-rule p-5">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <span className="font-mono text-xs uppercase tracking-widest text-signal">
-                      {String(index + 1).padStart(2, "0")} - {point.timecode}
+                      {String(index + 1).padStart(2, "0")} -{" "}
+                      {passage.spans
+                        .map((span) => `${span.start}-${span.end}`)
+                        .join(", ")}
                     </span>
-                    <NotebookStatus status={point.status} />
+                    <span className="border border-jade px-2 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-jade">
+                      Audited
+                    </span>
                   </div>
                   <h4 className="mt-4 font-serif text-xl leading-snug">
-                    {point.title}
+                    {passage.speaker}
                   </h4>
-                  <p className="mt-3 text-sm leading-7">
-                    <strong className="font-semibold">Episode:</strong>{" "}
-                    {point.argument}
-                  </p>
-                  <p className="mt-3 border-l-2 border-jade pl-3 text-sm leading-7 text-ink-muted">
-                    <strong className="font-semibold text-ink">Audit:</strong>{" "}
-                    {point.reading}
+                  <p className="mt-3 text-sm leading-7">{passage.paraphrase}</p>
+                  <p className="mt-3 border-l-2 border-signal pl-3 text-xs leading-6 text-ink-muted">
+                    <strong className="text-ink">Boundary:</strong>{" "}
+                    {passage.boundary}
                   </p>
                 </li>
               ))}
@@ -176,78 +184,95 @@ export default function WhatGetsThroughPage() {
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="trade"
-            eyebrow="Gate 01 - Rules of origin"
+            id="mechanism"
+            eyebrow="A factory system has a balance of payments"
           >
-            Trade: physical movement is not legal origin
+            Five stages, not one cause
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.trade} />
+            <NotebookProse paragraphs={entry.sections.mechanism} />
+          </div>
+          <div className="mt-8">
+            <AdjustmentChainFigure steps={entry.mechanismSteps} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="culture"
-            eyebrow="Gate 02 - Networked attention"
+            id="comparison"
+            eyebrow="Keep every denominator"
           >
-            Culture: ridicule can become distribution
+            What changed between the first and second shocks?
           </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.culture} />
-          </div>
-          <div className="mt-7 grid gap-3 sm:grid-cols-2">
-            <article className="border border-jade bg-jade-soft/25 p-5">
-              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
-                Verified reversal - August 17
-              </p>
-              <p className="mt-3 font-serif text-xl leading-relaxed">
-                8.2 million yuan that day, nearly 300,000 admissions, and 17.1
-                million yuan cumulative, according to AP&apos;s dated Maoyan
-                snapshot.
-              </p>
-            </article>
-            <article className="border border-signal bg-signal-soft/25 p-5">
-              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-signal">
-                Corrected comparison - August 16
-              </p>
-              <p className="mt-3 font-serif text-xl leading-relaxed">
-                About 6 million yuan for Niu Lai versus 65 million yuan for The
-                Odyssey in the same preliminary daily snapshot.
-              </p>
-            </article>
+          <div className="mt-8">
+            <ShockComparisonFigure comparisons={entry.shockComparisons} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="memory"
-            eyebrow="Gate 03 - National-security law"
+            id="distribution"
+            eyebrow="Benefits and costs can coexist"
           >
-            Memory: the legal label changes the civic space
+            Who receives what?
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.memory} />
+            <NotebookProse paragraphs={entry.sections.distribution} />
+          </div>
+          <div className="mt-8">
+            <DistributionCasesFigure cases={entry.distributionCases} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="limits"
-            eyebrow="Mechanism is not equivalence"
+            id="policy"
+            eyebrow="Instrument follows diagnosis"
           >
-            Where the comparison stops
+            Which tool targets which problem?
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.limits} />
+            <NotebookProse paragraphs={entry.sections.policy} />
           </div>
+          <div className="mt-8">
+            <PolicyMatrixFigure options={entry.policyOptions} />
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <NotebookSectionHeading
+            id="scenario"
+            eyebrow="A scenario, not an observation"
+          >
+            What would an AI and software shock require?
+          </NotebookSectionHeading>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.scenario} />
+          </div>
+          <nav
+            aria-label="Related AI inquiries"
+            className="mt-7 grid gap-3 sm:grid-cols-2"
+          >
+            <Link
+              href="/notebook/open-models-closed-system"
+              className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
+            >
+              Read Inquiry 02
+            </Link>
+            <Link
+              href="/notebook/dominance-is-a-dashboard"
+              className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
+            >
+              Read Inquiry 03
+            </Link>
+          </nav>
         </section>
 
         <NotebookSecondarySection
           id="claim-audit"
           eyebrow="Claim discipline"
           title="What survives the source audit"
-          summary="The correction is part of the finding. Excluded claims are shown only as rejected formulations; they do not enter the thesis, the figure, or the gate outcomes."
+          summary="Excluded claims remain visible as rejected formulations. They do not enter the thesis, the adjustment chain, or the policy matrix as facts."
           actionLabel={`Examine ${entry.claimAudit.length} claim checks`}
         >
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -286,7 +311,7 @@ export default function WhatGetsThroughPage() {
           legacyIds={["source-trail", "source-trail-heading"]}
           eyebrow={`${entry.sourceTrail.length} bounded stops`}
           title="Source trail and review boundary"
-          summary="Primary records control legal and policy claims. Dated reporting preserves its denominator, attribution, and limitation instead of becoming generic support."
+          summary="The episode supplies attributed argument. Statistical agencies, research, regulatory records, institutional assessments, and official positions retain their own authority, dates, methods, and limits."
           actionLabel={`Examine ${entry.sourceTrail.length} sources`}
         >
           <div className="mt-6">
@@ -338,16 +363,16 @@ export default function WhatGetsThroughPage() {
           className="mt-12 grid gap-3 border-t border-rule pt-6 sm:grid-cols-2"
         >
           <Link
-            href="/archive?view=relationships&inquiry=what-gets-through"
-            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
-          >
-            Explore its source relationships
-          </Link>
-          <Link
-            href="/notebook/who-absorbs-the-shock"
+            href="/notebook/routing-around-risk"
             className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
           >
-            Read Inquiry 05
+            Read Inquiry 04
+          </Link>
+          <Link
+            href="/notebook/what-gets-through"
+            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
+          >
+            Read Inquiry 06
           </Link>
         </nav>
       </NotebookReaderShell>

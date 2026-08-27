@@ -1,21 +1,21 @@
 # "Who Absorbs the Shock?" -- Notebook Five research ledger
 
-**Review date:** August 21, 2026
+**Review date:** August 26, 2026
 
-**Editorial state:** Withheld research checkpoint; not approval-ready
+**Editorial state:** Accepted for publication after publisher-audio audit
 
-**Runtime state:** No Notebook route, registry entry, homepage placement,
-Archive selection, sitemap record, public Dispatch, or Desk record
+**Runtime state:** Public Notebook implementation authorized; deployment and
+live-route verification remain separate release evidence
 
-**Branch:** `codex/china-shock-adjustment-notebook`
+**Branch:** `codex/publish-notebook-five`
 
 **Source ceiling:** 24 reviewed stops; platform mirrors are not additional
 factual sources
 
-**Link audit:** 56 unique external destinations checked on August 21, 2026; 55
-resolved directly or through browser verification, while the New York Times
-publisher transcript remained access-limited. The ledger's relative link to the
-commission also resolved locally.
+**Link audit:** The 24-stop source core was rechecked on August 26, 2026. The
+Federal Reserve, IEA, Stanford, BLS, IMF, Bundesbank, WTO, European Commission,
+and policy records remained available directly or through official publisher
+discovery. The New York Times publisher transcript remained access-limited.
 
 ## Editorial question and working answer
 
@@ -69,23 +69,26 @@ but that page was inaccessible during this review. The feed contains no
 AI summary, quotation collection, or inferred chapter list is admitted as a
 substitute.
 
-### Required exact-timecode passage map -- blocked
+### Required exact-timecode passage map -- audited
 
-| Required passage                             | Exact span  | Attributed paraphrase | Claim boundary                                                                       | State                              |
-| -------------------------------------------- | ----------- | --------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- |
-| Episode's definition of the first shock      | Not entered | Not entered           | Must separate the speakers' framing from the historical labor literature             | Blocked pending manual audio audit |
-| Mechanism behind the second shock            | Not entered | Not entered           | Must separate saving, property, policy, productivity, imports, currency, and exports | Blocked pending manual audio audit |
-| Who benefits and who loses                   | Not entered | Not entered           | Must distinguish consumers, input users, firms, workers, places, and governments     | Blocked pending manual audio audit |
-| Germany and destination exposure             | Not entered | Not entered           | Must not convert a guest argument into settled causal attribution                    | Blocked pending manual audio audit |
-| Tariffs, industrial policy, and coordination | Not entered | Not entered           | Must identify the target problem and the intervention's own costs                    | Blocked pending manual audio audit |
-| AI and software                              | Not entered | Not entered           | May support a scenario question only, not an observed "third shock"                  | Blocked pending manual audio audit |
+| Required passage                             | Exact span(s)                         | Attributed paraphrase                                                                                                                                                                                  | Claim boundary                                                                                                                                             | State   |
+| -------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| Episode's definition of the first shock      | 02:09-03:55                           | Setser dates the first shock to the early-2000s jump in Chinese exports of lower-end manufactured goods and stresses persistent local labor-market and community effects.                              | This is the guest's framing; Autor, Dorn, and Hanson supply the historical estimates and methods.                                                           | Audited |
+| Mechanism behind the second shock            | 12:56-15:20                           | Setser dates the renewed adjustment to the 2021 property collapse and describes policy-guided manufacturing investment, advanced-sector expansion, weak imports, and faster exports.                   | Property, demand, credit, policy, import substitution, export growth, and currency remain separate channels; no single sufficient cause is established.     | Audited |
+| Who benefits and who loses                   | 26:10-28:02                           | The speakers distinguish short-run gains from cheaper EVs and solar equipment from losses that can follow when traded-goods capacity, local employment, and an industrial research base contract.     | The passage maps possible beneficiaries and cost bearers; it does not calculate net welfare or forecast an exact repetition of first-shock effects.         | Audited |
+| Germany and destination exposure             | 16:09-17:51                           | Setser argues Germany first benefited from Chinese industrial demand, then faced pressure as Chinese EV and industrial capability advanced and German exports declined.                               | This is an attributed argument; IMF and Bundesbank assessments identify several additional causes of German weakness.                                      | Audited |
+| Tariffs, industrial policy, and coordination | 35:17-38:16; 40:50-44:28; 51:26-53:23 | Setser describes a move from targeted tariffs toward tariffs, export controls, and industrial policy, then argues that broad high tariffs impose costs and make allied coordination harder.            | The guest's policy preference is not outcome evidence. Each public policy row names its target, incidence, tradeoff, horizon, and uncertainty.              | Audited |
+| AI and software                              | 54:33-57:43                           | Klein raises a possible third shock in AI and software; Setser treats it as plausible but unresolved and emphasizes uncertainty about competition, profits, and how gains would be distributed.        | This supports a scenario only. Benchmark proximity does not establish ecosystem parity, trade displacement, or an observed software labor-market shock.    | Audited |
 
-The audio was retrieved from the publisher's Simplecast CDN and its duration
-was verified locally. This environment has no approved transcription tool, the
-operating-system speech recognizer is denied, and the publisher transcript is
-not readable here. Because precise attributed paraphrases cannot be verified,
-the review stops at this checkpoint. Approximate markers from discovery-only
-sites are excluded.
+The official publisher MP3 was reviewed on August 26, 2026. It reports a
+duration of 3,930.54 seconds, consistent with the RSS runtime of 01:05:30, and
+has SHA-256
+`4868937931037d1f4956ed84185e1e31c396ff9894916924d576cfeea6eff4c8`.
+On-device speech recognition supported navigation through the episode, but it
+is not admitted as a publisher transcript, a quotable source, or an additional
+source stop. Every public episode statement is an attributed paraphrase checked
+against the official audio. The MP3 and working transcript are audit artifacts
+and are not committed.
 
 ### Platform access mirrors
 

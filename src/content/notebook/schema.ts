@@ -280,6 +280,76 @@ export const NotebookCirculationGateSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+export const NotebookPassageAuditSchema = z.object({
+  id: nonEmpty.regex(/^passage-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  requirement: z.enum([
+    "first-shock",
+    "second-shock",
+    "distribution",
+    "germany",
+    "policy",
+    "ai-software",
+  ]),
+  speaker: nonEmpty,
+  spans: z
+    .array(
+      z.object({
+        start: nonEmpty,
+        end: nonEmpty,
+        startSeconds: z.number().nonnegative(),
+        endSeconds: z.number().positive(),
+      })
+    )
+    .min(1),
+  paraphrase: nonEmpty,
+  boundary: nonEmpty,
+  auditState: z.enum(["audited", "blocked"]),
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookMechanismStepSchema = z.object({
+  id: nonEmpty.regex(/^mechanism-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  order: z.number().int().min(1).max(5),
+  label: nonEmpty,
+  definition: nonEmpty,
+  measuredHere: nonEmpty,
+  notEstablished: nonEmpty,
+  status: NotebookEvidenceStatusSchema,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookShockComparisonSchema = z.object({
+  id: nonEmpty.regex(/^comparison-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  dimension: nonEmpty,
+  firstShock: nonEmpty,
+  secondShock: nonEmpty,
+  boundary: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookDistributionCaseSchema = z.object({
+  id: nonEmpty.regex(/^distribution-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  group: nonEmpty,
+  benefit: nonEmpty,
+  cost: nonEmpty,
+  scope: nonEmpty,
+  caveat: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookPolicyOptionSchema = z.object({
+  id: nonEmpty.regex(/^policy-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  targetProblem: nonEmpty,
+  mechanism: nonEmpty,
+  payer: nonEmpty,
+  tradeoff: nonEmpty,
+  timeHorizon: nonEmpty,
+  status: NotebookEvidenceStatusSchema,
+  uncertainty: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -388,6 +458,26 @@ const CirculationGatesNotebookSchema = NotebookBaseSchema.extend({
   }),
 });
 
+const TradeAdjustmentNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("trade-adjustment"),
+  audio: NotebookAudioSchema,
+  passageAudit: z.array(NotebookPassageAuditSchema).length(6),
+  claimAudit: z.array(NotebookClaimAuditSchema).min(12),
+  mechanismSteps: z.array(NotebookMechanismStepSchema).length(5),
+  shockComparisons: z.array(NotebookShockComparisonSchema).min(5),
+  distributionCases: z.array(NotebookDistributionCaseSchema).min(6),
+  policyOptions: z.array(NotebookPolicyOptionSchema).min(6),
+  sections: z.object({
+    why: z.array(nonEmpty).min(1),
+    verdict: z.array(nonEmpty).min(1),
+    mechanism: z.array(nonEmpty).min(1),
+    distribution: z.array(nonEmpty).min(1),
+    policy: z.array(nonEmpty).min(1),
+    scenario: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+});
+
 export const NotebookEntrySchema = z
   .discriminatedUnion("variant", [
     ArgumentNotebookSchema,
@@ -395,6 +485,7 @@ export const NotebookEntrySchema = z
     PowerBalanceNotebookSchema,
     MaritimeRiskNotebookSchema,
     CirculationGatesNotebookSchema,
+    TradeAdjustmentNotebookSchema,
   ])
   .superRefine((entry, ctx) => {
     if (entry.updatedAt < entry.publishedAt) {
@@ -471,7 +562,19 @@ export const NotebookEntrySchema = z
                   ...entry.claimAudit.flatMap((item) => item.sourceIds),
                   ...entry.gates.flatMap((gate) => gate.sourceIds),
                 ]
-              : []),
+              : entry.variant === "trade-adjustment"
+                ? [
+                    entry.audio.sourceId,
+                    ...entry.passageAudit.flatMap((item) => item.sourceIds),
+                    ...entry.claimAudit.flatMap((item) => item.sourceIds),
+                    ...entry.mechanismSteps.flatMap((item) => item.sourceIds),
+                    ...entry.shockComparisons.flatMap((item) => item.sourceIds),
+                    ...entry.distributionCases.flatMap(
+                      (item) => item.sourceIds
+                    ),
+                    ...entry.policyOptions.flatMap((item) => item.sourceIds),
+                  ]
+                : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -621,6 +724,77 @@ export const NotebookEntrySchema = z
         "gate domains must be unique"
       );
     }
+
+    if (entry.variant === "trade-adjustment") {
+      checkUnique(
+        entry.passageAudit.map((item) => item.id),
+        ["passageAudit"],
+        "passage-audit IDs must be unique"
+      );
+      checkUnique(
+        entry.passageAudit.map((item) => item.requirement),
+        ["passageAudit"],
+        "passage-audit requirements must be unique"
+      );
+      checkUnique(
+        entry.claimAudit.map((item) => item.id),
+        ["claimAudit"],
+        "claim-audit IDs must be unique"
+      );
+      checkUnique(
+        entry.mechanismSteps.map((item) => item.id),
+        ["mechanismSteps"],
+        "mechanism-step IDs must be unique"
+      );
+      checkUnique(
+        entry.shockComparisons.map((item) => item.id),
+        ["shockComparisons"],
+        "shock-comparison IDs must be unique"
+      );
+      checkUnique(
+        entry.distributionCases.map((item) => item.id),
+        ["distributionCases"],
+        "distribution-case IDs must be unique"
+      );
+      checkUnique(
+        entry.policyOptions.map((item) => item.id),
+        ["policyOptions"],
+        "policy-option IDs must be unique"
+      );
+
+      if (entry.passageAudit.some((item) => item.auditState !== "audited")) {
+        ctx.addIssue({
+          code: "custom",
+          message: "every required publisher-audio passage must be audited",
+          path: ["passageAudit"],
+        });
+      }
+
+      const expectedOrders = [1, 2, 3, 4, 5];
+      if (
+        entry.mechanismSteps.some(
+          (item, index) => item.order !== expectedOrders[index]
+        )
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: "mechanism steps must be ordered 1 through 5",
+          path: ["mechanismSteps"],
+        });
+      }
+
+      entry.passageAudit.forEach((passage, passageIndex) => {
+        passage.spans.forEach((span, spanIndex) => {
+          if (span.endSeconds <= span.startSeconds) {
+            ctx.addIssue({
+              code: "custom",
+              message: "passage span end must follow its start",
+              path: ["passageAudit", passageIndex, "spans", spanIndex],
+            });
+          }
+        });
+      });
+    }
   });
 
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
@@ -644,6 +818,18 @@ export type CirculationGatesNotebookEntry = Extract<
   NotebookEntry,
   { variant: "circulation-gates" }
 >;
+export type TradeAdjustmentNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "trade-adjustment" }
+>;
+export type NotebookMechanismStep = z.infer<typeof NotebookMechanismStepSchema>;
+export type NotebookShockComparison = z.infer<
+  typeof NotebookShockComparisonSchema
+>;
+export type NotebookDistributionCase = z.infer<
+  typeof NotebookDistributionCaseSchema
+>;
+export type NotebookPolicyOption = z.infer<typeof NotebookPolicyOptionSchema>;
 export type NotebookCirculationGate = z.infer<
   typeof NotebookCirculationGateSchema
 >;
@@ -662,6 +848,16 @@ export function parseCirculationGatesNotebookEntry(
   const entry = NotebookEntrySchema.parse(value);
   if (entry.variant !== "circulation-gates") {
     throw new Error("expected a circulation-gates Notebook entry");
+  }
+  return entry;
+}
+
+export function parseTradeAdjustmentNotebookEntry(
+  value: unknown
+): TradeAdjustmentNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "trade-adjustment") {
+    throw new Error("expected a trade-adjustment Notebook entry");
   }
   return entry;
 }

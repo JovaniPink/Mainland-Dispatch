@@ -1,7 +1,7 @@
 # Notebook Five editorial commission
 
-**Status:** Proposed; blocked at the initiating-audio audit
-**Effective:** Not yet effective
+**Status:** Accepted for publication
+**Effective:** August 26, 2026
 **Entry:** "Who Absorbs the Shock?"
 
 ## Decision requested
@@ -16,13 +16,13 @@ cause, one outcome, or one policy prescription. Chinese households, exporting
 firms, foreign consumers, import-competing workers, downstream producers, and
 governments absorb different benefits and costs.
 
-This decision is not yet accepted. The initiating episode's official audio is
-available, but the publisher feed supplies neither a transcript nor chapters,
-and the publisher transcript page was not accessible during the review. The
-required exact, timecoded passage map therefore remains incomplete. No public
-Notebook route, registry entry, homepage placement, Archive selection, sitemap
-record, metadata, or structured data is authorized until that audit is complete
-and the editor approves the research ledger.
+The editor authorized publication on August 26, 2026 after the initiating
+episode's official audio was audited. The publisher feed supplies neither a
+transcript nor chapters, and the publisher transcript page remained
+inaccessible, so the review used the official audio to complete six exact,
+timecoded passage maps with attributed paraphrases and claim boundaries. The
+audio file, working machine transcript, and transcript-only claims remain out
+of the repository and public Notebook.
 
 ## Editorial model
 
@@ -96,9 +96,9 @@ title and reserves "A Factory System Has a Balance of Payments" as a possible
 mechanism subheading. Its additional links remain a replacement queue rather
 than expanding the 24-stop evidence core.
 
-## Product scope after approval
+## Authorized product scope
 
-Approval of the completed ledger would authorize:
+Approval of the completed ledger authorizes:
 
 - one `trade-adjustment` Notebook schema variant and exported
   `TradeAdjustmentNotebookEntry` type, reusing the base source, audio,
@@ -117,28 +117,24 @@ Approval of the completed ledger would authorize:
 - homepage, Archive, sitemap, canonical, social metadata, JSON-LD, tests, and
   responsive production-build review.
 
-It would not authorize a public Dispatch, Desk exposure, live data pipeline,
-automated source intake, original-reporting claim, composite threat score,
-forecast presented as observation, push, pull request, merge, deployment, or
-live-publication claim.
+It does not authorize a public Dispatch, Desk exposure, live data pipeline,
+automated source intake, original-reporting claim, composite threat score, or
+forecast presented as observation. Repository publication, deployment, and
+authenticated-live behavior remain separately verifiable release states.
 
-## Approval gate
+## Approval evidence
 
-The approval packet must contain the completed exact-timecode passage map,
-attributed paraphrases and claim boundaries, the bounded evidence table, claim
-decisions, proposed graphics, unresolved questions, and final thesis. The
-current [Notebook Five research
-ledger](../source-notes/2026-08-21-china-shock-adjustment-ledger.md) contains
-every item except the completed passage map and is therefore not approval-ready.
-
-Once the passage map is complete, volatile 2026 figures and the Reddit question
-set must be rechecked on the approval date. Public implementation stops if the
-audio cannot support exact timecodes, a transcript-only claim remains
-inaccessible, the media contract cannot disclose external requests, or any
-mandatory repository gate fails.
+The [Notebook Five research
+ledger](../source-notes/2026-08-21-china-shock-adjustment-ledger.md) now contains
+the six-passage exact-timecode map, attributed paraphrases and boundaries, the
+bounded evidence table, claim decisions, graphics contract, unresolved
+question, and final thesis. Volatile 2026 records and the question set were
+rechecked on August 26. The public implementation remains fail-closed if the
+media contract cannot disclose external requests or any mandatory repository
+gate fails.
 
 ## Rollback boundary
 
-Before approval, rollback is deletion of these two unregistered research files.
-After publication, rollback is removal of the Notebook registry entry and its
-route integrations. No migration or existing public record is altered.
+Rollback is removal of the Notebook registry entry and its route integrations.
+The research ledger remains as the decision record. No migration or existing
+public Dispatch or Desk record is altered.
