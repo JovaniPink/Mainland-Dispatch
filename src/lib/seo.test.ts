@@ -148,7 +148,6 @@ describe("SEO publication contract", () => {
       scope: "/",
       lang: "en-US",
       icons: [
-        { src: "/favicon.ico", sizes: "any", type: "image/x-icon" },
         { src: "/icon0", sizes: "48x48", type: "image/png" },
         { src: "/icon1", sizes: "192x192", type: "image/png" },
         {
