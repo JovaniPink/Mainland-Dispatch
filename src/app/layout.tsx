@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { site } from "@/content/site";
 import { Masthead } from "@/components/shell/masthead";
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     "evidence-led analysis",
     "source transparency",
   ],
-  icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -68,6 +67,14 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3f0e8" },
+    { media: "(prefers-color-scheme: dark)", color: "#17201d" },
+  ],
+  colorScheme: "light dark",
+};
+
 const themeInit = `try{var t=localStorage.getItem("md-theme");if(t==="night")document.documentElement.dataset.theme="night"}catch(e){}`;
 
 export default function RootLayout({
@@ -87,7 +94,7 @@ export default function RootLayout({
                 "@id": organizationId,
                 name: site.name,
                 url: siteUrl,
-                logo: `${siteUrl}/favicon.ico`,
+                logo: `${siteUrl}/icon1`,
               },
               {
                 "@type": "WebSite",
