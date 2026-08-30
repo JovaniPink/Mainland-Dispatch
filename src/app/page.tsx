@@ -4,7 +4,7 @@ import type { Dispatch } from "@/content/schema";
 import { publishedDispatches } from "@/content/dispatches";
 import {
   latestNotebookEntry as notebook,
-  publishedNotebookEntries,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import { formatDate, site } from "@/content/site";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
@@ -71,7 +71,7 @@ const homeEntryPoints = [
     number: "02",
     href: "/notebooks",
     title: "Notebook index",
-    description: `${publishedNotebookEntries.length} inquiries, arranged as a continuing body of work.`,
+    description: `${publicNotebookEntries.length} inquiries, arranged as a continuing body of work.`,
   },
   {
     number: "03",
@@ -83,7 +83,7 @@ const homeEntryPoints = [
 
 export default function HomePage() {
   const selectedSources = selectArchiveRecords();
-  const previousNotebooks = publishedNotebookEntries
+  const previousNotebooks = publicNotebookEntries
     .slice(0, -1)
     .slice(-2)
     .reverse();

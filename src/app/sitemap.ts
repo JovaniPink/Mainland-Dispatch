@@ -6,7 +6,8 @@ import { dossiers } from "@/content/dossiers";
 import { siteUrl } from "@/lib/seo";
 import {
   latestNotebookEntry,
-  publishedNotebookEntries,
+  newestNotebookRevision,
+  publicNotebookEntries,
 } from "@/content/notebook";
 
 const newest = (dates: string[]) => [...dates].sort().at(-1);
@@ -50,7 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const archiveUpdated = newest(
     publishedDispatches.map((item) => item.updatedAt)
   );
-  const notebookEntries: MetadataRoute.Sitemap = publishedNotebookEntries.map(
+  const notebookEntries: MetadataRoute.Sitemap = publicNotebookEntries.map(
     (entry) => ({
       url: `${siteUrl}/notebook/${entry.slug}`,
       lastModified: entry.updatedAt,
@@ -62,13 +63,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
-      lastModified: latestNotebookEntry.updatedAt,
+      lastModified: newestNotebookRevision,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${siteUrl}/notebooks`,
-      lastModified: latestNotebookEntry.updatedAt,
+      lastModified: newestNotebookRevision,
       changeFrequency: "monthly",
       priority: 0.9,
     },

@@ -1,7 +1,7 @@
 import {
-  getPublishedNotebookEntry,
+  getPublicNotebookEntry,
   latestNotebookEntry,
-  publishedNotebookEntries,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import { dominanceIsADashboard as entry } from "./dominance-is-a-dashboard";
 import { NotebookEntrySchema } from "./schema";
@@ -92,11 +92,11 @@ describe("Dominance Is a Dashboard Notebook registry", () => {
   });
 
   it("keeps Notebook Three published after later inquiries", () => {
-    expect(publishedNotebookEntries.map((item) => item.slug)).toContain(
+    expect(publicNotebookEntries.map((item) => item.slug)).toContain(
       "dominance-is-a-dashboard"
     );
     expect(latestNotebookEntry.ordinal).toBeGreaterThan(entry.ordinal);
-    expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
+    expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
   it("rejects duplicate comparison, concentration, and country identities", () => {

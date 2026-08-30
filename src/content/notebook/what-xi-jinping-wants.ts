@@ -39,6 +39,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       publisher: "The Ezra Klein Show · Apple Podcasts",
       duration: "1 hr 44 min",
       url: "https://podcasts.apple.com/us/podcast/what-xi-jinping-wants/id1548604447?i=1000776737823",
+      retrievedAt: "2026-07-23",
       note: "The publisher’s episode listing and the clearest canonical metadata record.",
     },
     {
@@ -48,6 +49,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       publisher: "The Ezra Klein Show · YouTube",
       duration: "1:42:37",
       url: "https://www.youtube.com/watch?v=DprKDXRlubw",
+      retrievedAt: "2026-07-23",
       note: "The timecodes on this page point to this version.",
     },
     {
@@ -56,6 +58,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       title: "What Xi Jinping Wants",
       publisher: "The New York Times",
       url: "https://www.nytimes.com/2026/07/14/opinion/ezra-klein-podcast-kevin-rudd.html",
+      retrievedAt: "2026-07-23",
       note: "The canonical transcript page; access may depend on subscription and region.",
     },
   ],
@@ -174,6 +177,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       publisher: "Oxford University Press / University of Oxford",
       author: "Kevin Rudd",
       publishedAt: "2024",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Book record",
@@ -196,6 +200,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       publisher: "China Books Review",
       author: "Jude Blanchette",
       publishedAt: "2024-10-17",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Read review essay",
@@ -217,6 +222,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       title: "Family Line, Party Line",
       publisher: "National Committee on U.S.-China Relations",
       author: "Joseph Torigian",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Read interview",
@@ -225,6 +231,8 @@ export const whatXiJinpingWants = parseNotebookEntry({
       ],
       context:
         "Torigian’s “idealistic pragmatist” description complicates a simple causal story from Xi’s family suffering to ideological rigidity.",
+      limitation:
+        "Biographical interpretation can complicate a causal account, but it does not prove an exclusive explanation for Xi's later choices.",
     },
     {
       id: "notebook-source-rudd-ambassador-context",
@@ -233,6 +241,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       publisher: "Australian Minister for Foreign Affairs",
       author: "Penny Wong",
       publishedAt: "2026-01-13",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Read official record",
@@ -250,6 +259,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       title: "Trainor Award Ceremony Transcript",
       publisher: "Central Intelligence Agency",
       author: "William J. Burns",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Read transcript",
@@ -267,6 +277,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       title: "Xi stresses developing new productive forces",
       publisher: "The State Council of the People’s Republic of China",
       publishedAt: "2024-02-01",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Read official account",
@@ -284,6 +295,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       title: "Full text of the report to the 20th National Congress",
       publisher: "The State Council of the People’s Republic of China",
       publishedAt: "2022-10-25",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Read official report",
@@ -292,6 +304,8 @@ export const whatXiJinpingWants = parseNotebookEntry({
       ],
       context:
         "Links complete reunification to national rejuvenation while stopping short of announcing a 2049 invasion or unification deadline.",
+      limitation:
+        "The official text establishes a stated political objective, not a timetable or evidence that reunification has been completed.",
     },
     {
       id: "notebook-source-csis-pla-purges",
@@ -299,6 +313,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       title: "Chinese PLA Military Purges",
       publisher: "ChinaPower · Center for Strategic and International Studies",
       publishedAt: "2026-02-20",
+      retrievedAt: "2026-07-23",
       links: [
         {
           label: "Explore database",

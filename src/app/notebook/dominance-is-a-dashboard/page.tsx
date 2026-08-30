@@ -20,8 +20,8 @@ import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { JsonLd } from "@/components/seo/json-ld";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import { dominanceIsADashboard as entry } from "@/content/notebook/dominance-is-a-dashboard";
-import { site } from "@/content/site";
-import { absoluteUrl, pageMetadata } from "@/lib/seo";
+import { requirePublicNotebookEntry } from "@/lib/notebook-route";
+import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
@@ -39,57 +39,15 @@ const sectionLinks = [
   ["question", "Unresolved question"],
 ] as const;
 
-const articleMetadata = pageMetadata({
-  title: entry.title,
-  description: entry.description,
-  path: pagePath,
-});
-
-export const metadata: Metadata = {
-  ...articleMetadata,
-  openGraph: {
-    ...articleMetadata.openGraph,
-    type: "article",
-    publishedTime: `${entry.publishedAt}T00:00:00.000Z`,
-    modifiedTime: `${entry.updatedAt}T00:00:00.000Z`,
-    authors: [site.name],
-    tags: entry.tags,
-  },
-};
+export function generateMetadata(): Metadata {
+  return notebookArticleMetadata(requirePublicNotebookEntry(entry));
+}
 
 export default function DominanceIsADashboardPage() {
+  requirePublicNotebookEntry(entry);
   return (
     <article>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline: entry.title,
-          description: entry.description,
-          datePublished: entry.publishedAt,
-          dateModified: entry.updatedAt,
-          mainEntityOfPage: absoluteUrl(pagePath),
-          url: absoluteUrl(pagePath),
-          author: {
-            "@type": "Organization",
-            name: site.name,
-            url: absoluteUrl("/"),
-          },
-          publisher: {
-            "@type": "Organization",
-            name: site.name,
-            url: absoluteUrl("/"),
-          },
-          about: entry.tags,
-          citation: [
-            ...entry.formats.map((format) => format.url),
-            ...entry.sourceTrail.flatMap((source) =>
-              source.links.map((link) => link.url)
-            ),
-          ],
-          inLanguage: "en-US",
-        }}
-      />
+      <JsonLd data={notebookArticleJsonLd(entry)} />
 
       <NotebookReaderShell
         ordinal={entry.ordinal}

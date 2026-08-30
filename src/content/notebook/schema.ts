@@ -61,6 +61,7 @@ const NotebookFormatSchema = z.object({
   publisher: nonEmpty,
   duration: nonEmpty.optional(),
   url: cleanHttpsUrl,
+  retrievedAt: isoDate,
   note: nonEmpty,
 });
 
@@ -88,10 +89,10 @@ const NotebookTrailItemSchema = z.object({
   publisher: nonEmpty,
   author: nonEmpty.optional(),
   publishedAt: sourceDate.optional(),
-  retrievedAt: isoDate.optional(),
+  retrievedAt: isoDate,
   links: z.array(NotebookSourceLinkSchema).min(1),
   context: nonEmpty,
-  limitation: nonEmpty.optional(),
+  limitation: nonEmpty,
 });
 
 const NotebookTimelineItemSchema = z.object({
@@ -658,6 +659,32 @@ export const NotebookEntrySchema = z
       ["sourceTrail"],
       "source IDs must be unique"
     );
+    checkUnique(
+      entry.sourceTrail.flatMap((source) =>
+        source.links.map((link) => link.label.trim().toLocaleLowerCase("en-US"))
+      ),
+      ["sourceTrail"],
+      "source-link labels must be unique within a Notebook"
+    );
+
+    entry.formats.forEach((format, formatIndex) => {
+      if (format.retrievedAt > entry.updatedAt) {
+        ctx.addIssue({
+          code: "custom",
+          message: "retrievedAt must not follow entry updatedAt",
+          path: ["formats", formatIndex, "retrievedAt"],
+        });
+      }
+    });
+    entry.sourceTrail.forEach((source, sourceIndex) => {
+      if (source.retrievedAt > entry.updatedAt) {
+        ctx.addIssue({
+          code: "custom",
+          message: "retrievedAt must not follow entry updatedAt",
+          path: ["sourceTrail", sourceIndex, "retrievedAt"],
+        });
+      }
+    });
 
     const knownSources = new Set(entry.sourceTrail.map((source) => source.id));
     const references = [

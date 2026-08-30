@@ -43,6 +43,7 @@ export const whoAbsorbsTheShock = parseTradeAdjustmentNotebookEntry({
       publisher: "The Ezra Klein Show - New York Times Opinion",
       duration: "1:05:30",
       url: "https://the-ezra-klein-show.simplecast.com/episodes/brad-setser",
+      retrievedAt: "2026-08-26",
       note: "The initiating episode was audited against the publisher audio. The publisher-designated transcript remained inaccessible, so this Notebook uses attributed paraphrase rather than quotation.",
     },
   ],
@@ -1064,7 +1065,7 @@ export const whoAbsorbsTheShock = parseTradeAdjustmentNotebookEntry({
       retrievedAt: "2026-08-26",
       links: [
         {
-          label: "Country report",
+          label: "China Article IV country report",
           url: "https://www.imf.org/en/publications/cr/issues/2026/02/17/peoples-republic-of-china-2025-article-iv-consultation-press-release-staff-report-and-574028",
         },
       ],
@@ -1082,7 +1083,7 @@ export const whoAbsorbsTheShock = parseTradeAdjustmentNotebookEntry({
       retrievedAt: "2026-08-26",
       links: [
         {
-          label: "Report",
+          label: "External Sector Report",
           url: "https://www.imf.org/en/publications/esr/issues/2026/07/30/external-sector-report-2026",
         },
       ],
@@ -1172,7 +1173,7 @@ export const whoAbsorbsTheShock = parseTradeAdjustmentNotebookEntry({
       retrievedAt: "2026-08-26",
       links: [
         {
-          label: "Executive summary",
+          label: "Energy Technology Perspectives executive summary",
           url: "https://www.iea.org/reports/energy-technology-perspectives-2026/executive-summary",
         },
       ],
@@ -1264,7 +1265,7 @@ export const whoAbsorbsTheShock = parseTradeAdjustmentNotebookEntry({
       retrievedAt: "2026-08-26",
       links: [
         {
-          label: "Country report",
+          label: "Germany Article IV country report",
           url: "https://www.elibrary.imf.org/view/journals/002/2026/036/article-A001-en.xml",
         },
       ],

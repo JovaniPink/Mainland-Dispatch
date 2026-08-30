@@ -44,6 +44,7 @@ export const whatGetsThrough = parseCirculationGatesNotebookEntry({
       publisher: "China Insider - Hudson Institute",
       duration: "39:23",
       url: "https://china-insider.simplecast.com/episodes/china-insider-chinas-role-in-us-canada-trade-dispute-niu-lai-disrupts-chinese-cinema-hong-kong-court-convicts-tiananmen-activists-chow-hang-tung-and-lee-cheuk-yan-sQorcjNd",
+      retrievedAt: "2026-08-25",
       note: "Episode 195 is the initiating argument. The publisher feed provides the runtime and release record but no transcript or chapter markers, so the three locators below were audited manually against the publisher audio.",
     },
   ],
@@ -1131,7 +1132,7 @@ export const whatGetsThrough = parseCirculationGatesNotebookEntry({
       retrievedAt: "2026-08-30",
       links: [
         {
-          label: "Read AP report",
+          label: "Read AP national-security trial report",
           url: "https://apnews.com/article/5079e910df071b45d2b16949efb8f11a",
         },
       ],
@@ -1177,7 +1178,7 @@ export const whatGetsThrough = parseCirculationGatesNotebookEntry({
       retrievedAt: "2026-08-25",
       links: [
         {
-          label: "Read AP report",
+          label: "Read AP Niu Lai report",
           url: "https://apnews.com/article/80a25ad38005f5c6200715a37b704bea",
         },
       ],

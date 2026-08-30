@@ -1,6 +1,6 @@
 import {
-  getPublishedNotebookEntry,
-  publishedNotebookEntries,
+  getPublicNotebookEntry,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import {
   parseTradeAdjustmentNotebookEntry,
@@ -25,10 +25,10 @@ describe("Who Absorbs the Shock Notebook registry", () => {
       editorialStatus: "published",
       reviewState: "source-reviewed",
     });
-    expect(publishedNotebookEntries.map((item) => item.ordinal)).toEqual([
+    expect(publicNotebookEntries.map((item) => item.ordinal)).toEqual([
       1, 2, 3, 4, 5, 6, 7,
     ]);
-    expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
+    expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
   it("records six completed publisher-audio passage audits", () => {

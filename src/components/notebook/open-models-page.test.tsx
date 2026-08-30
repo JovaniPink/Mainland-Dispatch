@@ -52,7 +52,7 @@ describe("Open Models, Closed System Notebook", () => {
   it("displays all thirteen clean source stops", () => {
     render(<OpenModelsClosedSystemPage />);
 
-    expect(screen.getAllByText(/Retrieved 2026-07-28/)).toHaveLength(13);
+    expect(screen.getAllByText(/Retrieved 2026-07-28/)).toHaveLength(16);
     const sourceLinks = screen
       .getAllByRole("link")
       .filter((link) => link.getAttribute("href")?.startsWith("http"));

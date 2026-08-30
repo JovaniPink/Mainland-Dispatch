@@ -5,7 +5,7 @@ import { Masthead } from "@/components/shell/masthead";
 import { Footer } from "@/components/shell/footer";
 import { catalog } from "@/content/catalog";
 import { JsonLd } from "@/components/seo/json-ld";
-import { siteUrl, socialImage } from "@/lib/seo";
+import { organizationId, siteUrl, socialImage, websiteId } from "@/lib/seo";
 
 void catalog;
 
@@ -76,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-US" suppressHydrationWarning>
       <body className="antialiased">
         <JsonLd
           data={{
@@ -84,18 +84,18 @@ export default function RootLayout({
             "@graph": [
               {
                 "@type": "Organization",
-                "@id": `${siteUrl}/#organization`,
+                "@id": organizationId,
                 name: site.name,
                 url: siteUrl,
                 logo: `${siteUrl}/favicon.ico`,
               },
               {
                 "@type": "WebSite",
-                "@id": `${siteUrl}/#website`,
+                "@id": websiteId,
                 url: siteUrl,
                 name: site.name,
                 description: site.tagline,
-                publisher: { "@id": `${siteUrl}/#organization` },
+                publisher: { "@id": organizationId },
                 inLanguage: "en-US",
               },
             ],

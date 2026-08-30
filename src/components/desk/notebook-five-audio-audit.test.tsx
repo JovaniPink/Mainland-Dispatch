@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import sitemap from "@/app/sitemap";
-import { publishedNotebookEntries } from "@/content/notebook";
+import { publicNotebookEntries } from "@/content/notebook";
 import { siteUrl } from "@/lib/seo";
 import {
   NOTEBOOK_FIVE_AUDIO_AUDIT_STORAGE_KEY,
@@ -48,7 +48,7 @@ describe("NotebookFiveAudioAudit", () => {
   });
 
   it("now resolves through the public Notebook registry and sitemap", () => {
-    expect(publishedNotebookEntries.map((entry) => entry.slug)).toContain(
+    expect(publicNotebookEntries.map((entry) => entry.slug)).toContain(
       "who-absorbs-the-shock"
     );
     expect(sitemap().map((entry) => entry.url)).toContain(

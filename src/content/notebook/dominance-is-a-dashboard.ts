@@ -48,6 +48,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       publisher: "Fresh Air · NPR",
       duration: "44:29",
       url: nprUrl,
+      retrievedAt: "2026-08-14",
       note: "Terry Gross’s August 12 interview with Evan Osnos supplies the initiating question. The audio, not the machine-assisted transcript, is the controlling episode record.",
     },
     {
@@ -56,6 +57,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       title: "Transcript: Has the U.S. lost its dominance to China?",
       publisher: "Fresh Air · NPR",
       url: "https://www.npr.org/transcripts/nx-s1-5928224",
+      retrievedAt: "2026-08-14",
       note: "A publisher transcript makes the argument inspectable, but NPR warns that its transcript may be revised and may vary from the audio.",
     },
     {
@@ -64,6 +66,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       title: "The Future Made in China",
       publisher: "The New Yorker",
       url: "https://www.newyorker.com/magazine/2026/08/10/the-future-made-in-china",
+      retrievedAt: "2026-08-14",
       note: "Evan Osnos’s reported feature is the interview’s narrative foundation. Its examples prompt questions; the numerical dashboard below is checked against primary or specialist records.",
     },
   ],
@@ -735,7 +738,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       retrievedAt: "2026-08-14",
       links: [
         {
-          label: "Executive summary",
+          label: "Science indicators executive summary",
           url: "https://ncses.nsf.gov/pubs/nsbsep20261/executive-summary",
         },
         {
@@ -777,7 +780,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       retrievedAt: "2026-08-14",
       links: [
         {
-          label: "Report",
+          label: "AI Index report",
           url: "https://hai.stanford.edu/ai-index/2026-ai-index-report",
         },
         {
@@ -845,7 +848,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
           url: "https://www.iea.org/reports/global-critical-minerals-outlook-2026/outlook",
         },
         {
-          label: "Executive summary",
+          label: "Critical minerals executive summary",
           url: "https://www.iea.org/reports/global-critical-minerals-outlook-2026/executive-summary",
         },
       ],

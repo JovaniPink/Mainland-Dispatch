@@ -8,13 +8,13 @@ import {
 } from "@/content/dispatches";
 import { comparisons } from "@/content/comparisons";
 import { traces } from "@/content/traces";
-import { formatDate, site, verticals } from "@/content/site";
+import { formatDate, verticals } from "@/content/site";
 import { MetaLine } from "@/components/dispatch/meta-line";
 import { SaveButton } from "@/components/dispatch/save-button";
 import { MediaFacade } from "@/components/media/media-facade";
 import { DispatchVisual } from "@/components/dispatch/dispatch-visual";
 import { JsonLd } from "@/components/seo/json-ld";
-import { absoluteUrl, pageMetadata, seoDescription } from "@/lib/seo";
+import { dispatchArticleJsonLd, dispatchArticleMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return publishedDispatches.map((d) => ({ slug: d.slug }));
@@ -27,24 +27,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const dispatch = getPublicDispatch(slug);
-  if (!dispatch) return { title: "Dispatch not found" };
-
-  const base = pageMetadata({
-    title: dispatch.title,
-    description: dispatch.summary,
-    path: `/dispatch/${dispatch.slug}`,
-  });
-  return {
-    ...base,
-    openGraph: {
-      ...base.openGraph,
-      type: "article",
-      publishedTime: `${dispatch.curatedAt}T00:00:00.000Z`,
-      modifiedTime: `${dispatch.updatedAt}T00:00:00.000Z`,
-      authors: [site.name],
-      tags: dispatch.tags,
-    },
-  };
+  if (!dispatch) notFound();
+  return dispatchArticleMetadata(dispatch);
 }
 
 export default async function DispatchPage({
@@ -78,36 +62,7 @@ export default async function DispatchPage({
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "NewsArticle",
-          headline: d.title,
-          description: seoDescription(d.summary),
-          mainEntityOfPage: absoluteUrl(`/dispatch/${d.slug}`),
-          datePublished: d.curatedAt,
-          dateModified: d.updatedAt,
-          author: {
-            "@type": "Organization",
-            name: site.name,
-            url: site.url,
-          },
-          publisher: {
-            "@type": "Organization",
-            name: site.name,
-            url: site.url,
-          },
-          isBasedOn: d.canonicalSource.url,
-          citation: [
-            d.canonicalSource.url,
-            ...d.supportingSources.map((source) => source.url),
-          ],
-          about: [...d.people, ...d.organizations, ...d.places],
-          articleSection: d.verticals.join(", "),
-          keywords: d.tags.join(", "),
-          inLanguage: "en-US",
-        }}
-      />
+      <JsonLd data={dispatchArticleJsonLd(d)} />
       <div className="rise-in">
         <MetaLine dispatch={d} />
         <h1 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">

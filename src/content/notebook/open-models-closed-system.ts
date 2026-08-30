@@ -49,6 +49,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       publisher: "China Insider · Hudson Institute",
       duration: "36:58",
       url: simplecastUrl,
+      retrievedAt: "2026-07-28",
       note: "The canonical episode page. No publisher transcript was available when reviewed on July 28, 2026.",
     },
     {
@@ -59,6 +60,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       publisher:
         "Ministry of Foreign Affairs of the People’s Republic of China",
       url: "https://www.fmprc.gov.cn/eng/xw/zyxw/202607/t20260717_11984766.html",
+      retrievedAt: "2026-07-28",
       note: "The official English-language text is the controlling source for what Xi publicly proposed.",
     },
     {
@@ -68,6 +70,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
         "Full Address: Xi Jinping Delivers Keynote at World AI Conference in Shanghai",
       publisher: "DWS News · YouTube",
       url: "https://www.youtube.com/watch?v=epKAbjsveyE",
+      retrievedAt: "2026-07-28",
       note: "Broadcast footage for evaluating delivery and framing; the official written address remains the factual reference.",
     },
   ],
@@ -563,7 +566,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
           url: "https://www.fmprc.gov.cn/eng/wjbzhd/202607/t20260717_11984747.html",
         },
         {
-          label: "Reuters report",
+          label: "Reuters cooperation-body report",
           url: "https://www.reuters.com/world/china/twenty-nine-countries-sign-agreement-establish-global-ai-cooperation-body-2026-07-16/",
         },
       ],
@@ -619,7 +622,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       retrievedAt: "2026-07-28",
       links: [
         {
-          label: "Report",
+          label: "AI Index report",
           url: "https://hai.stanford.edu/ai-index/2026-ai-index-report",
         },
       ],
@@ -638,7 +641,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       retrievedAt: "2026-07-28",
       links: [
         {
-          label: "Reuters report",
+          label: "Reuters export-control report",
           url: "https://www.reuters.com/world/beijing-is-looking-curbing-overseas-access-chinas-top-ai-models-sources-say-2026-07-07/",
         },
       ],

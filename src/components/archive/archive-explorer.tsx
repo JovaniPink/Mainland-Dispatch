@@ -5,10 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { publishedDispatches } from "@/content/dispatches";
 import { evidenceStatusLabels } from "@/content/dossiers";
-import {
-  latestNotebookEntry,
-  publishedNotebookEntries,
-} from "@/content/notebook";
+import { latestNotebookEntry, publicNotebookEntries } from "@/content/notebook";
 import type { NotebookEntry } from "@/content/notebook/schema";
 import {
   type Dispatch,
@@ -441,7 +438,7 @@ export function ArchiveExplorer() {
         )
           ? { focusId: params.get("focus")! }
           : {}),
-        ...(publishedNotebookEntries.some(
+        ...(publicNotebookEntries.some(
           (entry) => entry.slug === params.get("inquiry")
         )
           ? { inquirySlug: params.get("inquiry")! }
@@ -614,9 +611,8 @@ export function ArchiveExplorer() {
       : []),
   ];
   const selectedInquiry =
-    publishedNotebookEntries.find(
-      (entry) => entry.slug === context.inquirySlug
-    ) ?? latestNotebookEntry;
+    publicNotebookEntries.find((entry) => entry.slug === context.inquirySlug) ??
+    latestNotebookEntry;
 
   return (
     <section aria-labelledby="archive-explorer-title">
@@ -824,7 +820,7 @@ export function ArchiveExplorer() {
                 }
                 className="min-w-0 border border-rule bg-paper px-3 py-2 text-sm focus:border-jade focus:outline-none"
               >
-                {publishedNotebookEntries.map((entry) => (
+                {publicNotebookEntries.map((entry) => (
                   <option key={entry.slug} value={entry.slug}>
                     Inquiry {String(entry.ordinal).padStart(2, "0")} -{" "}
                     {entry.title}

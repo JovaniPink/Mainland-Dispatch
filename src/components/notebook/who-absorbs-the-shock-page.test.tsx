@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import sitemap from "@/app/sitemap";
 import WhoAbsorbsTheShockPage, {
-  metadata,
+  generateMetadata,
 } from "@/app/notebook/who-absorbs-the-shock/page";
 import { whoAbsorbsTheShock as entry } from "@/content/notebook/who-absorbs-the-shock";
 
@@ -62,6 +62,7 @@ describe("Who Absorbs the Shock Notebook page", () => {
 
   it("publishes article metadata, citations, and a sitemap entry", () => {
     const { container } = render(<WhoAbsorbsTheShockPage />);
+    const metadata = generateMetadata();
     expect(metadata.alternates).toEqual({
       canonical: "https://mainlanddispatch.com/notebook/who-absorbs-the-shock",
     });

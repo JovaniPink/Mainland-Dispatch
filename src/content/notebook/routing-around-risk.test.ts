@@ -1,7 +1,7 @@
 import {
-  getPublishedNotebookEntry,
+  getPublicNotebookEntry,
   latestNotebookEntry,
-  publishedNotebookEntries,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import { routingAroundRisk as entry } from "./routing-around-risk";
 import { NotebookEntrySchema } from "./schema";
@@ -134,7 +134,7 @@ describe("Routing Around Risk Notebook registry", () => {
   });
 
   it("keeps Notebook Four in the complete published registry", () => {
-    expect(publishedNotebookEntries.map((item) => item.slug)).toEqual([
+    expect(publicNotebookEntries.map((item) => item.slug)).toEqual([
       "what-xi-jinping-wants",
       "open-models-closed-system",
       "dominance-is-a-dashboard",
@@ -144,7 +144,7 @@ describe("Routing Around Risk Notebook registry", () => {
       "july-is-not-one-number",
     ]);
     expect(latestNotebookEntry.slug).toBe("july-is-not-one-number");
-    expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
+    expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
   it("rejects duplicate route, point, and scale identities", () => {

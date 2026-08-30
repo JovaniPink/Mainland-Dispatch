@@ -1,11 +1,11 @@
 import { NotebookEntrySchema } from "./schema";
-import { publishedNotebookEntries } from ".";
+import { publicNotebookEntries } from ".";
 
 describe("Notebook front-page contract", () => {
   it("requires a thesis and source-resolved evidence preview for every public entry", () => {
-    expect(publishedNotebookEntries).toHaveLength(7);
+    expect(publicNotebookEntries).toHaveLength(7);
 
-    for (const entry of publishedNotebookEntries) {
+    for (const entry of publicNotebookEntries) {
       expect(entry.thesis.length).toBeGreaterThan(80);
       expect(entry.frontPagePreview.finding.length).toBeGreaterThan(40);
       expect(entry.frontPagePreview.caveat.length).toBeGreaterThan(20);
@@ -19,7 +19,7 @@ describe("Notebook front-page contract", () => {
   });
 
   it("rejects missing or unresolved front-page evidence", () => {
-    const entry = publishedNotebookEntries[0];
+    const entry = publicNotebookEntries[0];
     const withoutThesis = { ...entry, thesis: undefined };
     expect(() => NotebookEntrySchema.parse(withoutThesis)).toThrow();
 

@@ -47,6 +47,7 @@ export const routingAroundRisk = parseNotebookEntry({
       title: "How China Is Quietly Winning the Iran War Energy Crisis",
       publisher: "The Spillover · Council on Foreign Relations",
       url: "https://www.cfr.org/podcasts/spillover/how-china-is-quietly-winning-the-iran-war-energy-crisis",
+      retrievedAt: "2026-08-18",
       note: "A strong statement of the swing-consumer argument. Its oil-price counterfactual is analysis, not an observed component of the Brent price.",
     },
     {
@@ -55,6 +56,7 @@ export const routingAroundRisk = parseNotebookEntry({
       title: "Arctic Shipping and the Northern Sea Route",
       publisher: "The Circumpolar Podcast · The Arctic Institute",
       url: "https://www.thearcticinstitute.org/the-circumpolar-podcast-arctic-shipping-northern-sea-route/",
+      retrievedAt: "2026-08-18",
       note: "An April 2026 expert discussion of ice, operating economics, Russian administration, and the post-2022 China–Russia balance.",
     },
     {
@@ -65,6 +67,7 @@ export const routingAroundRisk = parseNotebookEntry({
       publisher: "Amanpour & Company · PBS",
       duration: "17:32",
       url: "https://www.pbs.org/video/russia-china-and-iran-the-future-of-global-energy-in-a-world-at-war-rdjpdi/",
+      retrievedAt: "2026-08-18",
       note: "A captioned interview with Daniel Yergin. Use it for expert interpretation and its April snapshot, not as voyage-level proof.",
     },
   ],
@@ -829,7 +832,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-20",
       links: [
         {
-          label: "Report",
+          label: "UNCTAD shipping disruption report",
           url: "https://unctad.org/publication/navigating-troubled-waters-impact-global-trade-disruption-shipping-routes-red-sea-black",
         },
       ],
@@ -846,7 +849,9 @@ export const routingAroundRisk = parseNotebookEntry({
       publisher: "Reuters",
       publishedAt: "2026-08-18",
       retrievedAt: "2026-08-20",
-      links: [{ label: "Report", url: reutersTankerUrl }],
+      links: [
+        { label: "Reuters tanker redeployment report", url: reutersTankerUrl },
+      ],
       context:
         "Reports state-linked tanker redeployment, Kpler's outside-Gulf STS estimate, vessel schedules, and freight economics.",
       limitation:
@@ -862,7 +867,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-20",
       links: [
         {
-          label: "Report",
+          label: "Reuters Saudi loadings report",
           url: "https://www.reuters.com/business/energy/saudi-arabia-resumes-oil-loadings-sales-inside-strait-hormuz-2026-08-18/",
         },
       ],
@@ -1080,7 +1085,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-20",
       links: [
         {
-          label: "Report",
+          label: "AP Russia-Iran report",
           url: "https://apnews.com/article/russia-iran-war-putin-ukraine-oil-8a6af4989692d66a1e5bed1bc1922efa",
         },
       ],
@@ -1099,7 +1104,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-20",
       links: [
         {
-          label: "Report",
+          label: "Lloyd's List VLCC report",
           url: "https://www.lloydslist.com/LL1157990/Chinese-state-giants-pull-VLCCs-from-Red-Sea-as-safety-trumps-commercial-gains",
         },
       ],
@@ -1116,7 +1121,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-18",
       links: [
         {
-          label: "Episode",
+          label: "CFR energy-crisis episode",
           url: "https://www.cfr.org/podcasts/spillover/how-china-is-quietly-winning-the-iran-war-energy-crisis",
         },
       ],
@@ -1134,7 +1139,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-18",
       links: [
         {
-          label: "Episode",
+          label: "Arctic shipping episode",
           url: "https://www.thearcticinstitute.org/the-circumpolar-podcast-arctic-shipping-northern-sea-route/",
         },
       ],
@@ -1191,7 +1196,7 @@ export const routingAroundRisk = parseNotebookEntry({
       retrievedAt: "2026-08-20",
       links: [
         {
-          label: "Report",
+          label: "Guardian Arctic-route report",
           url: "https://www.theguardian.com/world/2026/aug/17/strait-hormuz-alternative-china-ships-north-sea-route-arctic-ice-silk-road",
         },
       ],

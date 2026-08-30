@@ -59,6 +59,9 @@ export function NotebookFormats({ formats }: { formats: NotebookFormat[] }) {
               {format.duration}
             </span>
           )}
+          <span className="mt-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+            Retrieved {format.retrievedAt}
+          </span>
           <span className="mt-4 text-xs leading-relaxed text-ink-muted">
             {format.note}
           </span>

@@ -14,8 +14,10 @@ a large-image social card.
 ## Indexable surfaces
 
 - `/` — the public Notebook landing page;
-- `/notebook/what-xi-jinping-wants` — the founding public inquiry;
-- `/notebook/open-models-closed-system` — the second public inquiry;
+- `/notebooks` — the public Notebook collection;
+- `/notebook/[slug]` — only Notebook entries selected as public; the public
+  statuses are `published` and `corrected`, while `draft` entries fail closed at
+  the route and metadata boundaries;
 - `/archive` — the interactive reviewed Dispatch archive; its filter, timeline
   and relationship state canonicalize to the base route;
 - `/dispatch/[slug]` — only published or corrected Dispatches;
@@ -99,8 +101,9 @@ contains stable canonical URLs, meaningful last-modified dates, conservative
 change frequencies and relative priorities. It never imports the entire Desk
 catalog.
 
-The homepage last-modified date follows the latest published Notebook revision.
-Each Notebook uses its own revision. `/archive` follows the newest public
+The homepage and `/notebooks` last-modified dates follow the newest revision
+across every public Notebook, independent of ordinal order. Each Notebook uses
+its own revision. `/archive` follows the newest public
 Dispatch revision. Dispatches use `updatedAt`; comparisons use the newest
 linked public Dispatch; traces use the newest timeline entry; and dossiers use
 `lastReviewed`. Atlas releases are absent because they remain unpublished
@@ -109,10 +112,41 @@ prototype/source-snapshot records.
 ## Validation
 
 The SEO regression suite checks canonical URL construction, description length,
-unique sitemap URLs, inclusion of every published Notebook, archive and every
+unique sitemap URLs, exact inclusion of every public Notebook, archive and every
 public Dispatch, exclusion of `/atlas`, `/desk` and `/saved`, meaningful
 revision dates, crawler directives and manifest identity. The full gate then
 builds every public route.
 
+The implementation follows Google guidance for
+[accurate sitemap modification dates](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap),
+[crawlable descriptive links](https://developers.google.com/search/docs/crawling-indexing/links-crawlable),
+and [Article structured data](https://developers.google.com/search/docs/appearance/structured-data/article),
+plus WCAG 2.2 guidance for
+[link purpose in context](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html).
+Metadata can make a page more legible to crawlers, but this contract does not
+claim rich-result eligibility or improved ranking.
+
 For metadata or layout changes, inspect rendered HTML at desktop and 390px
 mobile widths and confirm canonical, robots, Open Graph and JSON-LD output.
+
+## Link auditing
+
+`npm run link:audit:static` reads the production sitemap and rendered HTML. It
+checks internal routes and fragments, the sitemap/indexability boundary, clean
+HTTPS evidence URLs, descriptive source labels, external-anchor safety,
+canonicals, robots metadata, Open Graph URLs, JSON-LD, and serialized
+consent-gated media URLs. It runs after the canonical production build inside
+`npm run test-all`.
+
+`npm run link:audit:live` is a separate network check. The scheduled read-only
+workflow runs at 13:17 UTC each Monday and can also be started manually. It
+requires direct successful first-party sitemap routes, uses bounded concurrency
+and timeouts, and records redirects without editing content. Media and PDF
+probes use `HEAD` or a one-byte ranged `GET` rather than downloading the full
+asset.
+
+A third-party URL fails only after two `GET` attempts confirm `404` or `410`, or
+when an HTTPS URL redirects to HTTP. `401`, `403`, `429`, and `451` are reported
+as restricted. `400`, `405`, server errors, DNS or TLS failures, resets, and
+timeouts are inconclusive. A confirmed failure stops the workflow for human
+editorial review; the audit never replaces or removes a source automatically.

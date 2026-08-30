@@ -14,9 +14,12 @@
     "typecheck:compat": "next typegen && node node_modules/typescript/bin/tsc --noEmit",
     "test": "jest",
     "test:ci": "jest --runInBand --coverage",
+    "test:link-audit": "node --test scripts/link-audit.node-test.mjs",
+    "link:audit:static": "node scripts/link-audit.mjs static",
+    "link:audit:live": "node scripts/link-audit.mjs live",
     "audit:production": "npm audit --omit=dev --audit-level=high",
     "audit:toolchain": "npm audit --audit-level=high",
-    "test-all": "npm run format:check && npm run lint && npm run toolchain:check && npm run typecheck && npm run typecheck:compat && npm run test:ci && npm run build",
+    "test-all": "npm run format:check && npm run lint && npm run toolchain:check && npm run typecheck && npm run typecheck:compat && npm run test:ci && npm run test:link-audit && npm run build && npm run link:audit:static",
     "prepare": "husky"
   },
   "dependencies": {
