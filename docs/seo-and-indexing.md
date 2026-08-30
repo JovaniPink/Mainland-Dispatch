@@ -14,8 +14,10 @@ a large-image social card.
 ## Indexable surfaces
 
 - `/` — the public Notebook landing page;
-- `/notebook/what-xi-jinping-wants` — the founding public inquiry;
-- `/notebook/open-models-closed-system` — the second public inquiry;
+- `/notebooks` — the public Notebook collection;
+- `/notebook/[slug]` — only Notebook entries selected as public; the public
+  statuses are `published` and `corrected`, while `draft` entries fail closed at
+  the route and metadata boundaries;
 - `/archive` — the interactive reviewed Dispatch archive; its filter, timeline
   and relationship state canonicalize to the base route;
 - `/dispatch/[slug]` — only published or corrected Dispatches;
@@ -99,8 +101,9 @@ contains stable canonical URLs, meaningful last-modified dates, conservative
 change frequencies and relative priorities. It never imports the entire Desk
 catalog.
 
-The homepage last-modified date follows the latest published Notebook revision.
-Each Notebook uses its own revision. `/archive` follows the newest public
+The homepage and `/notebooks` last-modified dates follow the newest revision
+across every public Notebook, independent of ordinal order. Each Notebook uses
+its own revision. `/archive` follows the newest public
 Dispatch revision. Dispatches use `updatedAt`; comparisons use the newest
 linked public Dispatch; traces use the newest timeline entry; and dossiers use
 `lastReviewed`. Atlas releases are absent because they remain unpublished
@@ -109,10 +112,19 @@ prototype/source-snapshot records.
 ## Validation
 
 The SEO regression suite checks canonical URL construction, description length,
-unique sitemap URLs, inclusion of every published Notebook, archive and every
+unique sitemap URLs, exact inclusion of every public Notebook, archive and every
 public Dispatch, exclusion of `/atlas`, `/desk` and `/saved`, meaningful
 revision dates, crawler directives and manifest identity. The full gate then
 builds every public route.
+
+The implementation follows Google guidance for
+[accurate sitemap modification dates](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap),
+[crawlable descriptive links](https://developers.google.com/search/docs/crawling-indexing/links-crawlable),
+and [Article structured data](https://developers.google.com/search/docs/appearance/structured-data/article),
+plus WCAG 2.2 guidance for
+[link purpose in context](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html).
+Metadata can make a page more legible to crawlers, but this contract does not
+claim rich-result eligibility or improved ranking.
 
 For metadata or layout changes, inspect rendered HTML at desktop and 390px
 mobile widths and confirm canonical, robots, Open Graph and JSON-LD output.

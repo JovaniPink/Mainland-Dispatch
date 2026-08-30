@@ -3,7 +3,7 @@ import NotebooksPage, { metadata } from "@/app/notebooks/page";
 
 describe("Notebooks index", () => {
   it("presents the latest inquiry first and every published Notebook once", () => {
-    render(<NotebooksPage />);
+    const { container } = render(<NotebooksPage />);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Notebooks" })
@@ -13,6 +13,9 @@ describe("Notebooks index", () => {
     );
     expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(7);
     expect(screen.getByText("Who Absorbs the Shock?")).toBeInTheDocument();
+    expect(
+      container.querySelector('script[type="application/ld+json"]')?.textContent
+    ).toContain('"dateModified":"2026-08-30"');
   });
 
   it("publishes canonical and social metadata", () => {

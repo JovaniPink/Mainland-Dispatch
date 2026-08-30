@@ -68,6 +68,15 @@ export const latestNotebookEntry =
     throw new Error("At least one public Notebook entry is required");
   })();
 
+export const newestNotebookRevision =
+  publicNotebookEntries
+    .map((entry) => entry.updatedAt)
+    .sort()
+    .at(-1) ??
+  (() => {
+    throw new Error("At least one public Notebook revision is required");
+  })();
+
 export function getPublicNotebookEntry(
   slug: string
 ): NotebookEntry | undefined {

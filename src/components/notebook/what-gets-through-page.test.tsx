@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import sitemap from "@/app/sitemap";
 import WhatGetsThroughPage, {
-  metadata,
+  generateMetadata,
 } from "@/app/notebook/what-gets-through/page";
 import { whatGetsThrough as entry } from "@/content/notebook/what-gets-through";
 
@@ -106,6 +106,7 @@ describe("What Gets Through Notebook page", () => {
 
   it("publishes canonical article metadata, JSON-LD citations, and sitemap entry", () => {
     const { container } = render(<WhatGetsThroughPage />);
+    const metadata = generateMetadata();
     expect(metadata.alternates).toEqual({
       canonical: "https://mainlanddispatch.com/notebook/what-gets-through",
     });

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { render, screen, within } from "@testing-library/react";
 import sitemap from "@/app/sitemap";
 import JulyIsNotOneNumberPage, {
-  metadata,
+  generateMetadata,
 } from "@/app/notebook/july-is-not-one-number/page";
 import { EconomicSignalsFigure } from "@/components/notebook/economic-signals-figure";
 import { julyIsNotOneNumber as entry } from "@/content/notebook/july-is-not-one-number";
@@ -108,6 +108,7 @@ describe("July Is Not One Number Notebook page", () => {
 
   it("publishes canonical metadata, JSON-LD citations, and a sitemap entry", () => {
     const { container } = render(<JulyIsNotOneNumberPage />);
+    const metadata = generateMetadata();
 
     expect(metadata.alternates).toEqual({
       canonical: "https://mainlanddispatch.com/notebook/july-is-not-one-number",

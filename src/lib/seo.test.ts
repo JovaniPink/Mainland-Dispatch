@@ -5,17 +5,26 @@ import { publishedDispatches } from "@/content/dispatches";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
 import { dominanceIsADashboard } from "@/content/notebook/dominance-is-a-dashboard";
-import { publicNotebookEntries } from "@/content/notebook";
-import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
-import { metadata as notebookThreeMetadata } from "@/app/notebook/dominance-is-a-dashboard/page";
-import { metadata as notebookFourMetadata } from "@/app/notebook/routing-around-risk/page";
-import { metadata as notebookSixMetadata } from "@/app/notebook/what-gets-through/page";
-import { metadata as notebookSevenMetadata } from "@/app/notebook/july-is-not-one-number/page";
+import {
+  newestNotebookRevision,
+  publicNotebookEntries,
+} from "@/content/notebook";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as atlasMetadata } from "@/app/atlas/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
 import { generateMetadata as generateDispatchMetadata } from "@/app/dispatch/[slug]/page";
-import { absoluteUrl, pageMetadata, seoDescription, siteUrl } from "./seo";
+import {
+  absoluteUrl,
+  dispatchArticleJsonLd,
+  notebookArticleJsonLd,
+  notebookArticleMetadata,
+  organizationId,
+  pageMetadata,
+  seoDescription,
+  siteUrl,
+  socialImage,
+  websiteId,
+} from "./seo";
 
 describe("SEO publication contract", () => {
   it("creates concise descriptions without splitting early", () => {
@@ -44,6 +53,47 @@ describe("SEO publication contract", () => {
       title: "Source Archive",
     });
     expect(metadata.twitter).toMatchObject({ card: "summary_large_image" });
+
+    const queryMetadata = pageMetadata({
+      title: "Clean canonical",
+      description: "Canonical query state is removed.",
+      path: "/archive?inquiry=one#sources",
+    });
+    expect(queryMetadata.alternates).toEqual({
+      canonical: `${siteUrl}/archive`,
+    });
+  });
+
+  it("builds consistent metadata and JSON-LD for every public Notebook", () => {
+    for (const entry of publicNotebookEntries) {
+      const metadata = notebookArticleMetadata(entry);
+      const jsonLd = notebookArticleJsonLd(entry);
+      const canonical = `${siteUrl}/notebook/${entry.slug}`;
+
+      expect(metadata.alternates).toEqual({ canonical });
+      expect(metadata.openGraph).toMatchObject({
+        type: "article",
+        url: canonical,
+        publishedTime: `${entry.publishedAt}T00:00:00.000Z`,
+        modifiedTime: `${entry.updatedAt}T00:00:00.000Z`,
+      });
+      expect(jsonLd).toMatchObject({
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        url: canonical,
+        datePublished: entry.publishedAt,
+        dateModified: entry.updatedAt,
+        image: [absoluteUrl(socialImage)],
+        author: { "@id": organizationId },
+        publisher: { "@id": organizationId },
+        isPartOf: { "@id": websiteId },
+        inLanguage: "en-US",
+      });
+      expect(new Set(jsonLd.citation as string[]).size).toBe(
+        (jsonLd.citation as string[]).length
+      );
+      expect(JSON.stringify({ metadata, jsonLd })).not.toContain("utm_");
+    }
   });
 
   it("indexes public editorial routes and excludes private utility routes", () => {
@@ -61,6 +111,9 @@ describe("SEO publication contract", () => {
         urls.includes(`${siteUrl}/notebook/${entry.slug}`)
       )
     ).toBe(true);
+    expect(urls.filter((url) => url.includes("/notebook/"))).toEqual(
+      publicNotebookEntries.map((entry) => `${siteUrl}/notebook/${entry.slug}`)
+    );
     expect(urls).toContain(`${siteUrl}/notebook/${dominanceIsADashboard.slug}`);
     expect(urls).toContain(`${siteUrl}/archive`);
     expect(urls).not.toContain(`${siteUrl}/atlas`);
@@ -73,67 +126,14 @@ describe("SEO publication contract", () => {
       )
     ).toBe(true);
     expect(entries.every((entry) => Boolean(entry.lastModified))).toBe(true);
-  });
-
-  it("keeps Notebook Two canonical and article metadata free of query state", () => {
-    expect(notebookTwoMetadata.alternates).toEqual({
-      canonical: `${siteUrl}/notebook/open-models-closed-system`,
-    });
-    expect(notebookTwoMetadata.openGraph).toMatchObject({
-      type: "article",
-      url: `${siteUrl}/notebook/open-models-closed-system`,
-      publishedTime: "2026-07-28T00:00:00.000Z",
-    });
-    expect(JSON.stringify(notebookTwoMetadata)).not.toContain("utm_");
-    expect(JSON.stringify(notebookTwoMetadata)).not.toContain("promise=");
-  });
-
-  it("publishes query-free article metadata for Notebook Three", () => {
-    expect(notebookThreeMetadata.alternates).toEqual({
-      canonical: `${siteUrl}/notebook/dominance-is-a-dashboard`,
-    });
-    expect(notebookThreeMetadata.openGraph).toMatchObject({
-      type: "article",
-      url: `${siteUrl}/notebook/dominance-is-a-dashboard`,
-      publishedTime: "2026-08-14T00:00:00.000Z",
-    });
-    expect(JSON.stringify(notebookThreeMetadata)).not.toContain("utm_");
-  });
-
-  it("publishes query-free article metadata for Notebook Four", () => {
-    expect(notebookFourMetadata.alternates).toEqual({
-      canonical: `${siteUrl}/notebook/routing-around-risk`,
-    });
-    expect(notebookFourMetadata.openGraph).toMatchObject({
-      type: "article",
-      url: `${siteUrl}/notebook/routing-around-risk`,
-      publishedTime: "2026-08-18T00:00:00.000Z",
-    });
-    expect(JSON.stringify(notebookFourMetadata)).not.toContain("utm_");
-  });
-
-  it("publishes query-free article metadata for Inquiry Six", () => {
-    expect(notebookSixMetadata.alternates).toEqual({
-      canonical: `${siteUrl}/notebook/what-gets-through`,
-    });
-    expect(notebookSixMetadata.openGraph).toMatchObject({
-      type: "article",
-      url: `${siteUrl}/notebook/what-gets-through`,
-      publishedTime: "2026-08-25T00:00:00.000Z",
-    });
-    expect(JSON.stringify(notebookSixMetadata)).not.toContain("utm_");
-  });
-
-  it("publishes query-free article metadata for Inquiry Seven", () => {
-    expect(notebookSevenMetadata.alternates).toEqual({
-      canonical: `${siteUrl}/notebook/july-is-not-one-number`,
-    });
-    expect(notebookSevenMetadata.openGraph).toMatchObject({
-      type: "article",
-      url: `${siteUrl}/notebook/july-is-not-one-number`,
-      publishedTime: "2026-08-29T00:00:00.000Z",
-    });
-    expect(JSON.stringify(notebookSevenMetadata)).not.toContain("utm_");
+    expect(newestNotebookRevision).toBe("2026-08-30");
+    expect(entries.find((entry) => entry.url === siteUrl)?.lastModified).toBe(
+      newestNotebookRevision
+    );
+    expect(
+      entries.find((entry) => entry.url === `${siteUrl}/notebooks`)
+        ?.lastModified
+    ).toBe(newestNotebookRevision);
   });
 
   it("publishes consistent crawler and application metadata", () => {
@@ -166,6 +166,7 @@ describe("SEO publication contract", () => {
     const metadata = await generateDispatchMetadata({
       params: Promise.resolve({ slug: dispatch.slug }),
     });
+    const jsonLd = dispatchArticleJsonLd(dispatch);
 
     expect(metadata.alternates).toEqual({
       canonical: `${siteUrl}/dispatch/${dispatch.slug}`,
@@ -175,5 +176,16 @@ describe("SEO publication contract", () => {
       publishedTime: `${dispatch.curatedAt}T00:00:00.000Z`,
       authors: ["Mainland Dispatch"],
     });
+    expect(jsonLd).toMatchObject({
+      "@type": "NewsArticle",
+      image: [absoluteUrl(socialImage)],
+      author: { "@id": organizationId },
+      publisher: { "@id": organizationId },
+      isPartOf: { "@id": websiteId },
+      isBasedOn: dispatch.canonicalSource.url,
+    });
+    expect(new Set(jsonLd.citation as string[]).size).toBe(
+      (jsonLd.citation as string[]).length
+    );
   });
 });

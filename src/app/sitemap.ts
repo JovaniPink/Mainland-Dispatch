@@ -4,7 +4,11 @@ import { comparisons } from "@/content/comparisons";
 import { traces } from "@/content/traces";
 import { dossiers } from "@/content/dossiers";
 import { siteUrl } from "@/lib/seo";
-import { latestNotebookEntry, publicNotebookEntries } from "@/content/notebook";
+import {
+  latestNotebookEntry,
+  newestNotebookRevision,
+  publicNotebookEntries,
+} from "@/content/notebook";
 
 const newest = (dates: string[]) => [...dates].sort().at(-1);
 
@@ -59,13 +63,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
-      lastModified: latestNotebookEntry.updatedAt,
+      lastModified: newestNotebookRevision,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${siteUrl}/notebooks`,
-      lastModified: latestNotebookEntry.updatedAt,
+      lastModified: newestNotebookRevision,
       changeFrequency: "monthly",
       priority: 0.9,
     },

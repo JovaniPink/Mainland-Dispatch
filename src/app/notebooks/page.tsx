@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "@/components/seo/json-ld";
-import { latestNotebookEntry, publicNotebookEntries } from "@/content/notebook";
+import {
+  latestNotebookEntry,
+  newestNotebookRevision,
+  publicNotebookEntries,
+} from "@/content/notebook";
 import { formatDate } from "@/content/site";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
@@ -27,6 +31,7 @@ export default function NotebooksPage() {
           name: title,
           description,
           url: absoluteUrl("/notebooks"),
+          dateModified: newestNotebookRevision,
           mainEntity: {
             "@type": "ItemList",
             itemListElement: entries.map((entry, index) => ({
