@@ -111,6 +111,17 @@ Inquiry 04 through the same accessible compatibility rule.
 These interfaces are recorded for later implementation. This documentation
 decision does not add them to the runtime.
 
+## GitHub execution records
+
+Dated decisions remain the editorial authority. These issues track work and
+acceptance evidence:
+
+- [#32 — Plan and deliver the ten-Notebook Season Zero set without evidence loss](https://github.com/JovaniPink/Mainland-Dispatch/issues/32)
+- [#33 — Publish Inquiry 08 — Below Half Is Not Gone](https://github.com/JovaniPink/Mainland-Dispatch/issues/33)
+- [#34 — Prepare the Inquiry 06 / Inquiry 09 lossless custody migration](https://github.com/JovaniPink/Mainland-Dispatch/issues/34)
+- [#35 — Monitor Canada–China–US origin and transshipment evidence](https://github.com/JovaniPink/Mainland-Dispatch/issues/35)
+- [#36 — Prepare the Inquiry 04 / Inquiry 10 lossless custody migration](https://github.com/JovaniPink/Mainland-Dispatch/issues/36)
+
 ## Non-goals
 
 This program does not authorize new ingestion, a generalized CMS or data
