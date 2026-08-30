@@ -10,6 +10,7 @@ import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-clos
 import { metadata as notebookThreeMetadata } from "@/app/notebook/dominance-is-a-dashboard/page";
 import { metadata as notebookFourMetadata } from "@/app/notebook/routing-around-risk/page";
 import { metadata as notebookSixMetadata } from "@/app/notebook/what-gets-through/page";
+import { metadata as notebookSevenMetadata } from "@/app/notebook/july-is-not-one-number/page";
 import { metadata as homeMetadata } from "@/app/page";
 import { metadata as atlasMetadata } from "@/app/atlas/page";
 import { metadata as savedMetadata } from "@/app/saved/layout";
@@ -121,6 +122,18 @@ describe("SEO publication contract", () => {
       publishedTime: "2026-08-25T00:00:00.000Z",
     });
     expect(JSON.stringify(notebookSixMetadata)).not.toContain("utm_");
+  });
+
+  it("publishes query-free article metadata for Inquiry Seven", () => {
+    expect(notebookSevenMetadata.alternates).toEqual({
+      canonical: `${siteUrl}/notebook/july-is-not-one-number`,
+    });
+    expect(notebookSevenMetadata.openGraph).toMatchObject({
+      type: "article",
+      url: `${siteUrl}/notebook/july-is-not-one-number`,
+      publishedTime: "2026-08-29T00:00:00.000Z",
+    });
+    expect(JSON.stringify(notebookSevenMetadata)).not.toContain("utm_");
   });
 
   it("publishes consistent crawler and application metadata", () => {

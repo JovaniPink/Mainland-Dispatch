@@ -16,13 +16,13 @@ describe("edition front page", () => {
     const entryPoints = within(introduction).getByTestId("home-entry-points");
     const entryLinks = within(entryPoints).getAllByRole("link");
     expect(entryLinks.map((link) => link.getAttribute("href"))).toEqual([
-      "/notebook/what-gets-through",
+      "/notebook/july-is-not-one-number",
       "/notebooks",
       "/archive",
     ]);
     expect(
       within(entryPoints).getByRole("link", { name: /Latest inquiry/ })
-    ).toHaveAttribute("href", "/notebook/what-gets-through");
+    ).toHaveAttribute("href", "/notebook/july-is-not-one-number");
     expect(
       within(entryPoints).getByRole("link", { name: /Notebook index/ })
     ).toHaveAttribute("href", "/notebooks");
@@ -38,15 +38,15 @@ describe("edition front page", () => {
     expect(
       within(latest).getByRole("heading", {
         level: 2,
-        name: "What Gets Through?",
+        name: "July Is Not One Number",
       })
     ).toBeInTheDocument();
     expect(
-      within(latest).getByRole("link", { name: "Read Inquiry 06" })
-    ).toHaveAttribute("href", "/notebook/what-gets-through");
+      within(latest).getByRole("link", { name: "Read Inquiry 07" })
+    ).toHaveAttribute("href", "/notebook/july-is-not-one-number");
     expect(
       within(latest).getByRole("link", { name: "Examine the sources" })
-    ).toHaveAttribute("href", "/notebook/what-gets-through#sources");
+    ).toHaveAttribute("href", "/notebook/july-is-not-one-number#sources");
 
     const preview = screen.getByTestId("latest-evidence-preview");
     expect(within(preview).getByText("Interpretation")).toBeInTheDocument();
@@ -59,10 +59,10 @@ describe("edition front page", () => {
     const previous = screen.getByTestId("previous-inquiries");
     expect(within(previous).getAllByRole("article")).toHaveLength(2);
     expect(
-      within(previous).getByText("Who Absorbs the Shock?")
+      within(previous).getByText("What Gets Through?")
     ).toBeInTheDocument();
     expect(
-      within(previous).getByText("Routing Around Risk")
+      within(previous).getByText("Who Absorbs the Shock?")
     ).toBeInTheDocument();
 
     const archive = screen.getByTestId("home-archive-preview");

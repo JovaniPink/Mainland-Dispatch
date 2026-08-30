@@ -28,9 +28,9 @@ describe("What Gets Through Notebook registry", () => {
       reviewState: "source-reviewed",
     });
     expect(publishedNotebookEntries.map((item) => item.ordinal)).toEqual([
-      1, 2, 3, 4, 5, 6,
+      1, 2, 3, 4, 5, 6, 7,
     ]);
-    expect(latestNotebookEntry).toStrictEqual(entry);
+    expect(latestNotebookEntry.ordinal).toBeGreaterThan(entry.ordinal);
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
     expect(publishedNotebookEntries.map((item) => item.slug)).toContain(
       "who-absorbs-the-shock"

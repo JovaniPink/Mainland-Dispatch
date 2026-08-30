@@ -3,6 +3,7 @@ import DominanceIsADashboardPage from "@/app/notebook/dominance-is-a-dashboard/p
 import OpenModelsClosedSystemPage from "@/app/notebook/open-models-closed-system/page";
 import RoutingAroundRiskPage from "@/app/notebook/routing-around-risk/page";
 import WhatGetsThroughPage from "@/app/notebook/what-gets-through/page";
+import JulyIsNotOneNumberPage from "@/app/notebook/july-is-not-one-number/page";
 import WhoAbsorbsTheShockPage from "@/app/notebook/who-absorbs-the-shock/page";
 import WhatXiJinpingWantsPage from "@/app/notebook/what-xi-jinping-wants/page";
 
@@ -13,6 +14,7 @@ const pages = [
   ["Inquiry 04", RoutingAroundRiskPage],
   ["Inquiry 05", WhoAbsorbsTheShockPage],
   ["Inquiry 06", WhatGetsThroughPage],
+  ["Inquiry 07", JulyIsNotOneNumberPage],
 ] as const;
 
 describe("published Notebook reader routes", () => {

@@ -14,7 +14,7 @@ describe("ArchiveExplorer publication boundary and views", () => {
       screen.getByText(/liang wenfeng described deepseek's playbook/i)
     ).toBeInTheDocument();
     expect(
-      screen.queryByText(/who’s afraid of chinese models/i)
+      screen.queryByText(/afraid of chinese models/i)
     ).not.toBeInTheDocument();
   });
 
@@ -35,6 +35,11 @@ describe("ArchiveExplorer publication boundary and views", () => {
     expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
       "dominance-is-a-dashboard"
     );
+    expect(
+      screen.getByRole("option", {
+        name: "Inquiry 07 - July Is Not One Number",
+      })
+    ).toHaveValue("july-is-not-one-number");
     expect(
       screen.getByRole("option", {
         name: "Inquiry 06 - What Gets Through?",

@@ -350,6 +350,78 @@ export const NotebookPolicyOptionSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+const NotebookIndicatorContrastSchema = z.object({
+  label: nonEmpty,
+  display: nonEmpty,
+  value: z.number(),
+  unit: z.enum(["percent change", "diffusion index points"]),
+  comparison: nonEmpty,
+});
+
+const notebookEconomicIndicatorDimensions = [
+  "industrial-output",
+  "industrial-profits",
+  "retail-sales",
+  "fixed-investment",
+  "property",
+  "manufacturing-pmi",
+] as const;
+
+export type NotebookEconomicSourceRolePrefix =
+  "Primary" | "Official" | "Independent" | "Technical";
+
+type NotebookEconomicSourceRoleRequirement = Readonly<{
+  prefix: NotebookEconomicSourceRolePrefix;
+  count: number;
+  label: string;
+}>;
+
+const notebookEconomicSourceRoleRequirements = [
+  { prefix: "Primary", count: 6, label: "six primary" },
+  { prefix: "Official", count: 1, label: "exactly one official" },
+  {
+    prefix: "Independent",
+    count: 3,
+    label: "exactly three independent",
+  },
+  { prefix: "Technical", count: 1, label: "exactly one technical" },
+] as const satisfies readonly NotebookEconomicSourceRoleRequirement[];
+
+export const NotebookEconomicIndicatorSchema = z.object({
+  id: nonEmpty.regex(/^indicator-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  dimension: z.enum(notebookEconomicIndicatorDimensions),
+  label: nonEmpty,
+  period: nonEmpty,
+  observedAt: sourceDate,
+  display: nonEmpty,
+  value: z.number(),
+  unit: z.enum(["percent change", "diffusion index points"]),
+  comparison: z.enum(["year over year", "50-point threshold"]),
+  basis: z.enum([
+    "real",
+    "nominal",
+    "comparable",
+    "not price adjusted",
+    "seasonally adjusted survey",
+  ]),
+  coverage: nonEmpty,
+  reading: nonEmpty,
+  counterReading: nonEmpty,
+  caveat: nonEmpty,
+  status: z.literal("observed"),
+  contrasts: z.array(NotebookIndicatorContrastSchema).min(1),
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookAlternativeReadingSchema = z.object({
+  id: nonEmpty.regex(/^reading-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  status: z.enum(["interpretation", "scenario"]),
+  reading: nonEmpty,
+  boundary: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -478,6 +550,30 @@ const TradeAdjustmentNotebookSchema = NotebookBaseSchema.extend({
   }),
 });
 
+const EconomicSignalsNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("economic-signals"),
+  formats: z
+    .array(NotebookFormatSchema)
+    .length(3, "economic signals require exactly 3 context formats"),
+  sourceTrail: z
+    .array(NotebookTrailItemSchema)
+    .length(11, "economic signals require exactly 11 source records"),
+  limitations: z
+    .array(nonEmpty)
+    .length(8, "economic signals require exactly 8 limitations"),
+  indicators: z.array(NotebookEconomicIndicatorSchema).length(6),
+  alternativeReadings: z.array(NotebookAlternativeReadingSchema).length(5),
+  sections: z.object({
+    frame: z.array(nonEmpty).min(1),
+    production: z.array(nonEmpty).min(1),
+    demand: z.array(nonEmpty).min(1),
+    investment: z.array(nonEmpty).min(1),
+    property: z.array(nonEmpty).min(1),
+    synthesis: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+}).strict();
+
 export const NotebookEntrySchema = z
   .discriminatedUnion("variant", [
     ArgumentNotebookSchema,
@@ -486,6 +582,7 @@ export const NotebookEntrySchema = z
     MaritimeRiskNotebookSchema,
     CirculationGatesNotebookSchema,
     TradeAdjustmentNotebookSchema,
+    EconomicSignalsNotebookSchema,
   ])
   .superRefine((entry, ctx) => {
     if (entry.updatedAt < entry.publishedAt) {
@@ -574,7 +671,14 @@ export const NotebookEntrySchema = z
                     ),
                     ...entry.policyOptions.flatMap((item) => item.sourceIds),
                   ]
-                : []),
+                : entry.variant === "economic-signals"
+                  ? [
+                      ...entry.indicators.flatMap((item) => item.sourceIds),
+                      ...entry.alternativeReadings.flatMap(
+                        (item) => item.sourceIds
+                      ),
+                    ]
+                  : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -795,6 +899,51 @@ export const NotebookEntrySchema = z
         });
       });
     }
+
+    if (entry.variant === "economic-signals") {
+      checkUnique(
+        entry.indicators.map((item) => item.id),
+        ["indicators"],
+        "indicator IDs must be unique"
+      );
+      checkUnique(
+        entry.indicators.map((item) => item.dimension),
+        ["indicators"],
+        "indicator dimensions must be unique"
+      );
+      checkUnique(
+        entry.alternativeReadings.map((item) => item.id),
+        ["alternativeReadings"],
+        "alternative-reading IDs must be unique"
+      );
+
+      if (
+        entry.indicators.some(
+          (item, index) =>
+            item.dimension !== notebookEconomicIndicatorDimensions[index]
+        )
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: "economic indicators must preserve the six-dimension order",
+          path: ["indicators"],
+        });
+      }
+
+      const roles = entry.sourceTrail.map((source) => source.role);
+      for (const expected of notebookEconomicSourceRoleRequirements) {
+        if (
+          roles.filter((role) => role.startsWith(expected.prefix)).length !==
+          expected.count
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: `economic signals require ${expected.label} source roles`,
+            path: ["sourceTrail"],
+          });
+        }
+      }
+    }
   });
 
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
@@ -822,6 +971,10 @@ export type TradeAdjustmentNotebookEntry = Extract<
   NotebookEntry,
   { variant: "trade-adjustment" }
 >;
+export type EconomicSignalsNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "economic-signals" }
+>;
 export type NotebookMechanismStep = z.infer<typeof NotebookMechanismStepSchema>;
 export type NotebookShockComparison = z.infer<
   typeof NotebookShockComparisonSchema
@@ -830,6 +983,9 @@ export type NotebookDistributionCase = z.infer<
   typeof NotebookDistributionCaseSchema
 >;
 export type NotebookPolicyOption = z.infer<typeof NotebookPolicyOptionSchema>;
+export type NotebookEconomicIndicator = z.infer<
+  typeof NotebookEconomicIndicatorSchema
+>;
 export type NotebookCirculationGate = z.infer<
   typeof NotebookCirculationGateSchema
 >;
@@ -858,6 +1014,16 @@ export function parseTradeAdjustmentNotebookEntry(
   const entry = NotebookEntrySchema.parse(value);
   if (entry.variant !== "trade-adjustment") {
     throw new Error("expected a trade-adjustment Notebook entry");
+  }
+  return entry;
+}
+
+export function parseEconomicSignalsNotebookEntry(
+  value: unknown
+): EconomicSignalsNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "economic-signals") {
+    throw new Error("expected an economic-signals Notebook entry");
   }
   return entry;
 }

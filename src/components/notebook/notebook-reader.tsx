@@ -300,10 +300,21 @@ export function NotebookSecondarySection({
     const targets = new Set([id, ...legacyIds]);
     const openForHash = () => {
       const hash = decodeURIComponent(window.location.hash.slice(1));
-      if (targets.has(hash)) setOpen(true);
+      const descendant = document.getElementById(hash);
+      if (
+        targets.has(hash) ||
+        (descendant && detailsRef.current?.contains(descendant))
+      ) {
+        setOpen(true);
+      }
     };
     const openForFocus = (event: FocusEvent) => {
-      if (detailsRef.current?.contains(event.target as Node)) setOpen(true);
+      if (
+        event.target instanceof Node &&
+        detailsRef.current?.contains(event.target)
+      ) {
+        setOpen(true);
+      }
     };
     openForHash();
     window.addEventListener("hashchange", openForHash);

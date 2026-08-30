@@ -37,7 +37,9 @@ function ReaderFixture() {
         summary="Two reviewed sources with explicit limits."
         actionLabel="Examine 2 sources"
       >
-        <a href="https://example.com/source">Primary source</a>
+        <a id="primary-source-record" href="https://example.com/source">
+          Primary source
+        </a>
       </NotebookSecondarySection>
     </NotebookReaderShell>
   );
@@ -104,5 +106,17 @@ describe("Notebook reader shell", () => {
     const details = screen.getByTestId("secondary-section-sources");
     await waitFor(() => expect(details).toHaveAttribute("open"));
     expect(screen.getByText("Primary source")).toBeInTheDocument();
+  });
+
+  it("opens secondary evidence when a fragment targets a descendant record", async () => {
+    window.history.replaceState(
+      {},
+      "",
+      "/notebook/a-test-inquiry#primary-source-record"
+    );
+    render(<ReaderFixture />);
+
+    const details = screen.getByTestId("secondary-section-sources");
+    await waitFor(() => expect(details).toHaveAttribute("open"));
   });
 });
