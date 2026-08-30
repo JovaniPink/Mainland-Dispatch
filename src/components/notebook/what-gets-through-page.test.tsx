@@ -45,6 +45,29 @@ describe("What Gets Through Notebook page", () => {
     ).toHaveAttribute("href", "/notebook/who-absorbs-the-shock");
   });
 
+  it("shows why a Canadian route is not yet a US customs finding", () => {
+    render(<WhatGetsThroughPage />);
+
+    const proofFigure = screen.getByRole("figure", {
+      name: /a route is not a ruling/i,
+    });
+    expect(proofFigure).toHaveTextContent("Canadian market entry");
+    expect(proofFigure).toHaveTextContent("USMCA origin claim");
+    expect(proofFigure).toHaveTextContent("Not publicly established");
+    expect(proofFigure).toHaveTextContent(
+      /chronology does not prove one hidden cause/i
+    );
+    expect(proofFigure).toHaveTextContent("01 JUL 2026");
+    expect(proofFigure).toHaveTextContent("25 AUG 2026");
+    expect(proofFigure).toHaveTextContent(
+      /five records are answering five different questions/i
+    );
+    expect(proofFigure).toHaveTextContent("Hudson's episode framing");
+    expect(proofFigure).toHaveTextContent("The Section 338 action");
+    expect(proofFigure).toHaveTextContent("The aggregate counter-reading");
+    expect(proofFigure).toHaveTextContent(/what remains open/i);
+  });
+
   it("keeps Simplecast private until consent and exposes every audio state", () => {
     const { container } = render(<WhatGetsThroughPage />);
 

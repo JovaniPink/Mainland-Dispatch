@@ -280,6 +280,43 @@ export const NotebookCirculationGateSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+export const NotebookTradeProofSchema = z.object({
+  id: nonEmpty.regex(/^proof-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  currentRecord: nonEmpty,
+  proofNeeded: nonEmpty,
+  verdict: z.enum(["documented", "not-publicly-established"]),
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookTradePressureSchema = z.object({
+  id: nonEmpty.regex(/^pressure-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  date: isoDate,
+  actor: nonEmpty,
+  action: nonEmpty,
+  interpretationLimit: nonEmpty,
+  status: NotebookEvidenceStatusSchema,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookTradeFrameSourceClassSchema = z.enum([
+  "Commentary and analysis",
+  "Official legal rationale",
+  "Official risk model and allegation",
+  "Official actions across time",
+  "Independent trade-flow analysis",
+]);
+
+export const NotebookTradeFrameSchema = z.object({
+  id: nonEmpty.regex(/^frame-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  record: nonEmpty,
+  sourceClass: NotebookTradeFrameSourceClassSchema,
+  says: nonEmpty,
+  establishes: nonEmpty,
+  leavesOpen: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
 export const NotebookPassageAuditSchema = z.object({
   id: nonEmpty.regex(/^passage-[a-z0-9]+(?:-[a-z0-9]+)*$/),
   requirement: z.enum([
@@ -520,6 +557,9 @@ const CirculationGatesNotebookSchema = NotebookBaseSchema.extend({
   audio: NotebookAudioSchema,
   claimAudit: z.array(NotebookClaimAuditSchema).min(9),
   gates: z.array(NotebookCirculationGateSchema).length(3),
+  tradeProofs: z.array(NotebookTradeProofSchema).length(4),
+  tradePressure: z.array(NotebookTradePressureSchema).min(4),
+  tradeFrames: z.array(NotebookTradeFrameSchema).length(5),
   sections: z.object({
     lens: z.array(nonEmpty).min(1),
     trade: z.array(nonEmpty).min(1),
@@ -658,6 +698,9 @@ export const NotebookEntrySchema = z
                   entry.audio.sourceId,
                   ...entry.claimAudit.flatMap((item) => item.sourceIds),
                   ...entry.gates.flatMap((gate) => gate.sourceIds),
+                  ...entry.tradeProofs.flatMap((item) => item.sourceIds),
+                  ...entry.tradePressure.flatMap((item) => item.sourceIds),
+                  ...entry.tradeFrames.flatMap((item) => item.sourceIds),
                 ]
               : entry.variant === "trade-adjustment"
                 ? [
@@ -827,6 +870,32 @@ export const NotebookEntrySchema = z
         ["gates"],
         "gate domains must be unique"
       );
+      checkUnique(
+        entry.tradeProofs.map((item) => item.id),
+        ["tradeProofs"],
+        "trade-proof IDs must be unique"
+      );
+      checkUnique(
+        entry.tradePressure.map((item) => item.id),
+        ["tradePressure"],
+        "trade-pressure IDs must be unique"
+      );
+      checkUnique(
+        entry.tradeFrames.map((item) => item.id),
+        ["tradeFrames"],
+        "trade-frame IDs must be unique"
+      );
+      for (let index = 1; index < entry.tradePressure.length; index += 1) {
+        if (
+          entry.tradePressure[index - 1].date > entry.tradePressure[index].date
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: "trade pressure entries must be chronological",
+            path: ["tradePressure", index, "date"],
+          });
+        }
+      }
     }
 
     if (entry.variant === "trade-adjustment") {
@@ -988,6 +1057,12 @@ export type NotebookEconomicIndicator = z.infer<
 >;
 export type NotebookCirculationGate = z.infer<
   typeof NotebookCirculationGateSchema
+>;
+export type NotebookTradeProof = z.infer<typeof NotebookTradeProofSchema>;
+export type NotebookTradePressure = z.infer<typeof NotebookTradePressureSchema>;
+export type NotebookTradeFrame = z.infer<typeof NotebookTradeFrameSchema>;
+export type NotebookTradeFrameSourceClass = z.infer<
+  typeof NotebookTradeFrameSourceClassSchema
 >;
 export type NotebookAudio = z.infer<typeof NotebookAudioSchema>;
 export type NotebookEvidenceStatus = z.infer<
