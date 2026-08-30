@@ -5,7 +5,7 @@ import { publishedDispatches } from "@/content/dispatches";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
 import { dominanceIsADashboard } from "@/content/notebook/dominance-is-a-dashboard";
-import { publishedNotebookEntries } from "@/content/notebook";
+import { publicNotebookEntries } from "@/content/notebook";
 import { metadata as notebookTwoMetadata } from "@/app/notebook/open-models-closed-system/page";
 import { metadata as notebookThreeMetadata } from "@/app/notebook/dominance-is-a-dashboard/page";
 import { metadata as notebookFourMetadata } from "@/app/notebook/routing-around-risk/page";
@@ -57,7 +57,7 @@ describe("SEO publication contract", () => {
       `${siteUrl}/notebook/${openModelsClosedSystem.slug}`
     );
     expect(
-      publishedNotebookEntries.every((entry) =>
+      publicNotebookEntries.every((entry) =>
         urls.includes(`${siteUrl}/notebook/${entry.slug}`)
       )
     ).toBe(true);

@@ -73,7 +73,7 @@ describe("Dominance Is a Dashboard Notebook page", () => {
   it("renders all twenty-three source stops with clean outbound links", () => {
     render(<DominanceIsADashboardPage />);
 
-    expect(screen.getAllByText("Retrieved 2026-08-14")).toHaveLength(23);
+    expect(screen.getAllByText("Retrieved 2026-08-14")).toHaveLength(26);
     const evidenceLinks = screen
       .getAllByRole("link")
       .filter((link) => link.getAttribute("href")?.startsWith("http"));

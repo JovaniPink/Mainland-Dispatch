@@ -51,18 +51,25 @@ export const notebookEntries = parseNotebookRegistry([
   julyIsNotOneNumber,
 ]).sort((a, b) => a.ordinal - b.ordinal);
 
-export const publishedNotebookEntries = notebookEntries.filter(
-  (entry) => entry.editorialStatus === "published"
+export function isPublicNotebookEntry(entry: NotebookEntry): boolean {
+  return (
+    entry.editorialStatus === "published" ||
+    entry.editorialStatus === "corrected"
+  );
+}
+
+export const publicNotebookEntries = notebookEntries.filter(
+  isPublicNotebookEntry
 );
 
 export const latestNotebookEntry =
-  publishedNotebookEntries.at(-1) ??
+  publicNotebookEntries.at(-1) ??
   (() => {
-    throw new Error("At least one published Notebook entry is required");
+    throw new Error("At least one public Notebook entry is required");
   })();
 
-export function getPublishedNotebookEntry(
+export function getPublicNotebookEntry(
   slug: string
 ): NotebookEntry | undefined {
-  return publishedNotebookEntries.find((entry) => entry.slug === slug);
+  return publicNotebookEntries.find((entry) => entry.slug === slug);
 }

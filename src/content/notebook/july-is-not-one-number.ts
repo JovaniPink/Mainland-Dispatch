@@ -44,6 +44,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
         "National Economy Maintained Steady Momentum with Innovation-driven and High-quality Development in the First Seven Months",
       publisher: "National Bureau of Statistics of China",
       url: "https://www.stats.gov.cn/english/PressRelease/202608/t20260817_1965057.html",
+      retrievedAt: "2026-08-29",
       note: "A government synthesis of the first seven months. Its characterization is an official position; the linked indicator releases supply the definitions and tables used here.",
     },
     {
@@ -52,6 +53,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       title: "Rebalancing Growth: China Economic Update",
       publisher: "World Bank",
       url: "https://documents.worldbank.org/en/publication/documents-reports/documentdetail/099713507162625724",
+      retrievedAt: "2026-08-29",
       note: "An institutional analysis that contrasts high-tech and export resilience with cautious consumers and property weakness. Its 2026 growth figure is a forecast, not a July observation.",
     },
     {
@@ -60,6 +62,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       title: "China: OECD Economic Outlook, Volume 2026 Issue 1",
       publisher: "OECD",
       url: "https://www.oecd.org/en/publications/oecd-economic-outlook-volume-2026-issue-1_2d1956f0-en/full-report/china_6526c66b.html",
+      retrievedAt: "2026-08-29",
       note: "A June outlook on property adjustment, precautionary saving, investment, and policy support. Its projections depend on assumptions that the July releases cannot validate.",
     },
   ],
@@ -525,7 +528,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       retrievedAt: "2026-08-29",
       links: [
         {
-          label: "Official release",
+          label: "Industrial output release",
           url: "https://www.stats.gov.cn/english/PressRelease/202608/t20260818_1965071.html",
         },
       ],
@@ -566,7 +569,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       retrievedAt: "2026-08-29",
       links: [
         {
-          label: "Official release",
+          label: "Retail sales release",
           url: "https://www.stats.gov.cn/english/PressRelease/202608/t20260819_1965078.html",
         },
       ],
@@ -584,7 +587,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       retrievedAt: "2026-08-29",
       links: [
         {
-          label: "Official release",
+          label: "Fixed investment release",
           url: "https://www.stats.gov.cn/english/PressRelease/202608/t20260818_1965072.html",
         },
       ],
@@ -602,7 +605,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       retrievedAt: "2026-08-29",
       links: [
         {
-          label: "Official release",
+          label: "Property investment release",
           url: "https://www.stats.gov.cn/english/PressRelease/202608/t20260819_1965077.html",
         },
       ],
@@ -621,7 +624,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       retrievedAt: "2026-08-29",
       links: [
         {
-          label: "Official release",
+          label: "Manufacturing PMI release",
           url: "https://www.stats.gov.cn/english/PressRelease/202608/t20260803_1964272.html",
         },
       ],

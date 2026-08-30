@@ -1,7 +1,7 @@
 import {
-  getPublishedNotebookEntry,
+  getPublicNotebookEntry,
   latestNotebookEntry,
-  publishedNotebookEntries,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import {
   parseEconomicSignalsNotebookEntry,
@@ -26,11 +26,11 @@ describe("July Is Not One Number Notebook registry", () => {
       editorialStatus: "published",
       reviewState: "source-reviewed",
     });
-    expect(publishedNotebookEntries.map((item) => item.ordinal)).toEqual([
+    expect(publicNotebookEntries.map((item) => item.ordinal)).toEqual([
       1, 2, 3, 4, 5, 6, 7,
     ]);
     expect(latestNotebookEntry).toStrictEqual(entry);
-    expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
+    expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
   it("preserves six distinct indicators with their periods, units, and bases", () => {

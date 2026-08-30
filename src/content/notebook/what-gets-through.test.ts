@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  getPublishedNotebookEntry,
+  getPublicNotebookEntry,
   latestNotebookEntry,
-  publishedNotebookEntries,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import {
   parseCirculationGatesNotebookEntry,
@@ -47,16 +47,16 @@ describe("What Gets Through Notebook registry", () => {
       editorialStatus: "published",
       reviewState: "source-reviewed",
     });
-    expect(publishedNotebookEntries.map((item) => item.ordinal)).toEqual([
+    expect(publicNotebookEntries.map((item) => item.ordinal)).toEqual([
       1, 2, 3, 4, 5, 6, 7,
     ]);
     expect(latestNotebookEntry.ordinal).toBeGreaterThan(entry.ordinal);
-    expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
-    expect(publishedNotebookEntries.map((item) => item.slug)).toContain(
+    expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
+    expect(publicNotebookEntries.map((item) => item.slug)).toContain(
       "who-absorbs-the-shock"
     );
     expect(() =>
-      parseCirculationGatesNotebookEntry(publishedNotebookEntries[0])
+      parseCirculationGatesNotebookEntry(publicNotebookEntries[0])
     ).toThrow(/expected a circulation-gates Notebook entry/);
   });
 

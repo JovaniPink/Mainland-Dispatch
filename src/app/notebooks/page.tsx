@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "@/components/seo/json-ld";
-import {
-  latestNotebookEntry,
-  publishedNotebookEntries,
-} from "@/content/notebook";
+import { latestNotebookEntry, publicNotebookEntries } from "@/content/notebook";
 import { formatDate } from "@/content/site";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
@@ -19,7 +16,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function NotebooksPage() {
-  const entries = [...publishedNotebookEntries].reverse();
+  const entries = [...publicNotebookEntries].reverse();
 
   return (
     <div className="px-4 py-10 sm:px-6 sm:py-14">

@@ -4,10 +4,7 @@ import { comparisons } from "@/content/comparisons";
 import { traces } from "@/content/traces";
 import { dossiers } from "@/content/dossiers";
 import { siteUrl } from "@/lib/seo";
-import {
-  latestNotebookEntry,
-  publishedNotebookEntries,
-} from "@/content/notebook";
+import { latestNotebookEntry, publicNotebookEntries } from "@/content/notebook";
 
 const newest = (dates: string[]) => [...dates].sort().at(-1);
 
@@ -50,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const archiveUpdated = newest(
     publishedDispatches.map((item) => item.updatedAt)
   );
-  const notebookEntries: MetadataRoute.Sitemap = publishedNotebookEntries.map(
+  const notebookEntries: MetadataRoute.Sitemap = publicNotebookEntries.map(
     (entry) => ({
       url: `${siteUrl}/notebook/${entry.slug}`,
       lastModified: entry.updatedAt,

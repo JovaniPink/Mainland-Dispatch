@@ -1,8 +1,8 @@
 import {
-  getPublishedNotebookEntry,
+  getPublicNotebookEntry,
   latestNotebookEntry,
   parseNotebookRegistry,
-  publishedNotebookEntries,
+  publicNotebookEntries,
 } from "@/content/notebook";
 import { openModelsClosedSystem as entry } from "./open-models-closed-system";
 import { NotebookEntrySchema } from "./schema";
@@ -86,7 +86,7 @@ describe("Open Models, Closed System Notebook registry", () => {
   });
 
   it("publishes all inquiries and resolves this entry by slug", () => {
-    expect(publishedNotebookEntries.map((item) => item.slug)).toEqual([
+    expect(publicNotebookEntries.map((item) => item.slug)).toEqual([
       "what-xi-jinping-wants",
       "open-models-closed-system",
       "dominance-is-a-dashboard",
@@ -96,7 +96,7 @@ describe("Open Models, Closed System Notebook registry", () => {
       "july-is-not-one-number",
     ]);
     expect(latestNotebookEntry.slug).toBe("july-is-not-one-number");
-    expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
+    expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
   it("rejects malformed fields and broken source references", () => {
@@ -256,8 +256,10 @@ describe("Open Models, Closed System Notebook registry", () => {
 
   it("keeps non-public entries out of the published selector contract", () => {
     expect(
-      publishedNotebookEntries.every(
-        (item) => item.editorialStatus === "published"
+      publicNotebookEntries.every(
+        (item) =>
+          item.editorialStatus === "published" ||
+          item.editorialStatus === "corrected"
       )
     ).toBe(true);
   });
