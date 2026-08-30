@@ -14,6 +14,7 @@ import {
   NotebookSecondarySection,
 } from "@/components/notebook/notebook-reader";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
+import { TransshipmentEvidenceFigure } from "@/components/notebook/transshipment-evidence-figure";
 import { JsonLd } from "@/components/seo/json-ld";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import { whatGetsThrough as entry } from "@/content/notebook/what-gets-through";
@@ -27,8 +28,8 @@ const sectionLinks = [
   ["culture", "Culture: attention"],
   ["memory", "Memory: legality"],
   ["limits", "Comparison limits"],
-  ["claim-audit", "Thirteen claim checks"],
-  ["sources", "Fifteen source stops"],
+  ["claim-audit", `${entry.claimAudit.length} claim checks`],
+  ["sources", `${entry.sourceTrail.length} source stops`],
   ["changed", "What changed"],
   ["question", "Unresolved question"],
 ] as const satisfies readonly NotebookSectionLink[];
@@ -184,6 +185,13 @@ export default function WhatGetsThroughPage() {
           <div className="mt-6">
             <NotebookProse paragraphs={entry.sections.trade} />
           </div>
+          <div className="mt-9">
+            <TransshipmentEvidenceFigure
+              proofs={entry.tradeProofs}
+              pressure={entry.tradePressure}
+              frames={entry.tradeFrames}
+            />
+          </div>
         </section>
 
         <section className="mt-12">
@@ -296,7 +304,7 @@ export default function WhatGetsThroughPage() {
 
         <section className="mt-12">
           <NotebookSectionHeading id="changed" eyebrow="Synthesis">
-            What I understand differently now
+            What the source audit changes
           </NotebookSectionHeading>
           <div className="mt-6">
             <NotebookProse paragraphs={entry.sections.changed} />

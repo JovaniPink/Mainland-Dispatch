@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   getPublishedNotebookEntry,
   latestNotebookEntry,
@@ -8,6 +10,24 @@ import {
   type CirculationGatesNotebookEntry,
 } from "@/content/notebook/schema";
 import { whatGetsThrough as entry } from "./what-gets-through";
+
+const disallowedBritishSpellings = [
+  "fav" + "oured",
+  "organi" + "sation",
+  "organi" + "sed",
+  "pro" + "gramme",
+  "lab" + "our",
+  "lic" + "ence",
+  "def" + "ence",
+  "cen" + "tre",
+] as const;
+
+function expectAsciiUsEnglish(content: string): void {
+  expect(content).not.toMatch(/[^\x00-\x7F]/);
+  for (const spelling of disallowedBritishSpellings) {
+    expect(content.toLowerCase()).not.toContain(spelling);
+  }
+}
 
 function copyEntry(): CirculationGatesNotebookEntry {
   const copy: unknown = JSON.parse(JSON.stringify(entry));
@@ -21,9 +41,9 @@ describe("What Gets Through Notebook registry", () => {
       ordinal: 6,
       slug: "what-gets-through",
       title: "What Gets Through?",
-      readTime: "17 min",
+      readTime: "24 min",
       publishedAt: "2026-08-25",
-      updatedAt: "2026-08-25",
+      updatedAt: "2026-08-30",
       editorialStatus: "published",
       reviewState: "source-reviewed",
     });
@@ -51,6 +71,11 @@ describe("What Gets Through Notebook registry", () => {
       reviewedAt: "2026-08-25",
       transcriptAvailable: false,
     });
+    expect(
+      entry.sourceTrail.find(
+        (source) => source.id === "notebook-source-gates-episode"
+      )
+    ).toMatchObject({ retrievedAt: "2026-08-30" });
     expect(entry.limitations.join(" ")).toMatch(
       /no publisher transcript or chapter record/i
     );
@@ -86,8 +111,8 @@ describe("What Gets Through Notebook registry", () => {
     }
   });
 
-  it("retains gate-specific caveats and at least nine claim dispositions", () => {
-    expect(entry.claimAudit.length).toBeGreaterThanOrEqual(9);
+  it("retains gate-specific caveats and the expanded claim dispositions", () => {
+    expect(entry.claimAudit.length).toBeGreaterThanOrEqual(28);
     expect(new Set(entry.claimAudit.map((item) => item.id)).size).toBe(
       entry.claimAudit.length
     );
@@ -100,6 +125,37 @@ describe("What Gets Through Notebook registry", () => {
     expect(
       entry.gates.find((gate) => gate.domain === "memory")?.caveat
     ).toMatch(/sentenc|conviction/i);
+  });
+
+  it("separates the proof path from the political pressure sequence", () => {
+    expect(entry.tradeProofs).toHaveLength(4);
+    expect(entry.tradeProofs.map((item) => item.verdict)).toEqual([
+      "documented",
+      "not-publicly-established",
+      "not-publicly-established",
+      "not-publicly-established",
+    ]);
+    expect(entry.tradePressure).toHaveLength(10);
+    expect(entry.tradePressure.map((item) => item.date)).toEqual([
+      "2024-10-01",
+      "2025-03-20",
+      "2026-01-16",
+      "2026-01-24",
+      "2026-03-01",
+      "2026-07-01",
+      "2026-08-13",
+      "2026-08-21",
+      "2026-08-22",
+      "2026-08-25",
+    ]);
+    expect(entry.tradeFrames).toHaveLength(5);
+    expect(entry.tradeFrames.map((item) => item.sourceClass)).toEqual([
+      "Commentary and analysis",
+      "Official legal rationale",
+      "Official risk model and allegation",
+      "Official actions across time",
+      "Independent trade-flow analysis",
+    ]);
   });
 
   it("rejects missing and duplicate circulation gates", () => {
@@ -128,6 +184,43 @@ describe("What Gets Through Notebook registry", () => {
     );
   });
 
+  it("rejects duplicate proof and frame IDs and unordered pressure events", () => {
+    const duplicateProof = copyEntry();
+    duplicateProof.tradeProofs[1].id = duplicateProof.tradeProofs[0].id;
+    expect(() => parseCirculationGatesNotebookEntry(duplicateProof)).toThrow(
+      /trade-proof IDs must be unique/
+    );
+
+    const duplicatePressure = copyEntry();
+    duplicatePressure.tradePressure[1].id =
+      duplicatePressure.tradePressure[0].id;
+    expect(() => parseCirculationGatesNotebookEntry(duplicatePressure)).toThrow(
+      /trade-pressure IDs must be unique/
+    );
+
+    const duplicateFrame = copyEntry();
+    duplicateFrame.tradeFrames[1].id = duplicateFrame.tradeFrames[0].id;
+    expect(() => parseCirculationGatesNotebookEntry(duplicateFrame)).toThrow(
+      /trade-frame IDs must be unique/
+    );
+
+    const invalidFrameClass = {
+      ...entry,
+      tradeFrames: entry.tradeFrames.map((frame, index) =>
+        index === 0 ? { ...frame, sourceClass: "Editorial opinion" } : frame
+      ),
+    };
+    expect(() =>
+      parseCirculationGatesNotebookEntry(invalidFrameClass)
+    ).toThrow();
+
+    const unorderedPressure = copyEntry();
+    unorderedPressure.tradePressure[1].date = "2024-09-30";
+    expect(() => parseCirculationGatesNotebookEntry(unorderedPressure)).toThrow(
+      /trade pressure entries must be chronological/
+    );
+  });
+
   it("resolves sources across gates, claims, turning points, preview, and audio", () => {
     const sourceIds = new Set(entry.sourceTrail.map((source) => source.id));
     const references = [
@@ -136,10 +229,20 @@ describe("What Gets Through Notebook registry", () => {
       ...entry.turningPoints.flatMap((point) => point.sourceIds),
       ...entry.gates.flatMap((gate) => gate.sourceIds),
       ...entry.claimAudit.flatMap((item) => item.sourceIds),
+      ...entry.tradeProofs.flatMap((item) => item.sourceIds),
+      ...entry.tradePressure.flatMap((item) => item.sourceIds),
+      ...entry.tradeFrames.flatMap((item) => item.sourceIds),
     ];
     expect(references.every((sourceId) => sourceIds.has(sourceId))).toBe(true);
 
-    for (const surface of ["gates", "claimAudit", "turningPoints"] as const) {
+    for (const surface of [
+      "gates",
+      "claimAudit",
+      "turningPoints",
+      "tradeProofs",
+      "tradePressure",
+      "tradeFrames",
+    ] as const) {
       const broken = copyEntry();
       broken[surface][0].sourceIds = ["notebook-source-missing"];
       expect(() => parseCirculationGatesNotebookEntry(broken)).toThrow(
@@ -183,19 +286,17 @@ describe("What Gets Through Notebook registry", () => {
 
   it("keeps Inquiry 06 authored content in ASCII US English", () => {
     const authoredContent = JSON.stringify(entry);
-    expect(authoredContent).not.toMatch(/[^\x00-\x7F]/);
-    const disallowedBritishSpellings: readonly string[] = [
-      "fav" + "oured",
-      "organi" + "sation",
-      "organi" + "sed",
-      "pro" + "gramme",
-      "lab" + "our",
-      "lic" + "ence",
-      "def" + "ence",
-      "cen" + "tre",
-    ];
-    for (const spelling of disallowedBritishSpellings) {
-      expect(authoredContent.toLowerCase()).not.toContain(spelling);
-    }
+    expectAsciiUsEnglish(authoredContent);
+  });
+
+  it("keeps the follow-up research note in ASCII US English", () => {
+    const note = readFileSync(
+      join(
+        process.cwd(),
+        "docs/source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md"
+      ),
+      "utf8"
+    );
+    expectAsciiUsEnglish(note);
   });
 });
