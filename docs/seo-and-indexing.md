@@ -128,3 +128,25 @@ claim rich-result eligibility or improved ranking.
 
 For metadata or layout changes, inspect rendered HTML at desktop and 390px
 mobile widths and confirm canonical, robots, Open Graph and JSON-LD output.
+
+## Link auditing
+
+`npm run link:audit:static` reads the production sitemap and rendered HTML. It
+checks internal routes and fragments, the sitemap/indexability boundary, clean
+HTTPS evidence URLs, descriptive source labels, external-anchor safety,
+canonicals, robots metadata, Open Graph URLs, JSON-LD, and serialized
+consent-gated media URLs. It runs after the canonical production build inside
+`npm run test-all`.
+
+`npm run link:audit:live` is a separate network check. The scheduled read-only
+workflow runs at 13:17 UTC each Monday and can also be started manually. It
+requires direct successful first-party sitemap routes, uses bounded concurrency
+and timeouts, and records redirects without editing content. Media and PDF
+probes use `HEAD` or a one-byte ranged `GET` rather than downloading the full
+asset.
+
+A third-party URL fails only after two `GET` attempts confirm `404` or `410`, or
+when an HTTPS URL redirects to HTTP. `401`, `403`, `429`, and `451` are reported
+as restricted. `400`, `405`, server errors, DNS or TLS failures, resets, and
+timeouts are inconclusive. A confirmed failure stops the workflow for human
+editorial review; the audit never replaces or removes a source automatically.

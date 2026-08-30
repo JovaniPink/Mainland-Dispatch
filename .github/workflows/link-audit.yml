@@ -1,0 +1,29 @@
+name: Evidence link audit
+
+on:
+  schedule:
+    - cron: "17 13 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evidence-link-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Build and verify public evidence links
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run link:audit:static -- --summary "$GITHUB_STEP_SUMMARY"
+      - run: npm run link:audit:live -- --origin https://mainlanddispatch.com --summary "$GITHUB_STEP_SUMMARY"
