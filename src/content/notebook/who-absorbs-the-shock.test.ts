@@ -26,7 +26,7 @@ describe("Who Absorbs the Shock Notebook registry", () => {
       reviewState: "source-reviewed",
     });
     expect(publishedNotebookEntries.map((item) => item.ordinal)).toEqual([
-      1, 2, 3, 4, 5, 6,
+      1, 2, 3, 4, 5, 6, 7,
     ]);
     expect(getPublishedNotebookEntry(entry.slug)).toStrictEqual(entry);
   });

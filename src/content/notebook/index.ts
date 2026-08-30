@@ -9,6 +9,7 @@ import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { routingAroundRisk } from "@/content/notebook/routing-around-risk";
 import { whatGetsThrough } from "@/content/notebook/what-gets-through";
 import { whoAbsorbsTheShock } from "@/content/notebook/who-absorbs-the-shock";
+import { julyIsNotOneNumber } from "@/content/notebook/july-is-not-one-number";
 
 const NotebookRegistrySchema = z
   .array(NotebookEntrySchema)
@@ -47,6 +48,7 @@ export const notebookEntries = parseNotebookRegistry([
   routingAroundRisk,
   whoAbsorbsTheShock,
   whatGetsThrough,
+  julyIsNotOneNumber,
 ]).sort((a, b) => a.ordinal - b.ordinal);
 
 export const publishedNotebookEntries = notebookEntries.filter(

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ── The Correspondent's Notebook palette ─────────────────────────── */
+/* -- The Correspondent's Notebook palette --------------------------- */
 
 :root {
   --paper: #f3f0e8;
@@ -194,11 +194,13 @@ a {
 }
 
 @media print {
-  .notebook-secondary-details > :not(summary) {
+  .notebook-secondary-details > :not(summary),
+  .economic-signal-details > :not(summary) {
     display: block !important;
   }
 
-  .notebook-secondary-details > summary {
+  .notebook-secondary-details > summary,
+  .economic-signal-details > summary {
     display: none;
   }
 }

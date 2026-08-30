@@ -80,7 +80,8 @@ export function NotebookSourceTrail({
       {sources.map((source, index) => (
         <article
           key={source.id}
-          className="border border-rule bg-paper-warm/20 p-4"
+          id={source.id}
+          className="scroll-mt-32 border border-rule bg-paper-warm/20 p-4"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
