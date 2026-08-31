@@ -176,7 +176,7 @@ specific source.
 ## Portfolio knowledge projection
 
 `src/content/knowledge-index.ts` maps only public Dispatch and Notebook selectors
-into `knowledge-contract.v1`. It preserves published URLs and legacy identifiers
+into `knowledge-contract.v1` and exports them at `/knowledge.json`. It preserves published URLs and legacy identifiers
 while exposing sources, claims, semantic facets, evidence status, limitations,
 and publication relationships.
 
