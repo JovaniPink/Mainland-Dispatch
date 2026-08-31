@@ -172,3 +172,14 @@ Corrections update `updatedAt`, preserve source and curation dates, and use the
 sources should be archived or withdrawn, not silently replaced with a different
 claim. New leads remain in review until this checklist is repeated for that
 specific source.
+
+## Portfolio knowledge projection
+
+`src/content/knowledge-index.ts` maps only public Dispatch and Notebook selectors
+into `knowledge-contract.v1` and exports them at `/knowledge.json`. It preserves published URLs and legacy identifiers
+while exposing sources, claims, semantic facets, evidence status, limitations,
+and publication relationships.
+
+The projection is not a second editorial authority. The existing schemas and
+public selectors remain controlling. The Desk, source-lead inbox, Atlas fixtures,
+review-stage records, and private source notes cannot enter the public index.
