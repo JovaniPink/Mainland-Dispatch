@@ -322,10 +322,14 @@ The manual watch has a dated
 [`September 1 EV quota result`](docs/source-notes/2026-09-01-canada-ev-quota-watch.md)
 that records actual Canadian quota use without inferring US entry or origin
 fraud.
+The proposed Inquiry 06 / Inquiry 09 split has a decision-complete
+[`lossless custody migration specification`](docs/plans/2026-09-01-inquiry-06-09-migration-spec.md),
+but no correction or companion publication is authorized.
 Notebook Seven was selected from the immutable
 [`August 27 candidate ledger`](docs/source-notes/2026-08-27-china-news-candidate-ledger.md)
 under its
 [`commission decision`](docs/decisions/2026-08-29-notebook-seven.md).
-The accepted Inquiry 08 commission has a dedicated, publication-oriented
+The published Inquiry 08 has a dedicated, publication-oriented
 [`“Below Half Is Not Gone” ledger`](docs/source-notes/2026-08-30-below-half-is-not-gone-ledger.md),
-but the inquiry is not yet public.
+with the release recorded in its
+[`publication refresh note`](docs/source-notes/2026-09-01-below-half-is-not-gone-publication-refresh.md).

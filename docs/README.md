@@ -120,6 +120,10 @@ separate states.
 - [Ten-Notebook custody manifest](plans/2026-08-30-ten-notebook-custody-manifest.md)
   inventories current content, evidence, URLs, components, and fragments for
   lossless review.
+- [Inquiry 06 / Inquiry 09 migration specification](plans/2026-09-01-inquiry-06-09-migration-spec.md)
+  defines the lossless custody, future typed contracts, compatibility
+  fragments, tests, and stop conditions without authorizing either correction
+  or publication.
 - [Transshipment evidence watch](plans/2026-08-30-transshipment-evidence-watch.md)
   defines manual update triggers without authorizing recurring ingestion or a
   new article.
