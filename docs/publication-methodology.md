@@ -19,6 +19,22 @@ interpretation, official position, contested claim and scenario. The Notebook
 does not weaken the Dispatch evidence boundary or make review-stage leads
 public.
 
+## Notebook lifecycle and authority
+
+Notebook work moves through an explicit editorial lifecycle:
+
+1. `candidate` — a research lead with no authorization to build or publish;
+2. `commissioned` — a dated decision authorizes bounded research and
+   implementation;
+3. `draft` — a validated content entry that remains excluded from public
+   selectors, routes, metadata, structured data, and the sitemap; and
+4. `published` or `corrected` — the only public statuses, crossed atomically
+   with a valid route and the complete publication gate.
+
+A commission is not a publication claim. A proposed companion inquiry is not a
+commission. Repository integration, merge, hosted deployment, and exact-SHA
+runtime verification are separate states and must be described separately.
+
 ## Required checks before publication
 
 1. **Canonical source read.** Open and read the source itself. A search result,
@@ -138,18 +154,34 @@ relationships. Its interactive filters, timeline and relationship view operate
 only on published or corrected Dispatches. This preserves research memory
 without converting collection into recommendation.
 
-The first public Notebook entry, “What Xi Jinping Wants,” is supported by a
-bounded [source
-ledger](source-notes/2026-07-23-what-xi-jinping-wants-ledger.md). It does not
-change the disposition of any general-China article candidate.
+Seven Notebook entries are public through the shared public selector. Their
+dated commissions and source ledgers are indexed in the
+[documentation map](README.md). Inquiry 08 is commissioned but is not a public
+entry; proposed Inquiries 09 and 10 are neither commissioned nor public.
+Notebook source records are not Dispatch mappings and do not change the
+13-record public Archive count.
 
-The second public entry, “Open Models, Closed System?,” uses a separate
-[13-stop source
-ledger](source-notes/2026-07-28-open-models-closed-system-ledger.md) and a
-six-record “What to Watch” register. It distinguishes future commitments,
-institutional facts, observed conditions, policy principles, and reported
-proposals instead of presenting them as one class of promise. Notebook source stops are not Dispatch mappings and
-do not change the 13-record public Archive count.
+## Source custody and legacy fragments
+
+Dated candidate ledgers and follow-up notes are immutable research snapshots.
+A publication ledger may promote reviewed evidence from a snapshot, but it must
+record the exact publisher URL, title, publication and retrieval dates, units,
+periods, evidence kind, source-specific limitation, calculation boundary, and
+unresolved questions. It must not rewrite the earlier snapshot or record
+volatile HTTP status as editorial fact.
+
+When more than one Notebook relies on the same publisher record, prefer one
+immutable source identity and deduplicate structured-data citations by clean
+URL. Do not copy source metadata into independently drifting records. A
+redirect, restricted response, or transient failure does not authorize silent
+replacement or removal.
+
+Before moving published content between Notebooks, assign every prose section,
+typed record, format, source, URL, component, source-card ID, and public fragment
+exactly one documented disposition. A moved legacy fragment must remain
+resolvable through an accessible compatibility notice linking to the exact new
+location. Do not use client-only redirects or duplicate public Articles to hide
+a custody gap.
 
 ## Search and indexing boundary
 
@@ -168,10 +200,12 @@ metadata, structured data, or a public Dossier module. See
 ## Revision discipline
 
 Corrections update `updatedAt`, preserve source and curation dates, and use the
-`corrected` status when the public record changes materially. Removed or broken
-sources should be archived or withdrawn, not silently replaced with a different
-claim. New leads remain in review until this checklist is repeated for that
-specific source.
+`corrected` status when the public record changes materially. A dated revision
+addendum records the evidence snapshot, changed structures, preserved
+conclusion, repository revision, and whether hosted deployment was separately
+verified. Removed or broken sources should be archived or withdrawn, not
+silently replaced with a different claim. New leads remain in review until this
+checklist is repeated for that specific source.
 
 ## Portfolio knowledge projection
 

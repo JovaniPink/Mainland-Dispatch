@@ -1,5 +1,12 @@
 # Season Zero editorial contract
 
+> **Partially superseded August 30, 2026:** The
+> [ten-Notebook editorial program](2026-08-30-ten-notebook-program.md)
+> supersedes only the original ceiling of three entries over 90 days. The
+> 8–10-hour per-entry discipline and every evidence, privacy, product, and
+> publication constraint below remain in force. The historical body of this
+> decision is preserved unchanged.
+
 **Status:** Accepted
 **Effective:** July 23, 2026
 **Review point:** After the founding Notebook entry has received reader feedback

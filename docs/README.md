@@ -1,8 +1,8 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** August 18, 2026
+**Current as of:** August 30, 2026
 **Public Dispatches:** 13 published or corrected records
-**Public Notebook entries:** 4 source-reviewed inquiries
+**Public Notebook entries:** 7 source-reviewed inquiries
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
 **Source-lead catalog:** 481 records
 **General-China article audit:** 404 external candidates — 375 withheld, 29
@@ -17,6 +17,18 @@ decision](decisions/2026-08-14-curated-source-intake-resumption.md) narrowly
 reopened one manually reviewed quality-link batch. It did not authorize
 automatic scraping, recurring ingestion, public publication or a new product
 surface. The public Notebook remains the dominant reader journey.
+
+The [ten-Notebook program](decisions/2026-08-30-ten-notebook-program.md)
+supersedes only the original three-entry Season Zero ceiling. It preserves the
+8–10-hour per-entry discipline and every evidence, privacy, route, and
+publication gate. Current authority is explicit:
+
+| State        | Inquiries                                                                 |
+| ------------ | ------------------------------------------------------------------------- |
+| Public       | 01–07                                                                     |
+| Commissioned | 08 — “Below Half Is Not Gone”; research and implementation are authorized |
+| Proposed     | 09 and 10; neither split nor publication is authorized                    |
+| Monitored    | North American origin and transshipment evidence for a future decision    |
 
 The existing `/archive` route is the connected public evidence surface. It
 offers filters, a source chronology and explicit relationship views over the 13
@@ -53,6 +65,26 @@ maritime-risk schema, click-to-load map, non-additive scale rule, claim-audit
 boundary, and distinction between source-reviewed interpretation and verified
 reporting.
 
+The fifth, sixth, and seventh inquiries are supported by the
+[trade-adjustment ledger](source-notes/2026-08-21-china-shock-adjustment-ledger.md),
+[circulation-gates ledger](source-notes/2026-08-25-what-gets-through-ledger.md),
+and [August 27 candidate ledger](source-notes/2026-08-27-china-news-candidate-ledger.md).
+Their governing decisions are the [Notebook Five
+commission](decisions/2026-08-21-notebook-five.md), [Notebook Six
+commission](decisions/2026-08-25-notebook-six.md), and [Notebook Seven
+commission](decisions/2026-08-29-notebook-seven.md).
+
+The completed Inquiry 06 transshipment revision is recorded in a separate
+[decision addendum](decisions/2026-08-30-notebook-six-transshipment-revision.md)
+and controlled by its immutable [August 30 research
+snapshot](source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md).
+
+Inquiry 08 is commissioned by the [August 30
+decision](decisions/2026-08-30-notebook-eight.md) and supported by the dedicated
+[“Below Half Is Not Gone”
+ledger](source-notes/2026-08-30-below-half-is-not-gone-ledger.md). Commissioned
+does not mean drafted, public, merged, or deployed.
+
 ## Governing documents
 
 - [Season Zero editorial contract](decisions/2026-07-23-season-zero.md) defines
@@ -65,6 +97,26 @@ reporting.
 - [Notebook Four commission](decisions/2026-08-18-notebook-four.md) records the
   chokepoint-portfolio method, interactive map boundary, and publication
   decision.
+- [Notebook Five commission](decisions/2026-08-21-notebook-five.md) records the
+  trade-adjustment model and publication decision.
+- [Notebook Six commission](decisions/2026-08-25-notebook-six.md) records the
+  three-domain circulation-gates model and publication decision.
+- [Notebook Seven commission](decisions/2026-08-29-notebook-seven.md) records
+  the multi-signal economic method and publication decision.
+- [Inquiry 06 transshipment revision](decisions/2026-08-30-notebook-six-transshipment-revision.md)
+  records the completed repository revision without claiming hosted
+  deployment verification.
+- [Notebook Eight commission](decisions/2026-08-30-notebook-eight.md) accepts
+  the energy-system research and implementation contract without publishing a
+  route.
+- [Ten-Notebook editorial program](decisions/2026-08-30-ten-notebook-program.md)
+  records the target set, authority levels, and blocked corrective splits.
+- [Ten-Notebook custody manifest](plans/2026-08-30-ten-notebook-custody-manifest.md)
+  inventories current content, evidence, URLs, components, and fragments for
+  lossless review.
+- [Transshipment evidence watch](plans/2026-08-30-transshipment-evidence-watch.md)
+  defines manual update triggers without authorizing recurring ingestion or a
+  new article.
 - [Curated source-intake resumption](decisions/2026-08-14-curated-source-intake-resumption.md)
   authorizes one bounded manual quality-link batch without changing the
   publication gate.
@@ -82,7 +134,19 @@ reporting.
 
 When a dated source note conflicts with a governing document, the governing
 document controls the current workflow. Dated notes remain immutable research
-snapshots unless a factual correction is explicitly recorded.
+snapshots unless a factual correction is explicitly recorded. Time-relative
+statements inside earlier decisions remain historical; a later decision
+supersedes only the clauses it names.
+
+## GitHub work tracking
+
+Issues track execution; the dated decisions above remain the authority.
+
+- [#32 — Ten-Notebook Season Zero umbrella](https://github.com/JovaniPink/Mainland-Dispatch/issues/32)
+- [#33 — Publish Inquiry 08](https://github.com/JovaniPink/Mainland-Dispatch/issues/33)
+- [#34 — Prepare the Inquiry 06 / Inquiry 09 custody migration](https://github.com/JovaniPink/Mainland-Dispatch/issues/34)
+- [#35 — Monitor origin and transshipment evidence](https://github.com/JovaniPink/Mainland-Dispatch/issues/35)
+- [#36 — Prepare the Inquiry 04 / Inquiry 10 custody migration](https://github.com/JovaniPink/Mainland-Dispatch/issues/36)
 
 ## Current article-corpus rollup
 

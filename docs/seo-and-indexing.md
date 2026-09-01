@@ -29,6 +29,11 @@ Archive filters, relationship focus and selected Notebook inquiry are
 interaction state rather than separate documents. They do not enter the
 sitemap. Archive state canonicalizes to `/archive`.
 
+An editorial commission does not change indexability. Commissioned Inquiry 08
+and proposed Inquiries 09 and 10 remain excluded from public metadata,
+structured data, route generation, and the sitemap until a valid route and a
+public-selector status cross the publication boundary atomically.
+
 Notebook Two’s `promise` selection and incoming `utm_*` parameters are also
 interaction/attribution state. The address bar may retain a valid `promise` and
 incoming UTMs so selection remains shareable, while canonical metadata always

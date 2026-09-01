@@ -32,11 +32,12 @@ claim-safety posture from `handoff-navigator`.
   personal motivation, a faithful reconstruction of an argument, timecoded
   turning points, claim labels, pushback, institutional context, a short source
   trail and one unresolved question.
-  The newest entry, “Routing Around Risk,” audits China's chokepoint portfolio
-  through a consent-gated maritime map, non-additive scale comparisons, and a
-  visible correction register. “Dominance Is a Dashboard, Not a Crown,” “Open
-  Models, Closed System?,” and the founding Rudd inquiry remain public as the
-  first three entries.
+  Seven source-reviewed inquiries are public. The newest, “July Is Not One
+  Number,” keeps industrial, retail, property, labor, credit, trade, and price
+  signals separate rather than collapsing them into one score. Inquiry 08,
+  “Below Half Is Not Gone,” is commissioned but remains outside every public
+  selector until its research, implementation, route, and publication gates
+  pass together.
 - **Source Archive** — an interactive public evidence surface with faceted
   search, chronological and relationship views, reviewed source metadata,
   classified claims, explicit limitations and shareable URL state. It exposes
@@ -207,12 +208,19 @@ intake, automated ingestion, generalized CMS work and new top-level product
 areas. On August 14 the editor narrowly reopened one manually curated
 quality-link batch from the supplied HN Algolia discovery query. The change does
 not authorize recurring scraping, public promotion or a second intake system.
-The Archive still visualizes only the reviewed public boundary. The governing
-decisions are recorded in
+The August 30 ten-Notebook program supersedes only the original three-entry
+ceiling; it preserves the recurring time discipline and every evidence,
+privacy, and publication gate. The Archive still visualizes only the reviewed
+public boundary. The governing decisions are recorded in
 [`docs/decisions/2026-07-23-season-zero.md`](docs/decisions/2026-07-23-season-zero.md),
 [`docs/decisions/2026-07-28-notebook-two.md`](docs/decisions/2026-07-28-notebook-two.md),
 [`docs/decisions/2026-08-14-notebook-three.md`](docs/decisions/2026-08-14-notebook-three.md),
 [`docs/decisions/2026-08-18-notebook-four.md`](docs/decisions/2026-08-18-notebook-four.md),
+[`docs/decisions/2026-08-21-notebook-five.md`](docs/decisions/2026-08-21-notebook-five.md),
+[`docs/decisions/2026-08-25-notebook-six.md`](docs/decisions/2026-08-25-notebook-six.md),
+[`docs/decisions/2026-08-29-notebook-seven.md`](docs/decisions/2026-08-29-notebook-seven.md),
+[`docs/decisions/2026-08-30-notebook-eight.md`](docs/decisions/2026-08-30-notebook-eight.md),
+[`docs/decisions/2026-08-30-ten-notebook-program.md`](docs/decisions/2026-08-30-ten-notebook-program.md),
 and
 [`docs/decisions/2026-08-14-curated-source-intake-resumption.md`](docs/decisions/2026-08-14-curated-source-intake-resumption.md).
 
@@ -306,3 +314,16 @@ Notebook Four’s maritime-route model, 24 public source stops, 12 claim
 dispositions, Reuters attribution boundary, schematic-map limitation, and exact
 August 18 stopping point are recorded in
 [`docs/source-notes/2026-08-18-strategic-rebalancing-research-ledger.md`](docs/source-notes/2026-08-18-strategic-rebalancing-research-ledger.md).
+Notebook Five’s trade-adjustment model and evidence boundaries are recorded in
+[`docs/source-notes/2026-08-21-china-shock-adjustment-ledger.md`](docs/source-notes/2026-08-21-china-shock-adjustment-ledger.md).
+Notebook Six’s circulation-gate model is recorded in
+[`docs/source-notes/2026-08-25-what-gets-through-ledger.md`](docs/source-notes/2026-08-25-what-gets-through-ledger.md),
+with its August 30 transshipment revision controlled by the immutable
+[`follow-up research snapshot`](docs/source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md).
+Notebook Seven was selected from the immutable
+[`August 27 candidate ledger`](docs/source-notes/2026-08-27-china-news-candidate-ledger.md)
+under its
+[`commission decision`](docs/decisions/2026-08-29-notebook-seven.md).
+The accepted Inquiry 08 commission has a dedicated, publication-oriented
+[`“Below Half Is Not Gone” ledger`](docs/source-notes/2026-08-30-below-half-is-not-gone-ledger.md),
+but the inquiry is not yet public.
