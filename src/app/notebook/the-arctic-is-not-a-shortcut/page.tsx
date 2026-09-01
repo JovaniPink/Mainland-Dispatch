@@ -74,7 +74,7 @@ export default function TheArcticIsNotAShortcutPage() {
           </div>
         </section>
 
-        <section className="mt-12">
+        <section id="arctic" className="mt-12 scroll-mt-24">
           <NotebookSectionHeading
             id="map"
             eyebrow="Click-to-load · OpenFreeMap basemap"

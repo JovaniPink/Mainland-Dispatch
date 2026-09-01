@@ -20,6 +20,7 @@ describe("The Arctic Is Not a Shortcut Notebook page", () => {
         name: "The non-Arctic chokepoint portfolio",
       })
     ).toHaveAttribute("href", "/notebook/routing-around-risk");
+    expect(document.getElementById("arctic")).toBeInTheDocument();
   });
 
   it("offers only the Arctic map subset behind explicit consent", () => {
