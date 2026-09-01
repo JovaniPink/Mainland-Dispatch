@@ -4,8 +4,10 @@ export type ChokepointLens = "portfolio" | "gulf" | "red-sea" | "arctic";
 
 export type ChokepointMapInput = {
   routeIds: string[];
-  routeIdsByLens: Record<ChokepointLens, string[]>;
+  routeIdsByLens: Partial<Record<ChokepointLens, string[]>>;
   pointIdsByRoute: Record<string, string[]>;
+  allowedLenses: ChokepointLens[];
+  initialLens: ChokepointLens;
 };
 
 export type ChokepointMapContext = ChokepointMapInput & {
@@ -39,6 +41,9 @@ export const chokepointMapMachine = setup({
       event.type === "SELECT_POINT" &&
       context.routeIds.includes(event.routeId) &&
       context.pointIdsByRoute[event.routeId]?.includes(event.pointId),
+    lensAllowed: ({ context, event }) =>
+      event.type === "SELECT_LENS" &&
+      context.allowedLenses.includes(event.lens),
   },
 }).createMachine({
   id: "chokepoint-portfolio-map",
@@ -46,7 +51,7 @@ export const chokepointMapMachine = setup({
   context: ({ input }) => ({
     ...input,
     attempt: 0,
-    selectedLens: "portfolio",
+    selectedLens: input.initialLens,
     selectedRouteId: null,
     selectedPointId: null,
   }),
@@ -105,6 +110,7 @@ export const chokepointMapMachine = setup({
         browsing: {
           on: {
             SELECT_LENS: {
+              guard: "lensAllowed",
               actions: assign({
                 selectedLens: ({ event }) => event.lens,
                 selectedRouteId: null,

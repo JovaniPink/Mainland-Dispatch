@@ -96,6 +96,19 @@ describe("SEO publication contract", () => {
     }
   });
 
+  it("deduplicates Notebook citations by exact clean URL", () => {
+    const entry = JSON.parse(
+      JSON.stringify(whatXiJinpingWants)
+    ) as typeof whatXiJinpingWants;
+    entry.formats[0].url = entry.sourceTrail[0].links[0].url;
+
+    const citations = notebookArticleJsonLd(entry).citation as string[];
+
+    expect(
+      citations.filter((url) => url === entry.formats[0].url)
+    ).toHaveLength(1);
+  });
+
   it("indexes public editorial routes and excludes private utility routes", () => {
     const entries = sitemap();
     const urls = entries.map((entry) => entry.url);

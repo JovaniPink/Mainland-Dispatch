@@ -230,7 +230,7 @@ const NotebookMaritimePointSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
-const NotebookMaritimeRouteSchema = z.object({
+export const NotebookMaritimeRouteSchema = z.object({
   id: nonEmpty.regex(/^route-[a-z0-9]+(?:-[a-z0-9]+)*$/),
   label: nonEmpty,
   lens: z.enum(["gulf", "red-sea", "arctic", "portfolio"]),
@@ -514,6 +514,24 @@ const NotebookEnergyLayerSchema = z.object({
     .length(2, "each energy-system layer requires exactly 2 measures"),
 });
 
+export const NotebookRelatedNotebookSchema = z.object({
+  slug,
+  relation: z.literal("companion"),
+  label: nonEmpty,
+});
+
+const fragmentId = nonEmpty.regex(
+  /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  "expected a fragment ID without a leading hash"
+);
+
+export const NotebookLegacyFragmentSchema = z.object({
+  id: fragmentId,
+  successorSlug: slug,
+  successorFragment: fragmentId,
+  notice: nonEmpty,
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -538,6 +556,8 @@ const NotebookBaseSchema = z.object({
   sourceTrail: z.array(NotebookTrailItemSchema).min(1),
   unresolvedQuestion: nonEmpty,
   limitations: z.array(nonEmpty).min(1),
+  relatedNotebooks: z.array(NotebookRelatedNotebookSchema).optional(),
+  legacyFragments: z.array(NotebookLegacyFragmentSchema).optional(),
 });
 
 const ArgumentNotebookSchema = NotebookBaseSchema.extend({
@@ -1299,6 +1319,13 @@ export type NotebookTradeFrameSourceClass = z.infer<
 export type NotebookAudio = z.infer<typeof NotebookAudioSchema>;
 export type NotebookEvidenceStatus = z.infer<
   typeof NotebookEvidenceStatusSchema
+>;
+export type NotebookMaritimeRoute = z.infer<typeof NotebookMaritimeRouteSchema>;
+export type NotebookRelatedNotebook = z.infer<
+  typeof NotebookRelatedNotebookSchema
+>;
+export type NotebookLegacyFragment = z.infer<
+  typeof NotebookLegacyFragmentSchema
 >;
 
 export function parseNotebookEntry(value: unknown): NotebookEntry {

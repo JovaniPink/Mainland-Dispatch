@@ -19,10 +19,17 @@ import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { JsonLd } from "@/components/seo/json-ld";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import { routingAroundRisk as entry } from "@/content/notebook/routing-around-risk";
+import { parseMaritimeMapSubset } from "@/content/notebook/maritime-map-subset";
 import { requirePublicNotebookEntry } from "@/lib/notebook-route";
 import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
+const completePortfolioSubset = parseMaritimeMapSubset({
+  id: "non-arctic-portfolio",
+  routes: entry.routes,
+  allowedLenses: ["portfolio", "gulf", "red-sea", "arctic"],
+  initialLens: "portfolio",
+});
 const sectionLinks = [
   ["why", "Why this question matters"],
   ["verdict", "The short answer"],
@@ -99,7 +106,7 @@ export default function RoutingAroundRiskPage() {
             the basemap is never loaded.
           </p>
           <div className="mt-7">
-            <ChokepointPortfolioMap routes={entry.routes} />
+            <ChokepointPortfolioMap subset={completePortfolioSubset} />
           </div>
         </section>
 
