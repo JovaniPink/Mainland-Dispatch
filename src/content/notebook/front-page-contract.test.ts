@@ -3,7 +3,7 @@ import { publicNotebookEntries } from ".";
 
 describe("Notebook front-page contract", () => {
   it("requires a thesis and source-resolved evidence preview for every public entry", () => {
-    expect(publicNotebookEntries).toHaveLength(8);
+    expect(publicNotebookEntries).toHaveLength(9);
 
     for (const entry of publicNotebookEntries) {
       expect(entry.thesis.length).toBeGreaterThan(80);

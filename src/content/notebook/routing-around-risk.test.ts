@@ -143,8 +143,9 @@ describe("Routing Around Risk Notebook registry", () => {
       "what-gets-through",
       "july-is-not-one-number",
       "below-half-is-not-gone",
+      "where-does-origin-change",
     ]);
-    expect(latestNotebookEntry.slug).toBe("below-half-is-not-gone");
+    expect(latestNotebookEntry.slug).toBe("where-does-origin-change");
     expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

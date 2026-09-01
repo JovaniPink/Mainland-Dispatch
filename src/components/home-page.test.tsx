@@ -16,13 +16,13 @@ describe("edition front page", () => {
     const entryPoints = within(introduction).getByTestId("home-entry-points");
     const entryLinks = within(entryPoints).getAllByRole("link");
     expect(entryLinks.map((link) => link.getAttribute("href"))).toEqual([
-      "/notebook/below-half-is-not-gone",
+      "/notebook/where-does-origin-change",
       "/notebooks",
       "/archive",
     ]);
     expect(
       within(entryPoints).getByRole("link", { name: /Latest inquiry/ })
-    ).toHaveAttribute("href", "/notebook/below-half-is-not-gone");
+    ).toHaveAttribute("href", "/notebook/where-does-origin-change");
     expect(
       within(entryPoints).getByRole("link", { name: /Notebook index/ })
     ).toHaveAttribute("href", "/notebooks");
@@ -38,18 +38,18 @@ describe("edition front page", () => {
     expect(
       within(latest).getByRole("heading", {
         level: 2,
-        name: "Below Half Is Not Gone",
+        name: "Where Does Origin Change?",
       })
     ).toBeInTheDocument();
     expect(
-      within(latest).getByRole("link", { name: "Read Inquiry 08" })
-    ).toHaveAttribute("href", "/notebook/below-half-is-not-gone");
+      within(latest).getByRole("link", { name: "Read Inquiry 09" })
+    ).toHaveAttribute("href", "/notebook/where-does-origin-change");
     expect(
       within(latest).getByRole("link", { name: "Examine the sources" })
-    ).toHaveAttribute("href", "/notebook/below-half-is-not-gone#sources");
+    ).toHaveAttribute("href", "/notebook/where-does-origin-change#sources");
 
     const preview = screen.getByTestId("latest-evidence-preview");
-    expect(within(preview).getByText("Interpretation")).toBeInTheDocument();
+    expect(within(preview).getByText("Observed")).toBeInTheDocument();
     expect(within(preview).getAllByRole("link")).toHaveLength(2);
   });
 
@@ -59,7 +59,7 @@ describe("edition front page", () => {
     const previous = screen.getByTestId("previous-inquiries");
     expect(within(previous).getAllByRole("article")).toHaveLength(2);
     expect(
-      within(previous).getByText("What Gets Through?")
+      within(previous).getByText("Below Half Is Not Gone")
     ).toBeInTheDocument();
     expect(
       within(previous).getByText("July Is Not One Number")

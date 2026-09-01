@@ -645,6 +645,45 @@ const CirculationGatesNotebookSchema = NotebookBaseSchema.extend({
   }),
 });
 
+const CirculationTwoDomainNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("circulation-two-domain"),
+  formats: z.array(NotebookFormatSchema).length(1),
+  turningPoints: z.array(NotebookTurningPointSchema).length(2),
+  sourceTrail: z.array(NotebookTrailItemSchema).length(9),
+  audio: NotebookAudioSchema,
+  claimAudit: z.array(NotebookClaimAuditSchema).length(10),
+  gates: z.array(NotebookCirculationGateSchema).length(2),
+  sections: z.object({
+    lens: z.array(nonEmpty).min(1),
+    culture: z.array(nonEmpty).min(1),
+    memory: z.array(nonEmpty).min(1),
+    limits: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+}).strict();
+
+const OriginProofNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("origin-proof"),
+  formats: z.array(NotebookFormatSchema).length(0),
+  turningPoints: z.array(NotebookTurningPointSchema).length(1),
+  sourceTrail: z.array(NotebookTrailItemSchema).length(19),
+  claimAudit: z.array(NotebookClaimAuditSchema).length(21),
+  gates: z.array(NotebookCirculationGateSchema).length(1),
+  tradeProofs: z.array(NotebookTradeProofSchema).length(4),
+  tradePressure: z.array(NotebookTradePressureSchema).length(11),
+  tradeFrames: z.array(NotebookTradeFrameSchema).length(5),
+  sections: z.object({
+    frame: z.array(nonEmpty).min(1),
+    admission: z.array(nonEmpty).min(1),
+    production: z.array(nonEmpty).min(1),
+    qualification: z.array(nonEmpty).min(1),
+    entry: z.array(nonEmpty).min(1),
+    pressure: z.array(nonEmpty).min(1),
+    limits: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+}).strict();
+
 const TradeAdjustmentNotebookSchema = NotebookBaseSchema.extend({
   variant: z.literal("trade-adjustment"),
   audio: NotebookAudioSchema,
@@ -719,6 +758,8 @@ export const NotebookEntrySchema = z
     PowerBalanceNotebookSchema,
     MaritimeRiskNotebookSchema,
     CirculationGatesNotebookSchema,
+    CirculationTwoDomainNotebookSchema,
+    OriginProofNotebookSchema,
     TradeAdjustmentNotebookSchema,
     EconomicSignalsNotebookSchema,
     EnergySystemNotebookSchema,
@@ -827,40 +868,60 @@ export const NotebookEntrySchema = z
                   ...entry.tradePressure.flatMap((item) => item.sourceIds),
                   ...entry.tradeFrames.flatMap((item) => item.sourceIds),
                 ]
-              : entry.variant === "trade-adjustment"
+              : entry.variant === "circulation-two-domain"
                 ? [
                     entry.audio.sourceId,
-                    ...entry.passageAudit.flatMap((item) => item.sourceIds),
                     ...entry.claimAudit.flatMap((item) => item.sourceIds),
-                    ...entry.mechanismSteps.flatMap((item) => item.sourceIds),
-                    ...entry.shockComparisons.flatMap((item) => item.sourceIds),
-                    ...entry.distributionCases.flatMap(
-                      (item) => item.sourceIds
-                    ),
-                    ...entry.policyOptions.flatMap((item) => item.sourceIds),
+                    ...entry.gates.flatMap((gate) => gate.sourceIds),
                   ]
-                : entry.variant === "economic-signals"
+                : entry.variant === "origin-proof"
                   ? [
-                      ...entry.indicators.flatMap((item) => item.sourceIds),
-                      ...entry.alternativeReadings.flatMap(
-                        (item) => item.sourceIds
-                      ),
+                      ...entry.claimAudit.flatMap((item) => item.sourceIds),
+                      ...entry.gates.flatMap((gate) => gate.sourceIds),
+                      ...entry.tradeProofs.flatMap((item) => item.sourceIds),
+                      ...entry.tradePressure.flatMap((item) => item.sourceIds),
+                      ...entry.tradeFrames.flatMap((item) => item.sourceIds),
                     ]
-                  : entry.variant === "energy-system"
+                  : entry.variant === "trade-adjustment"
                     ? [
-                        ...entry.energyLayers.flatMap((layer) =>
-                          layer.measures.flatMap((measure) => [
-                            ...measure.sourceIds,
-                            ...measure.contrasts.flatMap(
-                              (contrast) => contrast.sourceIds
-                            ),
-                          ])
+                        entry.audio.sourceId,
+                        ...entry.passageAudit.flatMap((item) => item.sourceIds),
+                        ...entry.claimAudit.flatMap((item) => item.sourceIds),
+                        ...entry.mechanismSteps.flatMap(
+                          (item) => item.sourceIds
                         ),
-                        ...entry.alternativeReadings.flatMap(
+                        ...entry.shockComparisons.flatMap(
+                          (item) => item.sourceIds
+                        ),
+                        ...entry.distributionCases.flatMap(
+                          (item) => item.sourceIds
+                        ),
+                        ...entry.policyOptions.flatMap(
                           (item) => item.sourceIds
                         ),
                       ]
-                    : []),
+                    : entry.variant === "economic-signals"
+                      ? [
+                          ...entry.indicators.flatMap((item) => item.sourceIds),
+                          ...entry.alternativeReadings.flatMap(
+                            (item) => item.sourceIds
+                          ),
+                        ]
+                      : entry.variant === "energy-system"
+                        ? [
+                            ...entry.energyLayers.flatMap((layer) =>
+                              layer.measures.flatMap((measure) => [
+                                ...measure.sourceIds,
+                                ...measure.contrasts.flatMap(
+                                  (contrast) => contrast.sourceIds
+                                ),
+                              ])
+                            ),
+                            ...entry.alternativeReadings.flatMap(
+                              (item) => item.sourceIds
+                            ),
+                          ]
+                        : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -1009,6 +1070,74 @@ export const NotebookEntrySchema = z
         ["gates"],
         "gate domains must be unique"
       );
+      checkUnique(
+        entry.tradeProofs.map((item) => item.id),
+        ["tradeProofs"],
+        "trade-proof IDs must be unique"
+      );
+      checkUnique(
+        entry.tradePressure.map((item) => item.id),
+        ["tradePressure"],
+        "trade-pressure IDs must be unique"
+      );
+      checkUnique(
+        entry.tradeFrames.map((item) => item.id),
+        ["tradeFrames"],
+        "trade-frame IDs must be unique"
+      );
+      for (let index = 1; index < entry.tradePressure.length; index += 1) {
+        if (
+          entry.tradePressure[index - 1].date > entry.tradePressure[index].date
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: "trade pressure entries must be chronological",
+            path: ["tradePressure", index, "date"],
+          });
+        }
+      }
+    }
+
+    if (
+      entry.variant === "circulation-two-domain" ||
+      entry.variant === "origin-proof"
+    ) {
+      checkUnique(
+        entry.claimAudit.map((item) => item.id),
+        ["claimAudit"],
+        "claim-audit IDs must be unique"
+      );
+      checkUnique(
+        entry.gates.map((gate) => gate.id),
+        ["gates"],
+        "gate IDs must be unique"
+      );
+      checkUnique(
+        entry.gates.map((gate) => gate.domain),
+        ["gates"],
+        "gate domains must be unique"
+      );
+    }
+
+    if (entry.variant === "circulation-two-domain") {
+      const domains = entry.gates.map((gate) => gate.domain);
+      if (domains[0] !== "culture" || domains[1] !== "memory") {
+        ctx.addIssue({
+          code: "custom",
+          message: "two-domain circulation requires culture then memory",
+          path: ["gates"],
+        });
+      }
+    }
+
+    if (entry.variant === "origin-proof") {
+      if (entry.gates[0]?.domain !== "trade") {
+        ctx.addIssue({
+          code: "custom",
+          message: "origin proof requires exactly the trade gate",
+          path: ["gates"],
+        });
+      }
       checkUnique(
         entry.tradeProofs.map((item) => item.id),
         ["tradeProofs"],
@@ -1283,6 +1412,14 @@ export type CirculationGatesNotebookEntry = Extract<
   NotebookEntry,
   { variant: "circulation-gates" }
 >;
+export type CirculationTwoDomainNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "circulation-two-domain" }
+>;
+export type OriginProofNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "origin-proof" }
+>;
 export type TradeAdjustmentNotebookEntry = Extract<
   NotebookEntry,
   { variant: "trade-adjustment" }
@@ -1338,6 +1475,26 @@ export function parseCirculationGatesNotebookEntry(
   const entry = NotebookEntrySchema.parse(value);
   if (entry.variant !== "circulation-gates") {
     throw new Error("expected a circulation-gates Notebook entry");
+  }
+  return entry;
+}
+
+export function parseCirculationTwoDomainNotebookEntry(
+  value: unknown
+): CirculationTwoDomainNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "circulation-two-domain") {
+    throw new Error("expected a circulation-two-domain Notebook entry");
+  }
+  return entry;
+}
+
+export function parseOriginProofNotebookEntry(
+  value: unknown
+): OriginProofNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "origin-proof") {
+    throw new Error("expected an origin-proof Notebook entry");
   }
   return entry;
 }
