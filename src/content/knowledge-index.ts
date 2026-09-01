@@ -2,6 +2,7 @@ import { publishedDispatches } from "@/content/dispatches";
 import { publicNotebookEntries } from "@/content/notebook";
 import type { Dispatch, EvidenceStatus, Vertical } from "@/content/schema";
 import type { NotebookEntry } from "@/content/notebook/schema";
+import { notebookSourceKnowledgeId } from "@/content/notebook/source-authority";
 import { siteUrl } from "@/lib/seo";
 
 type KnowledgeObject = Readonly<Record<string, unknown>> & {
@@ -212,7 +213,7 @@ function notebookObjects(entry: NotebookEntry): KnowledgeObject[] {
   const sourceIds = new Map(
     entry.sourceTrail.map((source) => [
       source.id,
-      `mainland-dispatch:source:${entry.slug}-${source.id.replace(/^notebook-source-/, "")}`,
+      notebookSourceKnowledgeId(entry.slug, source.id),
     ])
   );
   const sources = entry.sourceTrail.map((source): KnowledgeObject => {
@@ -311,14 +312,55 @@ function notebookObjects(entry: NotebookEntry): KnowledgeObject[] {
       publishedAt: midnight(entry.publishedAt),
       objectIds: [...sourceIds.values(), claimId],
     },
+    relationships: (entry.relatedNotebooks ?? []).map((relationship) => ({
+      type: relationship.relation,
+      targetId: `mainland-dispatch:publication:notebook-${relationship.slug}`,
+    })),
   };
   return [...sources, claim, publication];
 }
 
-export const mainlandKnowledgeObjects: readonly KnowledgeObject[] = [
+const projectedKnowledgeObjects: readonly KnowledgeObject[] = [
   ...publishedDispatches.flatMap(dispatchObjects),
   ...publicNotebookEntries.flatMap(notebookObjects),
 ];
+
+function deduplicateKnowledgeObjects(
+  objects: readonly KnowledgeObject[]
+): KnowledgeObject[] {
+  const byId = new Map<string, KnowledgeObject>();
+  for (const object of objects) {
+    const existing = byId.get(object.id);
+    if (!existing) {
+      byId.set(object.id, object);
+      continue;
+    }
+    const sourceIdentity = (candidate: KnowledgeObject) => {
+      const source = candidate.source as Record<string, unknown> | undefined;
+      return JSON.stringify({
+        kind: candidate.kind,
+        title: candidate.title,
+        dates: candidate.dates,
+        canonicalUrl: source?.canonicalUrl,
+        publisher: source?.publisher,
+        authors: source?.authors,
+      });
+    };
+    if (
+      object.kind !== "source" ||
+      existing.kind !== "source" ||
+      sourceIdentity(object) !== sourceIdentity(existing)
+    ) {
+      throw new Error(
+        `Conflicting public knowledge authority for ${object.id}`
+      );
+    }
+  }
+  return [...byId.values()];
+}
+
+export const mainlandKnowledgeObjects: readonly KnowledgeObject[] =
+  deduplicateKnowledgeObjects(projectedKnowledgeObjects);
 const newest = [
   ...publishedDispatches.map((item) => item.updatedAt),
   ...publicNotebookEntries.map((item) => item.updatedAt),

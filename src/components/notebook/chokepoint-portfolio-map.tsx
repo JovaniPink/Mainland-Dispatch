@@ -4,7 +4,11 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef } from "react";
 import { useMachine } from "@xstate/react";
 import type { FeatureCollection, MultiLineString, Point } from "geojson";
-import type { MaritimeRiskNotebookEntry } from "@/content/notebook/schema";
+import {
+  buildChokepointMapInput,
+  type MaritimeMapSubset,
+} from "@/content/notebook/maritime-map-subset";
+import type { NotebookMaritimeRoute } from "@/content/notebook/schema";
 import {
   chokepointMapMachine,
   type ChokepointLens,
@@ -13,7 +17,7 @@ import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { cn } from "@/lib/utils";
 import { splitAtAntimeridian } from "@/lib/antimeridian";
 
-type MaritimeRoute = MaritimeRiskNotebookEntry["routes"][number];
+type MaritimeRoute = NotebookMaritimeRoute;
 type MapLibreModule = typeof import("maplibre-gl");
 type MapInstance = import("maplibre-gl").Map;
 type GeoJsonSource = import("maplibre-gl").GeoJSONSource;
@@ -365,36 +369,15 @@ function RouteMapCanvas({
 }
 
 export function ChokepointPortfolioMap({
-  routes,
+  subset,
 }: {
-  routes: MaritimeRiskNotebookEntry["routes"];
+  subset: MaritimeMapSubset;
 }) {
-  const input = useMemo(() => {
-    const allIds = routes.map((route) => route.id);
-    return {
-      routeIds: allIds,
-      routeIdsByLens: {
-        portfolio: allIds,
-        gulf: routes
-          .filter(
-            (route) => route.lens === "gulf" || route.lens === "portfolio"
-          )
-          .map((route) => route.id),
-        "red-sea": routes
-          .filter((route) => route.lens === "red-sea")
-          .map((route) => route.id),
-        arctic: routes
-          .filter((route) => route.lens === "arctic")
-          .map((route) => route.id),
-      },
-      pointIdsByRoute: Object.fromEntries(
-        routes.map((route) => [route.id, route.points.map((point) => point.id)])
-      ),
-    };
-  }, [routes]);
+  const routes = subset.routes;
+  const input = useMemo(() => buildChokepointMapInput(subset), [subset]);
   const [state, send] = useMachine(chokepointMapMachine, { input });
   const { selectedLens, selectedRouteId, selectedPointId } = state.context;
-  const visibleRouteIds = state.context.routeIdsByLens[selectedLens];
+  const visibleRouteIds = state.context.routeIdsByLens[selectedLens] ?? [];
   const visibleRoutes = routes.filter((route) =>
     visibleRouteIds.includes(route.id)
   );
@@ -440,22 +423,24 @@ export function ChokepointPortfolioMap({
           role="group"
           aria-label="Map lens"
         >
-          {lensOptions.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              aria-pressed={selectedLens === option.id}
-              onClick={() => send({ type: "SELECT_LENS", lens: option.id })}
-              className={cn(
-                "border px-3 py-2 font-mono text-[0.62rem] uppercase tracking-widest",
-                selectedLens === option.id
-                  ? "border-signal bg-signal-soft/55 text-signal"
-                  : "border-rule bg-paper text-ink-muted hover:border-jade hover:text-jade"
-              )}
-            >
-              {option.label}
-            </button>
-          ))}
+          {lensOptions
+            .filter((option) => subset.allowedLenses.includes(option.id))
+            .map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                aria-pressed={selectedLens === option.id}
+                onClick={() => send({ type: "SELECT_LENS", lens: option.id })}
+                className={cn(
+                  "border px-3 py-2 font-mono text-[0.62rem] uppercase tracking-widest",
+                  selectedLens === option.id
+                    ? "border-signal bg-signal-soft/55 text-signal"
+                    : "border-rule bg-paper text-ink-muted hover:border-jade hover:text-jade"
+                )}
+              >
+                {option.label}
+              </button>
+            ))}
         </div>
       </div>
 

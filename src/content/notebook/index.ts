@@ -36,6 +36,84 @@ const NotebookRegistrySchema = z
       [],
       "Notebook ordinals must be unique"
     );
+
+    const entriesBySlug = new Map(entries.map((entry) => [entry.slug, entry]));
+    const isPublic = (entry: NotebookEntry) =>
+      entry.editorialStatus === "published" ||
+      entry.editorialStatus === "corrected";
+
+    entries.forEach((entry, entryIndex) => {
+      const relationships = entry.relatedNotebooks ?? [];
+      const fragments = entry.legacyFragments ?? [];
+
+      assertUnique(
+        relationships.map((relationship) => relationship.slug),
+        [entryIndex, "relatedNotebooks"],
+        "related Notebook targets must be unique"
+      );
+      assertUnique(
+        fragments.map((fragment) => fragment.id),
+        [entryIndex, "legacyFragments"],
+        "legacy fragment IDs must be unique"
+      );
+      assertUnique(
+        fragments.map(
+          (fragment) =>
+            `${fragment.successorSlug}#${fragment.successorFragment}`
+        ),
+        [entryIndex, "legacyFragments"],
+        "legacy fragment successor targets must be unique"
+      );
+
+      relationships.forEach((relationship, relationshipIndex) => {
+        const target = entriesBySlug.get(relationship.slug);
+        if (!target) {
+          ctx.addIssue({
+            code: "custom",
+            message: "related Notebook target must exist",
+            path: [entryIndex, "relatedNotebooks", relationshipIndex, "slug"],
+          });
+          return;
+        }
+        const reciprocal = target.relatedNotebooks?.some(
+          (candidate) =>
+            candidate.relation === "companion" && candidate.slug === entry.slug
+        );
+        if (!reciprocal) {
+          ctx.addIssue({
+            code: "custom",
+            message: "companion relationships must be reciprocal",
+            path: [entryIndex, "relatedNotebooks", relationshipIndex],
+          });
+        }
+        if (isPublic(entry) && !isPublic(target)) {
+          ctx.addIssue({
+            code: "custom",
+            message: "public Notebook cannot link to a non-public successor",
+            path: [entryIndex, "relatedNotebooks", relationshipIndex],
+          });
+        }
+      });
+
+      fragments.forEach((fragment, fragmentIndex) => {
+        const successor = entriesBySlug.get(fragment.successorSlug);
+        if (!successor) {
+          ctx.addIssue({
+            code: "custom",
+            message: "legacy-fragment successor must exist",
+            path: [entryIndex, "legacyFragments", fragmentIndex],
+          });
+          return;
+        }
+        if (isPublic(entry) && !isPublic(successor)) {
+          ctx.addIssue({
+            code: "custom",
+            message: "public Notebook cannot link to a non-public successor",
+            path: [entryIndex, "legacyFragments", fragmentIndex],
+          });
+        }
+      });
+    });
   });
 
 export function parseNotebookRegistry(value: unknown): NotebookEntry[] {

@@ -16,6 +16,8 @@ const input: ChokepointMapInput = {
     "route-risk-hormuz": ["point-risk-hormuz"],
     "route-risk-arctic": ["point-risk-ningbo"],
   },
+  allowedLenses: ["portfolio", "gulf", "red-sea", "arctic"],
+  initialLens: "portfolio",
 };
 
 describe("chokepoint portfolio map machine", () => {
@@ -65,6 +67,36 @@ describe("chokepoint portfolio map machine", () => {
     actor.send({ type: "SELECT_LENS", lens: "gulf" });
     expect(actor.getSnapshot().context).toMatchObject({
       selectedLens: "gulf",
+      selectedRouteId: null,
+      selectedPointId: null,
+    });
+  });
+
+  it("starts from the subset lens and rejects disallowed lenses, routes, and points", () => {
+    const arcticInput: ChokepointMapInput = {
+      routeIds: ["route-risk-arctic"],
+      routeIdsByLens: { arctic: ["route-risk-arctic"] },
+      pointIdsByRoute: {
+        "route-risk-arctic": ["point-risk-ningbo"],
+      },
+      allowedLenses: ["arctic"],
+      initialLens: "arctic",
+    };
+    const actor = createActor(chokepointMapMachine, {
+      input: arcticInput,
+    }).start();
+
+    expect(actor.getSnapshot().context.selectedLens).toBe("arctic");
+    actor.send({ type: "SELECT_LENS", lens: "gulf" });
+    actor.send({ type: "SELECT_ROUTE", id: "route-risk-hormuz" });
+    actor.send({
+      type: "SELECT_POINT",
+      routeId: "route-risk-hormuz",
+      pointId: "point-risk-hormuz",
+    });
+
+    expect(actor.getSnapshot().context).toMatchObject({
+      selectedLens: "arctic",
       selectedRouteId: null,
       selectedPointId: null,
     });
