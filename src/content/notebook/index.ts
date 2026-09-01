@@ -12,6 +12,7 @@ import { whoAbsorbsTheShock } from "@/content/notebook/who-absorbs-the-shock";
 import { julyIsNotOneNumber } from "@/content/notebook/july-is-not-one-number";
 import { belowHalfIsNotGone } from "@/content/notebook/below-half-is-not-gone";
 import { whereDoesOriginChange } from "@/content/notebook/where-does-origin-change";
+import { theArcticIsNotAShortcut } from "@/content/notebook/the-arctic-is-not-a-shortcut";
 
 const NotebookRegistrySchema = z
   .array(NotebookEntrySchema)
@@ -131,6 +132,7 @@ export const notebookEntries = parseNotebookRegistry([
   julyIsNotOneNumber,
   belowHalfIsNotGone,
   whereDoesOriginChange,
+  theArcticIsNotAShortcut,
 ]).sort((a, b) => a.ordinal - b.ordinal);
 
 export function isPublicNotebookEntry(entry: NotebookEntry): boolean {

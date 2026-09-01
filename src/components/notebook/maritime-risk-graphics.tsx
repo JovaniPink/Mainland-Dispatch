@@ -61,13 +61,13 @@ export function PortfolioLogic() {
     ["2", "Pipelines", "Move some Gulf barrels"],
     ["3", "Handoffs", "Relocate vessel exposure"],
     ["4", "Passage", "Negotiate selective access"],
-    ["5", "Arctic", "Hedge selected exports"],
+    ["5", "Suppliers", "Distribute counterparty exposure"],
   ] as const;
 
   return (
     <figure aria-labelledby="portfolio-logic-title" className="mt-8">
       <figcaption id="portfolio-logic-title" className="sr-only">
-        Five layers of China&apos;s chokepoint risk portfolio
+        Five non-Arctic layers of China&apos;s chokepoint risk portfolio
       </figcaption>
       <div className="grid gap-2 sm:grid-cols-5">
         {layers.map(([number, title, functionLabel], index) => (
@@ -90,9 +90,9 @@ export function PortfolioLogic() {
         ))}
       </div>
       <p className="mt-3 text-xs leading-6 text-ink-muted">
-        Failure in one layer increases the burden on the others. The Arctic is
-        last because it protects a narrow class of containerized exports; it
-        does not replenish the oil buffer.
+        Failure in one layer increases the burden on the others. None of these
+        instruments independently reproduces the capacity or function of the
+        original chokepoint.
       </p>
     </figure>
   );

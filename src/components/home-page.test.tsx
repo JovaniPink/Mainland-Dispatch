@@ -16,13 +16,13 @@ describe("edition front page", () => {
     const entryPoints = within(introduction).getByTestId("home-entry-points");
     const entryLinks = within(entryPoints).getAllByRole("link");
     expect(entryLinks.map((link) => link.getAttribute("href"))).toEqual([
-      "/notebook/where-does-origin-change",
+      "/notebook/the-arctic-is-not-a-shortcut",
       "/notebooks",
       "/archive",
     ]);
     expect(
       within(entryPoints).getByRole("link", { name: /Latest inquiry/ })
-    ).toHaveAttribute("href", "/notebook/where-does-origin-change");
+    ).toHaveAttribute("href", "/notebook/the-arctic-is-not-a-shortcut");
     expect(
       within(entryPoints).getByRole("link", { name: /Notebook index/ })
     ).toHaveAttribute("href", "/notebooks");
@@ -38,19 +38,19 @@ describe("edition front page", () => {
     expect(
       within(latest).getByRole("heading", {
         level: 2,
-        name: "Where Does Origin Change?",
+        name: "The Arctic Is Not a Shortcut",
       })
     ).toBeInTheDocument();
     expect(
-      within(latest).getByRole("link", { name: "Read Inquiry 09" })
-    ).toHaveAttribute("href", "/notebook/where-does-origin-change");
+      within(latest).getByRole("link", { name: "Read Inquiry 10" })
+    ).toHaveAttribute("href", "/notebook/the-arctic-is-not-a-shortcut");
     expect(
       within(latest).getByRole("link", { name: "Examine the sources" })
-    ).toHaveAttribute("href", "/notebook/where-does-origin-change#sources");
+    ).toHaveAttribute("href", "/notebook/the-arctic-is-not-a-shortcut#sources");
 
     const preview = screen.getByTestId("latest-evidence-preview");
-    expect(within(preview).getByText("Observed")).toBeInTheDocument();
-    expect(within(preview).getAllByRole("link")).toHaveLength(2);
+    expect(within(preview).getByText("Interpretation")).toBeInTheDocument();
+    expect(within(preview).getAllByRole("link")).toHaveLength(3);
   });
 
   it("balances exactly two previous inquiries with three Archive records", () => {
@@ -59,10 +59,10 @@ describe("edition front page", () => {
     const previous = screen.getByTestId("previous-inquiries");
     expect(within(previous).getAllByRole("article")).toHaveLength(2);
     expect(
-      within(previous).getByText("Below Half Is Not Gone")
+      within(previous).getByText("Where Does Origin Change?")
     ).toBeInTheDocument();
     expect(
-      within(previous).getByText("July Is Not One Number")
+      within(previous).getByText("Below Half Is Not Gone")
     ).toBeInTheDocument();
 
     const archive = screen.getByTestId("home-archive-preview");

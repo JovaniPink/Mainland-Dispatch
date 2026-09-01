@@ -96,8 +96,9 @@ describe("Open Models, Closed System Notebook registry", () => {
       "july-is-not-one-number",
       "below-half-is-not-gone",
       "where-does-origin-change",
+      "the-arctic-is-not-a-shortcut",
     ]);
-    expect(latestNotebookEntry.slug).toBe("where-does-origin-change");
+    expect(latestNotebookEntry.slug).toBe("the-arctic-is-not-a-shortcut");
     expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

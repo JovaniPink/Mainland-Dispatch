@@ -9,9 +9,9 @@ describe("Notebooks index", () => {
       screen.getByRole("heading", { level: 1, name: "Notebooks" })
     ).toBeInTheDocument();
     expect(screen.getByTestId("notebook-index-latest")).toHaveTextContent(
-      "Where Does Origin Change?"
+      "The Arctic Is Not a Shortcut"
     );
-    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(9);
+    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(10);
     expect(screen.getByText("Who Absorbs the Shock?")).toBeInTheDocument();
     expect(
       container.querySelector('script[type="application/ld+json"]')?.textContent

@@ -611,21 +611,52 @@ const PowerBalanceNotebookSchema = NotebookBaseSchema.extend({
 
 const MaritimeRiskNotebookSchema = NotebookBaseSchema.extend({
   variant: z.literal("maritime-risk"),
-  claimAudit: z.array(NotebookClaimAuditSchema).min(6),
-  routes: z.array(NotebookMaritimeRouteSchema).min(5),
-  scaleMetrics: z.array(NotebookScaleMetricSchema).min(4),
-  timeline: z.array(NotebookMaritimeTimelineItemSchema).min(6),
-  sections: z.object({
-    why: z.array(nonEmpty).min(1),
-    verdict: z.array(nonEmpty).min(1),
-    chokepoints: z.array(nonEmpty).min(1),
-    portfolio: z.array(nonEmpty).min(1),
-    arctic: z.array(nonEmpty).min(1),
-    governance: z.array(nonEmpty).min(1),
-    history: z.array(nonEmpty).min(1),
-    changed: z.array(nonEmpty).min(1),
-  }),
+  formats: z.array(NotebookFormatSchema).length(2),
+  turningPoints: z.array(NotebookTurningPointSchema).length(3),
+  sourceTrail: z.array(NotebookTrailItemSchema).length(15),
+  claimAudit: z.array(NotebookClaimAuditSchema).length(7),
+  routes: z.array(NotebookMaritimeRouteSchema).length(5),
+  scaleMetrics: z.array(NotebookScaleMetricSchema).length(3),
+  timeline: z.array(NotebookMaritimeTimelineItemSchema).length(5),
+  sections: z
+    .object({
+      why: z.array(nonEmpty).min(1),
+      verdict: z.array(nonEmpty).min(1),
+      chokepoints: z.array(nonEmpty).min(1),
+      portfolio: z.array(nonEmpty).min(1),
+      governance: z.array(nonEmpty).min(1),
+      history: z.array(nonEmpty).min(1),
+      changed: z.array(nonEmpty).min(1),
+    })
+    .strict(),
+}).strict();
+
+const ArcticRouteSchema = NotebookMaritimeRouteSchema.extend({
+  lens: z.literal("arctic"),
+  points: z.array(NotebookMaritimePointSchema).length(3),
 });
+
+const ArcticRouteNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("arctic-route"),
+  formats: z.array(NotebookFormatSchema).length(1),
+  turningPoints: z.array(NotebookTurningPointSchema).length(1),
+  sourceTrail: z.array(NotebookTrailItemSchema).length(13),
+  claimAudit: z.array(NotebookClaimAuditSchema).length(5),
+  routes: z.array(ArcticRouteSchema).length(1),
+  scaleMetrics: z.array(NotebookScaleMetricSchema).length(3),
+  timeline: z.array(NotebookMaritimeTimelineItemSchema).length(6),
+  sections: z
+    .object({
+      frame: z.array(nonEmpty).min(1),
+      scale: z.array(nonEmpty).min(1),
+      season: z.array(nonEmpty).min(1),
+      governance: z.array(nonEmpty).min(1),
+      environment: z.array(nonEmpty).min(1),
+      limits: z.array(nonEmpty).min(1),
+      changed: z.array(nonEmpty).min(1),
+    })
+    .strict(),
+}).strict();
 
 const CirculationGatesNotebookSchema = NotebookBaseSchema.extend({
   variant: z.literal("circulation-gates"),
@@ -757,6 +788,7 @@ export const NotebookEntrySchema = z
     EvidenceWatchNotebookSchema,
     PowerBalanceNotebookSchema,
     MaritimeRiskNotebookSchema,
+    ArcticRouteNotebookSchema,
     CirculationGatesNotebookSchema,
     CirculationTwoDomainNotebookSchema,
     OriginProofNotebookSchema,
@@ -849,7 +881,8 @@ export const NotebookEntrySchema = z
               ...entry.demographicProfiles.flatMap((item) => item.sourceIds),
               ...entry.timeline.flatMap((item) => item.sourceIds),
             ]
-          : entry.variant === "maritime-risk"
+          : entry.variant === "maritime-risk" ||
+              entry.variant === "arctic-route"
             ? [
                 ...entry.claimAudit.flatMap((item) => item.sourceIds),
                 ...entry.routes.flatMap((route) => route.sourceIds),
@@ -1022,7 +1055,7 @@ export const NotebookEntrySchema = z
       );
     }
 
-    if (entry.variant === "maritime-risk") {
+    if (entry.variant === "maritime-risk" || entry.variant === "arctic-route") {
       checkUnique(
         entry.claimAudit.map((item) => item.id),
         ["claimAudit"],
@@ -1408,6 +1441,10 @@ export type MaritimeRiskNotebookEntry = Extract<
   NotebookEntry,
   { variant: "maritime-risk" }
 >;
+export type ArcticRouteNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "arctic-route" }
+>;
 export type CirculationGatesNotebookEntry = Extract<
   NotebookEntry,
   { variant: "circulation-gates" }
@@ -1467,6 +1504,26 @@ export type NotebookLegacyFragment = z.infer<
 
 export function parseNotebookEntry(value: unknown): NotebookEntry {
   return NotebookEntrySchema.parse(value);
+}
+
+export function parseMaritimeRiskNotebookEntry(
+  value: unknown
+): MaritimeRiskNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "maritime-risk") {
+    throw new Error("expected a maritime-risk Notebook entry");
+  }
+  return entry;
+}
+
+export function parseArcticRouteNotebookEntry(
+  value: unknown
+): ArcticRouteNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "arctic-route") {
+    throw new Error("expected an arctic-route Notebook entry");
+  }
+  return entry;
 }
 
 export function parseCirculationGatesNotebookEntry(

@@ -27,7 +27,7 @@ describe("July Is Not One Number Notebook registry", () => {
       reviewState: "source-reviewed",
     });
     expect(publicNotebookEntries.map((item) => item.ordinal)).toEqual([
-      1, 2, 3, 4, 5, 6, 7, 8, 9,
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     ]);
     expect(latestNotebookEntry.ordinal).toBeGreaterThan(entry.ordinal);
     expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);

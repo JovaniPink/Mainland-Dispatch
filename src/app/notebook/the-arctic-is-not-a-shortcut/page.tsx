@@ -1,54 +1,49 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChokepointPortfolioMap } from "@/components/notebook/chokepoint-portfolio-map";
-import {
-  NotebookCompanionLinks,
-  NotebookLegacyFragmentNotices,
-} from "@/components/notebook/notebook-custody-links";
+import { NotebookCompanionLinks } from "@/components/notebook/notebook-custody-links";
 import {
   NotebookFormats,
   NotebookProse,
   NotebookSectionHeading,
   NotebookSourceTrail,
 } from "@/components/notebook/notebook-components";
-import {
-  MaritimeScaleCards,
-  PortfolioLogic,
-} from "@/components/notebook/maritime-risk-graphics";
+import { MaritimeScaleCards } from "@/components/notebook/maritime-risk-graphics";
 import {
   NotebookReaderShell,
+  type NotebookSectionLink,
   NotebookSecondarySection,
 } from "@/components/notebook/notebook-reader";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { JsonLd } from "@/components/seo/json-ld";
 import { evidenceStatusLabels } from "@/content/dossiers";
-import { routingAroundRisk as entry } from "@/content/notebook/routing-around-risk";
-import { nonArcticPortfolioSubset } from "@/content/notebook/inquiry-04-10-authority";
+import { arcticRouteSubset } from "@/content/notebook/inquiry-04-10-authority";
+import { theArcticIsNotAShortcut as entry } from "@/content/notebook/the-arctic-is-not-a-shortcut";
 import { requirePublicNotebookEntry } from "@/lib/notebook-route";
 import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
-  ["why", "Why this question matters"],
-  ["verdict", "The short answer"],
-  ["map", "Interactive corridor map"],
-  ["scale", "Three scale checks"],
-  ["chokepoints", "Hormuz and Suez"],
-  ["portfolio", "The five-part portfolio"],
-  ["governance", "Passage dependencies"],
-  ["timeline", "A longer history"],
-  ["claim-audit", "Seven claim checks"],
-  ["formats", "Two context formats"],
-  ["sources", "Fifteen source stops"],
-  ["changed", "What changed"],
+  ["frame", "A corridor, not a substitute"],
+  ["map", "The schematic route"],
+  ["scale", "Three incompatible measures"],
+  ["season", "Ice and schedule"],
+  ["governance", "Russian administration"],
+  ["environment", "Environmental constraints"],
+  ["timeline", "Six boundary events"],
+  ["claim-audit", "Five claim checks"],
+  ["formats", "One expert discussion"],
+  ["sources", "Thirteen source stops"],
+  ["limits", "What remains unproved"],
+  ["changed", "What moved"],
   ["question", "Unresolved question"],
-] as const;
+] as const satisfies readonly NotebookSectionLink[];
 
 export function generateMetadata(): Metadata {
   return notebookArticleMetadata(requirePublicNotebookEntry(entry));
 }
 
-export default function RoutingAroundRiskPage() {
+export default function TheArcticIsNotAShortcutPage() {
   requirePublicNotebookEntry(entry);
   return (
     <article>
@@ -67,26 +62,16 @@ export default function RoutingAroundRiskPage() {
         path={pagePath}
         campaign={entry.slug}
         sections={sectionLinks}
-        readingRule="Routing around one hazard relocates exposure. It does not erase the underlying dependency."
+        readingRule="A planned or departed voyage is not a completed, repeatable, safe, or lower-impact corridor. Preserve season, unit, and authority at every step."
         contentClassName="lg:max-w-[62rem]"
       >
         <section className="mt-12">
-          <NotebookSectionHeading id="why" eyebrow="The initiating claim">
-            Why this question matters
+          <NotebookSectionHeading id="frame" eyebrow="The evidentiary frame">
+            A shorter line is not a substitute system
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.why} />
+            <NotebookProse paragraphs={entry.sections.frame} />
           </div>
-        </section>
-
-        <section className="mt-12">
-          <NotebookSectionHeading id="verdict" eyebrow="The short answer">
-            A portfolio can absorb a shock; it cannot repeal geography
-          </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.verdict} />
-          </div>
-          <PortfolioLogic />
         </section>
 
         <section className="mt-12">
@@ -94,64 +79,46 @@ export default function RoutingAroundRiskPage() {
             id="map"
             eyebrow="Click-to-load · OpenFreeMap basemap"
           >
-            Explore where the risk moves
+            One bounded Arctic corridor
           </NotebookSectionHeading>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-ink-muted">
-            The map combines source-backed places with schematic corridor lines.
-            It does not display live shipping, AIS evidence, security
-            conditions, or navigation advice. All evidence remains readable if
-            the basemap is never loaded.
+            The line and three places are source-backed schematic geometry. The
+            map is not an AIS track, live ice feed, security condition, voyage
+            monitor, ice certificate, or navigation recommendation. All evidence
+            remains readable without loading the third-party basemap.
           </p>
           <div className="mt-7">
-            <ChokepointPortfolioMap subset={nonArcticPortfolioSubset} />
+            <ChokepointPortfolioMap subset={arcticRouteSubset} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading id="scale" eyebrow="No common denominator">
-            Three numbers that should not become one score
+            Three measures that cannot become one score
           </NotebookSectionHeading>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.scale} />
+          </div>
           <div className="mt-7">
             <MaritimeScaleCards metrics={entry.scaleMetrics} />
           </div>
         </section>
 
         <section className="mt-12">
-          <NotebookSectionHeading
-            id="chokepoints"
-            eyebrow="Energy artery · container artery"
-          >
-            Hormuz and Suez constrain different systems
+          <NotebookSectionHeading id="season" eyebrow="Ice · weather · vessel">
+            A schedule sits inside a season
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.chokepoints} />
+            <NotebookProse paragraphs={entry.sections.season} />
           </div>
         </section>
-
-        <section className="mt-12">
-          <NotebookSectionHeading
-            id="portfolio"
-            eyebrow="Stocks · pipelines · handoffs"
-          >
-            The portfolio begins with buffers and bypasses
-          </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.portfolio} />
-          </div>
-        </section>
-
-        <NotebookLegacyFragmentNotices
-          fragments={(entry.legacyFragments ?? []).filter(
-            (fragment) => fragment.id === "arctic"
-          )}
-        />
 
         <section className="mt-12">
           <NotebookSectionHeading
             id="governance"
-            eyebrow="Sanctions · counterparties · intelligence"
+            eyebrow="Permits · rescue · insurance"
           >
-            Passage creates new dependencies
+            The corridor depends on Russian administration
           </NotebookSectionHeading>
           <div className="mt-6">
             <NotebookProse paragraphs={entry.sections.governance} />
@@ -159,12 +126,21 @@ export default function RoutingAroundRiskPage() {
         </section>
 
         <section className="mt-12">
-          <NotebookSectionHeading id="timeline" eyebrow="1869–2026">
-            Chokepoints endure because adaptation is costly
+          <NotebookSectionHeading
+            id="environment"
+            eyebrow="Rules · spill response · lifecycle"
+          >
+            Less distance does not prove lower impact
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.history} />
+            <NotebookProse paragraphs={entry.sections.environment} />
           </div>
+        </section>
+
+        <section className="mt-12">
+          <NotebookSectionHeading id="timeline" eyebrow="2013–2026">
+            Six events bound the public claim
+          </NotebookSectionHeading>
           <ol className="mt-8 grid gap-0 border-l-2 border-jade pl-5">
             {entry.timeline.map((item) => (
               <li key={`${item.date}-${item.label}`} className="relative pb-7">
@@ -192,16 +168,13 @@ export default function RoutingAroundRiskPage() {
         <NotebookSecondarySection
           id="claim-audit"
           eyebrow="Claim discipline"
-          title="What survives the source audit"
-          summary="Corrections are part of the conclusion. Excluded claims do not appear as published findings or graphic labels; reported claims retain the name and limits of the reporting organization."
+          title="What survives the Arctic source audit"
+          summary="Schedule, departure, transit cargo, total cargo, and vessel counts retain their own scopes. No claim becomes proof of completed repeatable service, safe passage, equivalent scale, or lower lifecycle impact."
           actionLabel={`Examine ${entry.claimAudit.length} claim checks`}
         >
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {entry.claimAudit.map((item) => (
-              <article
-                key={item.id}
-                className="flex min-w-0 flex-col border border-rule p-4"
-              >
+              <article key={item.id} className="border border-rule p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
                     {evidenceStatusLabels[item.status]}
@@ -218,10 +191,6 @@ export default function RoutingAroundRiskPage() {
                 <p className="mt-3 text-sm leading-6 text-ink-muted">
                   {item.assessment}
                 </p>
-                <p className="mt-auto pt-4 font-mono text-[0.58rem] uppercase tracking-widest text-jade">
-                  {item.sourceIds.length} displayed{" "}
-                  {item.sourceIds.length === 1 ? "source" : "sources"}
-                </p>
               </article>
             ))}
           </div>
@@ -230,14 +199,13 @@ export default function RoutingAroundRiskPage() {
         <section className="mt-12">
           <NotebookSectionHeading
             id="formats"
-            eyebrow="Institutional audio and video"
+            eyebrow="Identified expert discussion"
           >
-            Two strong ways into the argument
+            One strong way into the operating constraints
           </NotebookSectionHeading>
           <p className="mt-5 text-sm leading-7 text-ink-muted">
-            These are interpretation sources with identified speakers and
-            institutional provenance. They are not substitutes for the numerical
-            and regulatory records below.
+            This is an interpretation source, not a publisher audio player and
+            not voyage-level proof. Opening it is an ordinary outbound link.
           </p>
           <div className="mt-6">
             <NotebookFormats formats={entry.formats} />
@@ -247,61 +215,57 @@ export default function RoutingAroundRiskPage() {
         <section className="mt-12">
           <NotebookSectionHeading
             id="turning-points"
-            eyebrow="Three analytical turns"
+            eyebrow="One analytical turn"
           >
-            Arguments worth separating
+            Distance is not the same as reliability
           </NotebookSectionHeading>
-          <div className="mt-6 grid gap-4">
-            {entry.turningPoints.map((point, index) => (
-              <article
-                key={point.id}
-                className="border border-rule bg-paper-warm/25 p-5"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span className="font-mono text-xs uppercase tracking-widest text-signal">
-                    {String(index + 1).padStart(2, "0")} · {point.timecode}
-                  </span>
-                  <NotebookStatus status={point.status} />
-                </div>
-                <h3 className="mt-4 font-serif text-xl leading-snug">
-                  {point.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7">
-                  <strong className="font-semibold">Source argument:</strong>{" "}
-                  {point.argument}
-                </p>
-                <p className="mt-3 border-l-2 border-jade pl-3 text-sm leading-7 text-ink-muted">
-                  <strong className="font-semibold text-ink">
-                    Editorial reading:
-                  </strong>{" "}
-                  {point.reading}
-                </p>
-              </article>
-            ))}
-          </div>
+          {entry.turningPoints.map((point) => (
+            <article
+              key={point.id}
+              className="mt-6 border border-rule bg-paper-warm/25 p-5"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <span className="font-mono text-xs uppercase tracking-widest text-signal">
+                  {point.timecode}
+                </span>
+                <NotebookStatus status={point.status} />
+              </div>
+              <h3 className="mt-4 font-serif text-xl leading-snug">
+                {point.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7">{point.argument}</p>
+              <p className="mt-3 border-l-2 border-jade pl-3 text-sm leading-7 text-ink-muted">
+                {point.reading}
+              </p>
+            </article>
+          ))}
         </section>
 
         <NotebookSecondarySection
           id="sources"
-          legacyIds={["source-trail-heading"]}
+          legacyIds={["source-trail", "source-trail-heading"]}
           eyebrow={`${entry.sourceTrail.length} bounded stops`}
-          title="Source trail and review boundary"
-          summary="Every displayed source names its role, retrieval or publication date where available, and the limit on what it can support."
+          title="Source trail and voyage boundary"
+          summary="Every source keeps its unit, institutional role, chronology, and limit. Shared source identities point to one knowledge object even though this page supplies Arctic-specific context."
           actionLabel={`Examine ${entry.sourceTrail.length} sources`}
         >
-          <NotebookLegacyFragmentNotices
-            fragments={(entry.legacyFragments ?? []).filter((fragment) =>
-              fragment.id.startsWith("notebook-source-")
-            )}
-          />
           <div className="mt-6">
             <NotebookSourceTrail sources={entry.sourceTrail} />
           </div>
         </NotebookSecondarySection>
 
         <section className="mt-12">
-          <NotebookSectionHeading id="changed" eyebrow="Synthesis">
-            What I understand differently now
+          <NotebookSectionHeading id="limits" eyebrow="The stopping point">
+            What the reviewed record cannot establish
+          </NotebookSectionHeading>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.limits} />
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <NotebookSectionHeading id="changed" eyebrow="Custody and correction">
+            What moved into this inquiry
           </NotebookSectionHeading>
           <div className="mt-6">
             <NotebookProse paragraphs={entry.sections.changed} />
@@ -318,9 +282,7 @@ export default function RoutingAroundRiskPage() {
             One unresolved question
           </p>
           <p className="mt-4 font-serif text-2xl italic leading-relaxed">
-            <span className="editorial-underline">
-              {entry.unresolvedQuestion}
-            </span>
+            {entry.unresolvedQuestion}
           </p>
         </section>
 
@@ -332,7 +294,7 @@ export default function RoutingAroundRiskPage() {
             {entry.limitations.map((limitation) => (
               <li key={limitation} className="flex gap-3">
                 <span className="text-signal" aria-hidden>
-                  •
+                  -
                 </span>
                 <span>{limitation}</span>
               </li>
@@ -345,16 +307,16 @@ export default function RoutingAroundRiskPage() {
           className="mt-12 grid gap-3 border-t border-rule pt-6 sm:grid-cols-2"
         >
           <Link
-            href="/archive"
+            href="/archive?view=relationships&inquiry=the-arctic-is-not-a-shortcut"
             className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
           >
-            Explore the evidence archive
+            Explore its source relationships
           </Link>
           <Link
-            href="/notebook/dominance-is-a-dashboard"
+            href="/notebook/routing-around-risk"
             className="border border-rule px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-jade hover:text-ink"
           >
-            Read Notebook Three
+            Read corrected Inquiry 04
           </Link>
         </nav>
       </NotebookReaderShell>

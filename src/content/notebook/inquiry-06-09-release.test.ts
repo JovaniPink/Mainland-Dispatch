@@ -168,7 +168,7 @@ describe("Inquiry 06 / Inquiry 09 atomic custody release", () => {
 
   it("publishes the pair together with reciprocal companions", () => {
     expect(publicNotebookEntries.map((entry) => entry.ordinal)).toEqual([
-      1, 2, 3, 4, 5, 6, 7, 8, 9,
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     ]);
     expect(whatGetsThrough.relatedNotebooks).toEqual([
       {
