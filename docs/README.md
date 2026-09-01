@@ -78,6 +78,9 @@ The completed Inquiry 06 transshipment revision is recorded in a separate
 [decision addendum](decisions/2026-08-30-notebook-six-transshipment-revision.md)
 and controlled by its immutable [August 30 research
 snapshot](source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md).
+The active watch now includes a dated [September 1 EV quota
+result](source-notes/2026-09-01-canada-ev-quota-watch.md) that records observed
+Canadian quota use without treating it as US entry or origin-fraud evidence.
 
 Inquiry 08 is authorized by the [August 30
 decision](decisions/2026-08-30-notebook-eight.md), supported by the immutable
@@ -120,6 +123,9 @@ separate states.
 - [Transshipment evidence watch](plans/2026-08-30-transshipment-evidence-watch.md)
   defines manual update triggers without authorizing recurring ingestion or a
   new article.
+- [September 1 EV quota watch](source-notes/2026-09-01-canada-ev-quota-watch.md)
+  records the first material watch result while preserving the no-proof
+  conclusion and publication boundary.
 - [Curated source-intake resumption](decisions/2026-08-14-curated-source-intake-resumption.md)
   authorizes one bounded manual quality-link batch without changing the
   publication gate.
