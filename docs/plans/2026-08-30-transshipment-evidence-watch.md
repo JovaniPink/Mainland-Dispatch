@@ -65,6 +65,17 @@ result or unsupported repetition.
 - Required follow-up:
 ```
 
+## Dated watch results
+
+### September 1, 2026 - first-period EV quota use and second-period rule
+
+The [September 1 quota watch note](../source-notes/2026-09-01-canada-ev-quota-watch.md)
+records Global Affairs Canada's first-period utilization total and operative
+second-period notice. The result changes the factual scope of the admission
+gate without changing the baseline conclusion: Canadian quota use does not
+establish Canadian production, USMCA qualification, US entry, or a customs
+violation. The disposition is `changes scope`; the watch remains open.
+
 ## Editorial triggers
 
 A dated review is required when one of the following becomes directly

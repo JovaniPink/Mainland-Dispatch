@@ -32,12 +32,9 @@ claim-safety posture from `handoff-navigator`.
   personal motivation, a faithful reconstruction of an argument, timecoded
   turning points, claim labels, pushback, institutional context, a short source
   trail and one unresolved question.
-  Seven source-reviewed inquiries are public. The newest, “July Is Not One
-  Number,” keeps industrial, retail, property, labor, credit, trade, and price
-  signals separate rather than collapsing them into one score. Inquiry 08,
-  “Below Half Is Not Gone,” is commissioned but remains outside every public
-  selector until its research, implementation, route, and publication gates
-  pass together.
+  Eight source-reviewed inquiries are public. The newest, “Below Half Is Not
+  Gone,” separates generation share, output, installed capacity, and system use
+  instead of collapsing them into one energy-transition score.
 - **Source Archive** — an interactive public evidence surface with faceted
   search, chronological and relationship views, reviewed source metadata,
   classified claims, explicit limitations and shareable URL state. It exposes
@@ -321,6 +318,10 @@ Notebook Six’s circulation-gate model is recorded in
 [`docs/source-notes/2026-08-25-what-gets-through-ledger.md`](docs/source-notes/2026-08-25-what-gets-through-ledger.md),
 with its August 30 transshipment revision controlled by the immutable
 [`follow-up research snapshot`](docs/source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md).
+The manual watch has a dated
+[`September 1 EV quota result`](docs/source-notes/2026-09-01-canada-ev-quota-watch.md)
+that records actual Canadian quota use without inferring US entry or origin
+fraud.
 Notebook Seven was selected from the immutable
 [`August 27 candidate ledger`](docs/source-notes/2026-08-27-china-news-candidate-ledger.md)
 under its
