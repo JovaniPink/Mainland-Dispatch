@@ -147,6 +147,17 @@ describe("SEO publication contract", () => {
       start_url: "/",
       scope: "/",
       lang: "en-US",
+      icons: [
+        { src: "/icon0", sizes: "48x48", type: "image/png" },
+        { src: "/icon1", sizes: "192x192", type: "image/png" },
+        { src: "/icon2", sizes: "512x512", type: "image/png" },
+        {
+          src: "/apple-icon",
+          sizes: "180x180",
+          type: "image/png",
+          purpose: "any",
+        },
+      ],
     });
     expect(homeMetadata.title).toEqual({ absolute: "Mainland Dispatch" });
     expect(savedMetadata.robots).toMatchObject({

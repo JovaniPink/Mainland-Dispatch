@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { site } from "@/content/site";
 import { Masthead } from "@/components/shell/masthead";
@@ -6,6 +6,7 @@ import { Footer } from "@/components/shell/footer";
 import { catalog } from "@/content/catalog";
 import { JsonLd } from "@/components/seo/json-ld";
 import { organizationId, siteUrl, socialImage, websiteId } from "@/lib/seo";
+import { PAPER_THEME_COLOR, THEME_INIT_SCRIPT } from "@/lib/theme";
 
 void catalog;
 
@@ -32,7 +33,6 @@ export const metadata: Metadata = {
     "evidence-led analysis",
     "source transparency",
   ],
-  icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -68,7 +68,10 @@ export const metadata: Metadata = {
   },
 };
 
-const themeInit = `try{var t=localStorage.getItem("md-theme");if(t==="night")document.documentElement.dataset.theme="night"}catch(e){}`;
+export const viewport: Viewport = {
+  themeColor: PAPER_THEME_COLOR,
+  colorScheme: "light",
+};
 
 export default function RootLayout({
   children,
@@ -87,7 +90,7 @@ export default function RootLayout({
                 "@id": organizationId,
                 name: site.name,
                 url: siteUrl,
-                logo: `${siteUrl}/favicon.ico`,
+                logo: `${siteUrl}/icon2`,
               },
               {
                 "@type": "WebSite",
@@ -101,7 +104,7 @@ export default function RootLayout({
             ],
           }}
         />
-        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <a
           href="#main-content"
           className="skip-link fixed left-3 top-3 z-50 -translate-y-24 bg-ink px-4 py-2 font-mono text-xs uppercase tracking-widest text-paper focus:translate-y-0"

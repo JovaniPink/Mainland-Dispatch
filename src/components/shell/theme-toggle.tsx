@@ -1,10 +1,13 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-
-type Theme = "paper" | "night";
-
-const THEME_EVENT = "md-theme-change";
+import {
+  applyDocumentTheme,
+  normalizeTheme,
+  THEME_EVENT,
+  THEME_STORAGE_KEY,
+  type Theme,
+} from "@/lib/theme";
 
 function readTheme(): Theme {
   return document.documentElement.dataset.theme === "night" ? "night" : "paper";
@@ -12,10 +15,15 @@ function readTheme(): Theme {
 
 function subscribe(callback: () => void) {
   window.addEventListener(THEME_EVENT, callback);
-  window.addEventListener("storage", callback);
+  function handleStorage(event: StorageEvent) {
+    if (event.key !== THEME_STORAGE_KEY) return;
+    applyDocumentTheme(normalizeTheme(event.newValue));
+    callback();
+  }
+  window.addEventListener("storage", handleStorage);
   return () => {
     window.removeEventListener(THEME_EVENT, callback);
-    window.removeEventListener("storage", callback);
+    window.removeEventListener("storage", handleStorage);
   };
 }
 
@@ -24,9 +32,9 @@ export function ThemeToggle() {
 
   function toggle() {
     const next: Theme = readTheme() === "paper" ? "night" : "paper";
-    document.documentElement.dataset.theme = next;
+    applyDocumentTheme(next);
     try {
-      localStorage.setItem("md-theme", next);
+      localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {}
     window.dispatchEvent(new Event(THEME_EVENT));
   }
