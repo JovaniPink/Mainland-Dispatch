@@ -6,7 +6,7 @@ describe("Routing Around Risk Notebook page", () => {
     window.history.replaceState({}, "", "/notebook/routing-around-risk");
   });
 
-  it("renders the thesis, scale correction, timeline, and source trail", () => {
+  it("renders the corrected non-Arctic scale, timeline, and source trail", () => {
     render(<RoutingAroundRiskPage />);
 
     expect(
@@ -18,11 +18,9 @@ describe("Routing Around Risk Notebook page", () => {
       })
     ).toBeInTheDocument();
     expect(screen.getByText("20.9 million")).toBeInTheDocument();
-    expect(screen.getByText("3.2 million")).toBeInTheDocument();
-    expect(screen.getAllByText(/^Retrieved 2026-08-/)).toHaveLength(29);
-    expect(screen.getAllByText("Retrieved 2026-08-20")).toHaveLength(20);
-    expect(screen.getByText("Retrieved 2026-08-21")).toBeInTheDocument();
-    expect(screen.getByText("Current through 21 AUG 2026")).toBeInTheDocument();
+    expect(screen.queryByText("3.2 million")).not.toBeInTheDocument();
+    expect(screen.getAllByText(/^Retrieved 2026-08-/)).toHaveLength(17);
+    expect(screen.getByText("Current through 01 SEP 2026")).toBeInTheDocument();
     expect(screen.getByText("The Tanker War begins")).toBeInTheDocument();
   });
 
@@ -40,41 +38,46 @@ describe("Routing Around Risk Notebook page", () => {
     ).toBeInTheDocument();
   });
 
-  it("lets readers filter and inspect corridor evidence without loading tiles", () => {
+  it("exposes only non-Arctic lenses and evidence without loading tiles", () => {
     render(<RoutingAroundRiskPage />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Arctic hedge" }));
     expect(
-      screen.getByRole("button", { name: /Scheduled Arctic container hedge/i })
+      screen.queryByRole("button", { name: "Arctic hedge" })
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Hormuz" }));
+    expect(
+      screen.getByRole("button", { name: /Hormuz energy artery/i })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /Hormuz energy artery/i })
+      screen.queryByRole("button", {
+        name: /Scheduled Arctic container hedge/i,
+      })
     ).not.toBeInTheDocument();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Scheduled Arctic container hedge/i })
+      screen.getByRole("button", { name: /Hormuz energy artery/i })
     );
     expect(screen.getByText("Selected corridor")).toBeInTheDocument();
-    expect(
-      screen.getAllByText(/schedule is operator-derived/i).length
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByText(/schematic corridor/i).length).toBeGreaterThan(
+      0
+    );
     expect(
       screen.queryByTestId("chokepoint-map-container")
     ).not.toBeInTheDocument();
   });
 
-  it("publishes four excluded overstatements and keeps them out of headings", () => {
+  it("keeps the non-Arctic claim audit bounded", () => {
     render(<RoutingAroundRiskPage />);
 
-    expect(screen.getAllByText("Excluded overstatement")).toHaveLength(4);
+    expect(screen.getAllByText("Excluded overstatement")).toHaveLength(1);
     expect(
       screen.queryByRole("heading", {
-        name: "NSR container voyages increased from 15 to 23 in 2025.",
+        name: /Sea Legend operates a proven weekly/i,
       })
     ).not.toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: /China is using a portfolio of buffers and workarounds/i,
+        name: /Hormuz carried about one fifth/i,
       })
     ).toBeInTheDocument();
   });
@@ -88,7 +91,6 @@ describe("Routing Around Risk Notebook page", () => {
       "The Guardian",
       "The Washington Post",
       "Council on Foreign Relations",
-      "The Arctic Institute",
       "PBS · Amanpour & Company",
     ]) {
       expect(
@@ -98,7 +100,7 @@ describe("Routing Around Risk Notebook page", () => {
     const evidenceLinks = screen
       .getAllByRole("link")
       .filter((link) => link.getAttribute("href")?.startsWith("http"));
-    expect(evidenceLinks.length).toBeGreaterThan(24);
+    expect(evidenceLinks.length).toBeGreaterThan(14);
     for (const link of evidenceLinks) {
       const href = link.getAttribute("href") ?? "";
       if (
@@ -109,5 +111,20 @@ describe("Routing Around Risk Notebook page", () => {
       }
       expect(href).not.toContain("utm_");
     }
+  });
+
+  it("preserves all twelve moved fragments as ordinary companion links", () => {
+    render(<RoutingAroundRiskPage />);
+
+    expect(document.getElementById("arctic")).toBeInTheDocument();
+    expect(
+      document.getElementById("notebook-source-risk-nsidc-passage")
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("link", { name: "Open the preserved evidence" })
+    ).toHaveLength(12);
+    expect(
+      screen.getByRole("link", { name: "Northern Sea Route constraints" })
+    ).toHaveAttribute("href", "/notebook/the-arctic-is-not-a-shortcut");
   });
 });

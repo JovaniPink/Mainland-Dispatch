@@ -10,6 +10,12 @@ type KnowledgeObject = Readonly<Record<string, unknown>> & {
   kind: string;
 };
 
+type NotebookSourceUseRecord = {
+  publicationId: string;
+  context: string;
+  limitation: string;
+};
+
 const midnight = (date: string) => `${date}T00:00:00.000Z`;
 const normalize = (value: string) =>
   value
@@ -210,6 +216,8 @@ function notebookObjects(entry: NotebookEntry): KnowledgeObject[] {
   const objectDomains = ["politics", "policy", "economics"];
   const topics = [normalize(entry.variant)];
   const tags = [...new Set(entry.tags.map(normalize))];
+  const publicationId =
+    `mainland-dispatch:publication:notebook-${entry.slug}` as const;
   const sourceIds = new Map(
     entry.sourceTrail.map((source) => [
       source.id,
@@ -250,6 +258,13 @@ function notebookObjects(entry: NotebookEntry): KnowledgeObject[] {
         license:
           "Source-specific terms apply; publication does not grant reuse rights.",
         methodologyWarnings: [source.limitation],
+        useRecords: [
+          {
+            publicationId,
+            context: source.context,
+            limitation: source.limitation,
+          },
+        ],
       },
     };
   });
@@ -284,7 +299,7 @@ function notebookObjects(entry: NotebookEntry): KnowledgeObject[] {
   };
   const publication: KnowledgeObject = {
     ...common({
-      id: `mainland-dispatch:publication:notebook-${entry.slug}`,
+      id: publicationId,
       legacyIds: [entry.slug, `notebook-${entry.ordinal}`],
       title: entry.title,
       summary: entry.description,
@@ -329,6 +344,38 @@ function deduplicateKnowledgeObjects(
   objects: readonly KnowledgeObject[]
 ): KnowledgeObject[] {
   const byId = new Map<string, KnowledgeObject>();
+  const stringUnion = (left: unknown, right: unknown) => [
+    ...new Set([
+      ...(Array.isArray(left)
+        ? left.filter((item) => typeof item === "string")
+        : []),
+      ...(Array.isArray(right)
+        ? right.filter((item) => typeof item === "string")
+        : []),
+    ]),
+  ];
+  const sourceUses = (candidate: KnowledgeObject) => {
+    const source = candidate.source as Record<string, unknown> | undefined;
+    return Array.isArray(source?.useRecords)
+      ? (source.useRecords as NotebookSourceUseRecord[])
+      : [];
+  };
+  const mergeSourceUses = (
+    existing: KnowledgeObject,
+    candidate: KnowledgeObject
+  ) => {
+    const byPublication = new Map<string, NotebookSourceUseRecord>();
+    for (const use of [...sourceUses(existing), ...sourceUses(candidate)]) {
+      const prior = byPublication.get(use.publicationId);
+      if (prior && JSON.stringify(prior) !== JSON.stringify(use)) {
+        throw new Error(
+          `Conflicting public source use for ${existing.id} in ${use.publicationId}`
+        );
+      }
+      byPublication.set(use.publicationId, use);
+    }
+    return [...byPublication.values()];
+  };
   for (const object of objects) {
     const existing = byId.get(object.id);
     if (!existing) {
@@ -355,6 +402,44 @@ function deduplicateKnowledgeObjects(
         `Conflicting public knowledge authority for ${object.id}`
       );
     }
+    const existingSource = existing.source as Record<string, unknown>;
+    const candidateSource = object.source as Record<string, unknown>;
+    const existingSemantics = existing.semantics as Record<string, unknown>;
+    const candidateSemantics = object.semantics as Record<string, unknown>;
+    const useRecords = mergeSourceUses(existing, object);
+    byId.set(object.id, {
+      ...existing,
+      legacyIds: stringUnion(existing.legacyIds, object.legacyIds),
+      summary:
+        useRecords.length > 1
+          ? `Shared source identity for ${useRecords.length} Notebook publications; publication-scoped use records preserve context and limitations.`
+          : existing.summary,
+      limitations: stringUnion(existing.limitations, object.limitations),
+      semantics: {
+        ...existingSemantics,
+        domains: stringUnion(
+          existingSemantics.domains,
+          candidateSemantics.domains
+        ),
+        topics: stringUnion(
+          existingSemantics.topics,
+          candidateSemantics.topics
+        ),
+        tags: stringUnion(existingSemantics.tags, candidateSemantics.tags),
+        entities: stringUnion(
+          existingSemantics.entities,
+          candidateSemantics.entities
+        ),
+      },
+      source: {
+        ...existingSource,
+        methodologyWarnings: stringUnion(
+          existingSource.methodologyWarnings,
+          candidateSource.methodologyWarnings
+        ),
+        useRecords,
+      },
+    });
   }
   return [...byId.values()];
 }

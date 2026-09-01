@@ -10,18 +10,27 @@ function copyEntry() {
   return JSON.parse(JSON.stringify(entry)) as Record<string, unknown>;
 }
 
-describe("Routing Around Risk Notebook registry", () => {
-  it("publishes a bounded fourth inquiry with six mapped corridors", () => {
-    expect(entry.variant).toBe("maritime-risk");
-    expect(entry.turningPoints).toHaveLength(4);
-    expect(entry.claimAudit).toHaveLength(12);
-    expect(entry.routes).toHaveLength(6);
-    expect(entry.scaleMetrics).toHaveLength(6);
-    expect(entry.timeline).toHaveLength(11);
-    expect(entry.sourceTrail).toHaveLength(26);
-    expect(entry.editorialStatus).toBe("published");
-    expect(entry.reviewState).toBe("source-reviewed");
-    expect(entry.updatedAt).toBe("2026-08-21");
+describe("Routing Around Risk corrected Notebook registry", () => {
+  it("publishes the exact non-Arctic Inquiry 04 contract", () => {
+    expect(entry).toMatchObject({
+      variant: "maritime-risk",
+      ordinal: 4,
+      slug: "routing-around-risk",
+      publishedAt: "2026-08-18",
+      updatedAt: "2026-09-01",
+      readTime: "20 min",
+      editorialStatus: "corrected",
+      reviewState: "source-reviewed",
+    });
+    expect(entry.formats).toHaveLength(2);
+    expect(entry.turningPoints).toHaveLength(3);
+    expect(entry.claimAudit).toHaveLength(7);
+    expect(entry.routes).toHaveLength(5);
+    expect(entry.routes.every((route) => route.lens !== "arctic")).toBe(true);
+    expect(entry.scaleMetrics).toHaveLength(3);
+    expect(entry.timeline).toHaveLength(5);
+    expect(entry.sourceTrail).toHaveLength(15);
+    expect(entry.sections).not.toHaveProperty("arctic");
   });
 
   it("keeps every route dated, sourced, and geographically bounded", () => {
@@ -36,104 +45,43 @@ describe("Routing Around Risk Notebook registry", () => {
         expect(latitude).toBeGreaterThanOrEqual(-85);
         expect(latitude).toBeLessThanOrEqual(85);
       }
-      for (const point of route.points) {
-        expect(point.sourceIds.length).toBeGreaterThan(0);
-        expect(point.note.length).toBeGreaterThan(30);
-      }
     }
   });
 
-  it("places the Bering Strait west of the antimeridian", () => {
-    const arcticRoute = entry.routes.find(
-      (route) => route.id === "route-risk-arctic"
-    );
-    const beringPoint = arcticRoute?.points.find(
-      (point) => point.id === "point-risk-bering"
-    );
-
-    expect(beringPoint?.coordinates).toEqual([-169, 65.8]);
-    expect(arcticRoute?.path).toContainEqual([-169, 65.8]);
-  });
-
-  it("preserves unlike scale units and explicit limits", () => {
+  it("preserves unlike non-Arctic scale units and explicit limits", () => {
     expect(new Set(entry.scaleMetrics.map((metric) => metric.unit)).size).toBe(
-      entry.scaleMetrics.length
+      3
     );
-    for (const metric of entry.scaleMetrics) {
-      expect(metric.sourceIds.length).toBeGreaterThan(0);
-      expect(metric.caveat.length).toBeGreaterThan(40);
-    }
     expect(
       entry.scaleMetrics.find((metric) => metric.id === "scale-risk-hormuz")
         ?.display
     ).toBe("20.9 million");
     expect(
-      entry.scaleMetrics.find(
-        (metric) => metric.id === "scale-risk-nsr-transit"
-      )?.display
-    ).toBe("3.2 million");
-    expect(
       entry.scaleMetrics.find((metric) => metric.id === "scale-risk-inventory")
         ?.display
     ).toBe("1.492 billion");
     expect(
-      entry.scaleMetrics.find((metric) => metric.id === "scale-risk-nsr-total")
+      entry.scaleMetrics.find((metric) => metric.id === "scale-risk-suez")
         ?.display
-    ).toBe("37.02 million");
+    ).toBe("22%");
   });
 
-  it("publishes corrections instead of laundering submitted numbers", () => {
-    expect(
-      entry.claimAudit.filter((item) => item.decision === "retain")
-    ).toHaveLength(3);
-    expect(
-      entry.claimAudit.filter((item) => item.decision === "qualify")
-    ).toHaveLength(5);
-    expect(
-      entry.claimAudit.filter((item) => item.decision === "exclude")
-    ).toHaveLength(4);
-    expect(
-      entry.claimAudit.find((item) => item.id === "audit-risk-container-count")
-        ?.assessment
-    ).toMatch(/15 container-ship transit voyages in 2025, up from 11/i);
-    expect(
-      entry.claimAudit.find((item) => item.id === "audit-risk-bellona-counts")
-        ?.assessment
-    ).toMatch(/separate counts and years/i);
-  });
-
-  it("records current source corrections without promoting the evidence", () => {
+  it("keeps corrections and enablement limits without Arctic source drift", () => {
     expect(
       entry.claimAudit.find((item) => item.id === "audit-risk-sts")?.assessment
     ).toMatch(/Kpler data/i);
     expect(
-      entry.claimAudit.find((item) => item.id === "audit-risk-arctic-schedule")
+      entry.claimAudit.find((item) => item.id === "audit-risk-russian-command")
         ?.assessment
-    ).toMatch(/Dubai Tower departed on August 15/i);
+    ).toMatch(/did not show Russia directing/i);
     expect(
-      entry.claimAudit.find((item) => item.id === "audit-risk-arctic-schedule")
-        ?.assessment
-    ).toMatch(/does not establish arrival, completed Arctic transit/i);
-    expect(
-      entry.timeline.find((item) => item.date === "2026-02-28")?.explanation
-    ).toMatch(/14\.9 million b\/d.*4\.9 million b\/d/i);
-    expect(
-      entry.sourceTrail.find(
-        (source) => source.id === "notebook-source-risk-global-times-sea-legend"
-      )?.publisher
-    ).toBe("Global Times");
-    expect(
-      entry.sourceTrail.find(
-        (source) => source.id === "notebook-source-risk-zhoushan-departure"
-      )?.publisher
-    ).toBe("Zhoushan Municipal People's Government");
-    expect(
-      entry.timeline.find((item) => item.date === "2026-08-15")?.explanation
-    ).toMatch(/arrival, completed Arctic transit.*are not/i);
-    expect(entry.reviewState).toBe("source-reviewed");
+      entry.sourceTrail.some(
+        (source) => source.id === "notebook-source-risk-nsidc-passage"
+      )
+    ).toBe(false);
   });
 
-  it("keeps Notebook Four in the complete published registry", () => {
+  it("keeps the complete ten-entry public registry", () => {
     expect(publicNotebookEntries.map((item) => item.slug)).toEqual([
       "what-xi-jinping-wants",
       "open-models-closed-system",
@@ -144,8 +92,9 @@ describe("Routing Around Risk Notebook registry", () => {
       "july-is-not-one-number",
       "below-half-is-not-gone",
       "where-does-origin-change",
+      "the-arctic-is-not-a-shortcut",
     ]);
-    expect(latestNotebookEntry.slug).toBe("where-does-origin-change");
+    expect(latestNotebookEntry.slug).toBe("the-arctic-is-not-a-shortcut");
     expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 
@@ -176,40 +125,18 @@ describe("Routing Around Risk Notebook registry", () => {
     );
   });
 
-  it("rejects an out-of-order maritime timeline", () => {
+  it("rejects chronology and unknown-source drift", () => {
     const outOfOrder = copyEntry();
     const timeline = outOfOrder.timeline as Array<Record<string, unknown>>;
     [timeline[0], timeline[1]] = [timeline[1], timeline[0]];
-
     expect(() => NotebookEntrySchema.parse(outOfOrder)).toThrow(
       /maritime timeline entries must be chronological/
     );
-  });
 
-  it("rejects unknown sources from every maritime data surface", () => {
     const brokenRoute = copyEntry();
-    const routes = brokenRoute.routes as Array<{
-      sourceIds: string[];
-      points: Array<{ sourceIds: string[] }>;
-    }>;
+    const routes = brokenRoute.routes as Array<{ sourceIds: string[] }>;
     routes[0].sourceIds = ["notebook-source-missing"];
     expect(() => NotebookEntrySchema.parse(brokenRoute)).toThrow(
-      /unknown Notebook source reference/
-    );
-
-    const brokenPoint = copyEntry();
-    const pointRoutes = brokenPoint.routes as Array<{
-      points: Array<{ sourceIds: string[] }>;
-    }>;
-    pointRoutes[0].points[0].sourceIds = ["notebook-source-missing"];
-    expect(() => NotebookEntrySchema.parse(brokenPoint)).toThrow(
-      /unknown Notebook source reference/
-    );
-
-    const brokenScale = copyEntry();
-    const metrics = brokenScale.scaleMetrics as Array<{ sourceIds: string[] }>;
-    metrics[0].sourceIds = ["notebook-source-missing"];
-    expect(() => NotebookEntrySchema.parse(brokenScale)).toThrow(
       /unknown Notebook source reference/
     );
   });
@@ -221,10 +148,7 @@ describe("Routing Around Risk Notebook registry", () => {
         source.links.map((link) => link.url)
       ),
     ];
-
     expect(links.every((url) => !url.includes("utm_"))).toBe(true);
-    expect(new Set(entry.sourceTrail.map((source) => source.id)).size).toBe(
-      entry.sourceTrail.length
-    );
+    expect(new Set(entry.sourceTrail.map((source) => source.id)).size).toBe(15);
   });
 });

@@ -1,6 +1,5 @@
 "use client";
 
-import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef } from "react";
 import { useMachine } from "@xstate/react";
 import type { FeatureCollection, MultiLineString, Point } from "geojson";
@@ -114,6 +113,7 @@ function RouteMapCanvas({
   onReady,
   onFatal,
   onDegraded,
+  ariaLabel,
 }: {
   routes: MaritimeRoute[];
   selectedRouteId: string | null;
@@ -123,6 +123,7 @@ function RouteMapCanvas({
   onReady: () => void;
   onFatal: () => void;
   onDegraded: () => void;
+  ariaLabel: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapInstance | null>(null);
@@ -166,7 +167,10 @@ function RouteMapCanvas({
         mapRef.current?.remove();
         mapRef.current = null;
         readyRef.current = false;
-        const maplibre = await import("maplibre-gl");
+        const [maplibre] = await Promise.all([
+          import("maplibre-gl"),
+          import("maplibre-gl/dist/maplibre-gl.css"),
+        ]);
         if (cancelled || !containerRef.current) return;
         moduleRef.current = maplibre;
         const night = document.documentElement.dataset.theme === "night";
@@ -362,7 +366,7 @@ function RouteMapCanvas({
       className="atlas-map h-full min-h-[32rem] w-full"
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
       role="region"
-      aria-label="Interactive map of China's chokepoint risk portfolio"
+      aria-label={ariaLabel}
       data-testid="chokepoint-map-container"
     />
   );
@@ -485,6 +489,11 @@ export function ChokepointPortfolioMap({
             onReady={() => send({ type: "MAP_READY" })}
             onFatal={() => send({ type: "MAP_FATAL" })}
             onDegraded={() => send({ type: "MAP_DEGRADED" })}
+            ariaLabel={
+              subset.id === "northern-sea-route"
+                ? "Interactive map of the Northern Sea Route corridor"
+                : "Interactive map of China's chokepoint risk portfolio"
+            }
           />
           {mapStatus === "loading" && (
             <div className="pointer-events-none absolute inset-x-4 top-4 border border-rule bg-paper/95 px-4 py-3 font-mono text-xs uppercase tracking-widest text-ink-muted shadow-sm">

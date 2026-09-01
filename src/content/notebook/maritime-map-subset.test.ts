@@ -1,14 +1,17 @@
-import { routingAroundRisk } from "@/content/notebook/routing-around-risk";
+import {
+  arcticRouteSubset,
+  nonArcticPortfolioSubset,
+} from "@/content/notebook/inquiry-04-10-authority";
 import {
   buildChokepointMapInput,
   parseMaritimeMapSubset,
 } from "@/content/notebook/maritime-map-subset";
 
 describe("maritime map subsets", () => {
-  const arctic = routingAroundRisk.routes.find(
+  const arctic = arcticRouteSubset.routes.find(
     (route) => route.id === "route-risk-arctic"
   );
-  const hormuz = routingAroundRisk.routes.find(
+  const hormuz = nonArcticPortfolioSubset.routes.find(
     (route) => route.id === "route-risk-hormuz"
   );
 
