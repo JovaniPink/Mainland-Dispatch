@@ -42,10 +42,11 @@ trajectory.
 | `energy-iea-midyear`      | International Energy Agency, [Electricity Mid-Year Update 2026](https://www.iea.org/reports/electricity-mid-year-update-2026/executive-summary)                                                                                                                                                                   | 2026                                                             | Forecast                                  | Forecasts China electricity-demand growth of 5.5% in 2026, compared with 5.2% in 2025                                                                                                                        | The value is a forecast, not an observed full-year result and not a sufficient causal explanation for the observed first-half generation mix.                                                                                                                           |
 | `energy-crea-gem-2025`    | Centre for Research on Energy and Clean Air / Global Energy Monitor, [Built to peak?](https://globalenergymonitor.org/research/built-peak-coal-power-expansion-runs-out-room-china)                                                                                                                               | February 2026                                                    | Independent historical analysis           | Reports 161 GW of coal capacity proposed and 78 GW commissioned during 2025                                                                                                                                  | This is prior-year context. Proposals are not operating capacity, gross commissioning is not net fleet growth, and neither measure proves future utilization.                                                                                                           |
 
-All eight public endpoints returned direct successful responses during the
-August 30 refresh. Availability is an access observation, not evidence that a
-claim is correct, and HTTP state will not be stored in future editorial
-content.
+The eight source records contain nine public endpoints because the CREA/GEM
+record preserves both its landing page and complete report PDF. All nine
+endpoints returned direct successful responses during the August 30 refresh.
+Availability is an access observation, not evidence that a claim is correct,
+and HTTP state will not be stored in future editorial content.
 
 ## Measurement register
 
@@ -130,10 +131,10 @@ check rather than overwriting this August 30 snapshot.
 
 ## Stopping point
 
-The dedicated review stopped on August 30 after all eight endpoints were
-reachable, the official summary and complete CREA/GEM report were read, the
-curtailment model was bounded, and the IEA demand number was confirmed as a
-forecast. This ledger commissions no public route and proves no deployment.
-Publication still requires the source-level reproduction, schema, content,
-accessibility, canonical build, link, and hosted verification gates in the
-[Inquiry 08 decision](../decisions/2026-08-30-notebook-eight.md).
+The dedicated review stopped on August 30 after all eight source records and
+their nine endpoints were reachable, the official summary and complete
+CREA/GEM report were read, the curtailment model was bounded, and the IEA demand
+number was confirmed as a forecast. This ledger commissions no public route and
+proves no deployment. Publication still requires the source-level reproduction,
+schema, content, accessibility, canonical build, link, and hosted verification
+gates in the [Inquiry 08 decision](../decisions/2026-08-30-notebook-eight.md).

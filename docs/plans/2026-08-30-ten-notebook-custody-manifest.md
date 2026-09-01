@@ -27,6 +27,34 @@ A resource reference is one stored format, source-link, audio-canonical, or audi
 |        07 | `economic-signals`  |       3 |      11 |                    17 |                               14 | Preserve                       |
 | **Total** | -                   |  **17** | **130** |               **195** |                          **175** | -                              |
 
+## Base identity and publication-field custody
+
+The inventories below enumerate variant-specific prose and typed records. This
+matrix assigns the shared `NotebookBaseSchema` identity and publication fields
+that are otherwise easy to overlook. `Correct after decision` means the field
+may change only in the separately authorized migration or correction; this
+manifest does not itself authorize that public-state transition.
+
+| Base field           | 01   | 02   | 03   | 04                     | 05   | 06                            | 07   |
+| -------------------- | ---- | ---- | ---- | ---------------------- | ---- | ----------------------------- | ---- |
+| `ordinal`            | keep | keep | keep | keep                   | keep | keep                          | keep |
+| `slug`               | keep | keep | keep | keep                   | keep | keep                          | keep |
+| `title`              | keep | keep | keep | keep                   | keep | keep                          | keep |
+| `variant`            | keep | keep | keep | keep                   | keep | revise to two-domain contract | keep |
+| `publishedAt`        | keep | keep | keep | keep                   | keep | keep                          | keep |
+| `updatedAt`          | keep | keep | keep | correct after decision | keep | correct after decision        | keep |
+| `readTime`           | keep | keep | keep | revise                 | keep | revise                        | keep |
+| `tags`               | keep | keep | keep | revise                 | keep | revise                        | keep |
+| `editorialStatus`    | keep | keep | keep | correct after decision | keep | correct after decision        | keep |
+| `reviewState`        | keep | keep | keep | keep                   | keep | keep                          | keep |
+| `unresolvedQuestion` | keep | keep | keep | revise                 | keep | revise                        | keep |
+
+For Inquiry 04, `correct after decision` means a later authorized correction
+may set a new `updatedAt` and change `editorialStatus` to `corrected`; it does
+not permit an anticipatory status change here. Inquiry 06 follows the same
+rule, with its variant revised only through the separately reviewed two-domain
+contract. All other base fields remain with their current Notebook owners.
+
 ## Component custody
 
 | Component or contract                                                                             | Current owner                | Proposed custody                                                                                   |
