@@ -154,10 +154,10 @@ relationships. Its interactive filters, timeline and relationship view operate
 only on published or corrected Dispatches. This preserves research memory
 without converting collection into recommendation.
 
-Seven Notebook entries are public through the shared public selector. Their
+Eight Notebook entries are public through the shared public selector. Their
 dated commissions and source ledgers are indexed in the
-[documentation map](README.md). Inquiry 08 is commissioned but is not a public
-entry; proposed Inquiries 09 and 10 are neither commissioned nor public.
+[documentation map](README.md). Proposed Inquiries 09 and 10 are neither
+commissioned nor public.
 Notebook source records are not Dispatch mappings and do not change the
 13-record public Archive count.
 

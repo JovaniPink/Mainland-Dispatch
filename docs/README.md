@@ -1,8 +1,8 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** August 30, 2026
+**Current as of:** September 1, 2026
 **Public Dispatches:** 13 published or corrected records
-**Public Notebook entries:** 7 source-reviewed inquiries
+**Public Notebook entries:** 8 source-reviewed inquiries
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
 **Source-lead catalog:** 481 records
 **General-China article audit:** 404 external candidates — 375 withheld, 29
@@ -23,12 +23,12 @@ supersedes only the original three-entry Season Zero ceiling. It preserves the
 8–10-hour per-entry discipline and every evidence, privacy, route, and
 publication gate. Current authority is explicit:
 
-| State        | Inquiries                                                                 |
-| ------------ | ------------------------------------------------------------------------- |
-| Public       | 01–07                                                                     |
-| Commissioned | 08 — “Below Half Is Not Gone”; research and implementation are authorized |
-| Proposed     | 09 and 10; neither split nor publication is authorized                    |
-| Monitored    | North American origin and transshipment evidence for a future decision    |
+| State        | Inquiries                                                              |
+| ------------ | ---------------------------------------------------------------------- |
+| Public       | 01–08                                                                  |
+| Commissioned | None                                                                   |
+| Proposed     | 09 and 10; neither split nor publication is authorized                 |
+| Monitored    | North American origin and transshipment evidence for a future decision |
 
 The existing `/archive` route is the connected public evidence surface. It
 offers filters, a source chronology and explicit relationship views over the 13
@@ -79,11 +79,14 @@ The completed Inquiry 06 transshipment revision is recorded in a separate
 and controlled by its immutable [August 30 research
 snapshot](source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md).
 
-Inquiry 08 is commissioned by the [August 30
-decision](decisions/2026-08-30-notebook-eight.md) and supported by the dedicated
+Inquiry 08 is authorized by the [August 30
+decision](decisions/2026-08-30-notebook-eight.md), supported by the immutable
 [“Below Half Is Not Gone”
-ledger](source-notes/2026-08-30-below-half-is-not-gone-ledger.md). Commissioned
-does not mean drafted, public, merged, or deployed.
+ledger](source-notes/2026-08-30-below-half-is-not-gone-ledger.md), and refreshed
+in the [September 1 publication
+addendum](source-notes/2026-09-01-below-half-is-not-gone-publication-refresh.md).
+Repository publication, merge, hosted deployment, and live verification remain
+separate states.
 
 ## Governing documents
 

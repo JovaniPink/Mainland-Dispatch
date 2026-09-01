@@ -15,7 +15,7 @@ function copyEntry(): EconomicSignalsNotebookEntry {
 }
 
 describe("July Is Not One Number Notebook registry", () => {
-  it("publishes Inquiry 07 as the latest source-reviewed Notebook", () => {
+  it("keeps Inquiry 07 in the complete source-reviewed registry", () => {
     expect(entry).toMatchObject({
       variant: "economic-signals",
       ordinal: 7,
@@ -27,9 +27,9 @@ describe("July Is Not One Number Notebook registry", () => {
       reviewState: "source-reviewed",
     });
     expect(publicNotebookEntries.map((item) => item.ordinal)).toEqual([
-      1, 2, 3, 4, 5, 6, 7,
+      1, 2, 3, 4, 5, 6, 7, 8,
     ]);
-    expect(latestNotebookEntry).toStrictEqual(entry);
+    expect(latestNotebookEntry.ordinal).toBeGreaterThan(entry.ordinal);
     expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

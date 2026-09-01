@@ -6,6 +6,7 @@ import WhatGetsThroughPage from "@/app/notebook/what-gets-through/page";
 import JulyIsNotOneNumberPage from "@/app/notebook/july-is-not-one-number/page";
 import WhoAbsorbsTheShockPage from "@/app/notebook/who-absorbs-the-shock/page";
 import WhatXiJinpingWantsPage from "@/app/notebook/what-xi-jinping-wants/page";
+import BelowHalfIsNotGonePage from "@/app/notebook/below-half-is-not-gone/page";
 
 const pages = [
   ["Inquiry 01", WhatXiJinpingWantsPage],
@@ -15,6 +16,7 @@ const pages = [
   ["Inquiry 05", WhoAbsorbsTheShockPage],
   ["Inquiry 06", WhatGetsThroughPage],
   ["Inquiry 07", JulyIsNotOneNumberPage],
+  ["Inquiry 08", BelowHalfIsNotGonePage],
 ] as const;
 
 describe("published Notebook reader routes", () => {

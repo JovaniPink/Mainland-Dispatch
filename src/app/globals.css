@@ -195,12 +195,14 @@ a {
 
 @media print {
   .notebook-secondary-details > :not(summary),
-  .economic-signal-details > :not(summary) {
+  .economic-signal-details > :not(summary),
+  .energy-system-details > :not(summary) {
     display: block !important;
   }
 
   .notebook-secondary-details > summary,
-  .economic-signal-details > summary {
+  .economic-signal-details > summary,
+  .energy-system-details > summary {
     display: none;
   }
 }

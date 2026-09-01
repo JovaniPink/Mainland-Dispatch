@@ -460,6 +460,60 @@ const NotebookAlternativeReadingSchema = z.object({
   sourceIds: z.array(sourceId).min(1),
 });
 
+const notebookEnergyLayerIds = [
+  "generation-mix",
+  "generation-volume",
+  "installed-capacity",
+  "system-use",
+] as const;
+
+export const NotebookEnergyEvidenceKindSchema = z.enum([
+  "official-measurement",
+  "independent-analysis",
+  "modeled-estimate",
+  "forecast",
+]);
+
+const NotebookEnergyContrastSchema = z.object({
+  id: nonEmpty.regex(/^energy-contrast-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  label: nonEmpty,
+  display: nonEmpty,
+  value: z.number(),
+  unit: nonEmpty,
+  period: nonEmpty,
+  comparison: nonEmpty,
+  evidenceKind: NotebookEnergyEvidenceKindSchema,
+  boundary: nonEmpty,
+  sourceIds: z.array(sourceId).min(1),
+});
+
+export const NotebookEnergyMeasureSchema = z.object({
+  id: nonEmpty.regex(/^energy-measure-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  layer: z.enum(notebookEnergyLayerIds),
+  label: nonEmpty,
+  display: nonEmpty,
+  value: z.number(),
+  unit: nonEmpty,
+  period: nonEmpty,
+  comparison: nonEmpty,
+  basis: nonEmpty,
+  evidenceKind: NotebookEnergyEvidenceKindSchema,
+  interpretation: nonEmpty,
+  counterReading: nonEmpty,
+  boundary: nonEmpty,
+  contrasts: z.array(NotebookEnergyContrastSchema),
+  sourceIds: z.array(sourceId).min(1),
+});
+
+const NotebookEnergyLayerSchema = z.object({
+  id: z.enum(notebookEnergyLayerIds),
+  label: nonEmpty,
+  question: nonEmpty,
+  measures: z
+    .array(NotebookEnergyMeasureSchema)
+    .length(2, "each energy-system layer requires exactly 2 measures"),
+});
+
 const NotebookBaseSchema = z.object({
   ordinal: z.number().int().positive(),
   slug,
@@ -615,6 +669,29 @@ const EconomicSignalsNotebookSchema = NotebookBaseSchema.extend({
   }),
 }).strict();
 
+const EnergySystemNotebookSchema = NotebookBaseSchema.extend({
+  variant: z.literal("energy-system"),
+  formats: z
+    .array(NotebookFormatSchema)
+    .length(3, "energy systems require exactly 3 context formats"),
+  sourceTrail: z
+    .array(NotebookTrailItemSchema)
+    .length(8, "energy systems require exactly 8 source records"),
+  energyLayers: z
+    .array(NotebookEnergyLayerSchema)
+    .length(4, "energy systems require exactly 4 layers"),
+  alternativeReadings: z.array(NotebookAlternativeReadingSchema).length(4),
+  sections: z.object({
+    frame: z.array(nonEmpty).min(1),
+    mix: z.array(nonEmpty).min(1),
+    output: z.array(nonEmpty).min(1),
+    capacity: z.array(nonEmpty).min(1),
+    constraints: z.array(nonEmpty).min(1),
+    synthesis: z.array(nonEmpty).min(1),
+    changed: z.array(nonEmpty).min(1),
+  }),
+}).strict();
+
 export const NotebookEntrySchema = z
   .discriminatedUnion("variant", [
     ArgumentNotebookSchema,
@@ -624,6 +701,7 @@ export const NotebookEntrySchema = z
     CirculationGatesNotebookSchema,
     TradeAdjustmentNotebookSchema,
     EconomicSignalsNotebookSchema,
+    EnergySystemNotebookSchema,
   ])
   .superRefine((entry, ctx) => {
     if (entry.updatedAt < entry.publishedAt) {
@@ -748,7 +826,21 @@ export const NotebookEntrySchema = z
                         (item) => item.sourceIds
                       ),
                     ]
-                  : []),
+                  : entry.variant === "energy-system"
+                    ? [
+                        ...entry.energyLayers.flatMap((layer) =>
+                          layer.measures.flatMap((measure) => [
+                            ...measure.sourceIds,
+                            ...measure.contrasts.flatMap(
+                              (contrast) => contrast.sourceIds
+                            ),
+                          ])
+                        ),
+                        ...entry.alternativeReadings.flatMap(
+                          (item) => item.sourceIds
+                        ),
+                      ]
+                    : []),
     ];
     for (const reference of references) {
       if (!knownSources.has(reference)) {
@@ -1040,6 +1132,114 @@ export const NotebookEntrySchema = z
         }
       }
     }
+
+    if (entry.variant === "energy-system") {
+      const measures = entry.energyLayers.flatMap((layer) => layer.measures);
+      const expectedMeasureIds = [
+        "energy-measure-coal-share",
+        "energy-measure-renewable-share",
+        "energy-measure-coal-output",
+        "energy-measure-coal-output-change",
+        "energy-measure-wind-solar-capacity",
+        "energy-measure-coal-commissioned",
+        "energy-measure-coal-utilization",
+        "energy-measure-curtailment",
+      ];
+
+      checkUnique(
+        measures.map((measure) => measure.id),
+        ["energyLayers"],
+        "energy measure IDs must be unique"
+      );
+      checkUnique(
+        measures.flatMap((measure) =>
+          measure.contrasts.map((contrast) => contrast.id)
+        ),
+        ["energyLayers"],
+        "energy contrast IDs must be unique"
+      );
+      checkUnique(
+        entry.alternativeReadings.map((item) => item.id),
+        ["alternativeReadings"],
+        "alternative-reading IDs must be unique"
+      );
+
+      if (
+        entry.energyLayers.some(
+          (layer, index) => layer.id !== notebookEnergyLayerIds[index]
+        )
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: "energy layers must preserve the four-layer order",
+          path: ["energyLayers"],
+        });
+      }
+      if (
+        measures.some(
+          (measure, index) => measure.id !== expectedMeasureIds[index]
+        )
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          message: "energy measures must preserve the eight-measure order",
+          path: ["energyLayers"],
+        });
+      }
+
+      entry.energyLayers.forEach((layer, layerIndex) => {
+        layer.measures.forEach((measure, measureIndex) => {
+          checkUnique(
+            measure.sourceIds,
+            ["energyLayers", layerIndex, "measures", measureIndex, "sourceIds"],
+            "energy measure source references must be unique"
+          );
+          measure.contrasts.forEach((contrast, contrastIndex) => {
+            checkUnique(
+              contrast.sourceIds,
+              [
+                "energyLayers",
+                layerIndex,
+                "measures",
+                measureIndex,
+                "contrasts",
+                contrastIndex,
+                "sourceIds",
+              ],
+              "energy contrast source references must be unique"
+            );
+          });
+          if (measure.layer !== layer.id) {
+            ctx.addIssue({
+              code: "custom",
+              message: "energy measure layer must match its parent layer",
+              path: ["energyLayers", layerIndex, "measures", measureIndex],
+            });
+          }
+        });
+      });
+
+      const curtailment = measures.find(
+        (measure) => measure.id === "energy-measure-curtailment"
+      );
+      if (curtailment?.evidenceKind !== "modeled-estimate") {
+        ctx.addIssue({
+          code: "custom",
+          message: "360 TWh curtailment must remain a modeled estimate",
+          path: ["energyLayers"],
+        });
+      }
+      const demandForecast = measures
+        .flatMap((measure) => measure.contrasts)
+        .find((contrast) => contrast.id === "energy-contrast-demand-forecast");
+      if (demandForecast?.evidenceKind !== "forecast") {
+        ctx.addIssue({
+          code: "custom",
+          message: "IEA 5.5 percent demand growth must remain a forecast",
+          path: ["energyLayers"],
+        });
+      }
+    }
   });
 
 export type NotebookEntry = z.infer<typeof NotebookEntrySchema>;
@@ -1071,6 +1271,10 @@ export type EconomicSignalsNotebookEntry = Extract<
   NotebookEntry,
   { variant: "economic-signals" }
 >;
+export type EnergySystemNotebookEntry = Extract<
+  NotebookEntry,
+  { variant: "energy-system" }
+>;
 export type NotebookMechanismStep = z.infer<typeof NotebookMechanismStepSchema>;
 export type NotebookShockComparison = z.infer<
   typeof NotebookShockComparisonSchema
@@ -1082,6 +1286,7 @@ export type NotebookPolicyOption = z.infer<typeof NotebookPolicyOptionSchema>;
 export type NotebookEconomicIndicator = z.infer<
   typeof NotebookEconomicIndicatorSchema
 >;
+export type NotebookEnergyMeasure = z.infer<typeof NotebookEnergyMeasureSchema>;
 export type NotebookCirculationGate = z.infer<
   typeof NotebookCirculationGateSchema
 >;
@@ -1126,6 +1331,16 @@ export function parseEconomicSignalsNotebookEntry(
   const entry = NotebookEntrySchema.parse(value);
   if (entry.variant !== "economic-signals") {
     throw new Error("expected an economic-signals Notebook entry");
+  }
+  return entry;
+}
+
+export function parseEnergySystemNotebookEntry(
+  value: unknown
+): EnergySystemNotebookEntry {
+  const entry = NotebookEntrySchema.parse(value);
+  if (entry.variant !== "energy-system") {
+    throw new Error("expected an energy-system Notebook entry");
   }
   return entry;
 }
