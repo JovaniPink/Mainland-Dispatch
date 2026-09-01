@@ -8,7 +8,7 @@ export const contentType = "image/png";
 export default function Icon() {
   return new ImageResponse(
     <MainlandDispatchMark
-      borderRadius={40}
+      borderRadius={0}
       fontSize={72}
       ruleWidth={4}
       secondRuleLeft="23%"
