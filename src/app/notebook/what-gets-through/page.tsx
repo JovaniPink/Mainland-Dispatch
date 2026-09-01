@@ -14,7 +14,10 @@ import {
   NotebookSecondarySection,
 } from "@/components/notebook/notebook-reader";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
-import { TransshipmentEvidenceFigure } from "@/components/notebook/transshipment-evidence-figure";
+import {
+  NotebookCompanionLinks,
+  NotebookLegacyFragmentNotices,
+} from "@/components/notebook/notebook-custody-links";
 import { JsonLd } from "@/components/seo/json-ld";
 import { evidenceStatusLabels } from "@/content/dossiers";
 import { whatGetsThrough as entry } from "@/content/notebook/what-gets-through";
@@ -24,7 +27,6 @@ import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
   ["lens", "The circulation lens"],
-  ["trade", "Trade: origin"],
   ["culture", "Culture: attention"],
   ["memory", "Memory: legality"],
   ["limits", "Comparison limits"],
@@ -57,13 +59,13 @@ export default function WhatGetsThroughPage() {
         path={pagePath}
         campaign={entry.slug}
         sections={sectionLinks}
-        readingRule="Compare the mechanics, not the moral weight. Origin, attention, and criminal liability use different authority and evidence."
+        readingRule="Compare the mechanics, not the moral weight. Networked attention and criminal liability use different authority, evidence, and consequences."
         contentClassName="lg:max-w-[58rem]"
       >
         <section className="mt-12">
           <NotebookSectionHeading
             id="lens"
-            eyebrow="One question - three mechanisms"
+            eyebrow="One question - two mechanisms"
           >
             The circulation lens
           </NotebookSectionHeading>
@@ -97,14 +99,14 @@ export default function WhatGetsThroughPage() {
 
           <div className="mt-10">
             <h3 className="font-serif text-2xl leading-tight">
-              Three audited turns in the full episode
+              Two audited turns in the full episode
             </h3>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-ink-muted">
               These manual locators mark the start of Miles Yu&apos;s answer in
               each segment. Paraphrases are checked against the publisher audio;
               they are not quotations or a substitute transcript.
             </p>
-            <ol className="mt-6 grid gap-4 md:grid-cols-3">
+            <ol className="mt-6 grid gap-4 md:grid-cols-2">
               {entry.turningPoints.map((point, index) => (
                 <li
                   key={point.id}
@@ -133,29 +135,19 @@ export default function WhatGetsThroughPage() {
           </div>
         </section>
 
-        <section className="mt-12">
-          <NotebookSectionHeading
-            id="trade"
-            eyebrow="Gate 01 - Rules of origin"
-          >
-            Trade: physical movement is not legal origin
-          </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.trade} />
-          </div>
-          <div className="mt-9">
-            <TransshipmentEvidenceFigure
-              proofs={entry.tradeProofs}
-              pressure={entry.tradePressure}
-              frames={entry.tradeFrames}
-            />
-          </div>
-        </section>
+        <NotebookLegacyFragmentNotices
+          fragments={(entry.legacyFragments ?? []).filter(
+            (fragment) =>
+              fragment.id === "trade" ||
+              fragment.id === "transshipment-proof-title" ||
+              fragment.id === "transshipment-proof-note"
+          )}
+        />
 
         <section className="mt-12">
           <NotebookSectionHeading
             id="culture"
-            eyebrow="Gate 02 - Networked attention"
+            eyebrow="Gate 01 - Networked attention"
           >
             Culture: ridicule can become distribution
           </NotebookSectionHeading>
@@ -188,7 +180,7 @@ export default function WhatGetsThroughPage() {
         <section className="mt-12">
           <NotebookSectionHeading
             id="memory"
-            eyebrow="Gate 03 - National-security law"
+            eyebrow="Gate 02 - National-security law"
           >
             Memory: the legal label changes the civic space
           </NotebookSectionHeading>
@@ -256,6 +248,11 @@ export default function WhatGetsThroughPage() {
           actionLabel={`Examine ${entry.sourceTrail.length} sources`}
         >
           <div className="mt-6">
+            <NotebookLegacyFragmentNotices
+              fragments={(entry.legacyFragments ?? []).filter((fragment) =>
+                fragment.id.startsWith("notebook-source-")
+              )}
+            />
             <NotebookSourceTrail sources={entry.sourceTrail} />
           </div>
         </NotebookSecondarySection>
@@ -268,6 +265,8 @@ export default function WhatGetsThroughPage() {
             <NotebookProse paragraphs={entry.sections.changed} />
           </div>
         </section>
+
+        <NotebookCompanionLinks relationships={entry.relatedNotebooks ?? []} />
 
         <section
           id="question"

@@ -26,14 +26,14 @@ export function CirculationGatesFigure({
     >
       <figcaption id="circulation-gates-title">
         <span className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
-          Three gates that shape circulation
+          Two gates that shape circulation
         </span>
         <span className="mt-2 block max-w-3xl font-serif text-2xl leading-tight">
-          The same four questions expose three different mechanisms
+          The same four questions expose two different mechanisms
         </span>
       </figcaption>
 
-      <ol className="mt-7 grid gap-4 lg:grid-cols-3">
+      <ol className="mt-7 grid gap-4 lg:grid-cols-2">
         {gates.map((gate, index) => (
           <li
             key={gate.id}
