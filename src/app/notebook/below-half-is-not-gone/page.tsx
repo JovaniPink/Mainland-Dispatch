@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { EconomicSignalsFigure } from "@/components/notebook/economic-signals-figure";
+import { EnergySystemFigure } from "@/components/notebook/energy-system-figure";
 import {
   NotebookFormats,
   NotebookProse,
@@ -14,22 +14,22 @@ import {
 } from "@/components/notebook/notebook-reader";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
 import { JsonLd } from "@/components/seo/json-ld";
-import { julyIsNotOneNumber as entry } from "@/content/notebook/july-is-not-one-number";
+import { belowHalfIsNotGone as entry } from "@/content/notebook/below-half-is-not-gone";
 import { requirePublicNotebookEntry } from "@/lib/notebook-route";
 import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
-  ["frame", "The reading frame"],
-  ["signals", "Six signals"],
-  ["production", "Production clocks"],
-  ["demand", "Retail and demand"],
-  ["investment", "Uneven investment"],
-  ["property", "Property drag"],
+  ["frame", "The four-layer frame"],
+  ["system", "Eight measures"],
+  ["mix", "Generation mix"],
+  ["output", "Generation volume"],
+  ["capacity", "Installed capacity"],
+  ["constraints", "System use"],
   ["readings", "Alternative readings"],
   ["limits", "What remains bounded"],
-  ["sources", "Eleven source stops"],
-  ["changed", "What changed"],
+  ["sources", "Eight source records"],
+  ["changed", "Publication refresh"],
   ["question", "Unresolved question"],
 ] as const satisfies readonly NotebookSectionLink[];
 
@@ -37,8 +37,9 @@ export function generateMetadata(): Metadata {
   return notebookArticleMetadata(requirePublicNotebookEntry(entry));
 }
 
-export default function JulyIsNotOneNumberPage() {
+export default function BelowHalfIsNotGonePage() {
   requirePublicNotebookEntry(entry);
+
   return (
     <article>
       <JsonLd data={notebookArticleJsonLd(entry)} />
@@ -52,46 +53,45 @@ export default function JulyIsNotOneNumberPage() {
         updatedAt={entry.updatedAt}
         readTime={entry.readTime}
         tags={entry.tags}
-        editorialLabel="Source-audited data interpretation"
+        editorialLabel="Source-audited energy-system interpretation"
         path={pagePath}
         campaign={entry.slug}
         sections={sectionLinks}
-        readingRule="Keep the subject, period, unit, comparison, and coverage attached to every number. None of the six measures is the economy by itself."
+        readingRule="Keep share, output, capacity, utilization, period, unit, and evidence kind attached. The four layers cannot be added into one verdict."
         contentClassName="lg:max-w-[62rem]"
       >
         <section className="mt-12">
           <NotebookSectionHeading
             id="frame"
-            eyebrow="Bounded frame - July and January-July 2026"
+            eyebrow="Bounded frame - January through June 2026"
           >
-            Six releases, six statistical objects
+            Below half is one layer, not the whole system
           </NotebookSectionHeading>
           <div className="mt-6">
             <NotebookProse paragraphs={entry.sections.frame} />
           </div>
-
           <aside className="mt-7 border-l-2 border-signal bg-signal-soft/25 p-5">
             <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
               Editorial boundary
             </p>
             <p className="mt-3 text-sm leading-7">
-              This Notebook is not verified Mainland Dispatch reporting. It
-              audits what the cited institutions published, how they defined the
-              measures, and where alternative interpretations remain.
+              This is source-reviewed interpretation, not verified original
+              reporting. Official measurement, independent analysis, modeled
+              estimates, and forecasts remain separately labeled.
             </p>
           </aside>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="signals"
-            eyebrow="Observed - definitions stay attached"
+            id="system"
+            eyebrow="Non-additive figure - four units of analysis"
           >
-            The July panel
+            One system, four different questions
           </NotebookSectionHeading>
           <div className="mt-6">
-            <EconomicSignalsFigure
-              indicators={entry.indicators}
+            <EnergySystemFigure
+              layers={entry.energyLayers}
               sources={entry.sourceTrail}
             />
           </div>
@@ -99,58 +99,58 @@ export default function JulyIsNotOneNumberPage() {
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="production"
-            eyebrow="Output level and survey direction"
+            id="mix"
+            eyebrow="Share - official first-half measurement"
           >
-            Production runs on two clocks
+            Coal lost majority share
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.production} />
+            <NotebookProse paragraphs={entry.sections.mix} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="demand"
-            eyebrow="Nominal transactions - bounded coverage"
+            id="output"
+            eyebrow="Kilowatt-hours - level and change"
           >
-            Retail sales are not total consumption
+            Coal generation still increased
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.demand} />
+            <NotebookProse paragraphs={entry.sections.output} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="investment"
-            eyebrow="Cumulative flows - unequal weights"
+            id="capacity"
+            eyebrow="Fleet - renewable and coal additions"
           >
-            A falling total can contain growing categories
+            Capacity expanded on both sides
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.investment} />
+            <NotebookProse paragraphs={entry.sections.capacity} />
           </div>
         </section>
 
         <section className="mt-12">
           <NotebookSectionHeading
-            id="property"
-            eyebrow="Investment, area, value, and financing"
+            id="constraints"
+            eyebrow="Use - utilization and modeled curtailment"
           >
-            Property is a cluster, not one index
+            Integration became the binding question
           </NotebookSectionHeading>
           <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.property} />
+            <NotebookProse paragraphs={entry.sections.constraints} />
           </div>
         </section>
 
         <section data-testid="alternative-readings" className="mt-12">
           <NotebookSectionHeading
             id="readings"
-            eyebrow="Interpretation - competing scopes"
+            eyebrow="Interpretation - four compatible lenses"
           >
-            Five readings the same panel can support
+            Four readings the same system can support
           </NotebookSectionHeading>
           <ol className="mt-6 grid gap-4 md:grid-cols-2">
             {entry.alternativeReadings.map((item, index) => (
@@ -177,15 +177,15 @@ export default function JulyIsNotOneNumberPage() {
           </div>
           <aside className="mt-10 border-t border-rule pt-8">
             <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
-              Institutional context - not July observations
+              Three controlling formats
             </p>
             <h3 className="mt-2 font-serif text-2xl leading-tight">
-              Three frames outside the primary releases
+              Official record, complete report, and forecast context
             </h3>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-ink-muted">
-              These sources add an official synthesis, independent analysis, and
-              an alternative outlook. Their characterizations and forecasts
-              remain separate from the six observed measures.
+              The exact NEA item controls the official H1 figures; the complete
+              CREA/GEM report controls its analysis and model; the IEA update
+              supplies forecast context only.
             </p>
             <div className="mt-5">
               <NotebookFormats formats={entry.formats} />
@@ -196,9 +196,9 @@ export default function JulyIsNotOneNumberPage() {
         <section className="mt-12">
           <NotebookSectionHeading
             id="limits"
-            eyebrow="Limitations - no composite score"
+            eyebrow="Limitations - no transition score"
           >
-            What these releases do not settle
+            What these measures do not settle
           </NotebookSectionHeading>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {entry.limitations.map((limitation) => (
@@ -214,9 +214,9 @@ export default function JulyIsNotOneNumberPage() {
 
         <NotebookSecondarySection
           id="sources"
-          eyebrow="Source trail - roles and dates preserved"
-          title="Eleven source stops"
-          summary="Six NBS observations, one official synthesis, three independent institutional frames, and one technical paper."
+          eyebrow="Source trail - roles and evidence kinds preserved"
+          title="Eight source records, ten direct URLs"
+          summary="The publication refresh adds the exact NEA item while preserving its hub and both CREA/GEM report URLs."
           actionLabel="Open the source trail"
         >
           <NotebookSourceTrail sources={entry.sourceTrail} />
@@ -224,10 +224,10 @@ export default function JulyIsNotOneNumberPage() {
 
         <NotebookSecondarySection
           id="changed"
-          eyebrow="Review record - August 29, 2026"
-          title="What changed after the August 27 candidate ledger"
-          summary="The live-source refresh added an English profit release and preserved one publisher-date discrepancy."
-          actionLabel="Read the review record"
+          eyebrow="Publication refresh - September 1, 2026"
+          title="What changed after the August 30 ledger"
+          summary="The source set was refreshed without rewriting the dated research snapshot or changing evidence labels."
+          actionLabel="Read the publication refresh"
         >
           <NotebookProse paragraphs={entry.sections.changed} />
         </NotebookSecondarySection>
@@ -235,7 +235,7 @@ export default function JulyIsNotOneNumberPage() {
         <section className="mt-12 border-y border-rule py-8">
           <NotebookSectionHeading
             id="question"
-            eyebrow="Open - next comparable release"
+            eyebrow="Open - comparable full-year series"
           >
             What would change the reading?
           </NotebookSectionHeading>
@@ -246,21 +246,14 @@ export default function JulyIsNotOneNumberPage() {
 
         <nav
           aria-label="Notebook navigation"
-          className="mt-10 flex flex-wrap justify-between gap-4 border-t border-rule pt-6"
+          className="mt-10 flex justify-start border-t border-rule pt-6"
         >
           <Link
-            href="/notebook/what-gets-through"
-            aria-label="Read Inquiry 06"
+            href="/notebook/july-is-not-one-number"
+            aria-label="Read Inquiry 07"
             className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
           >
-            &lt;- Read Inquiry 06
-          </Link>
-          <Link
-            href="/notebook/below-half-is-not-gone"
-            aria-label="Read Inquiry 08"
-            className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
-          >
-            Read Inquiry 08 -&gt;
+            &lt;- Read Inquiry 07
           </Link>
         </nav>
       </NotebookReaderShell>

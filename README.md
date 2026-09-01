@@ -220,6 +220,7 @@ public boundary. The governing decisions are recorded in
 [`docs/decisions/2026-08-25-notebook-six.md`](docs/decisions/2026-08-25-notebook-six.md),
 [`docs/decisions/2026-08-29-notebook-seven.md`](docs/decisions/2026-08-29-notebook-seven.md),
 [`docs/decisions/2026-08-30-notebook-eight.md`](docs/decisions/2026-08-30-notebook-eight.md),
+[`docs/source-notes/2026-09-01-below-half-is-not-gone-publication-refresh.md`](docs/source-notes/2026-09-01-below-half-is-not-gone-publication-refresh.md),
 [`docs/decisions/2026-08-30-ten-notebook-program.md`](docs/decisions/2026-08-30-ten-notebook-program.md),
 and
 [`docs/decisions/2026-08-14-curated-source-intake-resumption.md`](docs/decisions/2026-08-14-curated-source-intake-resumption.md).

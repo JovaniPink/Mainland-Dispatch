@@ -104,6 +104,9 @@ describe("July Is Not One Number Notebook page", () => {
     expect(
       screen.getByRole("link", { name: "Read Inquiry 06" })
     ).toHaveAttribute("href", "/notebook/what-gets-through");
+    expect(
+      screen.getByRole("link", { name: "Read Inquiry 08" })
+    ).toHaveAttribute("href", "/notebook/below-half-is-not-gone");
   });
 
   it("publishes canonical metadata, JSON-LD citations, and a sitemap entry", () => {

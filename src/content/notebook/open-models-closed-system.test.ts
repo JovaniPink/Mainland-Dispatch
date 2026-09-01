@@ -94,8 +94,9 @@ describe("Open Models, Closed System Notebook registry", () => {
       "who-absorbs-the-shock",
       "what-gets-through",
       "july-is-not-one-number",
+      "below-half-is-not-gone",
     ]);
-    expect(latestNotebookEntry.slug).toBe("july-is-not-one-number");
+    expect(latestNotebookEntry.slug).toBe("below-half-is-not-gone");
     expect(getPublicNotebookEntry(entry.slug)).toStrictEqual(entry);
   });
 

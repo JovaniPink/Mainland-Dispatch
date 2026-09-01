@@ -126,7 +126,7 @@ describe("SEO publication contract", () => {
       )
     ).toBe(true);
     expect(entries.every((entry) => Boolean(entry.lastModified))).toBe(true);
-    expect(newestNotebookRevision).toBe("2026-08-30");
+    expect(newestNotebookRevision).toBe("2026-09-01");
     expect(entries.find((entry) => entry.url === siteUrl)?.lastModified).toBe(
       newestNotebookRevision
     );

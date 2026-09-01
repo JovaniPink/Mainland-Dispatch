@@ -9,13 +9,13 @@ describe("Notebooks index", () => {
       screen.getByRole("heading", { level: 1, name: "Notebooks" })
     ).toBeInTheDocument();
     expect(screen.getByTestId("notebook-index-latest")).toHaveTextContent(
-      "July Is Not One Number"
+      "Below Half Is Not Gone"
     );
-    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(7);
+    expect(screen.getAllByTestId("notebook-index-entry")).toHaveLength(8);
     expect(screen.getByText("Who Absorbs the Shock?")).toBeInTheDocument();
     expect(
       container.querySelector('script[type="application/ld+json"]')?.textContent
-    ).toContain('"dateModified":"2026-08-30"');
+    ).toContain('"dateModified":"2026-09-01"');
   });
 
   it("publishes canonical and social metadata", () => {

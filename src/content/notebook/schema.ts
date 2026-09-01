@@ -1189,6 +1189,26 @@ export const NotebookEntrySchema = z
 
       entry.energyLayers.forEach((layer, layerIndex) => {
         layer.measures.forEach((measure, measureIndex) => {
+          checkUnique(
+            measure.sourceIds,
+            ["energyLayers", layerIndex, "measures", measureIndex, "sourceIds"],
+            "energy measure source references must be unique"
+          );
+          measure.contrasts.forEach((contrast, contrastIndex) => {
+            checkUnique(
+              contrast.sourceIds,
+              [
+                "energyLayers",
+                layerIndex,
+                "measures",
+                measureIndex,
+                "contrasts",
+                contrastIndex,
+                "sourceIds",
+              ],
+              "energy contrast source references must be unique"
+            );
+          });
           if (measure.layer !== layer.id) {
             ctx.addIssue({
               code: "custom",

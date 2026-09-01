@@ -33,7 +33,7 @@ export const belowHalfIsNotGone = parseEnergySystemNotebookEntry({
     "grid integration",
     "curtailment",
   ],
-  editorialStatus: "draft",
+  editorialStatus: "published",
   reviewState: "source-reviewed",
   formats: [
     {

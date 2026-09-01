@@ -45,6 +45,37 @@ describe("Below Half Is Not Gone energy-system contract", () => {
       },
     ],
     [
+      "duplicate measure source references",
+      (entry: ReturnType<typeof copyEntry>) => {
+        const sourceId = entry.energyLayers[0].measures[0].sourceIds[0];
+        entry.energyLayers[0].measures[0].sourceIds = [sourceId, sourceId];
+      },
+    ],
+    [
+      "an incomplete measure unit",
+      (entry: ReturnType<typeof copyEntry>) => {
+        entry.energyLayers[0].measures[0].unit = "";
+      },
+    ],
+    [
+      "an incomplete measure period",
+      (entry: ReturnType<typeof copyEntry>) => {
+        entry.energyLayers[0].measures[0].period = "";
+      },
+    ],
+    [
+      "an incomplete measure boundary",
+      (entry: ReturnType<typeof copyEntry>) => {
+        entry.energyLayers[0].measures[0].boundary = "";
+      },
+    ],
+    [
+      "the wrong measure cardinality",
+      (entry: ReturnType<typeof copyEntry>) => {
+        entry.energyLayers[0].measures.pop();
+      },
+    ],
+    [
       "measure-layer mismatch",
       (entry: ReturnType<typeof copyEntry>) => {
         entry.energyLayers[0].measures[0].layer = "system-use";
