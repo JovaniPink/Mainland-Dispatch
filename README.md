@@ -325,6 +325,10 @@ fraud.
 The proposed Inquiry 06 / Inquiry 09 split has a decision-complete
 [`lossless custody migration specification`](docs/plans/2026-09-01-inquiry-06-09-migration-spec.md),
 but no correction or companion publication is authorized.
+The proposed Inquiry 04 / Inquiry 10 split has a separate
+[`lossless Arctic custody specification`](docs/plans/2026-09-01-inquiry-04-10-migration-spec.md)
+that preserves one consent-gated map implementation and keeps Inquiry 10 out of
+every public surface until separately authorized.
 Notebook Seven was selected from the immutable
 [`August 27 candidate ledger`](docs/source-notes/2026-08-27-china-news-candidate-ledger.md)
 under its

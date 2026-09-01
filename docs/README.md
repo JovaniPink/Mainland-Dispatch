@@ -124,6 +124,10 @@ separate states.
   defines the lossless custody, future typed contracts, compatibility
   fragments, tests, and stop conditions without authorizing either correction
   or publication.
+- [Inquiry 04 / Inquiry 10 migration specification](plans/2026-09-01-inquiry-04-10-migration-spec.md)
+  defines Arctic custody, shared-source authority, typed map subsets, legacy
+  fragments, tests, and stop conditions without authorizing either correction
+  or publication.
 - [Transshipment evidence watch](plans/2026-08-30-transshipment-evidence-watch.md)
   defines manual update triggers without authorizing recurring ingestion or a
   new article.
