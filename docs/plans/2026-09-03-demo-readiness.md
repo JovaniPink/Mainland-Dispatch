@@ -1,6 +1,7 @@
 # Safari demo readiness — September 3, 2026
 
-**Status:** Verification in progress; not a full live-demo sign-off.
+**Status:** Code and CI validated; browser acceptance incomplete. Not a full
+live-demo sign-off.
 **Observed:** September 2, 2026. Presentation and merge decision owner: Jovani.
 The implementation agent owns the verification packet. No automatic merge,
 production deployment, issue update, or new automation is authorized.
@@ -11,8 +12,15 @@ production deployment, issue update, or new automation is authorized.
   `7598f5fbc55e8ff2ed05ef04d227487400ef1a7a`.
 - Ready production Netlify deploy: `6a97ac3d6020870008c0f751`, from that exact SHA.
 - Runtime candidate: `84b24c42044ca229b3cc5eacad68ab1283ca8025`.
-  The readiness PR's final head and its exact-head check runs are the authority
+  [Readiness PR #52](https://github.com/JovaniPink/Mainland-Dispatch/pull/52)
+  remains draft. Its final head and exact-head check runs are the authority
   for subsequent documentation-only commits; they do not deploy this fix.
+- Initial readiness head `0f9cde4c2b5f6295cb4c73429edd5110e84846af` passed
+  [hosted Node 22 and Node 24 CI](https://github.com/JovaniPink/Mainland-Dispatch/actions/runs/33689540848).
+  Its Netlify preview `6a98a033e078100008dca865` was ready from that exact SHA.
+  [The PR preview](https://deploy-preview-52--mainland-dispatch.netlify.app)
+  is the candidate browser-retest target, not production. Recheck the PR's
+  latest head after this evidence-only documentation update.
 - Candidate branch: `codex/demo-readiness-2026-09-03`, isolated from the shared
   checkout and all existing worktrees.
 - Local toolchain: Node 24.19.0, Corepack 0.35.0, pinned npm 12.0.2.
@@ -83,6 +91,11 @@ is deployed. The existing custody, citation, registry, map-subset, and knowledge
 tests remain part of the canonical gate. Do not change expected counts merely
 to accommodate a discrepancy.
 
+The ready initial PR preview also returned all ten routes with their production
+canonicals. Its entire 199-object knowledge payload was identical to production,
+including all three shared sources' two use records. No production deployment
+was made by this readiness run.
+
 ### Safari presentation matrix
 
 | Inquiry | 1440×900 Paper | 1440×900 Night | 390×844 Paper | 390×844 Night |
@@ -144,11 +157,18 @@ passed the same local gates with **65 suites / 320 tests** and zero audit
 vulnerabilities. The new lifecycle regression accounts for the additional test.
 Exact-head hosted Node 22 and Node 24 checks remain required before approval;
 neither a baseline run nor a different build substitutes for candidate evidence.
+Both hosted checks passed on the initial readiness head identified above; the
+PR check record must remain green on its latest head before approval. A repeat
+local `test-all` also passed on that committed head.
 
 Fresh live-link classification: **200 third-party URLs — 170 reachable,
 23 restricted, six redirected, one inconclusive, zero confirmed dead**; 29
 sitemap routes, zero audit failures. Restricted is not reachable. The MOFCOM
-significant-news destination was inconclusive (`fetch failed`), not proved dead.
+significant-news destination was initially inconclusive (`fetch failed`), not
+proved dead. A subsequent exact-head rerun returned **171 reachable, 22 restricted,
+seven redirected, zero inconclusive, and zero confirmed dead**, again over 200
+third-party URLs and 29 sitemap routes with zero audit failures. Keep both
+observations: access classification can vary between requests.
 
 Optional outbound demo links were reachable in this run:
 [Notice 1168](https://www.international.gc.ca/trade-commerce/controls-controles/notices-avis/1168.aspx?lang=eng),
@@ -231,7 +251,8 @@ limitation, not a product failure or a privacy pass:
 - [ ] Finish Inquiry 04's separate pre/post-consent request trace.
 - [ ] Capture the four local fallback views and complete both timed rehearsals.
 - [x] Pass canonical local candidate gates (65 suites / 320 tests).
-- [ ] Pass exact-head hosted Node 22/24 checks.
+- [x] Pass hosted Node 22/24 checks on the initial readiness head linked above.
+- [ ] Confirm the latest PR head is still green before approving; any push requires fresh checks.
 
 Stop at PR approval. Jovani decides whether and when to merge. Do not merge an
 approved release inside **T−60 minutes**. At **T−30 minutes**, recheck production
