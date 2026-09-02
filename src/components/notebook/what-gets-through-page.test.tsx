@@ -70,6 +70,31 @@ describe("What Gets Through corrected Notebook page", () => {
     expect(container.querySelector("audio, source")).toBeNull();
   });
 
+  it("preserves the consented audio element and position when playback becomes available", () => {
+    const { container } = render(<WhatGetsThroughPage />);
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: `Load external audio: ${entry.formats[0].title}`,
+      })
+    );
+    const audio = container.querySelector("audio")!;
+    audio.currentTime = 12;
+
+    fireEvent.canPlay(audio);
+
+    expect(screen.getByText("Now available")).toBeInTheDocument();
+    expect(container.querySelector("audio")).toBe(audio);
+    expect(container.querySelector("audio")!.currentTime).toBe(12);
+    fireEvent.canPlay(audio);
+    expect(container.querySelector("audio")).toBe(audio);
+
+    fireEvent.error(audio);
+    expect(audio).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry audio" }));
+    expect(container.querySelector("audio")).not.toBe(audio);
+    expect(screen.getByText("Audio state: loading.")).toBeInTheDocument();
+  });
+
   it("publishes canonical metadata, deduplicated JSON-LD citations, and both sitemap entries", () => {
     const { container } = render(<WhatGetsThroughPage />);
     const metadata = generateMetadata();
