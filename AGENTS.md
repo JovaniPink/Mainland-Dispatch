@@ -9,25 +9,26 @@ verified reporting.
 
 ## Prerequisites
 
-- Node 22.15 or newer
-- npm
-- Bootstrap with `npm ci`
+- Node 22.22.2+ or 24.15.0+
+- Corepack with the integrity-pinned npm 12.0.2 release from `package.json`
+- Bootstrap with `corepack npm ci`
 
 ## Canonical commands
 
-| Command                    | Purpose                                                          |
-| -------------------------- | ---------------------------------------------------------------- |
-| `npm run dev`              | Start local development with State Lab inspectors                |
-| `npm run lint`             | Run ESLint                                                       |
-| `npm run toolchain:check`  | Validate the TypeScript 7 CLI and TypeScript 6 API contract      |
-| `npm run typecheck`        | Generate route types and check with the TypeScript 7 CLI         |
-| `npm run typecheck:compat` | Generate route types and check with the TypeScript 6 API line    |
-| `npm test`                 | Run Jest and Testing Library tests                               |
-| `npm run audit:production` | Reject high-severity advisories in deployed dependencies         |
-| `npm run audit:toolchain`  | Reject high-severity advisories in the complete dependency graph |
-| `npm run build`            | Build and validate the Next.js production artifact               |
-| `npm run test-all`         | Run formatting, lint, types, tests, and the production build     |
-| `npm run format`           | Format source files with Prettier                                |
+| Command                      | Purpose                                                          |
+| ---------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`                | Start local development with State Lab inspectors                |
+| `npm run lint`               | Run ESLint                                                       |
+| `npm run baseline:check`     | Validate metadata, favicon, generated types, and install hooks   |
+| `npm run toolchain:check`    | Validate the TypeScript 7 CLI and TypeScript 6 API contract      |
+| `npm run typecheck`          | Generate route types and check with the TypeScript 7 CLI         |
+| `npm run typecheck:compat`   | Generate route types and check with the TypeScript 6 API line    |
+| `npm test`                   | Run Jest and Testing Library tests                               |
+| `npm run audit:production`   | Reject high-severity advisories in deployed dependencies         |
+| `npm run audit:dependencies` | Reject high-severity advisories in the complete dependency graph |
+| `npm run build`              | Build and validate the Next.js production artifact               |
+| `npm run test-all`           | Run formatting, lint, types, tests, and the production build     |
+| `npm run format`             | Format source files with Prettier                                |
 
 ## Working rules
 
@@ -54,8 +55,9 @@ verified reporting.
 
 ## Quality gate
 
-Before finishing any change, run `npm run audit:production`,
-`npm run audit:toolchain`, and `npm run test-all`. The repository gate fails
+Before finishing any change, run `corepack npm install-scripts ls`,
+`corepack npm run audit:production`, `corepack npm run audit:dependencies`, and
+`corepack npm run test-all`. The repository gate fails
 closed unless the expected TypeScript majors and both compiler checks pass. For
 changes that affect layout, themes, media, Compare, Trace, or the Desk, also
 inspect the production build at desktop and mobile widths.

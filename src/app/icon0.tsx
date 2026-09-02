@@ -1,8 +1,12 @@
 import { ImageResponse } from "next/og";
 import { MainlandDispatchMark } from "./mainland-dispatch-mark";
+import { mainlandIconSizes } from "./metadata-contract";
 
 export const dynamic = "force-static";
-export const size = { width: 48, height: 48 } as const;
+export const size = {
+  width: mainlandIconSizes.small,
+  height: mainlandIconSizes.small,
+} as const;
 export const contentType = "image/png";
 
 export default function Icon() {

@@ -2,67 +2,92 @@
   "name": "mainland-dispatch",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@12.0.2+sha224.4c4977784242293bf5a4f80d28aab2d001ba8a7a4532285591a158aa",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^22.22.2 || ^24.15.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "12.0.2",
+      "onFail": "warn"
+    }
+  },
+  "allowScripts": {
+    "@parcel/watcher": false,
+    "fsevents": false,
+    "unrs-resolver": false
+  },
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "format": "prettier --write src",
-    "format:check": "prettier --check src",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "generate:favicon": "node scripts/generate-favicon.mjs",
+    "generate:favicon:check": "node scripts/generate-favicon.mjs --check",
+    "baseline:check": "corepack npm run generate:favicon:check && node scripts/baseline-contract-check.mjs",
     "toolchain:check": "node scripts/typescript-toolchain-check.mjs",
     "typecheck": "next typegen && node node_modules/@typescript/native/bin/tsc --noEmit",
     "typecheck:compat": "next typegen && node node_modules/typescript/bin/tsc --noEmit",
-    "test": "jest",
-    "test:ci": "jest --runInBand --coverage",
+    "test": "jest --watchman=false",
+    "test:ci": "jest --runInBand --coverage --watchman=false",
     "test:link-audit": "node --test scripts/link-audit.node-test.mjs",
     "link:audit:static": "node scripts/link-audit.mjs static",
     "link:audit:live": "node scripts/link-audit.mjs live",
-    "audit:production": "npm audit --omit=dev --audit-level=high",
-    "audit:toolchain": "npm audit --audit-level=high",
-    "test-all": "npm run format:check && npm run lint && npm run toolchain:check && npm run typecheck && npm run typecheck:compat && npm run test:ci && npm run test:link-audit && npm run build && npm run link:audit:static",
-    "prepare": "husky"
+    "audit:production": "corepack npm audit --omit=dev --audit-level=high",
+    "audit:dependencies": "corepack npm audit --audit-level=high",
+    "audit:toolchain": "corepack npm run audit:dependencies",
+    "test-all": "corepack npm run format:check && corepack npm run lint && corepack npm run baseline:check && corepack npm run toolchain:check && corepack npm run typecheck && corepack npm run typecheck:compat && corepack npm run test:ci && corepack npm run test:link-audit && corepack npm run build && corepack npm run link:audit:static",
+    "prepare": "node scripts/prepare.mjs"
   },
   "dependencies": {
-    "@xstate/react": "^6.1.0",
-    "clsx": "^2.1.1",
-    "maplibre-gl": "^5.24.0",
-    "next": "^16.3.0",
-    "postcss": "^8.5.26",
+    "@xstate/react": "6.1.0",
+    "clsx": "2.1.1",
+    "maplibre-gl": "5.24.0",
+    "next": "16.3.3",
+    "postcss": "8.5.26",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tailwind-merge": "^3.6.0",
-    "xstate": "^5.32.5",
-    "zod": "^4.4.3"
+    "tailwind-merge": "3.6.0",
+    "xstate": "5.32.5",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.2",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.13.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "@typescript/native": "npm:typescript@^7.0.2",
-    "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.0",
-    "husky": "^9.1.7",
-    "jest": "^30.4.2",
-    "jest-environment-jsdom": "^30.4.1",
-    "lint-staged": "^17.3.0",
-    "prettier": "^3.9.6",
-    "tailwindcss": "^4",
-    "typescript": "^6.0.3"
+    "@eslint/compat": "2.1.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@types/jest": "30.0.0",
+    "@types/node": "22.20.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "eslint": "10.9.1",
+    "eslint-config-next": "16.3.3",
+    "husky": "9.1.7",
+    "jest": "30.5.0",
+    "jest-environment-jsdom": "30.5.0",
+    "lint-staged": "17.4.1",
+    "prettier": "3.9.6",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3"
   },
   "engines": {
-    "node": ">=22.15.0"
+    "node": "^22.22.2 || ^24.15.0"
   },
   "overrides": {
     "postcss": "$postcss"
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": [
+    "*.{js,mjs,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
-    ]
+    ],
+    "*.{css,json,md,yaml,yml}": "prettier --write"
   }
 }
