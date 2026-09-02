@@ -31,7 +31,6 @@ export function NotebookAudioFacade({
               </h3>
             </div>
             <audio
-              key={state.matches("loading") ? "loading" : "playing"}
               controls
               preload="metadata"
               className="w-full"
