@@ -22,8 +22,9 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: npm run link:audit:static -- --summary "$GITHUB_STEP_SUMMARY"
-      - run: npm run link:audit:live -- --origin https://mainlanddispatch.com --summary "$GITHUB_STEP_SUMMARY"
+          package-manager-cache: false
+      - run: corepack npm ci
+      - run: corepack npm install-scripts ls
+      - run: corepack npm run build
+      - run: corepack npm run link:audit:static -- --summary "$GITHUB_STEP_SUMMARY"
+      - run: corepack npm run link:audit:live -- --origin https://mainlanddispatch.com --summary "$GITHUB_STEP_SUMMARY"

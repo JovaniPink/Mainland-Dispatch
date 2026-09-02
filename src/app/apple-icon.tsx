@@ -1,8 +1,12 @@
 import { ImageResponse } from "next/og";
 import { MainlandDispatchMark } from "./mainland-dispatch-mark";
+import { mainlandIconSizes } from "./metadata-contract";
 
 export const dynamic = "force-static";
-export const size = { width: 180, height: 180 } as const;
+export const size = {
+  width: mainlandIconSizes.apple,
+  height: mainlandIconSizes.apple,
+} as const;
 export const contentType = "image/png";
 
 export default function AppleIcon() {

@@ -1,3 +1,5 @@
 .next
+# Evidence and source-custody records preserve their reviewed line layout.
+docs
 node_modules
 package-lock.json

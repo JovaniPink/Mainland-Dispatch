@@ -1,6 +1,10 @@
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
 import manifest from "@/app/manifest";
+import {
+  mainlandIconSizes,
+  mainlandManifestIcons,
+} from "@/app/metadata-contract";
 import { publishedDispatches } from "@/content/dispatches";
 import { whatXiJinpingWants } from "@/content/notebook/what-xi-jinping-wants";
 import { openModelsClosedSystem } from "@/content/notebook/open-models-closed-system";
@@ -150,6 +154,13 @@ describe("SEO publication contract", () => {
   });
 
   it("publishes consistent crawler and application metadata", () => {
+    expect(mainlandIconSizes).toEqual({
+      favicon: 64,
+      small: 48,
+      large: 192,
+      app: 512,
+      apple: 180,
+    });
     expect(robots()).toMatchObject({
       sitemap: `${siteUrl}/sitemap.xml`,
       host: siteUrl,
@@ -160,17 +171,7 @@ describe("SEO publication contract", () => {
       start_url: "/",
       scope: "/",
       lang: "en-US",
-      icons: [
-        { src: "/icon0", sizes: "48x48", type: "image/png" },
-        { src: "/icon1", sizes: "192x192", type: "image/png" },
-        { src: "/icon2", sizes: "512x512", type: "image/png" },
-        {
-          src: "/apple-icon",
-          sizes: "180x180",
-          type: "image/png",
-          purpose: "any",
-        },
-      ],
+      icons: mainlandManifestIcons,
     });
     expect(homeMetadata.title).toEqual({ absolute: "Mainland Dispatch" });
     expect(savedMetadata.robots).toMatchObject({
