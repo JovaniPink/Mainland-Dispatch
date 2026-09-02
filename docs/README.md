@@ -1,8 +1,8 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** September 1, 2026
+**Current as of:** September 2, 2026
 **Public Dispatches:** 13 published or corrected records
-**Public Notebook entries:** 8 source-reviewed inquiries
+**Public Notebook entries:** 10 source-reviewed inquiries (distinct from Dispatches)
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
 **Source-lead catalog:** 481 records
 **General-China article audit:** 404 external candidates — 375 withheld, 29
@@ -23,12 +23,19 @@ supersedes only the original three-entry Season Zero ceiling. It preserves the
 8–10-hour per-entry discipline and every evidence, privacy, route, and
 publication gate. Current authority is explicit:
 
-| State        | Inquiries                                                              |
-| ------------ | ---------------------------------------------------------------------- |
-| Public       | 01–08                                                                  |
-| Commissioned | None                                                                   |
-| Proposed     | 09 and 10; neither split nor publication is authorized                 |
-| Monitored    | North American origin and transshipment evidence for a future decision |
+| State              | Inquiries                                                          |
+| ------------------ | ------------------------------------------------------------------ |
+| Public             | 01–10                                                              |
+| Corrected          | 04 and 06, with public companions 10 and 09 respectively             |
+| Pending commission | None within the completed ten-entry program                         |
+| Monitored          | North American origin and transshipment evidence; manual watch #35  |
+
+The accepted September 1 decisions and releases in
+[PR #48](https://github.com/JovaniPink/Mainland-Dispatch/pull/48) and
+[PR #49](https://github.com/JovaniPink/Mainland-Dispatch/pull/49) supersede the
+former proposed-state summaries. [Umbrella issue #32](https://github.com/JovaniPink/Mainland-Dispatch/issues/32)
+is closed. The [Safari demo handoff](plans/2026-09-03-demo-readiness.md) records
+presentation verification separately from publication completion.
 
 The existing `/archive` route is the connected public evidence surface. It
 offers filters, a source chronology and explicit relationship views over the 13
@@ -74,7 +81,7 @@ commission](decisions/2026-08-21-notebook-five.md), [Notebook Six
 commission](decisions/2026-08-25-notebook-six.md), and [Notebook Seven
 commission](decisions/2026-08-29-notebook-seven.md).
 
-The completed Inquiry 06 transshipment revision is recorded in a separate
+The historical August 30 Inquiry 06 transshipment revision is recorded in a separate
 [decision addendum](decisions/2026-08-30-notebook-six-transshipment-revision.md)
 and controlled by its immutable [August 30 research
 snapshot](source-notes/2026-08-30-us-canada-china-transshipment-follow-up.md).
@@ -90,6 +97,17 @@ in the [September 1 publication
 addendum](source-notes/2026-09-01-below-half-is-not-gone-publication-refresh.md).
 Repository publication, merge, hosted deployment, and live verification remain
 separate states.
+
+Inquiry 09 and the corrected Inquiry 06 are authorized by the
+[September 1 origin-proof decision](decisions/2026-09-01-notebook-nine.md),
+under the [06/09 custody specification](plans/2026-09-01-inquiry-06-09-migration-spec.md).
+Inquiry 10 and the corrected Inquiry 04 are authorized by the
+[September 1 Arctic-route decision](decisions/2026-09-01-notebook-ten.md),
+under the [04/10 custody specification](plans/2026-09-01-inquiry-04-10-migration-spec.md)
+and [publication refresh](source-notes/2026-09-01-inquiry-10-publication-refresh.md).
+Both companion pairs are public. Their predecessors retain their original
+routes and publication dates, with September 1 correction dates and visible
+compatibility notices.
 
 ## Governing documents
 
@@ -116,18 +134,22 @@ separate states.
   the energy-system research and implementation contract without publishing a
   route.
 - [Ten-Notebook editorial program](decisions/2026-08-30-ten-notebook-program.md)
-  records the target set, authority levels, and blocked corrective splits.
+  records the target set, authority levels, and then-blocked corrective splits.
+  The September 1 decisions below separately authorized the completed releases.
 - [Ten-Notebook custody manifest](plans/2026-08-30-ten-notebook-custody-manifest.md)
-  inventories current content, evidence, URLs, components, and fragments for
+  inventories the August 30 content, evidence, URLs, components, and fragments for
   lossless review.
 - [Inquiry 06 / Inquiry 09 migration specification](plans/2026-09-01-inquiry-06-09-migration-spec.md)
-  defines the lossless custody, future typed contracts, compatibility
-  fragments, tests, and stop conditions without authorizing either correction
-  or publication.
+  defines lossless custody, typed contracts, compatibility fragments, tests,
+  and stop conditions. Publication authority is the separate September 1 decision.
 - [Inquiry 04 / Inquiry 10 migration specification](plans/2026-09-01-inquiry-04-10-migration-spec.md)
   defines Arctic custody, shared-source authority, typed map subsets, legacy
-  fragments, tests, and stop conditions without authorizing either correction
-  or publication.
+  fragments, tests, and stop conditions. Publication authority is the separate
+  September 1 decision.
+- [Notebook Nine commission and Inquiry 06 correction](decisions/2026-09-01-notebook-nine.md)
+  authorizes the origin-proof companion and atomic predecessor correction.
+- [Notebook Ten commission and Inquiry 04 correction](decisions/2026-09-01-notebook-ten.md)
+  authorizes the Arctic-route companion and atomic predecessor correction.
 - [Transshipment evidence watch](plans/2026-08-30-transshipment-evidence-watch.md)
   defines manual update triggers without authorizing recurring ingestion or a
   new article.
@@ -158,6 +180,8 @@ supersedes only the clauses it names.
 ## GitHub work tracking
 
 Issues track execution; the dated decisions above remain the authority.
+The publication program and migration-specification issues below are closed;
+#35 remains an open manual evidence watch, not pending Season Zero implementation.
 
 - [#32 — Ten-Notebook Season Zero umbrella](https://github.com/JovaniPink/Mainland-Dispatch/issues/32)
 - [#33 — Publish Inquiry 08](https://github.com/JovaniPink/Mainland-Dispatch/issues/33)
