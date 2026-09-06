@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SourceLeadSchema } from "./schema";
+import { classifySourceLead } from "./source-lead-taxonomy";
 import { chinaArticleIntake01 } from "./source-lead-batches/china-article-intake-01";
 import { chinaArticleIntake02 } from "./source-lead-batches/china-article-intake-02";
 import { chinaArticleIntake03 } from "./source-lead-batches/china-article-intake-03";
@@ -1220,6 +1221,7 @@ export const sourceLeads = SourceLeadCatalogSchema.parse(
     disposition: "pending",
     urlStatus: "supplied",
     ...lead,
+    taxonomy: classifySourceLead(lead),
     ...(draftedDispatchByLeadId.has(lead.id)
       ? {
           reviewState: "evidence-reviewed",

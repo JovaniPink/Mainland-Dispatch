@@ -199,6 +199,79 @@ export type Vertical = z.infer<typeof VerticalSchema>;
 
 /* ── Editorial source leads ─────────────────────────────────────── */
 
+export const SourceLeadThemeSchema = z.enum([
+  "governance-law",
+  "security-geopolitics",
+  "economy-finance",
+  "trade-industry",
+  "technology-digital",
+  "science-health",
+  "society-culture",
+  "environment-resources",
+  "infrastructure-mobility",
+  "history-memory",
+  "cross-cutting",
+]);
+
+export const SourceLeadRegionSchema = z.enum([
+  "china-mainland",
+  "hong-kong",
+  "macau",
+  "taiwan",
+  "united-states",
+  "canada",
+  "europe",
+  "asia-pacific",
+  "africa",
+  "latin-america",
+  "middle-east",
+  "global",
+]);
+
+export const SourceLeadTaxonomySchema = z
+  .object({
+    version: z.literal("source-taxonomy-v1"),
+    status: z.literal("provisional"),
+    method: z.literal("existing-metadata-rules"),
+    primaryTheme: SourceLeadThemeSchema,
+    themes: z.array(SourceLeadThemeSchema).min(1).max(4),
+    regions: z.array(SourceLeadRegionSchema).min(1),
+    publicationDecade: nonEmpty.regex(/^\d{4}s$/),
+  })
+  .superRefine((taxonomy, ctx) => {
+    if (!taxonomy.themes.includes(taxonomy.primaryTheme)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["primaryTheme"],
+        message: "primary theme must be included in themes",
+      });
+    }
+    if (new Set(taxonomy.themes).size !== taxonomy.themes.length) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["themes"],
+        message: "taxonomy themes must be unique",
+      });
+    }
+    if (new Set(taxonomy.regions).size !== taxonomy.regions.length) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["regions"],
+        message: "taxonomy regions must be unique",
+      });
+    }
+    if (
+      taxonomy.themes.includes("cross-cutting") &&
+      taxonomy.themes.length > 1
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["themes"],
+        message: "cross-cutting must be the only theme when used",
+      });
+    }
+  });
+
 export const SourceLeadSchema = z.object({
   id: nonEmpty.regex(
     /^lead-[a-z0-9]+(?:-[a-z0-9]+)*$/,
@@ -252,6 +325,7 @@ export const SourceLeadSchema = z.object({
     .optional(),
   collectionId: nonEmpty.optional(),
   topics: z.array(nonEmpty).min(1),
+  taxonomy: SourceLeadTaxonomySchema,
   evidenceStatus: z.enum([
     "confirmed",
     "vendor-claim",
@@ -266,6 +340,9 @@ export const SourceLeadSchema = z.object({
 });
 
 export type SourceLead = z.infer<typeof SourceLeadSchema>;
+export type SourceLeadTheme = z.infer<typeof SourceLeadThemeSchema>;
+export type SourceLeadRegion = z.infer<typeof SourceLeadRegionSchema>;
+export type SourceLeadTaxonomy = z.infer<typeof SourceLeadTaxonomySchema>;
 
 /* ── Compare ──────────────────────────────────────────────────────── */
 
