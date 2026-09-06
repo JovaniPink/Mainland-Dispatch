@@ -13,6 +13,7 @@ import { chinaArticleIntake10 } from "./source-lead-batches/china-article-intake
 import { chinaArticleIntake11 } from "./source-lead-batches/china-article-intake-11";
 import { chinaArticleIntake12 } from "./source-lead-batches/china-article-intake-12";
 import { chinaArticleIntake13 } from "./source-lead-batches/china-article-intake-13";
+import { chinaCriticalMinerals20260906 } from "./source-lead-batches/china-critical-minerals-2026-09-06";
 import { chinaQualityLinks20260814 } from "./source-lead-batches/china-quality-links-2026-08-14";
 import { existingDispatchCanonicalSources } from "./source-lead-batches/existing-dispatch-canonical-sources";
 
@@ -70,6 +71,7 @@ const leads = [
   ...chinaArticleIntake11,
   ...chinaArticleIntake12,
   ...chinaArticleIntake13,
+  ...chinaCriticalMinerals20260906,
   ...chinaQualityLinks20260814,
   ...existingDispatchCanonicalSources,
   {
