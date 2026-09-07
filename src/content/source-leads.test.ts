@@ -13,6 +13,68 @@ describe("editorial article-candidate catalog", () => {
     expect(datedYears).not.toContain("undefined");
   });
 
+  it("assigns versioned provisional taxonomy metadata to every source lead", () => {
+    const taxonomies = sourceLeads.map((lead) => Reflect.get(lead, "taxonomy"));
+
+    expect(taxonomies).toHaveLength(510);
+    expect(
+      taxonomies.every(
+        (taxonomy) =>
+          taxonomy?.version === "source-taxonomy-v1" &&
+          taxonomy?.status === "provisional" &&
+          taxonomy?.method === "existing-metadata-rules" &&
+          taxonomy?.themes.length > 0 &&
+          taxonomy?.themes.includes(taxonomy.primaryTheme) &&
+          taxonomy?.regions.length > 0 &&
+          /^\d{4}s$/.test(taxonomy.publicationDecade)
+      )
+    ).toBe(true);
+    expect(
+      taxonomies.every((taxonomy) => taxonomy.primaryTheme !== "cross-cutting")
+    ).toBe(true);
+  });
+
+  it("classifies representative links without changing evidence authority", () => {
+    const mineralAtlas = sourceLeads.find(
+      (lead) => lead.id === "lead-2025-usgs-critical-minerals-atlas"
+    );
+    const economyReport = sourceLeads.find(
+      (lead) => lead.id === "lead-2018-nyt-china-economy-slowdown"
+    );
+    const hongKongReport = sourceLeads.find(
+      (lead) => lead.id === "lead-2019-hkfp-extradition-protest"
+    );
+    const modelRelease = sourceLeads.find(
+      (lead) => lead.id === "lead-2024-meta-llama-3-1"
+    );
+    const dottedUnitedStatesLead = sourceLeads.find(
+      (lead) => lead.id === "lead-2019-npr-businesses-cyber-espionage"
+    );
+
+    expect(Reflect.get(mineralAtlas!, "taxonomy")).toMatchObject({
+      primaryTheme: "trade-industry",
+      regions: expect.arrayContaining(["global"]),
+    });
+    expect(Reflect.get(economyReport!, "taxonomy")).toMatchObject({
+      primaryTheme: "economy-finance",
+      regions: expect.arrayContaining(["china-mainland"]),
+    });
+    expect(Reflect.get(hongKongReport!, "taxonomy")).toMatchObject({
+      primaryTheme: "governance-law",
+      regions: expect.arrayContaining(["hong-kong"]),
+    });
+    expect(Reflect.get(modelRelease!, "taxonomy")).toMatchObject({
+      primaryTheme: "technology-digital",
+    });
+    expect(Reflect.get(dottedUnitedStatesLead!, "taxonomy")).toMatchObject({
+      regions: expect.arrayContaining(["united-states"]),
+    });
+    expect(mineralAtlas).toMatchObject({
+      disposition: "withheld",
+      evidenceStatus: "unverified",
+    });
+  });
+
   it("retains insecure legacy URLs only inside the non-public review inbox", () => {
     const legacyHttpLeads = sourceLeads.filter((lead) =>
       lead.url.startsWith("http://")
@@ -310,6 +372,17 @@ describe("editorial article-candidate catalog", () => {
         {
           ...sourceLeads.find((lead) => lead.dispatchId === "d-014")!,
           dispatchId: "d-013",
+        },
+      ]).success
+    ).toBe(false);
+    expect(
+      SourceLeadCatalogSchema.safeParse([
+        {
+          ...sourceLeads[0],
+          taxonomy: {
+            ...sourceLeads[0].taxonomy,
+            primaryTheme: "cross-cutting",
+          },
         },
       ]).success
     ).toBe(false);

@@ -34,6 +34,10 @@ describe("SourceLeadInbox", () => {
     expect(
       screen.getByRole("combobox", { name: "Disposition" })
     ).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Theme" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Geographic scope" })
+    ).toBeInTheDocument();
   });
 
   it("filters a large inbox without changing its publication boundary", () => {
@@ -48,5 +52,24 @@ describe("SourceLeadInbox", () => {
     expect(
       screen.getByText("No source leads match this editorial filter.")
     ).toBeInTheDocument();
+  });
+
+  it("filters and presents the controlled link taxonomy", () => {
+    render(<SourceLeadInbox />);
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Theme" }), {
+      target: { value: "trade-industry" },
+    });
+
+    expect(
+      screen.getByText(/The Mineral Industry of China/)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/China’s Economy Slows Sharply/)
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Trade and industry/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Provisional taxonomy/).length).toBeGreaterThan(
+      0
+    );
   });
 });
