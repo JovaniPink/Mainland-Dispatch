@@ -116,6 +116,7 @@ const parsed = parseOriginProofNotebookEntry({
   },
   publishedAt: "2026-09-01",
   updatedAt: "2026-09-01",
+  presentationUpdatedAt: "2026-09-07",
   readTime: "19 min",
   tags: ["Canada", "China", "Electric vehicles", "Rules of origin", "USMCA"],
   editorialStatus: "published",

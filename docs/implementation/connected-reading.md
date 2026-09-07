@@ -121,3 +121,28 @@ Back, named the Focus record selector, and showed no document overflow at sample
 390px, 320px, and 1440px widths. Chrome native Play advanced from 0.35 to 14.60
 seconds on the first press; native Pause reported Paused, and Unload removed the
 audio. Native Safari/audibility confirmation remains pending under issue #53.
+
+## Package 3: shared design reference
+
+The homepage brings the latest headline, synopsis, Read, Save, and Sources into
+its opening composition. The three entry routes follow it. The index features
+the latest inquiry once and lists nine earlier inquiries while retaining all ten
+collection metadata entries. The shared reader puts dated metadata and editor
+credit before a roman-type thesis, with public GitHub correction links.
+
+About names Jovani Pink as editor without attributing external reporting to him.
+The correction form requests the public article URL, passage, proposed correction,
+and sources. It never submits an issue automatically. Presentation revisions
+are dated September 7 separately from unchanged evidence-review dates and source
+inventories. Substantive copy edits are recorded in
+`docs/editorial/2026-09-07-presentation-copy.json`.
+
+Inquiry 08 is the design reference: four separate bands, 0–100 percent share bars,
+independent output and change labels, capacity additions/retirements, and aligned
+utilization comparisons. Modeled curtailment remains separate. Source references
+and essential limits are visible before optional method disclosures. Existing
+measure values, evidence labels, source IDs, and compatibility anchors remain.
+
+Production render review of this package precedes package 4. Native Safari,
+VoiceOver, full zoom/reflow, and broader visual acceptance remain explicit gates;
+these draft packages are not release authorization.

@@ -35,6 +35,7 @@ const parsed = parseCirculationTwoDomainNotebookEntry({
       "notebook-source-gates-judgment",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: legacyWhatGetsThrough.publishedAt,
   updatedAt: "2026-09-01",
   readTime: "16 min",

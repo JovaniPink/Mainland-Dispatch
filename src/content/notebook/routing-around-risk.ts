@@ -33,6 +33,7 @@ export const routingAroundRisk = parseMaritimeRiskNotebookEntry({
       "notebook-source-risk-unctad-suez",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-08-18",
   updatedAt: "2026-09-01",
   readTime: "20 min",

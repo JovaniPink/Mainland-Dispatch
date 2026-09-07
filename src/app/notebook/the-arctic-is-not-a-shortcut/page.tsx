@@ -56,6 +56,7 @@ export default function TheArcticIsNotAShortcutPage() {
         thesis={entry.thesis}
         publishedAt={entry.publishedAt}
         updatedAt={entry.updatedAt}
+        presentationUpdatedAt={entry.presentationUpdatedAt}
         readTime={entry.readTime}
         tags={entry.tags}
         editorialLabel="Source-backed interpretation"

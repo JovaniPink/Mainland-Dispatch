@@ -37,7 +37,7 @@ export const theArcticIsNotAShortcut = parseArcticRouteNotebookEntry({
   subtitle:
     "A shorter advertised distance does not create a dependable corridor. Ice, Russian administration, rescue capacity, insurance, sanctions, vessel capability, and environmental rules remain part of every sailing.",
   description:
-    "A source-audited explanation of the Northern Sea Route's seasonal scale, operating constraints, Russian governance, environmental rules, and unresolved voyage evidence.",
+    "A shorter Arctic route raises a harder question: can seasonal sailings become dependable service? Examine the scale, operating constraints, and unresolved voyage evidence.",
   thesis:
     "The Northern Sea Route is a bounded seasonal container corridor, not a reliable substitute for Hormuz energy flows or Suez-scale container traffic. A shorter advertised distance still depends on ice conditions, Russian administration and rescue capacity, insurance, sanctions, vessel capability, and environmental rules, while a planned or departed voyage remains different from completed and repeatable service.",
   frontPagePreview: {
@@ -52,6 +52,7 @@ export const theArcticIsNotAShortcut = parseArcticRouteNotebookEntry({
       "notebook-source-risk-zhoushan-departure",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-09-01",
   updatedAt: "2026-09-01",
   readTime: "16 min",

@@ -46,6 +46,7 @@ export default function WhatXiJinpingWantsPage() {
         thesis={entry.thesis}
         publishedAt={entry.publishedAt}
         updatedAt={entry.updatedAt}
+        presentationUpdatedAt={entry.presentationUpdatedAt}
         readTime={entry.readTime}
         tags={entry.tags}
         editorialLabel="Public research notebook"

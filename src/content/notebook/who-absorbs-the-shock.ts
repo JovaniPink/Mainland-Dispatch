@@ -23,6 +23,7 @@ export const whoAbsorbsTheShock = parseTradeAdjustmentNotebookEntry({
       "notebook-source-adjustment-ecb",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-08-26",
   updatedAt: "2026-08-26",
   readTime: "22 min",

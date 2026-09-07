@@ -1,0 +1,23 @@
+[
+  {
+    "file": "src/content/notebook/below-half-is-not-gone.ts",
+    "field": "subtitle",
+    "original": "Coal fell below half of China's electricity mix while its output and fleet still grew.",
+    "replacement": "Coal fell below half of China's electricity generation. Why did its output and fleet still grow, and what does that tell us about the transition?",
+    "preservedBoundary": "First-half 2026 generation share; no claim of falling absolute output or completed transition."
+  },
+  {
+    "file": "src/content/notebook/below-half-is-not-gone.ts",
+    "field": "thesis",
+    "original": "Coal's 49.7 percent generation share is a real structural milestone, but share, output, installed capacity, and utilization answer different questions: coal can lose share while a larger fleet still generates more electricity, and integration constraints can coexist with rapid renewable growth.",
+    "replacement": "Coal's 49.7 percent generation share marks a structural change, even as coal output and installed capacity grew. Share, output, capacity, and utilization answer different questions. A larger fleet can generate more electricity while losing share and being used less intensively; integration constraints can also coexist with rapid renewable growth.",
+    "preservedBoundary": "Preserves structural milestone, independent measures, growing output and fleet, declining utilization, and bounded integration interpretation; no new causal estimate."
+  },
+  {
+    "file": "src/content/notebook/the-arctic-is-not-a-shortcut.ts",
+    "field": "description",
+    "original": "A source-audited explanation of the Northern Sea Route's seasonal scale, operating constraints, Russian governance, environmental rules, and unresolved voyage evidence.",
+    "replacement": "A shorter Arctic route raises a harder question: can seasonal sailings become dependable service? Examine the scale, operating constraints, and unresolved voyage evidence.",
+    "preservedBoundary": "A question, not a claim of dependable or completed service; existing source limits retained."
+  }
+]

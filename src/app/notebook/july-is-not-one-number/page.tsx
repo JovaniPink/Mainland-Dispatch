@@ -50,6 +50,7 @@ export default function JulyIsNotOneNumberPage() {
         thesis={entry.thesis}
         publishedAt={entry.publishedAt}
         updatedAt={entry.updatedAt}
+        presentationUpdatedAt={entry.presentationUpdatedAt}
         readTime={entry.readTime}
         tags={entry.tags}
         editorialLabel="Source-audited data interpretation"

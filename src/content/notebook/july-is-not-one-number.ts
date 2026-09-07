@@ -23,6 +23,7 @@ export const julyIsNotOneNumber = parseEconomicSignalsNotebookEntry({
       "notebook-source-july-profits",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-08-29",
   updatedAt: "2026-08-29",
   readTime: "14 min",

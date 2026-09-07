@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { correctionUrl } from "@/lib/corrections";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { NotebookShare } from "@/components/notebook/notebook-share";
 import { SaveButton } from "@/components/dispatch/save-button";
@@ -15,6 +17,7 @@ type NotebookReaderShellProps = {
   thesis: string;
   publishedAt: string;
   updatedAt: string;
+  presentationUpdatedAt?: string;
   readTime: string;
   tags: string[];
   editorialLabel: string;
@@ -71,6 +74,7 @@ export function NotebookReaderShell({
   thesis,
   publishedAt,
   updatedAt,
+  presentationUpdatedAt,
   readTime,
   tags,
   editorialLabel,
@@ -147,24 +151,9 @@ export function NotebookReaderShell({
           <h1 className="mt-3 max-w-5xl font-serif text-4xl leading-[1.05] sm:text-6xl">
             {title}
           </h1>
-          <p className="mt-4 max-w-4xl font-serif text-lg italic leading-relaxed text-ink-muted sm:text-2xl">
+          <p className="mt-4 max-w-4xl font-serif text-lg leading-relaxed text-ink-muted sm:text-xl">
             {subtitle}
           </p>
-          <section
-            data-testid="working-thesis"
-            aria-labelledby="working-thesis-label"
-            className="mt-6 max-w-4xl border-y border-rule bg-jade-soft/25 px-4 py-5 sm:px-5"
-          >
-            <h2
-              id="working-thesis-label"
-              className="font-mono text-xs uppercase tracking-widest text-jade"
-            >
-              Working thesis
-            </h2>
-            <p className="mt-3 font-serif text-lg italic leading-relaxed sm:text-xl">
-              {thesis}
-            </p>
-          </section>
           <div
             data-testid="notebook-metadata"
             className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs uppercase tracking-widest text-ink-muted"
@@ -174,6 +163,12 @@ export function NotebookReaderShell({
             <span>{readTime}</span>
             <span aria-hidden>-</span>
             <span>{editorialLabel}</span>
+            <Link
+              href="/about"
+              className="text-signal underline underline-offset-4"
+            >
+              Edited by Jovani Pink
+            </Link>
             {updatedAt !== publishedAt && (
               <>
                 <span aria-hidden>-</span>
@@ -181,6 +176,12 @@ export function NotebookReaderShell({
               </>
             )}
           </div>
+          {presentationUpdatedAt && (
+            <p className="mt-3 text-sm text-ink-muted">
+              Presentation updated {formatDate(presentationUpdatedAt)}. Evidence
+              review date unchanged.
+            </p>
+          )}
           <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
             <ul className="flex flex-wrap gap-2" aria-label="Topics">
               {tags.map((tag) => (
@@ -198,6 +199,19 @@ export function NotebookReaderShell({
             />
             <NotebookShare title={title} path={path} campaign={campaign} />
           </div>
+          <section
+            data-testid="working-thesis"
+            aria-labelledby="working-thesis-label"
+            className="mt-6 max-w-[70ch] border-t border-rule pt-5"
+          >
+            <h2
+              id="working-thesis-label"
+              className="font-mono text-xs uppercase tracking-widest text-jade"
+            >
+              Working thesis
+            </h2>
+            <p className="mt-3 font-serif text-lg leading-[1.65]">{thesis}</p>
+          </section>
         </div>
       </header>
 
@@ -263,6 +277,18 @@ export function NotebookReaderShell({
           className={cn("min-w-0 w-full justify-self-end", contentClassName)}
         >
           {children}
+          <footer className="mt-10 border-t border-rule pt-5 text-sm leading-6 text-ink-muted">
+            <a
+              href={correctionUrl(path, title)}
+              className="text-signal underline underline-offset-4"
+            >
+              Suggest a correction
+            </a>
+            <p>
+              Submissions are public and require GitHub. You review and submit
+              the issue yourself.
+            </p>
+          </footer>
         </div>
       </div>
     </>
