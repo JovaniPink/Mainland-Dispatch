@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SaveButton } from "@/components/dispatch/save-button";
 import { JsonLd } from "@/components/seo/json-ld";
 import {
   latestNotebookEntry,
@@ -70,6 +71,10 @@ export default function NotebooksPage() {
             {latestNotebookEntry.subtitle}
           </p>
         </div>
+        <SaveButton
+          target={{ kind: "notebook", id: latestNotebookEntry.slug }}
+          title={latestNotebookEntry.title}
+        />
         <Link
           href={`/notebook/${latestNotebookEntry.slug}`}
           className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
@@ -113,6 +118,10 @@ export default function NotebooksPage() {
                 <br />
                 {entry.readTime} · {entry.sourceTrail.length} sources
               </p>
+              <SaveButton
+                target={{ kind: "notebook", id: entry.slug }}
+                title={entry.title}
+              />
             </article>
           ))}
         </div>

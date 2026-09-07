@@ -6,6 +6,8 @@ export type ArchiveFilterKey =
   "vertical" | "kind" | "evidence" | "publisher" | "place" | "year" | "query";
 
 export type ArchiveContext = {
+  resultType: "all" | "inquiry" | "source" | "dispatch";
+  relationshipMode: "inquiry" | "dispatch";
   defaultInquirySlug: string;
   view: ArchiveView;
   vertical: Vertical | "all";
@@ -22,6 +24,11 @@ export type ArchiveContext = {
 
 export type ArchiveEvent =
   | { type: "SET_VIEW"; view: ArchiveView }
+  | { type: "SET_RESULT_TYPE"; resultType: ArchiveContext["resultType"] }
+  | {
+      type: "SET_RELATIONSHIP_MODE";
+      relationshipMode: ArchiveContext["relationshipMode"];
+    }
   | { type: "FILTER_VERTICAL"; vertical: Vertical | "all" }
   | { type: "FILTER_KIND"; kind: DispatchKind | "all" }
   | { type: "FILTER_EVIDENCE"; evidence: EvidenceStatus | "all" }
@@ -43,6 +50,8 @@ export type ArchiveEvent =
     };
 
 export const initialArchiveContext: ArchiveContext = {
+  resultType: "all",
+  relationshipMode: "inquiry",
   defaultInquirySlug: "",
   view: "cards",
   vertical: "all",
@@ -84,6 +93,14 @@ export const archiveMachine = setup({
   states: {
     ready: {
       on: {
+        SET_RESULT_TYPE: {
+          actions: assign({ resultType: ({ event }) => event.resultType }),
+        },
+        SET_RELATIONSHIP_MODE: {
+          actions: assign({
+            relationshipMode: ({ event }) => event.relationshipMode,
+          }),
+        },
         SET_VIEW: {
           actions: assign({ view: ({ event }) => event.view }),
         },
@@ -135,6 +152,7 @@ export const archiveMachine = setup({
           actions: assign(({ context }) => ({
             ...context,
             ...archiveFilterDefaults,
+            resultType: "all" as const,
           })),
         },
         HYDRATE: {

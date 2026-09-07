@@ -225,7 +225,11 @@ export default async function DispatchPage({
           </p>
           <ul className="mt-3 space-y-3">
             {evidenceSources.map((source) => (
-              <li key={source.id} className="border-l-2 border-rule pl-3">
+              <li
+                key={source.id}
+                id={source.id}
+                className="scroll-mt-32 border-l-2 border-rule pl-3"
+              >
                 <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
                   {source.roleLabel}
                 </p>
