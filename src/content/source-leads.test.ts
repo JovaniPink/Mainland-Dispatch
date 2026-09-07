@@ -47,6 +47,9 @@ describe("editorial article-candidate catalog", () => {
     const modelRelease = sourceLeads.find(
       (lead) => lead.id === "lead-2024-meta-llama-3-1"
     );
+    const dottedUnitedStatesLead = sourceLeads.find(
+      (lead) => lead.id === "lead-2019-npr-businesses-cyber-espionage"
+    );
 
     expect(Reflect.get(mineralAtlas!, "taxonomy")).toMatchObject({
       primaryTheme: "trade-industry",
@@ -62,6 +65,9 @@ describe("editorial article-candidate catalog", () => {
     });
     expect(Reflect.get(modelRelease!, "taxonomy")).toMatchObject({
       primaryTheme: "technology-digital",
+    });
+    expect(Reflect.get(dottedUnitedStatesLead!, "taxonomy")).toMatchObject({
+      regions: expect.arrayContaining(["united-states"]),
     });
     expect(mineralAtlas).toMatchObject({
       disposition: "withheld",

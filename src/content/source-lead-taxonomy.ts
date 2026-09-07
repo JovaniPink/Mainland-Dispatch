@@ -192,7 +192,7 @@ const regionRules: RegionRule[] = [
   {
     region: "united-states",
     patterns: [
-      /\b(?:united-states|united states|u\.s\.|american|america)\b/,
+      /\b(?:united-states|united states|american|america)\b|\bu\.s\.(?=\s|$)/,
       /\b(?:washington|california|silicon-valley)\b/,
     ],
   },
