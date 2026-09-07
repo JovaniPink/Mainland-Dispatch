@@ -241,9 +241,14 @@ and
 
 The current documentation map, governing-methodology precedence, and catalog
 rollup are maintained in [`docs/README.md`](docs/README.md). The source-lead
-catalog contains 481 records. The thirteen general-China intake batches plus the
+catalog contains 510 records. The thirteen general-China intake batches plus the
 August 14 quality-link intake cover 404 external article candidates: 375
-withheld, 29 rejected, and none drafted or public.
+withheld, 29 rejected, and none drafted or public. A separate September 6
+critical-minerals intake contributes 29 withheld research leads. Every catalog
+record carries the versioned, provisional theme, geography, and chronology
+metadata defined in
+[`docs/source-link-taxonomy.md`](docs/source-link-taxonomy.md); taxonomy never
+changes evidence or publication status.
 
 Topic-specific intake logs record source quality, exclusions, open checks, and
 the exact research stopping point. They are dated snapshots, so earlier totals

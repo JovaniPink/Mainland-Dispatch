@@ -1,10 +1,10 @@
 # Mainland Dispatch documentation index
 
-**Current as of:** September 1, 2026
+**Current as of:** September 6, 2026
 **Public Dispatches:** 13 published or corrected records
 **Public Notebook entries:** 8 source-reviewed inquiries
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
-**Source-lead catalog:** 481 records
+**Source-lead catalog:** 510 records
 **General-China article audit:** 404 external candidates — 375 withheld, 29
 rejected, 0 drafted, 0 public
 
@@ -33,7 +33,7 @@ publication gate. Current authority is explicit:
 The existing `/archive` route is the connected public evidence surface. It
 offers filters, a source chronology and explicit relationship views over the 13
 published records. It may show the audited corpus totals below, but it never
-imports the 481 private leads into a public stream. Withheld and rejected
+imports the 510 private leads into a public stream. Withheld and rejected
 figures communicate editorial provenance, not endorsement.
 
 The founding inquiry is supported by the
@@ -143,6 +143,9 @@ separate states.
 - [Evidence Atlas methodology](evidence-atlas-source-methodology.md) defines
   source roles, promotion requirements, artifacts, limitations and the
   unpublished boundary for the three local source snapshots.
+- [Source-link taxonomy](source-link-taxonomy.md) defines the versioned,
+  provisional theme, geography, and chronology metadata assigned to every
+  private source lead without changing publication or evidence status.
 - [Public prototype withdrawal](decisions/2026-07-28-public-prototype-withdrawal.md)
   records the decision that no prototype or source-snapshot content may resolve
   on the production site.
@@ -183,10 +186,11 @@ Issues track execution; the dated decisions above remain the authority.
 | Aug. 14 quality links |         20 |       20 |        0 |              0 |
 | **Total**             |    **404** |  **375** |   **29** |          **0** |
 
-The remaining 77 catalog records comprise existing Dispatch canonical sources,
-supporting research, policy records, open-model intake and Atlas evidence
-records. Eleven evidence-reviewed mappings remain outside public routes. A
-catalog entry or drafted mapping is not a publication count.
+The other 106 catalog records comprise 29 withheld critical-minerals research
+leads plus 77 existing Dispatch canonical sources, supporting research, policy
+records, open-model intake and Atlas evidence records. Eleven evidence-reviewed
+mappings remain outside public routes. A catalog entry, taxonomy assignment, or
+drafted mapping is not a publication count.
 
 ## Article-corpus audit records
 
@@ -207,6 +211,14 @@ Each record documents access state, disposition, exact stopping point and the
 checks required before an individual article may advance. These are review
 ledgers, not public summaries.
 
+## Topic-specific intake records
+
+- [September 6 critical-minerals source report](source-notes/2026-09-06-china-critical-minerals/report-source.md)
+
+The critical-minerals batch contributes 29 private, withheld research leads. It
+does not change the 404-record general-China article audit or authorize a public
+interactive.
+
 ## Release and promotion records
 
 - [Kimi K3 sourcing-brief intake](source-notes/2026-07-22-kimi-k3-sourcing-brief-intake.md)
@@ -223,4 +235,4 @@ ledgers, not public summaries.
 
 These files preserve what was known and counted at their recorded review time.
 Counts such as 44 or 56 describe those historical snapshots, not the current
-481-record catalog.
+510-record catalog.
