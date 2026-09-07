@@ -445,6 +445,16 @@ export function ArchiveExplorer() {
       const parsed = parseArchiveUrl(new URL(window.location.href));
       send({ type: "HYDRATE", filters: parsed.context });
       setNotice(parsed.notice);
+      const canonical = serializeArchiveUrl(
+        new URL(window.location.href),
+        parsed.context
+      );
+      if (
+        canonical !==
+        `${window.location.pathname}${window.location.search}${window.location.hash}`
+      ) {
+        window.history.replaceState(window.history.state, "", canonical);
+      }
     }
     const timeout = window.setTimeout(() => {
       if (!hasHydrated.current) restore();

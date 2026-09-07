@@ -195,3 +195,17 @@ it("restores Back/Forward state without writing another history entry", async ()
   expect(push).toHaveBeenCalledTimes(1);
   push.mockRestore();
 });
+
+it("makes the default Relationships selection explicit without adding history", async () => {
+  window.history.replaceState({}, "", "/archive?view=relationships#sources");
+  const push = jest.spyOn(window.history, "pushState");
+  render(<ArchiveExplorer />);
+  await waitFor(() =>
+    expect(window.location.search).toContain(
+      "inquiry=the-arctic-is-not-a-shortcut"
+    )
+  );
+  expect(window.location.hash).toBe("#sources");
+  expect(push).not.toHaveBeenCalled();
+  push.mockRestore();
+});
