@@ -2,6 +2,8 @@ import { usePathname } from "next/navigation";
 import { render, screen } from "@testing-library/react";
 import { Masthead } from "@/components/shell/masthead";
 
+jest.mock("next/navigation", () => ({ usePathname: jest.fn(() => "/") }));
+
 describe("Masthead", () => {
   it("uses publication-first navigation and a non-wrapping name", () => {
     render(<Masthead />);
