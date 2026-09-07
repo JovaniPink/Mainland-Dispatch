@@ -1,3 +1,5 @@
+import { FigureSources } from "./figure-sources";
+import type { NotebookEntry } from "@/content/notebook/schema";
 import type { PowerBalanceNotebookEntry } from "@/content/notebook/schema";
 
 type Comparison = PowerBalanceNotebookEntry["comparisons"][number];
@@ -40,7 +42,13 @@ function RelativeBar({
   );
 }
 
-export function PairedPowerMetrics({ metrics }: { metrics: Comparison[] }) {
+export function PairedPowerMetrics({
+  metrics,
+  sources,
+}: {
+  metrics: Comparison[];
+  sources: NotebookEntry["sourceTrail"];
+}) {
   return (
     <figure aria-labelledby="paired-power-title">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-rule pb-3">
@@ -70,7 +78,7 @@ export function PairedPowerMetrics({ metrics }: { metrics: Comparison[] }) {
           return (
             <article
               key={metric.id}
-              className="border border-rule bg-paper-warm/25 p-4"
+              className="border-t border-rule py-4 md:pr-4"
               aria-label={`${metric.label}, ${metric.asOf}: China ${metric.china.display}; United States ${metric.unitedStates.display}`}
             >
               <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
@@ -96,7 +104,7 @@ export function PairedPowerMetrics({ metrics }: { metrics: Comparison[] }) {
                 />
               </div>
               <p className="mt-4 text-sm leading-6">{metric.reading}</p>
-              <p className="mt-3 border-l-2 border-rule pl-3 text-xs leading-5 text-ink-muted">
+              <p className="mt-3 border-l-2 border-rule pl-3 text-sm leading-6 text-ink-muted">
                 <strong className="text-ink">Do not overread:</strong>{" "}
                 {metric.caveat}
               </p>
@@ -104,10 +112,14 @@ export function PairedPowerMetrics({ metrics }: { metrics: Comparison[] }) {
           );
         })}
       </div>
-      <p className="mt-4 text-xs leading-5 text-ink-muted">
+      <p className="mt-4 text-sm leading-6 text-ink-muted">
         Bar lengths compare only the two values inside each card. They cannot be
         compared across cards because the units differ.
       </p>
+      <FigureSources
+        ids={[...new Set(metrics.flatMap((item) => item.sourceIds))]}
+        sources={sources}
+      />
     </figure>
   );
 }
@@ -152,7 +164,7 @@ export function ChinaConcentrationBars({
               />
             </div>
             <p className="mt-2 text-sm leading-6">{item.reading}</p>
-            <p className="mt-1 text-xs leading-5 text-ink-muted">
+            <p className="mt-1 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Boundary:</strong> {item.caveat}
             </p>
           </article>
@@ -188,7 +200,7 @@ function DemographicCard({ profile }: { profile: DemographicProfile }) {
         </div>
       </dl>
       {profile.migrationDisplay && (
-        <p className="mt-3 text-xs leading-5 text-ink-muted">
+        <p className="mt-3 text-sm leading-6 text-ink-muted">
           Migration contribution: {profile.migrationDisplay}
         </p>
       )}
@@ -221,7 +233,7 @@ function DemographicCard({ profile }: { profile: DemographicProfile }) {
           </div>
         ))}
       </dl>
-      <p className="mt-4 border-t border-rule pt-3 text-xs leading-5 text-ink-muted">
+      <p className="mt-4 border-t border-rule pt-3 text-sm leading-6 text-ink-muted">
         {profile.note}
       </p>
     </article>
@@ -248,7 +260,7 @@ export function DemographicProfiles({
           <DemographicCard key={profile.country} profile={profile} />
         ))}
       </div>
-      <p className="mt-4 text-xs leading-5 text-ink-muted">
+      <p className="mt-4 text-sm leading-6 text-ink-muted">
         The age bands align the visual question, not the statistical systems.
         Census and NBS use different reference periods and national definitions;
         the notes preserve that boundary.

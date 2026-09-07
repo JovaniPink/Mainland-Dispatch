@@ -8,9 +8,9 @@ import { compareMachine } from "@/machines/explorer-machines";
 import { StateLab } from "@/components/state-lab/state-lab";
 
 const roleLabels: Record<string, string> = {
-  mainland: "Mainland source",
-  us: "US source",
-  primary: "Primary document",
+  mainland: "DeepSeek interview",
+  us: "Llama 3.1 release",
+  primary: "Llama 2 release",
 };
 
 function SourceColumn({ source }: { source: Comparison["sources"][number] }) {

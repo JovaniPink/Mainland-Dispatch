@@ -56,10 +56,7 @@ export function EconomicSignalsFigure({
   ] satisfies readonly SourceRoleSummary[];
 
   return (
-    <figure
-      aria-labelledby="economic-signals-title"
-      className="border border-rule bg-paper-warm/20 p-4 sm:p-6"
-    >
+    <figure aria-labelledby="economic-signals-title" className="py-2">
       <figcaption id="economic-signals-title" className="max-w-3xl">
         <span className="font-mono text-xs uppercase tracking-widest text-jade">
           Six July economic signals with separate definitions
@@ -68,7 +65,7 @@ export function EconomicSignalsFigure({
           Read across the measures; do not add them into a score.
         </span>
         <span className="mt-3 block text-sm leading-6 text-ink-muted">
-          Each card preserves the observation period, comparison, basis,
+          Each strip preserves the observation period, comparison, basis,
           coverage, alternative reading, and source limit.
         </span>
       </figcaption>
@@ -89,7 +86,7 @@ export function EconomicSignalsFigure({
               <dt className="font-mono text-xs uppercase tracking-widest text-ink">
                 {role.label}
               </dt>
-              <dd className="mt-1 text-xs leading-5 text-ink-muted">
+              <dd className="mt-1 text-sm leading-6 text-ink-muted">
                 {role.note}
               </dd>
             </div>
@@ -97,11 +94,11 @@ export function EconomicSignalsFigure({
         </dl>
       </section>
 
-      <ol className="mt-6 grid gap-4 md:grid-cols-2">
+      <ol className="mt-6 grid gap-6">
         {indicators.map((indicator, index) => (
           <li
             key={indicator.id}
-            className="flex min-w-0 flex-col border border-rule bg-paper p-5"
+            className="flex min-w-0 flex-col border-t border-rule py-5"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -119,18 +116,75 @@ export function EconomicSignalsFigure({
               {indicator.display}
             </p>
 
+            <svg
+              viewBox="0 0 600 55"
+              aria-hidden="true"
+              className="mt-5 h-14 w-full text-jade"
+            >
+              <line x1="20" x2="580" y1="20" y2="20" stroke="currentColor" />
+              <line x1="300" x2="300" y1="9" y2="31" stroke="currentColor" />
+              <circle
+                cx={
+                  300 +
+                  ((indicator.value -
+                    (indicator.comparison === "50-point threshold" ? 50 : 0)) /
+                    (indicator.comparison === "50-point threshold"
+                      ? 5
+                      : Math.max(
+                          5,
+                          Math.ceil(Math.abs(indicator.value) / 5) * 5
+                        ))) *
+                    280
+                }
+                cy="20"
+                r="6"
+                fill="currentColor"
+              />
+              <text
+                x="300"
+                y="50"
+                textAnchor="middle"
+                fill="currentColor"
+                fontSize="14"
+              >
+                {indicator.comparison === "50-point threshold"
+                  ? "50 · expansion threshold"
+                  : "0% · no change"}
+              </text>
+              <text x="20" y="50" fill="currentColor" fontSize="14">
+                {indicator.comparison === "50-point threshold"
+                  ? "45"
+                  : `-${Math.max(5, Math.ceil(Math.abs(indicator.value) / 5) * 5)}%`}
+              </text>
+              <text
+                x="580"
+                y="50"
+                textAnchor="end"
+                fill="currentColor"
+                fontSize="14"
+              >
+                {indicator.comparison === "50-point threshold"
+                  ? "55"
+                  : `+${Math.max(5, Math.ceil(Math.abs(indicator.value) / 5) * 5)}%`}
+              </text>
+            </svg>
+            <p className="text-sm text-ink-muted">
+              {indicator.comparison === "50-point threshold"
+                ? "Index shown from 45 to 55; 50 separates expansion from contraction."
+                : "Independent strip centered on zero change. Position shows direction; lengths cannot be compared across indicators."}
+            </p>
             <dl className="mt-4 grid gap-3 border-y border-rule py-3 sm:grid-cols-3">
               <div>
                 <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Period
                 </dt>
-                <dd className="mt-1 text-xs leading-5">{indicator.period}</dd>
+                <dd className="mt-1 text-sm leading-6">{indicator.period}</dd>
               </div>
               <div>
                 <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Comparison
                 </dt>
-                <dd className="mt-1 text-xs leading-5">
+                <dd className="mt-1 text-sm leading-6">
                   {indicator.comparison}
                 </dd>
               </div>
@@ -138,7 +192,7 @@ export function EconomicSignalsFigure({
                 <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Basis
                 </dt>
-                <dd className="mt-1 text-xs leading-5">{indicator.basis}</dd>
+                <dd className="mt-1 text-sm leading-6">{indicator.basis}</dd>
               </div>
             </dl>
 
@@ -146,15 +200,29 @@ export function EconomicSignalsFigure({
               <strong className="text-ink">Observed reading:</strong>{" "}
               {indicator.reading}
             </p>
-            <p className="mt-4 border-l-2 border-jade pl-3 text-xs leading-6 text-ink-muted">
+            <p className="mt-4 border-l-2 border-jade pl-3 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Alternative reading:</strong>{" "}
               {indicator.counterReading}
             </p>
 
-            <p className="mt-3 border-t border-rule pt-3 text-xs leading-6 text-ink-muted">
+            <p className="mt-3 border-t border-rule pt-3 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Limit:</strong> {indicator.caveat}
             </p>
 
+            <nav
+              aria-label={`${indicator.label} references`}
+              className="mt-4 flex flex-wrap gap-3"
+            >
+              {indicator.sourceIds.map((id) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  className="text-sm text-signal underline underline-offset-4"
+                >
+                  {requireSource(id).publisher}
+                </a>
+              ))}
+            </nav>
             <details className="economic-signal-details mt-4 border-t border-rule">
               <summary className="cursor-pointer py-3 font-mono text-xs uppercase tracking-widest text-signal">
                 Method, contrasts, and source
@@ -164,7 +232,7 @@ export function EconomicSignalsFigure({
                   {indicator.contrasts.map((contrast) => (
                     <div
                       key={`${indicator.id}-${contrast.label}`}
-                      className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-xs leading-5"
+                      className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-sm leading-6"
                     >
                       <dt className="text-ink-muted">{contrast.label}</dt>
                       <dd className="text-right font-mono text-ink">
@@ -174,7 +242,7 @@ export function EconomicSignalsFigure({
                   ))}
                 </dl>
 
-                <p className="mt-4 text-xs leading-6 text-ink-muted">
+                <p className="mt-4 text-sm leading-6 text-ink-muted">
                   <strong className="text-ink">Coverage:</strong>{" "}
                   {indicator.coverage}
                 </p>

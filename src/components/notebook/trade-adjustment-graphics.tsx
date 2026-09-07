@@ -1,3 +1,5 @@
+import { FigureSources } from "./figure-sources";
+import type { NotebookEntry } from "@/content/notebook/schema";
 import type {
   NotebookDistributionCase,
   NotebookMechanismStep,
@@ -8,8 +10,10 @@ import { NotebookStatus } from "@/components/notebook/notebook-status";
 
 export function AdjustmentChainFigure({
   steps,
+  sources,
 }: {
   steps: NotebookMechanismStep[];
+  sources: NotebookEntry["sourceTrail"];
 }) {
   return (
     <figure
@@ -41,7 +45,7 @@ export function AdjustmentChainFigure({
               {step.label}
             </h3>
             <p className="mt-3 text-sm leading-6">{step.definition}</p>
-            <dl className="mt-4 space-y-4 border-t border-rule pt-4 text-xs leading-6">
+            <dl className="mt-4 space-y-4 border-t border-rule pt-4 text-sm leading-6">
               <div>
                 <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Measured here
@@ -66,6 +70,10 @@ export function AdjustmentChainFigure({
           </li>
         ))}
       </ol>
+      <FigureSources
+        ids={[...new Set(steps.flatMap((item) => item.sourceIds))]}
+        sources={sources}
+      />
     </figure>
   );
 }
@@ -153,10 +161,10 @@ export function DistributionCasesFigure({
                 <dd className="mt-2">{item.cost}</dd>
               </div>
             </dl>
-            <p className="mt-5 text-xs leading-6 text-ink-muted">
+            <p className="mt-5 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Scope:</strong> {item.scope}
             </p>
-            <p className="mt-2 text-xs leading-6 text-ink-muted">
+            <p className="mt-2 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Limit:</strong> {item.caveat}
             </p>
           </article>
@@ -223,7 +231,7 @@ export function PolicyMatrixFigure({
             <p className="mt-5 border-t border-rule pt-4 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Tradeoff:</strong> {option.tradeoff}
             </p>
-            <p className="mt-2 text-xs leading-6 text-ink-muted">
+            <p className="mt-2 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Uncertainty:</strong>{" "}
               {option.uncertainty}
             </p>

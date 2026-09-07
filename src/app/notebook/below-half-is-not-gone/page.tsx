@@ -1,5 +1,5 @@
+import { NotebookEndNavigation } from "@/components/notebook/notebook-end-navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { EnergySystemFigure } from "@/components/notebook/energy-system-figure";
 import {
   NotebookFormats,
@@ -87,7 +87,7 @@ export default function BelowHalfIsNotGonePage() {
             <NotebookProse paragraphs={entry.sections.frame} />
           </div>
           <aside className="mt-7 border-l-2 border-signal bg-signal-soft/25 p-5">
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
+            <p className="font-mono text-xs uppercase tracking-widest text-signal">
               Editorial boundary
             </p>
             <p className="mt-3 text-sm leading-7">
@@ -157,7 +157,7 @@ export default function BelowHalfIsNotGonePage() {
             {entry.alternativeReadings.map((item, index) => (
               <li key={item.id} className="border border-rule p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="font-mono text-[0.62rem] uppercase tracking-widest text-jade">
+                  <p className="font-mono text-xs uppercase tracking-widest text-jade">
                     Reading {String(index + 1).padStart(2, "0")}
                   </p>
                   <NotebookStatus status={item.status} />
@@ -177,7 +177,7 @@ export default function BelowHalfIsNotGonePage() {
             <NotebookProse paragraphs={entry.sections.synthesis} />
           </div>
           <aside className="mt-10 border-t border-rule pt-8">
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+            <p className="font-mono text-xs uppercase tracking-widest text-jade">
               Three controlling formats
             </p>
             <h3 className="mt-2 font-serif text-2xl leading-tight">
@@ -245,18 +245,7 @@ export default function BelowHalfIsNotGonePage() {
           </p>
         </section>
 
-        <nav
-          aria-label="Notebook navigation"
-          className="mt-10 flex justify-start border-t border-rule pt-6"
-        >
-          <Link
-            href="/notebook/july-is-not-one-number"
-            aria-label="Read Inquiry 07"
-            className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
-          >
-            &lt;- Read Inquiry 07
-          </Link>
-        </nav>
+        <NotebookEndNavigation slug={entry.slug} />
       </NotebookReaderShell>
     </article>
   );

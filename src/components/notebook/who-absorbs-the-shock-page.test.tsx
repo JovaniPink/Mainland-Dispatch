@@ -83,10 +83,12 @@ describe("Who Absorbs the Shock Notebook page", () => {
   it("links the adjacent inquiries and keeps authored copy ASCII", () => {
     const { container } = render(<WhoAbsorbsTheShockPage />);
     expect(
-      screen.getByRole("link", { name: "Read Inquiry 04" })
+      screen.getByRole("link", {
+        name: /Previous inquiry.*Routing Around Risk/,
+      })
     ).toHaveAttribute("href", "/notebook/routing-around-risk");
     expect(
-      screen.getByRole("link", { name: "Read Inquiry 06" })
+      screen.getByRole("link", { name: /inquiry.*What Gets Through/ })
     ).toHaveAttribute("href", "/notebook/what-gets-through");
     expect(container.textContent).not.toMatch(/[^\x00-\x7F]/);
   });

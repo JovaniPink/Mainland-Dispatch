@@ -1,3 +1,5 @@
+import { FigureSources } from "./figure-sources";
+import type { NotebookEntry } from "@/content/notebook/schema";
 import type { NotebookCirculationGate } from "@/content/notebook/schema";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
 
@@ -15,8 +17,10 @@ const movementLabels: Record<NotebookCirculationGate["domain"], string> = {
 
 export function CirculationGatesFigure({
   gates,
+  sources,
 }: {
   gates: readonly NotebookCirculationGate[];
+  sources: NotebookEntry["sourceTrail"];
 }) {
   return (
     <figure
@@ -37,7 +41,7 @@ export function CirculationGatesFigure({
         {gates.map((gate, index) => (
           <li
             key={gate.id}
-            className="grid min-w-0 grid-rows-[auto_auto_1fr] border border-rule bg-paper p-5"
+            className="grid min-w-0 grid-rows-[auto_auto_1fr] border-t-2 border-jade py-5 lg:pr-5"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -61,7 +65,7 @@ export function CirculationGatesFigure({
               {gate.admissionRule}
             </p>
 
-            <dl className="mt-5 grid content-start gap-4 text-sm leading-6">
+            <dl className="mt-5 grid content-start gap-4 border-l-2 border-rule pl-4 text-sm leading-6">
               <div>
                 <dt className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   Subject
@@ -86,7 +90,7 @@ export function CirculationGatesFigure({
                 </dt>
                 <dd className="mt-1">{gate.outcome}</dd>
               </div>
-              <div className="border-t border-rule pt-4 text-xs leading-5 text-ink-muted">
+              <div className="border-t border-rule pt-4 text-sm leading-6 text-ink-muted">
                 <dt className="font-mono text-xs uppercase tracking-widest text-signal">
                   Do not overread
                 </dt>
@@ -106,6 +110,10 @@ export function CirculationGatesFigure({
         outcome - while preserving the different authority and human stakes of
         each gate.
       </p>
+      <FigureSources
+        ids={[...new Set(gates.flatMap((item) => item.sourceIds))]}
+        sources={sources}
+      />
     </figure>
   );
 }
