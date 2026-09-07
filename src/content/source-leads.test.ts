@@ -2,7 +2,7 @@ import { sourceLeads, SourceLeadCatalogSchema } from "./source-leads";
 
 describe("editorial article-candidate catalog", () => {
   it("holds a chronological article-source inbox", () => {
-    expect(sourceLeads).toHaveLength(481);
+    expect(sourceLeads).toHaveLength(510);
     const datedYears = sourceLeads
       .map((lead) =>
         String(lead.publicationYear ?? lead.publishedAt?.slice(0, 4))
@@ -27,6 +27,25 @@ describe("editorial article-candidate catalog", () => {
           !lead.dispatchId
       )
     ).toBe(true);
+  });
+
+  it("accounts for the critical-minerals research batch without publishing it", () => {
+    const corpus = sourceLeads.filter(
+      (lead) => lead.collectionId === "china-critical-minerals-2026-09-06"
+    );
+
+    expect(corpus).toHaveLength(29);
+    expect(
+      corpus.every(
+        (lead) =>
+          lead.reviewState === "metadata-checked" &&
+          lead.disposition === "withheld" &&
+          lead.evidenceStatus === "unverified" &&
+          Boolean(lead.decisionReason) &&
+          !lead.dispatchId
+      )
+    ).toBe(true);
+    expect(corpus.every((lead) => lead.url.startsWith("https://"))).toBe(true);
   });
 
   it("accounts for the bounded 20-link HN discovery batch without publishing it", () => {
