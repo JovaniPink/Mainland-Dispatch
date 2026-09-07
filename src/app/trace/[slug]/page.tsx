@@ -1,3 +1,4 @@
+import { formatDate } from "@/content/site";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { traces, getTrace } from "@/content/traces";
@@ -54,7 +55,7 @@ export default async function TracePage({
 
       <section className="mt-10 max-w-2xl border-t border-rule pt-6">
         <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
-          Current editorial assessment ·{" "}
+          Assessment as of {formatDate(t.assessmentAsOf)} ·{" "}
           <span className="text-signal">
             {evidenceStatusLabels[t.assessmentStatus]}
           </span>

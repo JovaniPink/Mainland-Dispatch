@@ -308,7 +308,7 @@ export default function TheArcticIsNotAShortcutPage() {
         >
           <Link
             href="/archive?view=relationships&inquiry=the-arctic-is-not-a-shortcut"
-            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
+            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal-fill hover:text-[#f3f0e8]"
           >
             Explore its source relationships
           </Link>

@@ -11,7 +11,7 @@ export function MaritimeScaleCards({
       className="border-y border-rule bg-paper-warm/20 px-4 py-7 sm:px-6"
     >
       <figcaption id="maritime-scale-title" className="max-w-3xl">
-        <p className="font-mono text-[0.62rem] uppercase tracking-widest text-jade">
+        <p className="font-mono text-xs uppercase tracking-widest text-jade">
           A scale comparison without a false conversion
         </p>
         <p className="mt-3 text-sm leading-7 text-ink-muted">
@@ -27,10 +27,10 @@ export function MaritimeScaleCards({
             className="flex min-w-0 flex-col border border-rule bg-paper p-4"
           >
             <div className="flex items-baseline justify-between gap-3">
-              <span className="font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+              <span className="font-mono text-xs uppercase tracking-widest text-jade">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <time className="font-mono text-[0.58rem] uppercase tracking-widest text-ink-muted">
+              <time className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                 {metric.asOf}
               </time>
             </div>
@@ -40,7 +40,7 @@ export function MaritimeScaleCards({
             <p className="mt-4 font-serif text-3xl leading-none text-signal">
               {metric.display}
             </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+            <p className="mt-2 font-mono text-xs uppercase tracking-widest text-jade">
               {metric.unit}
             </p>
             <p className="mt-4 text-sm leading-6">{metric.reading}</p>

@@ -29,7 +29,7 @@ export function EnergySystemFigure({
       className="border border-rule bg-paper-warm/20 p-4 sm:p-6"
     >
       <figcaption id="energy-system-title" className="max-w-3xl">
-        <span className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+        <span className="font-mono text-xs uppercase tracking-widest text-jade">
           One system, four different questions
         </span>
         <span className="mt-2 block font-serif text-2xl leading-tight">
@@ -69,7 +69,7 @@ export function EnergySystemFigure({
                     <h4 className="max-w-xs font-serif text-xl leading-tight">
                       {measure.label}
                     </h4>
-                    <span className="border border-jade px-2 py-1 font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                    <span className="border border-jade px-2 py-1 font-mono text-xs uppercase tracking-widest text-jade">
                       {evidenceLabels[measure.evidenceKind]}
                     </span>
                   </div>
@@ -77,7 +77,7 @@ export function EnergySystemFigure({
                   <p className="mt-5 font-serif text-4xl leading-none text-signal">
                     {measure.display}
                   </p>
-                  <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-widest text-ink-muted">
+                  <p className="mt-2 font-mono text-xs uppercase tracking-widest text-ink-muted">
                     {measure.unit} - {measure.period}
                   </p>
 
@@ -90,7 +90,7 @@ export function EnergySystemFigure({
                   </p>
 
                   <details className="energy-system-details mt-5 border-t border-rule">
-                    <summary className="cursor-pointer py-3 font-mono text-[0.62rem] uppercase tracking-widest text-signal">
+                    <summary className="cursor-pointer py-3 font-mono text-xs uppercase tracking-widest text-signal">
                       Comparison, method, boundary, and sources
                     </summary>
                     <div className="space-y-4 border-t border-rule pt-4 text-xs leading-6 text-ink-muted">
@@ -134,7 +134,7 @@ export function EnergySystemFigure({
                             <a
                               key={sourceId}
                               href={`#${sourceId}`}
-                              className="font-mono text-[0.6rem] uppercase tracking-widest text-signal hover:text-ink"
+                              className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
                             >
                               {source.role}
                             </a>

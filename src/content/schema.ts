@@ -397,6 +397,7 @@ export const TraceSchema = z.object({
   title: nonEmpty,
   intro: nonEmpty,
   currentAssessment: nonEmpty,
+  assessmentAsOf: isoDate,
   assessmentStatus: EvidenceStatusSchema,
   entries: z.array(TraceEntrySchema).min(2),
   provenance: z.enum(["verified", "prototype"]),

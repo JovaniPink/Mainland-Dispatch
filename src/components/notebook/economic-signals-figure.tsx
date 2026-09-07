@@ -61,7 +61,7 @@ export function EconomicSignalsFigure({
       className="border border-rule bg-paper-warm/20 p-4 sm:p-6"
     >
       <figcaption id="economic-signals-title" className="max-w-3xl">
-        <span className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+        <span className="font-mono text-xs uppercase tracking-widest text-jade">
           Six July economic signals with separate definitions
         </span>
         <span className="mt-2 block font-serif text-2xl leading-tight">
@@ -79,14 +79,14 @@ export function EconomicSignalsFigure({
       >
         <h3
           id="economic-signals-source-roles"
-          className="font-mono text-[0.65rem] uppercase tracking-widest text-jade"
+          className="font-mono text-xs uppercase tracking-widest text-jade"
         >
           Source roles
         </h3>
         <dl className="mt-3 grid gap-3 sm:grid-cols-2">
           {sourceRoles.map((role) => (
             <div key={role.label} className="min-w-0">
-              <dt className="font-mono text-[0.62rem] uppercase tracking-widest text-ink">
+              <dt className="font-mono text-xs uppercase tracking-widest text-ink">
                 {role.label}
               </dt>
               <dd className="mt-1 text-xs leading-5 text-ink-muted">
@@ -105,7 +105,7 @@ export function EconomicSignalsFigure({
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                <p className="font-mono text-xs uppercase tracking-widest text-jade">
                   Signal {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-2 font-serif text-xl leading-tight">
@@ -121,13 +121,13 @@ export function EconomicSignalsFigure({
 
             <dl className="mt-4 grid gap-3 border-y border-rule py-3 sm:grid-cols-3">
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Period
                 </dt>
                 <dd className="mt-1 text-xs leading-5">{indicator.period}</dd>
               </div>
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Comparison
                 </dt>
                 <dd className="mt-1 text-xs leading-5">
@@ -135,7 +135,7 @@ export function EconomicSignalsFigure({
                 </dd>
               </div>
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-jade">
+                <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                   Basis
                 </dt>
                 <dd className="mt-1 text-xs leading-5">{indicator.basis}</dd>
@@ -156,7 +156,7 @@ export function EconomicSignalsFigure({
             </p>
 
             <details className="economic-signal-details mt-4 border-t border-rule">
-              <summary className="cursor-pointer py-3 font-mono text-[0.62rem] uppercase tracking-widest text-signal">
+              <summary className="cursor-pointer py-3 font-mono text-xs uppercase tracking-widest text-signal">
                 Method, contrasts, and source
               </summary>
               <div className="pb-1">
@@ -190,7 +190,7 @@ export function EconomicSignalsFigure({
                         key={sourceId}
                         href={`#${sourceId}`}
                         aria-label={`Open ${source.role} source record`}
-                        className="font-mono text-[0.62rem] uppercase tracking-widest text-signal hover:text-ink"
+                        className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
                       >
                         {source.role}
                       </a>

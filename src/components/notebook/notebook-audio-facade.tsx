@@ -4,6 +4,17 @@ import { useMachine } from "@xstate/react";
 import type { NotebookAudio } from "@/content/notebook/schema";
 import { notebookAudioMachine } from "@/machines/notebook-audio-machine";
 
+const audioStatus = {
+  poster: "Audio not loaded",
+  loading: "Loading audio",
+  ready: "Ready to play",
+  playing: "Playing",
+  paused: "Paused",
+  buffering: "Buffering",
+  ended: "Playback complete",
+  failure: "Audio unavailable",
+};
+
 export function NotebookAudioFacade({
   title,
   audio,
@@ -12,15 +23,15 @@ export function NotebookAudioFacade({
   audio: NotebookAudio;
 }) {
   const [state, send] = useMachine(notebookAudioMachine);
-  const loadAudio = state.matches("loading") || state.matches("playing");
+  const loadAudio = !state.matches("poster") && !state.matches("failure");
 
   return (
     <section aria-labelledby="notebook-audio-title">
-      <div className="overflow-hidden border border-rule bg-night text-[#f3f0e8]">
+      <div className="overflow-hidden border border-rule bg-[#17201d] text-[#f3f0e8] [--focus:#f19589]">
         {loadAudio ? (
           <div className="grid min-h-64 content-center gap-5 p-6 sm:p-8">
             <div>
-              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-[#9ab9af]">
+              <p className="font-mono text-xs uppercase tracking-widest text-[#9ab9af]">
                 {state.matches("loading") ? "Loading audio" : "Now available"}
               </p>
               <h3
@@ -35,6 +46,10 @@ export function NotebookAudioFacade({
               preload="metadata"
               className="w-full"
               onCanPlay={() => send({ type: "CAN_PLAY" })}
+              onPlaying={() => send({ type: "PLAYING" })}
+              onPause={() => send({ type: "PAUSE" })}
+              onWaiting={() => send({ type: "WAITING" })}
+              onEnded={() => send({ type: "ENDED" })}
               onError={() => send({ type: "ERROR" })}
             >
               <source src={audio.mediaUrl} type="audio/mpeg" />
@@ -43,7 +58,7 @@ export function NotebookAudioFacade({
               <button
                 type="button"
                 onClick={() => send({ type: "RESET" })}
-                className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest hover:border-[#bd382d]"
+                className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-xs uppercase tracking-widest hover:border-[#bd382d]"
               >
                 Unload audio
               </button>
@@ -51,7 +66,7 @@ export function NotebookAudioFacade({
                 href={audio.canonicalUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="font-mono text-[0.65rem] uppercase tracking-widest text-[#d8aaa5] hover:text-[#f3f0e8]"
+                className="font-mono text-xs uppercase tracking-widest text-[#d8aaa5] hover:text-[#f3f0e8]"
               >
                 Open canonical episode
               </a>
@@ -59,7 +74,10 @@ export function NotebookAudioFacade({
           </div>
         ) : state.matches("failure") ? (
           <div className="grid min-h-64 content-center justify-items-start gap-4 p-6 sm:p-8">
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-[#d8aaa5]">
+            <p
+              id="notebook-audio-title"
+              className="font-mono text-xs uppercase tracking-widest text-[#d8aaa5]"
+            >
               Audio could not be loaded
             </p>
             <p className="max-w-xl text-sm leading-6 text-[#c9cec9]">
@@ -71,14 +89,14 @@ export function NotebookAudioFacade({
               <button
                 type="button"
                 onClick={() => send({ type: "RETRY" })}
-                className="border border-[#f3f0e8]/50 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest hover:border-[#bd382d]"
+                className="border border-[#f3f0e8]/50 px-3 py-2 font-mono text-xs uppercase tracking-widest hover:border-[#bd382d]"
               >
                 Retry audio
               </button>
               <button
                 type="button"
                 onClick={() => send({ type: "RESET" })}
-                className="font-mono text-[0.65rem] uppercase tracking-widest text-[#c9cec9] hover:text-[#f3f0e8]"
+                className="font-mono text-xs uppercase tracking-widest text-[#c9cec9] hover:text-[#f3f0e8]"
               >
                 Return to poster
               </button>
@@ -91,7 +109,7 @@ export function NotebookAudioFacade({
             className="group grid min-h-64 w-full content-center justify-items-start gap-4 p-6 text-left sm:p-8"
             aria-label={`Load external audio: ${title}`}
           >
-            <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#9ab9af]">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#9ab9af]">
               Listen at source - consent required
             </span>
             <span
@@ -100,13 +118,13 @@ export function NotebookAudioFacade({
             >
               {title}
             </span>
-            <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[#c9cec9]">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#c9cec9]">
               {audio.publisher} - {audio.duration} -{" "}
               {audio.transcriptAvailable
                 ? "Publisher transcript available"
                 : `No publisher transcript available when reviewed ${audio.reviewedAt}`}
             </span>
-            <span className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest">
+            <span className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-xs uppercase tracking-widest">
               Load external audio
             </span>
             <span className="max-w-xl text-xs leading-5 text-[#c9cec9]">
@@ -117,7 +135,7 @@ export function NotebookAudioFacade({
         )}
       </div>
       <p className="mt-2 text-xs leading-5 text-ink-muted" aria-live="polite">
-        Audio state: {String(state.value)}.
+        {audioStatus[state.value]}
       </p>
     </section>
   );

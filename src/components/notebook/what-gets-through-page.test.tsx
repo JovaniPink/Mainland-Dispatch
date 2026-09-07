@@ -58,14 +58,14 @@ describe("What Gets Through corrected Notebook page", () => {
       "src",
       entry.audio.mediaUrl
     );
-    expect(screen.getByText("Audio state: loading.")).toBeInTheDocument();
+    expect(screen.getAllByText("Loading audio")[0]).toBeInTheDocument();
 
     fireEvent.canPlay(container.querySelector("audio")!);
-    expect(screen.getByText("Audio state: playing.")).toBeInTheDocument();
+    expect(screen.getByText("Ready to play")).toBeInTheDocument();
     fireEvent.error(container.querySelector("audio")!);
-    expect(screen.getByText("Audio state: failure.")).toBeInTheDocument();
+    expect(screen.getByText("Audio unavailable")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Retry audio" }));
-    expect(screen.getByText("Audio state: loading.")).toBeInTheDocument();
+    expect(screen.getAllByText("Loading audio")[0]).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Unload audio" }));
     expect(container.querySelector("audio, source")).toBeNull();
   });
@@ -88,11 +88,25 @@ describe("What Gets Through corrected Notebook page", () => {
     fireEvent.canPlay(audio);
     expect(container.querySelector("audio")).toBe(audio);
 
+    for (const [event, status] of [
+      ["playing", "Playing"],
+      ["pause", "Paused"],
+      ["waiting", "Buffering"],
+      ["playing", "Playing"],
+      ["ended", "Playback complete"],
+    ]) {
+      fireEvent(audio, new Event(event));
+      fireEvent.canPlay(audio);
+      expect(screen.getByText(status)).toBeInTheDocument();
+      expect(container.querySelector("audio")).toBe(audio);
+      expect(audio.currentTime).toBe(12);
+    }
+
     fireEvent.error(audio);
     expect(audio).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Retry audio" }));
     expect(container.querySelector("audio")).not.toBe(audio);
-    expect(screen.getByText("Audio state: loading.")).toBeInTheDocument();
+    expect(screen.getAllByText("Loading audio")[0]).toBeInTheDocument();
   });
 
   it("publishes canonical metadata, deduplicated JSON-LD citations, and both sitemap entries", () => {

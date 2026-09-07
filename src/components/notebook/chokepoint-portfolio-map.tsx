@@ -404,7 +404,7 @@ export function ChokepointPortfolioMap({
       <div className="border-b border-rule p-4 sm:p-5">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-[0.62rem] uppercase tracking-widest text-jade">
+            <p className="font-mono text-xs uppercase tracking-widest text-jade">
               Corridor lens
             </p>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-muted">
@@ -416,7 +416,7 @@ export function ChokepointPortfolioMap({
             <button
               type="button"
               onClick={() => send({ type: "CLEAR_SELECTION" })}
-              className="font-mono text-[0.62rem] uppercase tracking-widest text-signal hover:text-ink"
+              className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
             >
               Clear selection
             </button>
@@ -436,7 +436,7 @@ export function ChokepointPortfolioMap({
                 aria-pressed={selectedLens === option.id}
                 onClick={() => send({ type: "SELECT_LENS", lens: option.id })}
                 className={cn(
-                  "border px-3 py-2 font-mono text-[0.62rem] uppercase tracking-widest",
+                  "border px-3 py-2 font-mono text-xs uppercase tracking-widest",
                   selectedLens === option.id
                     ? "border-signal bg-signal-soft/55 text-signal"
                     : "border-rule bg-paper text-ink-muted hover:border-jade hover:text-jade"
@@ -465,7 +465,7 @@ export function ChokepointPortfolioMap({
             <button
               type="button"
               onClick={() => send({ type: "LOAD_MAP" })}
-              className="mt-6 border border-signal bg-signal px-5 py-3 font-mono text-xs uppercase tracking-widest text-paper hover:bg-ink"
+              className="mt-6 border border-signal bg-signal-fill px-5 py-3 font-mono text-xs uppercase tracking-widest text-[#f3f0e8] hover:bg-[#191b18]"
             >
               Load interactive map
             </button>
@@ -508,7 +508,7 @@ export function ChokepointPortfolioMap({
               <button
                 type="button"
                 onClick={() => send({ type: "RETRY_MAP" })}
-                className="font-mono text-[0.62rem] uppercase tracking-widest"
+                className="font-mono text-xs uppercase tracking-widest"
               >
                 Retry
               </button>
@@ -550,7 +550,7 @@ export function ChokepointPortfolioMap({
               )}
             >
               <span className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                <span className="font-mono text-xs uppercase tracking-widest text-jade">
                   {route.category}
                 </span>
                 <NotebookStatus status={route.status} />
@@ -567,13 +567,13 @@ export function ChokepointPortfolioMap({
         <aside className="border-t border-rule bg-paper-warm/35 p-5 lg:border-l lg:border-t-0">
           {selectedRoute ? (
             <>
-              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-signal">
+              <p className="font-mono text-xs uppercase tracking-widest text-signal">
                 Selected corridor
               </p>
               <h3 className="mt-3 font-serif text-xl leading-snug">
                 {selectedPoint?.label ?? selectedRoute.label}
               </h3>
-              <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-widest text-jade">
+              <p className="mt-2 font-mono text-xs uppercase tracking-widest text-jade">
                 {selectedPoint?.role ?? selectedRoute.scale}
               </p>
               <p className="mt-4 text-sm leading-6">
@@ -598,7 +598,7 @@ export function ChokepointPortfolioMap({
                         })
                       }
                       className={cn(
-                        "border px-2 py-1 font-mono text-[0.58rem] uppercase tracking-widest",
+                        "border px-2 py-1 font-mono text-xs uppercase tracking-widest",
                         selectedPointId === point.id
                           ? "border-signal text-signal"
                           : "border-rule text-ink-muted"
@@ -612,7 +612,7 @@ export function ChokepointPortfolioMap({
             </>
           ) : (
             <>
-              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              <p className="font-mono text-xs uppercase tracking-widest text-jade">
                 Reading rule
               </p>
               <p className="mt-3 font-serif text-lg italic leading-relaxed">

@@ -22,7 +22,7 @@ export function DispatchVisual({
       )}
       aria-label={`${label} preview`}
     >
-      <span className="absolute left-3 top-3 z-10 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-jade">
+      <span className="absolute left-3 top-3 z-10 font-mono text-xs uppercase tracking-[0.18em] text-jade">
         {label} ·{" "}
         {dispatch.provenance === "verified" ? "source record" : "review draft"}
       </span>
@@ -32,7 +32,7 @@ export function DispatchVisual({
           <span className="flex h-14 w-14 items-center justify-center rounded-full border border-paper/70 bg-ink/25 text-xl text-paper shadow-lg">
             ▶
           </span>
-          <span className="absolute bottom-3 right-3 font-mono text-[0.65rem] text-paper">
+          <span className="absolute bottom-3 right-3 font-mono text-xs text-paper">
             {dispatch.duration}
           </span>
         </div>
@@ -43,7 +43,7 @@ export function DispatchVisual({
           {waves.map((height, index) => (
             <span
               key={`${height}-${index}`}
-              className="w-1.5 rounded-full bg-signal"
+              className="w-1.5 rounded-full bg-signal-fill"
               style={{ height: `${height}%` }}
             />
           ))}
@@ -52,7 +52,7 @@ export function DispatchVisual({
 
       {dispatch.kind === "document" && (
         <div className="absolute inset-x-10 bottom-[-1rem] top-8 rotate-[-2deg] border border-rule bg-paper p-4 shadow-sm sm:inset-x-14">
-          <div className="h-1 w-2/5 bg-signal" />
+          <div className="h-1 w-2/5 bg-signal-fill" />
           <div className="mt-4 space-y-2">
             {[88, 100, 76, 92, 64].map((width) => (
               <div
@@ -76,7 +76,7 @@ export function DispatchVisual({
             "bg-paper-warm",
             "bg-night",
             "bg-jade-soft",
-            "bg-signal",
+            "bg-signal-fill",
           ].map((tone, index) => (
             <span
               key={`${tone}-${index}`}
@@ -91,7 +91,9 @@ export function DispatchVisual({
           {bars.map((height, index) => (
             <div key={height} className="flex flex-1 flex-col justify-end">
               <span
-                className={index === bars.length - 1 ? "bg-signal" : "bg-jade"}
+                className={
+                  index === bars.length - 1 ? "bg-signal-fill" : "bg-jade"
+                }
                 style={{ height: `${height}px` }}
               />
               <span className="mt-1 h-px bg-rule" />
@@ -127,7 +129,7 @@ export function DispatchVisual({
       {dispatch.kind === "original" && (
         <div className="absolute inset-0 flex items-end justify-between bg-[repeating-linear-gradient(0deg,transparent,transparent_23px,var(--rule)_24px)] px-5 pb-4 pt-10">
           <span className="font-serif text-5xl italic text-signal">MD</span>
-          <span className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+          <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
             Editorial notebook
           </span>
         </div>

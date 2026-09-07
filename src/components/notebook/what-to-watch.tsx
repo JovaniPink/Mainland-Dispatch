@@ -91,17 +91,17 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
                 )}
               >
                 <span className="flex items-center justify-between gap-3">
-                  <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                  <span className="font-mono text-xs uppercase tracking-widest text-jade">
                     Watch {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-right font-mono text-[0.55rem] uppercase tracking-widest text-ink-muted">
+                  <span className="text-right font-mono text-xs uppercase tracking-widest text-ink-muted">
                     {claimTypeLabels[item.claimType]}
                   </span>
                 </span>
                 <strong className="font-serif text-lg leading-snug">
                   {item.label}
                 </strong>
-                <span className="font-mono text-[0.58rem] uppercase tracking-widest text-ink-muted">
+                <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   {evidenceStatusLabels[item.assessmentStatus]}
                 </span>
               </button>
@@ -117,7 +117,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
       >
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
+            <p className="font-mono text-xs uppercase tracking-widest text-signal">
               {claimTypeLabels[selected.claimType]}
             </p>
             <h3
@@ -127,7 +127,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
               {selected.label}
             </h3>
           </div>
-          <span className="border border-rule px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+          <span className="border border-rule px-2 py-1 font-mono text-xs uppercase tracking-widest text-ink-muted">
             {evidenceStatusLabels[selected.assessmentStatus]}
           </span>
         </div>
@@ -135,7 +135,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
         <dl className="mt-5 grid gap-5">
           <div className="grid gap-4 border-b border-rule pb-5 sm:grid-cols-3">
             <div>
-              <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                 Responsible actor
               </dt>
               <dd className="mt-2 text-sm leading-6">
@@ -143,7 +143,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
               </dd>
             </div>
             <div>
-              <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                 Baseline date
               </dt>
               <dd className="mt-2 font-mono text-xs">
@@ -151,7 +151,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
               </dd>
             </div>
             <div>
-              <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+              <dt className="font-mono text-xs uppercase tracking-widest text-jade">
                 Delivery window
               </dt>
               <dd className="mt-2 text-sm leading-6">
@@ -160,13 +160,13 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
             </div>
           </div>
           <div>
-            <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+            <dt className="font-mono text-xs uppercase tracking-widest text-jade">
               Exact baseline
             </dt>
             <dd className="mt-2 text-sm leading-7">{selected.baseline}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+            <dt className="font-mono text-xs uppercase tracking-widest text-jade">
               What has happened
             </dt>
             <dd className="mt-2 text-sm leading-7">
@@ -174,7 +174,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
             </dd>
           </div>
           <div>
-            <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+            <dt className="font-mono text-xs uppercase tracking-widest text-jade">
               Update record
             </dt>
             <dd className="mt-2">
@@ -186,7 +186,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
                     </strong>
                     <time
                       dateTime={selected.updateState.reviewedAt}
-                      className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted"
+                      className="font-mono text-xs uppercase tracking-widest text-ink-muted"
                     >
                       Reviewed {selected.updateState.reviewedAt}
                     </time>
@@ -208,11 +208,11 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <time
                             dateTime={update.date}
-                            className="font-mono text-[0.6rem] uppercase tracking-widest text-signal"
+                            className="font-mono text-xs uppercase tracking-widest text-signal"
                           >
                             {update.date}
                           </time>
-                          <span className="font-mono text-[0.55rem] uppercase tracking-widest text-ink-muted">
+                          <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                             {evidenceStatusLabels[update.status]}
                           </span>
                         </div>
@@ -227,7 +227,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
                                 href={link.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="font-mono text-[0.6rem] uppercase tracking-widest text-signal hover:text-ink"
+                                className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
                               >
                                 Update source: {source.publisher} ↗
                               </a>
@@ -256,7 +256,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
             />
           </div>
           <div>
-            <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+            <dt className="font-mono text-xs uppercase tracking-widest text-jade">
               Baseline supporting records
             </dt>
             <dd className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
@@ -267,7 +267,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
                     href={link.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-mono text-[0.65rem] uppercase tracking-widest text-signal hover:text-ink"
+                    className="font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
                   >
                     {source.publisher} ↗
                   </a>
@@ -284,7 +284,7 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
 function WatchList({ label, items }: { label: string; items: string[] }) {
   return (
     <div>
-      <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+      <dt className="font-mono text-xs uppercase tracking-widest text-jade">
         {label}
       </dt>
       <dd>

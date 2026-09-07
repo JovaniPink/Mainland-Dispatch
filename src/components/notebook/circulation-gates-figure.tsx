@@ -25,7 +25,7 @@ export function CirculationGatesFigure({
       className="border-y border-rule bg-paper-warm/20 px-4 py-7 sm:px-6"
     >
       <figcaption id="circulation-gates-title">
-        <span className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+        <span className="font-mono text-xs uppercase tracking-widest text-jade">
           Two gates that shape circulation
         </span>
         <span className="mt-2 block max-w-3xl font-serif text-2xl leading-tight">
@@ -41,7 +41,7 @@ export function CirculationGatesFigure({
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-mono text-[0.6rem] uppercase tracking-widest text-signal">
+                <p className="font-mono text-xs uppercase tracking-widest text-signal">
                   Gate {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-1 font-serif text-2xl">
@@ -49,7 +49,7 @@ export function CirculationGatesFigure({
                 </h3>
               </div>
               <div className="grid justify-items-end gap-2">
-                <span className="border border-jade px-2 py-1 text-right font-mono text-[0.55rem] uppercase tracking-widest text-jade">
+                <span className="border border-jade px-2 py-1 text-right font-mono text-xs uppercase tracking-widest text-jade">
                   {movementLabels[gate.domain]}
                 </span>
                 <NotebookStatus status={gate.status} />
@@ -63,31 +63,31 @@ export function CirculationGatesFigure({
 
             <dl className="mt-5 grid content-start gap-4 text-sm leading-6">
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-ink-muted">
+                <dt className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   Subject
                 </dt>
                 <dd className="mt-1">{gate.subject}</dd>
               </div>
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-ink-muted">
+                <dt className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   Gatekeeper
                 </dt>
                 <dd className="mt-1">{gate.gatekeeper}</dd>
               </div>
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-ink-muted">
+                <dt className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   Observed movement
                 </dt>
                 <dd className="mt-1">{gate.observedMovement}</dd>
               </div>
               <div>
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-ink-muted">
+                <dt className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   Outcome
                 </dt>
                 <dd className="mt-1">{gate.outcome}</dd>
               </div>
               <div className="border-t border-rule pt-4 text-xs leading-5 text-ink-muted">
-                <dt className="font-mono text-[0.58rem] uppercase tracking-widest text-signal">
+                <dt className="font-mono text-xs uppercase tracking-widest text-signal">
                   Do not overread
                 </dt>
                 <dd className="mt-1">{gate.caveat}</dd>
