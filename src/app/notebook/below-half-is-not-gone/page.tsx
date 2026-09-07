@@ -20,8 +20,8 @@ import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
-  ["frame", "The four-layer frame"],
   ["system", "Eight measures"],
+  ["frame", "The four-layer frame"],
   ["mix", "Generation mix"],
   ["output", "Generation volume"],
   ["capacity", "Installed capacity"],

@@ -279,6 +279,8 @@ export function NotebookReaderShell({
           {children}
           <footer className="mt-10 border-t border-rule pt-5 text-sm leading-6 text-ink-muted">
             <a
+              target="_blank"
+              rel="noreferrer"
               href={correctionUrl(path, title)}
               className="text-signal underline underline-offset-4"
             >
