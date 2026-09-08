@@ -58,3 +58,25 @@ it("does not time out a metadata-loaded player waiting for native Play", () => {
   expect(actor.getSnapshot().value).toBe("failure");
   actor.stop();
 });
+
+it("bounds a native playback stall after cached metadata, but cancels on pause or playback", () => {
+  const clock = new SimulatedClock();
+  const actor = createActor(notebookAudioMachine, { clock }).start();
+  actor.send({ type: "CONSENT" });
+  actor.send({ type: "METADATA_LOADED" });
+  actor.send({ type: "WAITING" });
+  expect(actor.getSnapshot().value).toBe("buffering");
+  clock.increment(30_000);
+  expect(actor.getSnapshot().value).toBe("failure");
+  actor.send({ type: "RETRY" });
+  actor.send({ type: "CAN_PLAY" });
+  actor.send({ type: "WAITING" });
+  actor.send({ type: "PAUSE" });
+  clock.increment(30_000);
+  expect(actor.getSnapshot().value).toBe("paused");
+  actor.send({ type: "WAITING" });
+  actor.send({ type: "PLAYING" });
+  clock.increment(30_000);
+  expect(actor.getSnapshot().value).toBe("playing");
+  actor.stop();
+});

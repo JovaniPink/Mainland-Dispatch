@@ -29,6 +29,7 @@ export const notebookAudioMachine = setup({
       on: {
         METADATA_LOADED: { actions: assign({ hasMetadata: true }) },
         CAN_PLAY: "ready",
+        WAITING: "buffering",
         ERROR: "failure",
       },
       after: {
@@ -58,6 +59,7 @@ export const notebookAudioMachine = setup({
       },
     },
     buffering: {
+      after: { 30_000: "failure" },
       on: {
         PLAYING: "playing",
         PAUSE: "paused",
