@@ -103,12 +103,7 @@ export function NotebookAudioFacade({
             </div>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={() => send({ type: "CONSENT" })}
-            className="group grid min-h-64 w-full content-center justify-items-start gap-4 p-6 text-left sm:p-8"
-            aria-label={`Load external audio: ${title}`}
-          >
+          <div className="grid min-h-64 w-full content-center justify-items-start gap-4 p-6 text-left sm:p-8">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#9ab9af]">
               Listen at source - consent required
             </span>
@@ -124,17 +119,22 @@ export function NotebookAudioFacade({
                 ? "Publisher transcript available"
                 : `No publisher transcript available when reviewed ${audio.reviewedAt}`}
             </span>
-            <span className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-xs uppercase tracking-widest">
+            <button
+              type="button"
+              onClick={() => send({ type: "CONSENT" })}
+              aria-label={`Load external audio: ${title}`}
+              className="border border-[#f3f0e8]/40 px-3 py-2 font-mono text-xs uppercase tracking-widest"
+            >
               Load external audio
-            </span>
-            <span className="max-w-xl text-xs leading-5 text-[#c9cec9]">
+            </button>
+            <span className="max-w-xl text-sm leading-6 text-[#c9cec9]">
               No {audio.publisher} audio request is made until you choose to
               load it.
             </span>
-          </button>
+          </div>
         )}
       </div>
-      <p className="mt-2 text-xs leading-5 text-ink-muted" aria-live="polite">
+      <p className="mt-2 text-sm leading-6 text-ink-muted" aria-live="polite">
         {audioStatus[state.value]}
       </p>
     </section>
