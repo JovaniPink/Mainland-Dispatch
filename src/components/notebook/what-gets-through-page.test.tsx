@@ -70,6 +70,26 @@ describe("What Gets Through corrected Notebook page", () => {
     expect(container.querySelector("audio, source")).toBeNull();
   });
 
+  it("offers a fresh retry when Safari reports failure on the source element", () => {
+    const { container } = render(<WhatGetsThroughPage />);
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: `Load external audio: ${entry.formats[0].title}`,
+      })
+    );
+    const audio = container.querySelector("audio")!;
+    fireEvent(
+      container.querySelector("source")!,
+      new Event("error", { bubbles: false })
+    );
+    expect(screen.getByText("Audio unavailable")).toBeInTheDocument();
+    expect(audio).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry audio" }));
+    expect(container.querySelector("audio")).not.toBe(audio);
+    fireEvent.canPlay(container.querySelector("audio")!);
+    expect(screen.getByText("Ready to play")).toBeInTheDocument();
+  });
+
   it("preserves the consented audio element and position when playback becomes available", () => {
     const { container } = render(<WhatGetsThroughPage />);
     fireEvent.click(

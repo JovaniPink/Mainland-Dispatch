@@ -52,7 +52,11 @@ export function NotebookAudioFacade({
               onEnded={() => send({ type: "ENDED" })}
               onError={() => send({ type: "ERROR" })}
             >
-              <source src={audio.mediaUrl} type="audio/mpeg" />
+              <source
+                src={audio.mediaUrl}
+                type="audio/mpeg"
+                onError={() => send({ type: "ERROR" })}
+              />
             </audio>
             <div className="flex flex-wrap items-center gap-3">
               <button
