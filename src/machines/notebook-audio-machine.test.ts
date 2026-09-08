@@ -1,5 +1,17 @@
-import { createActor } from "xstate";
+import { createActor, SimulatedClock } from "xstate";
 import { notebookAudioMachine } from "./notebook-audio-machine";
+
+it("offers failure recovery when a blocked request never loads metadata", () => {
+  const clock = new SimulatedClock();
+  const actor = createActor(notebookAudioMachine, { clock }).start();
+  actor.send({ type: "CONSENT" });
+  clock.increment(30_000);
+  expect(actor.getSnapshot().value).toBe("failure");
+  actor.send({ type: "RETRY" });
+  actor.send({ type: "CAN_PLAY" });
+  expect(actor.getSnapshot().value).toBe("ready");
+  actor.stop();
+});
 
 it("requires native playback evidence and ignores repeated readiness", () => {
   const actor = createActor(notebookAudioMachine).start();
@@ -28,4 +40,21 @@ it("requires native playback evidence and ignores repeated readiness", () => {
     actor.send({ type });
     expect(actor.getSnapshot().value).toBe(expected);
   }
+});
+
+it("does not time out a metadata-loaded player waiting for native Play", () => {
+  const clock = new SimulatedClock();
+  const actor = createActor(notebookAudioMachine, { clock }).start();
+  actor.send({ type: "CONSENT" });
+  actor.send({ type: "METADATA_LOADED" });
+  clock.increment(60_000);
+  expect(actor.getSnapshot().value).toBe("loading");
+  actor.send({ type: "CAN_PLAY" });
+  actor.send({ type: "PLAYING" });
+  expect(actor.getSnapshot().value).toBe("playing");
+  actor.send({ type: "RESET" });
+  actor.send({ type: "CONSENT" });
+  clock.increment(30_000);
+  expect(actor.getSnapshot().value).toBe("failure");
+  actor.stop();
 });

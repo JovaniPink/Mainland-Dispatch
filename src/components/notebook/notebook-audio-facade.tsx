@@ -46,6 +46,7 @@ export function NotebookAudioFacade({
               preload="metadata"
               className="w-full"
               onCanPlay={() => send({ type: "CAN_PLAY" })}
+              onLoadedMetadata={() => send({ type: "METADATA_LOADED" })}
               onPlaying={() => send({ type: "PLAYING" })}
               onPause={() => send({ type: "PAUSE" })}
               onWaiting={() => send({ type: "WAITING" })}
