@@ -69,11 +69,11 @@ export default function TheArcticIsNotAShortcutPage() {
           <NotebookSectionHeading id="scale" eyebrow="No common denominator">
             Three measures that cannot become one score
           </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.scale} />
-          </div>
           <div className="mt-7">
             <ArcticCorridorFigure entry={entry} />
+          </div>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.scale} />
           </div>
         </section>
 

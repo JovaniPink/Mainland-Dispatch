@@ -70,30 +70,6 @@ export function EconomicSignalsFigure({
         </span>
       </figcaption>
 
-      <section
-        aria-labelledby="economic-signals-source-roles"
-        className="mt-6 border-y border-rule py-4"
-      >
-        <h3
-          id="economic-signals-source-roles"
-          className="font-mono text-xs uppercase tracking-widest text-jade"
-        >
-          Source roles
-        </h3>
-        <dl className="mt-3 grid gap-3 sm:grid-cols-2">
-          {sourceRoles.map((role) => (
-            <div key={role.label} className="min-w-0">
-              <dt className="font-mono text-xs uppercase tracking-widest text-ink">
-                {role.label}
-              </dt>
-              <dd className="mt-1 text-sm leading-6 text-ink-muted">
-                {role.note}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
       <ol className="mt-6 grid gap-6">
         {indicators.map((indicator, index) => (
           <li
@@ -270,6 +246,29 @@ export function EconomicSignalsFigure({
           </li>
         ))}
       </ol>
+      <section
+        aria-labelledby="economic-signals-source-roles"
+        className="mt-6 border-y border-rule py-4"
+      >
+        <h3
+          id="economic-signals-source-roles"
+          className="font-mono text-xs uppercase tracking-widest text-jade"
+        >
+          Source roles
+        </h3>
+        <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+          {sourceRoles.map((role) => (
+            <div key={role.label} className="min-w-0">
+              <dt className="font-mono text-xs uppercase tracking-widest text-ink">
+                {role.label}
+              </dt>
+              <dd className="mt-1 text-sm leading-6 text-ink-muted">
+                {role.note}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
     </figure>
   );
 }

@@ -67,15 +67,15 @@ export default function WhatGetsThroughPage() {
           >
             The circulation lens
           </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.lens} />
-          </div>
 
           <div className="mt-9">
             <CirculationGatesFigure
               gates={entry.gates}
               sources={entry.sourceTrail}
             />
+          </div>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.lens} />
           </div>
 
           <div className="mt-10">

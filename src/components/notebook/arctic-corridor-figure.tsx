@@ -8,7 +8,9 @@ export function ArcticCorridorFigure({
   entry: ArcticRouteNotebookEntry;
 }) {
   const route = entry.routes[0];
-  const xs = route.path.map(([x]) => x);
+  // Keep the antimeridian continuous in this schematic; source coordinates stay unchanged.
+  const longitude = (x: number) => (x < 0 ? x + 360 : x);
+  const xs = route.path.map(([x]) => longitude(x));
   const ys = route.path.map(([, y]) => y);
   const minX = Math.min(...xs),
     maxX = Math.max(...xs);
@@ -17,7 +19,7 @@ export function ArcticCorridorFigure({
   const points = route.path
     .map(
       ([x, y]) =>
-        `${30 + ((x - minX) / (maxX - minX || 1)) * 660},${110 - ((y - minY) / (maxY - minY || 1)) * 80}`
+        `${30 + ((longitude(x) - minX) / (maxX - minX || 1)) * 660},${110 - ((y - minY) / (maxY - minY || 1)) * 80}`
     )
     .join(" ");
   return (
@@ -34,7 +36,7 @@ export function ArcticCorridorFigure({
         </span>
       </figcaption>
       <svg
-        viewBox="0 0 720 140"
+        viewBox="0 0 720 180"
         aria-hidden="true"
         className="mt-5 w-full text-jade"
       >
@@ -45,10 +47,38 @@ export function ArcticCorridorFigure({
           strokeWidth="3"
           strokeDasharray="8 5"
         />
+        {route.points.map((point) => {
+          const x =
+            30 +
+            ((longitude(point.coordinates[0]) - minX) / (maxX - minX || 1)) *
+              660;
+          const y =
+            110 - ((point.coordinates[1] - minY) / (maxY - minY || 1)) * 80;
+          return (
+            <g key={point.id}>
+              <circle cx={x} cy={y} r="5" fill="currentColor" />
+              <text
+                x={x}
+                y={y + 30}
+                fontSize="24"
+                textAnchor={x > 600 ? "end" : x < 100 ? "start" : "middle"}
+                fill="currentColor"
+              >
+                {point.label}
+              </text>
+            </g>
+          );
+        })}
       </svg>
       <p className="text-sm leading-6">
         {route.label}. The schematic follows the admitted route geometry; it is
         not a vessel track or evidence of completed passage.
+      </p>
+      <p className="mt-3 text-sm leading-6 text-ink-muted">
+        {route.points
+          .map((point) => `${point.label}: ${point.role}`)
+          .join("; ")}
+        .
       </p>
       <div className="mt-5 border-l-2 border-jade pl-4">
         <p className="font-mono text-xs uppercase tracking-widest text-jade">

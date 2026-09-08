@@ -53,9 +53,11 @@ export function PromiseLedgerFigure({
               <p className="font-mono text-xs text-jade">
                 Unresolved verification
               </p>
-              <p className="mt-3 text-sm leading-6">
-                {item.whatRemainsUnknown.join(" ")}
-              </p>
+              <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-6">
+                {item.whatRemainsUnknown.map((question) => (
+                  <li key={question}>{question}</li>
+                ))}
+              </ul>
               <FigureSources ids={item.sourceIds} sources={entry.sourceTrail} />
             </div>
           </li>

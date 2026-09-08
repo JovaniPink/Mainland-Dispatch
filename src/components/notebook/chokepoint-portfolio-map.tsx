@@ -562,7 +562,7 @@ export function ChokepointPortfolioMap({
               <strong className="mt-3 block font-serif text-lg leading-snug">
                 {route.label}
               </strong>
-              <span className="mt-2 block text-xs leading-5 text-ink-muted">
+              <span className="mt-2 block text-sm leading-6 text-ink-muted">
                 {route.scale}
               </span>
               <span className="mt-3 block text-sm leading-6">
@@ -590,7 +590,7 @@ export function ChokepointPortfolioMap({
                 {selectedPoint?.note ?? selectedRoute.reading}
               </p>
               {!selectedPoint && (
-                <p className="mt-4 border-l-2 border-signal pl-3 text-xs leading-6 text-ink-muted">
+                <p className="mt-4 border-l-2 border-signal pl-3 text-sm leading-6 text-ink-muted">
                   {selectedRoute.caveat}
                 </p>
               )}
@@ -629,7 +629,7 @@ export function ChokepointPortfolioMap({
                 A shorter line is not automatically a safer, larger, or more
                 reliable route.
               </p>
-              <p className="mt-4 text-xs leading-6 text-ink-muted">
+              <p className="mt-4 text-sm leading-6 text-ink-muted">
                 Select any corridor to see its function, measurement, and hard
                 limit without loading the basemap.
               </p>

@@ -73,14 +73,15 @@ export default function WhoAbsorbsTheShockPage() {
           >
             Five stages, not one cause
           </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.mechanism} />
-          </div>
+
           <div className="mt-8">
             <AdjustmentChainFigure
               steps={entry.mechanismSteps}
               sources={entry.sourceTrail}
             />
+          </div>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.mechanism} />
           </div>
         </section>
 

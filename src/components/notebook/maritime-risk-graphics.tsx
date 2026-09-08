@@ -44,7 +44,7 @@ export function MaritimeScaleCards({
               {metric.unit}
             </p>
             <p className="mt-4 text-sm leading-6">{metric.reading}</p>
-            <p className="mt-auto border-t border-rule pt-4 text-xs leading-6 text-ink-muted">
+            <p className="mt-auto border-t border-rule pt-4 text-sm leading-6 text-ink-muted">
               <strong className="text-ink">Do not overread:</strong>{" "}
               {metric.caveat}
             </p>
@@ -77,7 +77,7 @@ export function PortfolioLogic() {
           >
             <span className="font-mono text-xs text-signal">{number}</span>
             <strong className="mt-3 block font-serif text-lg">{title}</strong>
-            <span className="mt-2 block text-xs leading-5 text-ink-muted">
+            <span className="mt-2 block text-sm leading-6 text-ink-muted">
               {functionLabel}
             </span>
             {index < layers.length - 1 && (
@@ -89,7 +89,7 @@ export function PortfolioLogic() {
           </div>
         ))}
       </div>
-      <p className="mt-3 text-xs leading-6 text-ink-muted">
+      <p className="mt-3 text-sm leading-6 text-ink-muted">
         Failure in one layer increases the burden on the others. None of these
         instruments independently reproduces the capacity or function of the
         original chokepoint.

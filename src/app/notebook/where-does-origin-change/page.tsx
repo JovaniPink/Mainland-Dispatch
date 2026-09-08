@@ -19,8 +19,8 @@ import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
-  ["frame", "Origin is a sequence"],
   ["trade", "The four proof gates"],
+  ["frame", "Origin is a sequence"],
   ["admission", "Canadian admission"],
   ["production", "Production evidence"],
   ["qualification", "USMCA qualification"],
@@ -61,15 +61,6 @@ export default function WhereDoesOriginChangePage() {
         contentClassName="lg:max-w-[62rem]"
       >
         <section className="mt-12">
-          <NotebookSectionHeading id="frame" eyebrow="The evidentiary frame">
-            Origin is a sequence, not a direction of travel
-          </NotebookSectionHeading>
-          <div className="mt-6">
-            <NotebookProse paragraphs={entry.sections.frame} />
-          </div>
-        </section>
-
-        <section className="mt-12">
           <NotebookSectionHeading id="trade" eyebrow="Four separate records">
             Crossing one gate does not complete the next
           </NotebookSectionHeading>
@@ -80,6 +71,15 @@ export default function WhereDoesOriginChangePage() {
               pressure={entry.tradePressure}
               frames={entry.tradeFrames}
             />
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <NotebookSectionHeading id="frame" eyebrow="The evidentiary frame">
+            Origin is a sequence, not a direction of travel
+          </NotebookSectionHeading>
+          <div className="mt-6">
+            <NotebookProse paragraphs={entry.sections.frame} />
           </div>
         </section>
 
