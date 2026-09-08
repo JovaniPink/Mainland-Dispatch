@@ -48,7 +48,7 @@ function selectArchiveRecords(): Dispatch[] {
 }
 
 const primaryLinkClass =
-  "inline-flex border border-ink bg-ink px-4 py-2.5 font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal";
+  "inline-flex border border-ink bg-ink px-4 py-2.5 font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal-fill hover:text-[#f3f0e8]";
 
 const secondaryLinkClass =
   "inline-flex border border-rule px-4 py-2.5 font-mono text-xs uppercase tracking-widest text-ink-muted hover:border-signal hover:text-signal";

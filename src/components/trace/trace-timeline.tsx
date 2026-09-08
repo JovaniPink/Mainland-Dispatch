@@ -43,7 +43,7 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
                 className={cn(
                   "absolute -left-[1.85rem] top-1.5 h-2.5 w-2.5 rounded-full border",
                   entry.critical
-                    ? "border-signal bg-signal"
+                    ? "border-signal bg-signal-fill"
                     : "border-ink-muted bg-paper"
                 )}
               />
@@ -52,7 +52,7 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
                 aria-expanded={selected}
                 className="block w-full text-left"
               >
-                <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+                <p className="font-mono text-xs uppercase tracking-widest text-jade">
                   {formatDate(entry.date)} · {phaseLabels[entry.phase]}
                 </p>
                 <h3
@@ -110,7 +110,7 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
                 }}
                 className="text-left"
               >
-                <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-muted">
+                <p className="font-mono text-xs uppercase tracking-widest text-ink-muted">
                   {formatDate(entry.date)}
                 </p>
                 <p className="font-serif text-sm leading-snug hover:text-signal">

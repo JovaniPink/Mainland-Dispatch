@@ -240,7 +240,7 @@ export default function WhatXiJinpingWantsPage() {
         >
           <Link
             href="/archive"
-            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
+            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal-fill hover:text-[#f3f0e8]"
           >
             Explore the source archive
           </Link>

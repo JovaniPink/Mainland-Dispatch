@@ -6,6 +6,7 @@ export type ArchiveFilterKey =
   "vertical" | "kind" | "evidence" | "publisher" | "place" | "year" | "query";
 
 export type ArchiveContext = {
+  defaultInquirySlug: string;
   view: ArchiveView;
   vertical: Vertical | "all";
   kind: DispatchKind | "all";
@@ -41,7 +42,8 @@ export type ArchiveEvent =
       filters: Partial<Omit<ArchiveContext, "filterPanelOpen">>;
     };
 
-const initialContext: ArchiveContext = {
+export const initialArchiveContext: ArchiveContext = {
+  defaultInquirySlug: "",
   view: "cards",
   vertical: "all",
   kind: "all",
@@ -51,7 +53,7 @@ const initialContext: ArchiveContext = {
   year: "all",
   query: "",
   focusId: "",
-  inquirySlug: "dominance-is-a-dashboard",
+  inquirySlug: "",
   filterPanelOpen: false,
 };
 
@@ -68,12 +70,17 @@ const archiveFilterDefaults: Pick<ArchiveContext, ArchiveFilterKey> = {
 export const archiveMachine = setup({
   types: {
     context: {} as ArchiveContext,
+    input: {} as { latestInquirySlug: string } | undefined,
     events: {} as ArchiveEvent,
   },
 }).createMachine({
   id: "archive",
   initial: "ready",
-  context: initialContext,
+  context: ({ input }) => ({
+    ...initialArchiveContext,
+    inquirySlug: input?.latestInquirySlug ?? "",
+    defaultInquirySlug: input?.latestInquirySlug ?? "",
+  }),
   states: {
     ready: {
       on: {
@@ -137,7 +144,11 @@ export const archiveMachine = setup({
           })),
         },
         RESET: {
-          actions: assign(initialContext),
+          actions: assign(({ context }) => ({
+            ...initialArchiveContext,
+            defaultInquirySlug: context.defaultInquirySlug,
+            inquirySlug: context.defaultInquirySlug,
+          })),
         },
       },
     },

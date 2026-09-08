@@ -310,7 +310,7 @@ export default function OpenModelsClosedSystemPage() {
         >
           <Link
             href="/archive?view=relationships&inquiry=open-models-closed-system"
-            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
+            className="border border-ink bg-ink px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal-fill hover:text-[#f3f0e8]"
           >
             Explore its source relationships
           </Link>

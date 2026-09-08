@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { parseArchiveUrl, serializeArchiveUrl } from "@/lib/archive-url";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMachine } from "@xstate/react";
 import { publishedDispatches } from "@/content/dispatches";
@@ -71,7 +72,7 @@ function Chip({
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        "whitespace-nowrap border px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest",
+        "whitespace-nowrap border px-3 py-2 font-mono text-xs uppercase tracking-widest",
         active
           ? "border-signal bg-signal-soft/60 text-signal"
           : "border-rule text-ink-muted hover:border-jade hover:text-ink"
@@ -95,7 +96,7 @@ function SelectFilter({
 }) {
   return (
     <label className="grid gap-1">
-      <span className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+      <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
         {label}
       </span>
       <select
@@ -164,7 +165,7 @@ function Timeline({ records }: { records: Dispatch[] }) {
         >
           <div>
             <p className="font-serif text-3xl text-signal">{year}</p>
-            <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+            <p className="mt-1 font-mono text-xs uppercase tracking-widest text-ink-muted">
               {items.length} {items.length === 1 ? "record" : "records"}
             </p>
           </div>
@@ -182,7 +183,7 @@ function Timeline({ records }: { records: Dispatch[] }) {
                     href={`/dispatch/${item.slug}`}
                     className="group block border-l-2 border-rule pl-3 hover:border-signal"
                   >
-                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+                    <span className="font-mono text-xs uppercase tracking-widest text-jade">
                       {item.canonicalSource.publisher}
                     </span>
                     <span className="mt-1 block font-serif leading-snug group-hover:text-signal">
@@ -204,7 +205,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
     <section className="border border-rule bg-paper-warm/20 p-4 sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="font-mono text-[0.65rem] uppercase tracking-widest text-signal">
+          <p className="font-mono text-xs uppercase tracking-widest text-signal">
             Notebook inquiry center
           </p>
           <h3 className="mt-2 font-serif text-2xl">{entry.title}</h3>
@@ -223,7 +224,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
 
       <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,0.8fr)_2rem_minmax(0,1.6fr)] lg:items-center">
         <div className="border-2 border-ink bg-paper p-4">
-          <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+          <p className="font-mono text-xs uppercase tracking-widest text-jade">
             Root source
           </p>
           <p className="mt-2 font-serif text-xl">{entry.formats[0].title}</p>
@@ -241,7 +242,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
           {entry.turningPoints.map((point) => (
             <article key={point.id} className="border border-rule p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-mono text-[0.6rem] text-signal">
+                <span className="font-mono text-xs text-signal">
                   {point.timecode}
                 </span>
                 <NotebookStatus status={point.status} />
@@ -253,7 +254,7 @@ function NotebookInquiryMap({ entry }: { entry: NotebookEntry }) {
       </div>
 
       <div className="mt-5 border-t border-rule pt-4">
-        <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+        <p className="font-mono text-xs uppercase tracking-widest text-jade">
           Evidence trail - {entry.sourceTrail.length} source stops
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -304,10 +305,14 @@ function PublishedRelationshipMap({
   return (
     <section className="mt-6 border border-rule p-4 sm:p-6">
       <div className="grid gap-3 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-end">
-        <label className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+        <label
+          htmlFor="archive-focus"
+          className="font-mono text-xs uppercase tracking-widest text-ink-muted"
+        >
           Focus record
         </label>
         <select
+          id="archive-focus"
           value={focus.id}
           onChange={(event) => onSelect(event.target.value)}
           className="min-w-0 border border-rule bg-paper px-3 py-2 text-sm focus:border-jade focus:outline-none"
@@ -322,7 +327,7 @@ function PublishedRelationshipMap({
 
       <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1.2fr)] lg:items-center">
         <article className="border-2 border-signal bg-signal-soft/25 p-4">
-          <p className="font-mono text-[0.6rem] uppercase tracking-widest text-signal">
+          <p className="font-mono text-xs uppercase tracking-widest text-signal">
             Selected record
           </p>
           <h3 className="mt-2 font-serif text-xl leading-snug">
@@ -343,7 +348,7 @@ function PublishedRelationshipMap({
             {unique(focus.claims.map((claim) => claim.status)).map((status) => (
               <span
                 key={status}
-                className="border border-rule px-2 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-ink-muted"
+                className="border border-rule px-2 py-1 font-mono text-xs uppercase tracking-widest text-ink-muted"
               >
                 {evidenceStatusLabels[status]}
               </span>
@@ -357,7 +362,7 @@ function PublishedRelationshipMap({
           &lt;-&gt;
         </div>
         <div>
-          <p className="font-mono text-[0.6rem] uppercase tracking-widest text-jade">
+          <p className="font-mono text-xs uppercase tracking-widest text-jade">
             Explicit public relationships
           </p>
           {related.length > 0 ? (
@@ -369,7 +374,7 @@ function PublishedRelationshipMap({
                   onClick={() => onSelect(record.id)}
                   className="border border-rule p-3 text-left hover:border-jade"
                 >
-                  <span className="font-mono text-[0.55rem] uppercase tracking-widest text-jade">
+                  <span className="font-mono text-xs uppercase tracking-widest text-jade">
                     {record.canonicalSource.publisher}
                   </span>
                   <span className="mt-2 block font-serif leading-snug">
@@ -391,98 +396,77 @@ function PublishedRelationshipMap({
 }
 
 export function ArchiveExplorer() {
-  const [state, send] = useMachine(archiveMachine);
-  const [hydrated, setHydrated] = useState(false);
+  const [state, send, actor] = useMachine(archiveMachine, {
+    input: { latestInquirySlug: latestNotebookEntry.slug },
+  });
+  const [notice, setNotice] = useState("");
+
   const [lastEvent, setLastEvent] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
   const pendingEvent = useRef<string | null>(null);
+  const hasHydrated = useRef(false);
 
   function dispatch(event: ArchiveEvent) {
+    if (!hasHydrated.current) {
+      const parsed = parseArchiveUrl(new URL(window.location.href));
+      send({ type: "HYDRATE", filters: parsed.context });
+      setNotice(parsed.notice);
+      hasHydrated.current = true;
+    }
     send(event);
     setLastEvent(event.type);
     pendingEvent.current = event.type;
+    if (
+      [
+        "OPEN_FILTER_PANEL",
+        "CLOSE_FILTER_PANEL",
+        "TOGGLE_FILTER_PANEL",
+        "HYDRATE",
+      ].includes(event.type)
+    )
+      return;
+    const next = serializeArchiveUrl(
+      new URL(window.location.href),
+      actor.getSnapshot().context
+    );
+    if (
+      next !==
+      `${window.location.pathname}${window.location.search}${window.location.hash}`
+    ) {
+      if (event.type === "SEARCH")
+        window.history.replaceState(window.history.state, "", next);
+      else window.history.pushState(window.history.state, "", next);
+    }
   }
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      const params = new URLSearchParams(window.location.search);
-      const view = params.get("view");
-      const evidence = params.get("evidence");
-      const vertical = params.get("vertical");
-      const kind = params.get("kind");
-      const filters = {
-        ...(views.some((item) => item.id === view)
-          ? { view: view as ArchiveView }
-          : {}),
-        ...(evidenceStatuses.includes(evidence as EvidenceStatus)
-          ? { evidence: evidence as EvidenceStatus }
-          : {}),
-        ...(verticals.some((item) => item.id === vertical)
-          ? { vertical: vertical as Vertical }
-          : {}),
-        ...(kinds.includes(kind as DispatchKind)
-          ? { kind: kind as DispatchKind }
-          : {}),
-        ...(publishers.includes(params.get("publisher") ?? "")
-          ? { publisher: params.get("publisher")! }
-          : {}),
-        ...(places.includes(params.get("place") ?? "")
-          ? { place: params.get("place")! }
-          : {}),
-        ...(years.includes(params.get("year") ?? "")
-          ? { year: params.get("year")! }
-          : {}),
-        ...(params.get("q") ? { query: params.get("q")! } : {}),
-        ...(publishedDispatches.some(
-          (record) => record.id === params.get("focus")
-        )
-          ? { focusId: params.get("focus")! }
-          : {}),
-        ...(publicNotebookEntries.some(
-          (entry) => entry.slug === params.get("inquiry")
-        )
-          ? { inquirySlug: params.get("inquiry")! }
-          : {}),
-      };
-      dispatch({ type: "HYDRATE", filters });
-      setHydrated(true);
-    }, 0);
-    return () => window.clearTimeout(timeoutId);
-    // Query hydration is intentionally a one-time machine event.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const context = state.context;
-
-  useEffect(() => {
-    if (!hydrated) return;
-    const url = new URL(window.location.href);
-    const values: Record<string, string> = {
-      view: context.view,
-      vertical: context.vertical,
-      kind: context.kind,
-      evidence: context.evidence,
-      publisher: context.publisher,
-      place: context.place,
-      year: context.year,
-      q: context.query,
-      focus: context.focusId,
-      inquiry: context.inquirySlug,
-    };
-    for (const [key, value] of Object.entries(values)) {
+    function restore() {
+      hasHydrated.current = true;
+      const parsed = parseArchiveUrl(new URL(window.location.href));
+      send({ type: "HYDRATE", filters: parsed.context });
+      setNotice(parsed.notice);
+      const canonical = serializeArchiveUrl(
+        new URL(window.location.href),
+        parsed.context
+      );
       if (
-        !value ||
-        value === "all" ||
-        (key === "view" && value === "cards") ||
-        (key === "inquiry" && value === latestNotebookEntry.slug)
+        canonical !==
+        `${window.location.pathname}${window.location.search}${window.location.hash}`
       ) {
-        url.searchParams.delete(key);
-      } else {
-        url.searchParams.set(key, value);
+        window.history.replaceState(window.history.state, "", canonical);
       }
     }
-    window.history.replaceState({}, "", `${url.pathname}${url.search}`);
-  }, [context, hydrated]);
+    const timeout = window.setTimeout(() => {
+      if (!hasHydrated.current) restore();
+    }, 0);
+    window.addEventListener("popstate", restore);
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener("popstate", restore);
+    };
+  }, [send]);
+
+  const context = state.context;
 
   useEffect(() => {
     if (!pendingEvent.current) return;
@@ -616,10 +600,15 @@ export function ArchiveExplorer() {
 
   return (
     <section aria-labelledby="archive-explorer-title">
+      {notice && (
+        <p role="status" className="px-4 py-3 text-sm text-signal">
+          {notice}
+        </p>
+      )}
       <div className="border-y border-rule bg-paper-warm/20 px-4 py-5 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-jade">
+            <p className="font-mono text-xs uppercase tracking-widest text-jade">
               Interactive evidence archive
             </p>
             <h2
@@ -638,7 +627,7 @@ export function ArchiveExplorer() {
         </div>
 
         <label className="mt-5 grid gap-1">
-          <span className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted">
+          <span className="font-mono text-xs uppercase tracking-widest text-ink-muted">
             Search
           </span>
           <input
@@ -652,9 +641,9 @@ export function ArchiveExplorer() {
           />
         </label>
 
-        <div className="mt-4 flex items-start justify-between gap-3">
-          <div className="chip-row scroll-affordance min-w-0 overflow-x-auto">
-            <div className="flex gap-2">
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap gap-2">
               {views.map((view) => (
                 <Chip
                   key={view.id}
@@ -671,7 +660,7 @@ export function ArchiveExplorer() {
             aria-expanded={context.filterPanelOpen}
             aria-controls="archive-filter-panel"
             onClick={() => dispatch({ type: "TOGGLE_FILTER_PANEL" })}
-            className="shrink-0 border border-rule px-3 py-2 font-mono text-[0.65rem] uppercase tracking-widest hover:border-signal lg:hidden"
+            className="shrink-0 border border-rule px-3 py-2 font-mono text-xs uppercase tracking-widest hover:border-signal lg:hidden"
           >
             Filters ({appliedFilters.length})
           </button>
@@ -767,7 +756,7 @@ export function ArchiveExplorer() {
                   onClick={() =>
                     dispatch({ type: "CLEAR_FILTER", filter: item.filter })
                   }
-                  className="border border-signal bg-signal-soft/30 px-2 py-1.5 font-mono text-[0.6rem] uppercase tracking-widest text-signal hover:bg-signal-soft/60"
+                  className="border border-signal bg-signal-soft/30 px-2 py-1.5 font-mono text-xs uppercase tracking-widest text-signal hover:bg-signal-soft/60"
                 >
                   {item.label} x
                 </button>
@@ -776,7 +765,7 @@ export function ArchiveExplorer() {
             <button
               type="button"
               onClick={() => dispatch({ type: "CLEAR_ALL_FILTERS" })}
-              className="mt-3 font-mono text-[0.65rem] uppercase tracking-widest text-signal hover:text-ink"
+              className="mt-3 font-mono text-xs uppercase tracking-widest text-signal hover:text-ink"
             >
               Clear all filters
             </button>
@@ -805,7 +794,7 @@ export function ArchiveExplorer() {
             <div className="mb-4 grid gap-2 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-end">
               <label
                 htmlFor="archive-inquiry"
-                className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-muted"
+                className="font-mono text-xs uppercase tracking-widest text-ink-muted"
               >
                 Notebook inquiry
               </label>

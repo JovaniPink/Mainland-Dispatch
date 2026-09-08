@@ -55,7 +55,7 @@ describe("Who Absorbs the Shock Notebook page", () => {
       entry.audio.mediaUrl
     );
     fireEvent.canPlay(container.querySelector("audio")!);
-    expect(screen.getByText("Audio state: playing.")).toBeInTheDocument();
+    expect(screen.getByText("Ready to play")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Unload audio" }));
     expect(container.querySelector("audio, source")).toBeNull();
   });

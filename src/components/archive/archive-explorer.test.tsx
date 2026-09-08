@@ -28,12 +28,12 @@ describe("ArchiveExplorer publication boundary and views", () => {
     fireEvent.click(screen.getByRole("button", { name: "Relationships" }));
     expect(
       screen.getByRole("heading", {
-        name: "Dominance Is a Dashboard, Not a Crown",
+        name: "The Arctic Is Not a Shortcut",
       })
     ).toBeInTheDocument();
     expect(screen.getByText(/notebook inquiry center/i)).toBeInTheDocument();
     expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
-      "dominance-is-a-dashboard"
+      "the-arctic-is-not-a-shortcut"
     );
     expect(
       screen.getByRole("option", {
@@ -142,4 +142,70 @@ describe("ArchiveExplorer publication boundary and views", () => {
     expect(screen.getAllByRole("button", { name: /^Save/ })).toHaveLength(13);
     expect(screen.getAllByText("Contested").length).toBeGreaterThan(0);
   });
+});
+
+it("preserves the latest inquiry and fragment through reload", async () => {
+  window.history.replaceState(
+    {},
+    "",
+    "/archive?view=relationships&inquiry=the-arctic-is-not-a-shortcut&campaign=test#sources"
+  );
+  const first = render(<ArchiveExplorer />);
+  await waitFor(() =>
+    expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
+      "the-arctic-is-not-a-shortcut"
+    )
+  );
+  await waitFor(() =>
+    expect(window.location.search).toContain(
+      "inquiry=the-arctic-is-not-a-shortcut"
+    )
+  );
+  expect(window.location.hash).toBe("#sources");
+  first.unmount();
+  render(<ArchiveExplorer />);
+  await waitFor(() =>
+    expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
+      "the-arctic-is-not-a-shortcut"
+    )
+  );
+});
+
+it("restores Back/Forward state without writing another history entry", async () => {
+  window.history.replaceState({}, "", "/archive");
+  render(<ArchiveExplorer />);
+  await waitFor(() => expect(screen.getByLabelText("Search")).toHaveValue(""));
+  const push = jest.spyOn(window.history, "pushState");
+  fireEvent.click(screen.getByRole("button", { name: "Relationships" }));
+  expect(push).toHaveBeenCalledTimes(1);
+  fireEvent.change(screen.getByLabelText("Search"), {
+    target: { value: "Arctic" },
+  });
+  expect(push).toHaveBeenCalledTimes(1);
+  window.history.replaceState(
+    {},
+    "",
+    "/archive?view=relationships&inquiry=what-xi-jinping-wants"
+  );
+  fireEvent.popState(window);
+  expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
+    "what-xi-jinping-wants"
+  );
+  expect(screen.getByLabelText("Search")).toHaveValue("");
+  expect(push).toHaveBeenCalledTimes(1);
+  push.mockRestore();
+});
+
+it("makes the default Relationships selection explicit without adding history", async () => {
+  window.history.replaceState({}, "", "/archive?view=relationships#sources");
+  const push = jest.spyOn(window.history, "pushState");
+  render(<ArchiveExplorer />);
+  await waitFor(() =>
+    expect(window.location.search).toContain(
+      "inquiry=the-arctic-is-not-a-shortcut"
+    )
+  );
+  expect(window.location.hash).toBe("#sources");
+  expect(push).not.toHaveBeenCalled();
+  push.mockRestore();
 });

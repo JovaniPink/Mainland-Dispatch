@@ -273,7 +273,7 @@ export default async function DispatchPage({
           href={d.canonicalSource.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="border border-ink bg-ink px-4 py-2 font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal"
+          className="border border-ink bg-ink px-4 py-2 font-mono text-xs uppercase tracking-widest text-paper hover:border-signal hover:bg-signal-fill hover:text-[#f3f0e8]"
         >
           Open source ↗
         </a>
