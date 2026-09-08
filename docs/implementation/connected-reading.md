@@ -1,7 +1,8 @@
 # Connected reading implementation
 
-Status: Package 1 is implemented for review; acceptance is pending. Packages 2–4
-remain queued behind its gate. No merge or production release is authorized.
+Status: Package 1 is in draft PR #58; hosted Node 22/24 canonical CI passes at
+`964a395`. Package 2 is implemented for review. Packages 3–4 remain queued.
+No merge or production release is authorized.
 
 ## Package 1: correctness, accessibility, dates, and media
 
@@ -52,8 +53,8 @@ Evidence so far:
   keyboard, VoiceOver, zoom, native Safari audio, and performance acceptance
   remain unverified.
 
-The draft review package must pass hosted canonical CI and the affected
-production-browser journeys before Package 2 begins. Do not mark issue #53
+The draft review package must complete affected production-browser journeys
+before it is ready to merge. Hosted canonical CI passed. Do not mark issue #53
 complete using simulated media events or headless WebKit.
 
 ## Remaining packages
@@ -87,3 +88,36 @@ retain unknown stored references even when a target is no longer public.
 Standards used: [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html),
 [WCAG target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
 and [native playing events](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/playing_event).
+
+## Package 2: public discovery and Saved
+
+The Archive receives a build-time public projection through server-component
+props. Browser code does not import the underlying Dispatch/Notebook catalogs.
+The projection includes 10 inquiries, 153 established source identities, and 13
+Dispatches. Notebook sources retain every publication-specific use and limitation.
+The canonical source identity helper is shared with knowledge.json without
+changing its output contract.
+
+Results group the three types; Time uses publication dates and an undated group.
+Publication filters apply across groups; labeled Dispatch facets apply only to
+Dispatch results. Inquiry/source and Dispatch connections are mutually exclusive.
+Legacy inquiry links take precedence when both selections exist, preserving the
+dormant Dispatch selection. Switching to Dispatch mode removes the inquiry
+parameter so copied links restore that mode.
+
+Saved retains string-array storage with new notebook:<slug> references. A compact
+reverse-save-order list resolves only public records; unknown/withdrawn references
+remain stored without rendering. Notebook headers and index entries share Save
+controls, cross-tab updates, and visible storage errors. Source links open stable
+publication-specific anchors.
+
+The full Jest suite passed 356 tests before final packaging. Both audits reported
+zero vulnerabilities; install-script review found no unreviewed scripts. Canonical
+local compilation remains subject to the documented sandbox restriction. Require
+hosted CI and connected reader-journey acceptance on the final package commit.
+
+Package 1 browser progress: the hosted preview preserved Arctic on reload and
+Back, named the Focus record selector, and showed no document overflow at sampled
+390px, 320px, and 1440px widths. Chrome native Play advanced from 0.35 to 14.60
+seconds on the first press; native Pause reported Paused, and Unload removed the
+audio. Native Safari/audibility confirmation remains pending under issue #53.

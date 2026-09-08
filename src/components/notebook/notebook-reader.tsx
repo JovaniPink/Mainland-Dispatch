@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { NotebookShare } from "@/components/notebook/notebook-share";
+import { SaveButton } from "@/components/dispatch/save-button";
 import { formatDate } from "@/content/site";
 import { cn } from "@/lib/utils";
 
@@ -191,6 +192,10 @@ export function NotebookReaderShell({
                 </li>
               ))}
             </ul>
+            <SaveButton
+              target={{ kind: "notebook", id: path.split("/").pop()! }}
+              title={title}
+            />
             <NotebookShare title={title} path={path} campaign={campaign} />
           </div>
         </div>

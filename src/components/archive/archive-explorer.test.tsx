@@ -9,9 +9,13 @@ describe("ArchiveExplorer publication boundary and views", () => {
   it("renders only public reviewed records", () => {
     render(<ArchiveExplorer />);
 
-    expect(screen.getByText("13 of 13 public")).toBeInTheDocument();
     expect(
-      screen.getByText(/liang wenfeng described deepseek's playbook/i)
+      screen.getByText(/10 inquiries.*sources.*13 Dispatches/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /liang wenfeng described deepseek's playbook/i,
+      })
     ).toBeInTheDocument();
     expect(
       screen.queryByText(/afraid of chinese models/i)
@@ -31,7 +35,9 @@ describe("ArchiveExplorer publication boundary and views", () => {
         name: "The Arctic Is Not a Shortcut",
       })
     ).toBeInTheDocument();
-    expect(screen.getByText(/notebook inquiry center/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: "Inquiry and its sources" })
+    ).toBeInTheDocument();
     expect(screen.getByLabelText("Notebook inquiry")).toHaveValue(
       "the-arctic-is-not-a-shortcut"
     );
@@ -63,7 +69,9 @@ describe("ArchiveExplorer publication boundary and views", () => {
     render(<ArchiveExplorer />);
 
     await waitFor(() =>
-      expect(screen.getByText("13 of 13 public")).toBeInTheDocument()
+      expect(
+        screen.getByText(/10 inquiries.*sources.*13 Dispatches/)
+      ).toBeInTheDocument()
     );
     fireEvent.click(screen.getByRole("button", { name: /^Filters/ }));
     fireEvent.change(screen.getByLabelText("Evidence"), {
@@ -73,17 +81,21 @@ describe("ArchiveExplorer publication boundary and views", () => {
     await waitFor(() =>
       expect(window.location.search).toContain("evidence=contested")
     );
-    expect(screen.getByText(/of 13 public/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/^10 inquiries.*sources.*Dispatches$/)
+    ).toBeInTheDocument();
   });
 
   it("keeps search and views visible while the machine owns the filter panel", async () => {
     render(<ArchiveExplorer />);
 
     await waitFor(() =>
-      expect(screen.getByText("13 of 13 public")).toBeInTheDocument()
+      expect(
+        screen.getByText(/10 inquiries.*sources.*13 Dispatches/)
+      ).toBeInTheDocument()
     );
     expect(screen.getByLabelText("Search")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Records" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Results" })).toBeInTheDocument();
 
     const filters = screen.getByRole("button", { name: "Filters (0)" });
     expect(filters).toHaveAttribute("aria-expanded", "false");
@@ -107,7 +119,9 @@ describe("ArchiveExplorer publication boundary and views", () => {
     render(<ArchiveExplorer />);
 
     await waitFor(() =>
-      expect(screen.getByText("13 of 13 public")).toBeInTheDocument()
+      expect(
+        screen.getByText(/10 inquiries.*sources.*13 Dispatches/)
+      ).toBeInTheDocument()
     );
     fireEvent.click(screen.getByRole("button", { name: "Filters (0)" }));
     fireEvent.change(screen.getByLabelText("Evidence"), {
@@ -139,7 +153,7 @@ describe("ArchiveExplorer publication boundary and views", () => {
     expect(
       screen.getAllByRole("group", { name: "Editorial note" })
     ).toHaveLength(13);
-    expect(screen.getAllByRole("button", { name: /^Save/ })).toHaveLength(13);
+    expect(screen.getAllByRole("button", { name: /^Save/ })).toHaveLength(23);
     expect(screen.getAllByText("Contested").length).toBeGreaterThan(0);
   });
 });
@@ -208,4 +222,23 @@ it("makes the default Relationships selection explicit without adding history", 
   expect(window.location.hash).toBe("#sources");
   expect(push).not.toHaveBeenCalled();
   push.mockRestore();
+});
+
+it("searches Notebook sources and shows one relationship explorer at a time", async () => {
+  window.history.replaceState({}, "", "/archive?q=Arctic");
+  render(<ArchiveExplorer />);
+  await waitFor(() =>
+    expect(screen.getByLabelText("Search")).toHaveValue("Arctic")
+  );
+  expect(screen.getByRole("region", { name: "Inquiries" })).toHaveTextContent(
+    "The Arctic Is Not a Shortcut"
+  );
+  expect(screen.getByRole("region", { name: "Sources" })).toHaveTextContent(
+    "Arctic"
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Relationships" }));
+  expect(screen.queryByLabelText("Focus record")).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Dispatch connections" }));
+  expect(screen.getByLabelText("Focus record")).toBeInTheDocument();
+  expect(screen.queryByLabelText("Notebook inquiry")).not.toBeInTheDocument();
 });
