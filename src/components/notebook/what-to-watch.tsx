@@ -133,31 +133,36 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
         </div>
 
         <dl className="mt-5 grid gap-5">
-          <div className="grid gap-4 border-b border-rule pb-5 sm:grid-cols-3">
-            <div>
-              <dt className="font-mono text-xs uppercase tracking-widest text-jade">
-                Responsible actor
-              </dt>
-              <dd className="mt-2 text-sm leading-6">
-                {selected.responsibleActor}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-mono text-xs uppercase tracking-widest text-jade">
-                Baseline date
-              </dt>
-              <dd className="mt-2 font-mono text-xs">
-                {selected.baselineDate}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-mono text-xs uppercase tracking-widest text-jade">
-                Delivery window
-              </dt>
-              <dd className="mt-2 text-sm leading-6">
-                {selected.deliveryWindow}
-              </dd>
-            </div>
+          <div>
+            <dt className="sr-only">Baseline details</dt>
+            <dd>
+              <dl className="grid gap-4 border-b border-rule pb-5 sm:grid-cols-3">
+                <div>
+                  <dt className="font-mono text-xs uppercase tracking-widest text-jade">
+                    Responsible actor
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6">
+                    {selected.responsibleActor}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-xs uppercase tracking-widest text-jade">
+                    Baseline date
+                  </dt>
+                  <dd className="mt-2 font-mono text-xs">
+                    {selected.baselineDate}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-xs uppercase tracking-widest text-jade">
+                    Delivery window
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6">
+                    {selected.deliveryWindow}
+                  </dd>
+                </div>
+              </dl>
+            </dd>
           </div>
           <div>
             <dt className="font-mono text-xs uppercase tracking-widest text-jade">
@@ -245,15 +250,20 @@ export function WhatToWatch({ entry }: { entry: EvidenceWatchNotebookEntry }) {
             label="What remains unknown"
             items={selected.whatRemainsUnknown}
           />
-          <div className="grid gap-5 sm:grid-cols-2">
-            <WatchList
-              label="Would strengthen the assessment"
-              items={selected.wouldStrengthen}
-            />
-            <WatchList
-              label="Would weaken the assessment"
-              items={selected.wouldWeaken}
-            />
+          <div>
+            <dt className="sr-only">Assessment tests</dt>
+            <dd>
+              <dl className="grid gap-5 sm:grid-cols-2">
+                <WatchList
+                  label="Would strengthen the assessment"
+                  items={selected.wouldStrengthen}
+                />
+                <WatchList
+                  label="Would weaken the assessment"
+                  items={selected.wouldWeaken}
+                />
+              </dl>
+            </dd>
           </div>
           <div>
             <dt className="font-mono text-xs uppercase tracking-widest text-jade">
