@@ -28,6 +28,7 @@ export const openModelsClosedSystem = parseNotebookEntry({
       "notebook-source-stanford-ai-index",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-07-28",
   updatedAt: "2026-08-08",
   readTime: "18 min",

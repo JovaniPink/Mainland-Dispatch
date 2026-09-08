@@ -20,8 +20,8 @@ import { notebookArticleJsonLd, notebookArticleMetadata } from "@/lib/seo";
 
 const pagePath = `/notebook/${entry.slug}`;
 const sectionLinks = [
-  ["frame", "The four-layer frame"],
   ["system", "Eight measures"],
+  ["frame", "The four-layer frame"],
   ["mix", "Generation mix"],
   ["output", "Generation volume"],
   ["capacity", "Installed capacity"],
@@ -51,6 +51,7 @@ export default function BelowHalfIsNotGonePage() {
         thesis={entry.thesis}
         publishedAt={entry.publishedAt}
         updatedAt={entry.updatedAt}
+        presentationUpdatedAt={entry.presentationUpdatedAt}
         readTime={entry.readTime}
         tags={entry.tags}
         editorialLabel="Source-audited energy-system interpretation"
@@ -60,6 +61,21 @@ export default function BelowHalfIsNotGonePage() {
         readingRule="Keep share, output, capacity, utilization, period, unit, and evidence kind attached. The four layers cannot be added into one verdict."
         contentClassName="lg:max-w-[62rem]"
       >
+        <section className="mt-12">
+          <NotebookSectionHeading
+            id="system"
+            eyebrow="Non-additive figure - four units of analysis"
+          >
+            One system, four different questions
+          </NotebookSectionHeading>
+          <div className="mt-6">
+            <EnergySystemFigure
+              layers={entry.energyLayers}
+              sources={entry.sourceTrail}
+            />
+          </div>
+        </section>
+
         <section className="mt-12">
           <NotebookSectionHeading
             id="frame"
@@ -80,21 +96,6 @@ export default function BelowHalfIsNotGonePage() {
               estimates, and forecasts remain separately labeled.
             </p>
           </aside>
-        </section>
-
-        <section className="mt-12">
-          <NotebookSectionHeading
-            id="system"
-            eyebrow="Non-additive figure - four units of analysis"
-          >
-            One system, four different questions
-          </NotebookSectionHeading>
-          <div className="mt-6">
-            <EnergySystemFigure
-              layers={entry.energyLayers}
-              sources={entry.sourceTrail}
-            />
-          </div>
         </section>
 
         <section className="mt-12">

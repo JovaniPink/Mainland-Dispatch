@@ -25,6 +25,7 @@ export const whatXiJinpingWants = parseNotebookEntry({
       "notebook-source-cia-2027",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-07-23",
   updatedAt: "2026-07-23",
   readTime: "14 min",

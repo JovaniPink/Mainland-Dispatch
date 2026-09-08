@@ -139,7 +139,7 @@ describe("What Gets Through corrected Notebook page", () => {
       type: "article",
       url: "https://mainlanddispatch.com/notebook/what-gets-through",
       publishedTime: "2026-08-25T00:00:00.000Z",
-      modifiedTime: "2026-09-01T00:00:00.000Z",
+      modifiedTime: "2026-09-07T00:00:00.000Z",
     });
     const jsonLd = container.querySelector(
       'script[type="application/ld+json"]'

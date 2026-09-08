@@ -28,6 +28,7 @@ export const dominanceIsADashboard = parseNotebookEntry({
       "notebook-source-stanford-ai-2026",
     ],
   },
+  presentationUpdatedAt: "2026-09-07",
   publishedAt: "2026-08-14",
   updatedAt: "2026-08-14",
   readTime: "24 min",
