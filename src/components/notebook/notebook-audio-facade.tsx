@@ -46,13 +46,18 @@ export function NotebookAudioFacade({
               preload="metadata"
               className="w-full"
               onCanPlay={() => send({ type: "CAN_PLAY" })}
+              onLoadedMetadata={() => send({ type: "METADATA_LOADED" })}
               onPlaying={() => send({ type: "PLAYING" })}
               onPause={() => send({ type: "PAUSE" })}
               onWaiting={() => send({ type: "WAITING" })}
               onEnded={() => send({ type: "ENDED" })}
               onError={() => send({ type: "ERROR" })}
             >
-              <source src={audio.mediaUrl} type="audio/mpeg" />
+              <source
+                src={audio.mediaUrl}
+                type="audio/mpeg"
+                onError={() => send({ type: "ERROR" })}
+              />
             </audio>
             <div className="flex flex-wrap items-center gap-3">
               <button
