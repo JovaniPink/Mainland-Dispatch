@@ -1,11 +1,13 @@
-import { setup } from "xstate";
+import { assign, setup } from "xstate";
 
 export const notebookAudioMachine = setup({
   types: {
+    context: {} as { hasMetadata: boolean },
     events: {} as {
       type:
         | "CONSENT"
         | "CAN_PLAY"
+        | "METADATA_LOADED"
         | "PLAYING"
         | "PAUSE"
         | "WAITING"
@@ -17,11 +19,26 @@ export const notebookAudioMachine = setup({
   },
 }).createMachine({
   id: "notebook-audio",
+  context: { hasMetadata: false },
   initial: "poster",
   on: { RESET: ".poster" },
   states: {
     poster: { on: { CONSENT: "loading" } },
-    loading: { on: { CAN_PLAY: "ready", ERROR: "failure" } },
+    loading: {
+      entry: assign({ hasMetadata: false }),
+      on: {
+        METADATA_LOADED: { actions: assign({ hasMetadata: true }) },
+        CAN_PLAY: "ready",
+        WAITING: "buffering",
+        ERROR: "failure",
+      },
+      after: {
+        30_000: {
+          guard: ({ context }) => !context.hasMetadata,
+          target: "failure",
+        },
+      },
+    },
     ready: {
       on: { PLAYING: "playing", WAITING: "buffering", ERROR: "failure" },
     },
@@ -42,6 +59,7 @@ export const notebookAudioMachine = setup({
       },
     },
     buffering: {
+      after: { 30_000: "failure" },
       on: {
         PLAYING: "playing",
         PAUSE: "paused",
