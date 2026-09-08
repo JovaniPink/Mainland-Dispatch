@@ -186,3 +186,9 @@ hosted CI passed on Node 22 and 24 at `a09a76a`; production renders covered the
 homepage, shared shell, and energy figure, including mobile Paper and desktop Night.
 The 390×844 homepage Read action appeared within the first screen. These observations
 preceded the remaining visual implementation.
+
+## Review evidence
+
+See [connected-reading-validation.md](connected-reading-validation.md) for package
+heads, hosted gates, production preview observations, measurements, and remaining
+manual acceptance. Draft review readiness is separate from release acceptance.
