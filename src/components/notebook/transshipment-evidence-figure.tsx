@@ -1,3 +1,5 @@
+import { FigureSources } from "./figure-sources";
+import type { NotebookEntry } from "@/content/notebook/schema";
 import { NotebookStatus } from "@/components/notebook/notebook-status";
 import type {
   NotebookTradeFrame,
@@ -12,6 +14,7 @@ const verdictLabels: Record<NotebookTradeProof["verdict"], string> = {
 };
 
 type TransshipmentEvidenceFigureProps = Readonly<{
+  sources: NotebookEntry["sourceTrail"];
   proofs: readonly NotebookTradeProof[];
   pressure: readonly NotebookTradePressure[];
   frames: readonly NotebookTradeFrame[];
@@ -19,6 +22,7 @@ type TransshipmentEvidenceFigureProps = Readonly<{
 
 export function TransshipmentEvidenceFigure({
   proofs,
+  sources,
   pressure,
   frames,
 }: TransshipmentEvidenceFigureProps) {
@@ -41,7 +45,7 @@ export function TransshipmentEvidenceFigure({
         </span>
       </figcaption>
 
-      <ol className="mt-7 grid gap-3 md:grid-cols-4">
+      <ol className="mt-7 grid gap-3 xl:grid-cols-4">
         {proofs.map((proof, index) => (
           <li
             key={proof.id}
@@ -50,7 +54,7 @@ export function TransshipmentEvidenceFigure({
             {index > 0 && (
               <span
                 aria-hidden="true"
-                className="absolute -left-3 top-8 hidden h-6 w-6 items-center justify-center rounded-full border border-rule bg-paper font-mono text-sm text-signal md:flex"
+                className="absolute -left-3 top-8 hidden h-6 w-6 items-center justify-center rounded-full border border-rule bg-paper font-mono text-sm text-signal xl:flex"
               >
                 &gt;
               </span>
@@ -90,6 +94,10 @@ export function TransshipmentEvidenceFigure({
         ))}
       </ol>
 
+      <FigureSources
+        ids={[...new Set(proofs.flatMap((item) => item.sourceIds))]}
+        sources={sources}
+      />
       <div className="mt-10 border-t border-rule pt-7">
         <p className="font-mono text-xs uppercase tracking-widest text-jade">
           The pressure sequence
@@ -118,7 +126,7 @@ export function TransshipmentEvidenceFigure({
               <p className="mt-2 font-serif text-lg leading-snug">
                 {event.action}
               </p>
-              <p className="mt-3 text-xs leading-5 text-ink-muted">
+              <p className="mt-3 text-sm leading-6 text-ink-muted">
                 <strong className="font-semibold text-ink">Limit:</strong>{" "}
                 {event.interpretationLimit}
               </p>

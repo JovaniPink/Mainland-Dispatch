@@ -408,8 +408,10 @@ export function ChokepointPortfolioMap({
               Corridor lens
             </p>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-muted">
-              Filter the portfolio, then select a line or place. Geometry is
-              schematic and source-backed; it is not a vessel track.
+              {subset.allowedLenses.length > 1
+                ? "Filter the portfolio, then select a line or place."
+                : "Select the Arctic route or a place for its details."}{" "}
+              Geometry is schematic and source-backed; it is not a vessel track.
             </p>
           </div>
           {selectedRouteId && (
@@ -422,30 +424,32 @@ export function ChokepointPortfolioMap({
             </button>
           )}
         </div>
-        <div
-          className="mt-4 flex flex-wrap gap-2"
-          role="group"
-          aria-label="Map lens"
-        >
-          {lensOptions
-            .filter((option) => subset.allowedLenses.includes(option.id))
-            .map((option) => (
-              <button
-                key={option.id}
-                type="button"
-                aria-pressed={selectedLens === option.id}
-                onClick={() => send({ type: "SELECT_LENS", lens: option.id })}
-                className={cn(
-                  "border px-3 py-2 font-mono text-xs uppercase tracking-widest",
-                  selectedLens === option.id
-                    ? "border-signal bg-signal-soft/55 text-signal"
-                    : "border-rule bg-paper text-ink-muted hover:border-jade hover:text-jade"
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
-        </div>
+        {subset.allowedLenses.length > 1 && (
+          <div
+            className="mt-4 flex flex-wrap gap-2"
+            role="group"
+            aria-label="Map lens"
+          >
+            {lensOptions
+              .filter((option) => subset.allowedLenses.includes(option.id))
+              .map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={selectedLens === option.id}
+                  onClick={() => send({ type: "SELECT_LENS", lens: option.id })}
+                  className={cn(
+                    "border px-3 py-2 font-mono text-xs uppercase tracking-widest",
+                    selectedLens === option.id
+                      ? "border-signal bg-signal-soft/55 text-signal"
+                      : "border-rule bg-paper text-ink-muted hover:border-jade hover:text-jade"
+                  )}
+                >
+                  {option.label}
+                </button>
+              ))}
+          </div>
+        )}
       </div>
 
       {mapStatus === "idle" && (
@@ -558,8 +562,14 @@ export function ChokepointPortfolioMap({
               <strong className="mt-3 block font-serif text-lg leading-snug">
                 {route.label}
               </strong>
-              <span className="mt-2 block text-xs leading-5 text-ink-muted">
+              <span className="mt-2 block text-sm leading-6 text-ink-muted">
                 {route.scale}
+              </span>
+              <span className="mt-3 block text-sm leading-6">
+                {route.reading}
+              </span>
+              <span className="mt-3 block text-sm leading-6 text-ink-muted">
+                <strong>Displaced risk:</strong> {route.caveat}
               </span>
             </button>
           ))}
@@ -580,7 +590,7 @@ export function ChokepointPortfolioMap({
                 {selectedPoint?.note ?? selectedRoute.reading}
               </p>
               {!selectedPoint && (
-                <p className="mt-4 border-l-2 border-signal pl-3 text-xs leading-6 text-ink-muted">
+                <p className="mt-4 border-l-2 border-signal pl-3 text-sm leading-6 text-ink-muted">
                   {selectedRoute.caveat}
                 </p>
               )}
@@ -619,7 +629,7 @@ export function ChokepointPortfolioMap({
                 A shorter line is not automatically a safer, larger, or more
                 reliable route.
               </p>
-              <p className="mt-4 text-xs leading-6 text-ink-muted">
+              <p className="mt-4 text-sm leading-6 text-ink-muted">
                 Select any corridor to see its function, measurement, and hard
                 limit without loading the basemap.
               </p>

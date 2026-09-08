@@ -62,7 +62,7 @@ export function NotebookFormats({ formats }: { formats: NotebookFormat[] }) {
           <span className="mt-1 font-mono text-xs uppercase tracking-widest text-ink-muted">
             Retrieved {format.retrievedAt}
           </span>
-          <span className="mt-4 text-xs leading-relaxed text-ink-muted">
+          <span className="mt-4 text-sm leading-relaxed text-ink-muted">
             {format.note}
           </span>
         </a>

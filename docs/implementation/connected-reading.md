@@ -146,3 +146,49 @@ measure values, evidence labels, source IDs, and compatibility anchors remain.
 Production render review of this package precedes package 4. Native Safari,
 VoiceOver, full zoom/reflow, and broader visual acceptance remain explicit gates;
 these draft packages are not release authorization.
+
+## Package 4: remaining editorial redesign
+
+All ten openings now meet the agreed ranges (subtitles 22–25 words; theses
+47–59 words). The copy ledger records original/replacement passages and preserved
+boundaries. Public migration explanations use reader language while historical
+research snapshots remain unchanged.
+
+Primary explanation is static: Inquiry 01 uses attributed argument/interpretation
+rows and its separate three-date strip; 02 adds a dated promise ledger while
+retaining detailed promise links; 03 keeps independent country comparisons;
+04 pairs the consent map with visible workaround/risk explanations; 05 retains
+its five-stage mechanism and distribution/policy rows; 06 presents parallel gate
+structures; 07 adds six independently scaled strips with explicit zero-change
+or PMI-50 baselines; 08 retains the accepted energy reference; 09 separates
+four proof steps; 10 combines admitted schematic geometry, climatological
+window guidance, and three separately labeled measures. Source references,
+evidence labels, and semantic text accompany the visuals.
+
+Article endings now show established companions followed by full-title adjacent
+inquiries. No thematic or evidentiary relationship was inferred. The generic
+article placeholder is replaced with publisher/type/date, Compare uses parallel
+record names, and the single-option Arctic filter is removed. Seven pre-existing
+duplicate source-trail IDs were resolved by naming the inner ledger separately;
+existing compatibility anchors remain reachable.
+
+The ten-route contract checks unique IDs, primary figures, a single reading-end
+navigation, and absence of audio/iframes before consent. Existing source and
+claim inventories, public selection, source identity, media lifetime, and fragment
+checks remain in the required suite. Hosted canonical builds and final production
+renders remain required at the review head.
+
+Package 2 production journeys were exercised on the cumulative package 3 preview:
+Arctic returned its inquiry and admitted sources; following the NSIDC source
+opened its correct disclosure. Saving survived reload, and removal in another tab
+updated the first tab. Relationships displayed only its selected scope. Package 3
+hosted CI passed on Node 22 and 24 at `a09a76a`; production renders covered the
+homepage, shared shell, and energy figure, including mobile Paper and desktop Night.
+The 390×844 homepage Read action appeared within the first screen. These observations
+preceded the remaining visual implementation.
+
+## Review evidence
+
+See [connected-reading-validation.md](connected-reading-validation.md) for package
+heads, hosted gates, production preview observations, measurements, and remaining
+manual acceptance. Draft review readiness is separate from release acceptance.

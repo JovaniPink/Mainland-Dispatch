@@ -1,5 +1,5 @@
 import type { Dispatch } from "@/content/schema";
-import { kindLabels } from "@/content/site";
+import { kindLabels, formatDate } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 const bars = [42, 76, 58, 88, 64, 93];
@@ -13,6 +13,20 @@ export function DispatchVisual({
   compact?: boolean;
 }) {
   const label = kindLabels[dispatch.kind];
+  if (dispatch.kind === "article")
+    return (
+      <div
+        aria-label={`${label} preview`}
+        className="border-b border-rule bg-jade-soft/25 px-4 py-5"
+      >
+        <p className="font-mono text-xs uppercase tracking-widest text-jade">
+          {label} · {formatDate(dispatch.canonicalSource.publishedAt)}
+        </p>
+        <p className="mt-2 font-serif text-lg">
+          {dispatch.canonicalSource.publisher}
+        </p>
+      </div>
+    );
 
   return (
     <div
@@ -110,19 +124,6 @@ export function DispatchVisual({
           <p className="max-w-[28ch] font-serif text-base italic leading-snug text-ink-muted">
             A captured public conversation, preserved with source context.
           </p>
-        </div>
-      )}
-
-      {dispatch.kind === "article" && (
-        <div className="absolute inset-0 flex items-end justify-between px-5 pb-4 pt-10">
-          <span className="font-serif text-7xl italic leading-none text-jade/70">
-            A
-          </span>
-          <div className="mb-2 w-2/3 space-y-2">
-            <div className="h-px bg-ink-muted/50" />
-            <div className="h-px bg-ink-muted/40" />
-            <div className="h-px w-4/5 bg-ink-muted/30" />
-          </div>
         </div>
       )}
 
