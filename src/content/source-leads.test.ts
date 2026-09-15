@@ -2,7 +2,7 @@ import { sourceLeads, SourceLeadCatalogSchema } from "./source-leads";
 
 describe("editorial article-candidate catalog", () => {
   it("holds a chronological article-source inbox", () => {
-    expect(sourceLeads).toHaveLength(510);
+    expect(sourceLeads).toHaveLength(526);
     const datedYears = sourceLeads
       .map((lead) =>
         String(lead.publicationYear ?? lead.publishedAt?.slice(0, 4))
@@ -16,7 +16,7 @@ describe("editorial article-candidate catalog", () => {
   it("assigns versioned provisional taxonomy metadata to every source lead", () => {
     const taxonomies = sourceLeads.map((lead) => Reflect.get(lead, "taxonomy"));
 
-    expect(taxonomies).toHaveLength(510);
+    expect(taxonomies).toHaveLength(526);
     expect(
       taxonomies.every(
         (taxonomy) =>
@@ -108,6 +108,33 @@ describe("editorial article-candidate catalog", () => {
       )
     ).toBe(true);
     expect(corpus.every((lead) => lead.url.startsWith("https://"))).toBe(true);
+  });
+
+  it("accounts for the September 15 news intake without publishing it", () => {
+    const corpus = sourceLeads.filter(
+      (lead) => lead.collectionId === "china-news-2026-09-15"
+    );
+    const ids = corpus.map((lead) => lead.id);
+    const urls = corpus.map((lead) => lead.url);
+
+    expect(corpus).toHaveLength(16);
+    expect(new Set(ids).size).toBe(16);
+    expect(new Set(urls).size).toBe(16);
+    expect(
+      corpus.every(
+        (lead) =>
+          lead.reviewState === "metadata-checked" &&
+          lead.disposition === "withheld" &&
+          lead.evidenceStatus === "unverified" &&
+          lead.urlStatus === "publisher-canonical" &&
+          lead.canonicalCheckedAt === "2026-09-15" &&
+          lead.accessedAt === "2026-09-15" &&
+          lead.url.startsWith("https://") &&
+          Boolean(lead.decisionReason) &&
+          Boolean(lead.nextReviewAt) &&
+          !lead.dispatchId
+      )
+    ).toBe(true);
   });
 
   it("accounts for the bounded 20-link HN discovery batch without publishing it", () => {
