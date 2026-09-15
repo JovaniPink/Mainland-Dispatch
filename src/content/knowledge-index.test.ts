@@ -46,6 +46,20 @@ describe("public knowledge-contract adapter", () => {
     expect(publicProjection).not.toContain("lead-hn-2026-");
   });
 
+  it("keeps the Anthropic threat-report story packet out of the public index", () => {
+    const publicProjection = JSON.stringify(mainlandKnowledgeIndex);
+
+    expect(publicProjection).not.toContain(
+      "anthropic-china-threat-report-2026-09-15"
+    );
+    expect(publicProjection).not.toContain(
+      "lead-2026-anthropic-september-threat-report"
+    );
+    expect(publicProjection).not.toContain(
+      "lead-2026-hudson-china-insider-anthropic-threat-report"
+    );
+  });
+
   it("retains both scoped use records for each shared maritime source", () => {
     const publicationIds = [
       "mainland-dispatch:publication:notebook-routing-around-risk",

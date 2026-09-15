@@ -42,9 +42,9 @@ const CorpusTransparencySchema = z
  */
 export const corpusTransparency = CorpusTransparencySchema.parse({
   auditedAt: "2026-09-15",
-  collectedLeads: 604,
-  generalChinaCandidates: 482,
-  generalChinaWithheld: 453,
+  collectedLeads: 609,
+  generalChinaCandidates: 487,
+  generalChinaWithheld: 458,
   generalChinaRejected: 29,
   evidenceReviewedMappings: 24,
   publishedRecords: 13,

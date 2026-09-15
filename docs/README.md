@@ -4,8 +4,8 @@
 **Public Dispatches:** 13 published or corrected records
 **Public Notebook entries:** 10 source-reviewed inquiries (distinct from Dispatches)
 **Evidence-reviewed lead-to-Dispatch mappings:** 24
-**Source-lead catalog:** 604 records
-**General-China article audit:** 482 external candidates — 453 withheld, 29
+**Source-lead catalog:** 609 records
+**General-China article audit:** 487 external candidates — 458 withheld, 29
 rejected, 0 drafted, 0 public
 
 ## Season Zero boundary
@@ -40,7 +40,7 @@ presentation verification separately from publication completion.
 The existing `/archive` route is the connected public evidence surface. It
 offers filters, a source chronology and explicit relationship views over the 13
 published records. It may show the audited corpus totals below, but it never
-imports the 604 private leads into a public stream. Withheld and rejected
+imports the 609 private leads into a public stream. Withheld and rejected
 figures communicate editorial provenance, not endorsement.
 
 The founding inquiry is supported by the
@@ -259,4 +259,4 @@ interactive.
 
 These files preserve what was known and counted at their recorded review time.
 Counts such as 44 or 56 describe those historical snapshots, not the current
-604-record catalog.
+609-record catalog.
