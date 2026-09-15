@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { SourceLeadSchema } from "./schema";
 import { classifySourceLead } from "./source-lead-taxonomy";
+import { anthropicChinaThreatReport20260915 } from "./source-lead-batches/anthropic-china-threat-report-2026-09-15";
 import { chinaArticleIntake01 } from "./source-lead-batches/china-article-intake-01";
 import { chinaArticleIntake02 } from "./source-lead-batches/china-article-intake-02";
 import { chinaArticleIntake03 } from "./source-lead-batches/china-article-intake-03";
@@ -15,6 +16,7 @@ import { chinaArticleIntake11 } from "./source-lead-batches/china-article-intake
 import { chinaArticleIntake12 } from "./source-lead-batches/china-article-intake-12";
 import { chinaArticleIntake13 } from "./source-lead-batches/china-article-intake-13";
 import { chinaCriticalMinerals20260906 } from "./source-lead-batches/china-critical-minerals-2026-09-06";
+import { chinaHnPastYear20260915 } from "./source-lead-batches/china-hn-past-year-2026-09-15";
 import { chinaNews20260915 } from "./source-lead-batches/china-news-2026-09-15";
 import { chinaQualityLinks20260814 } from "./source-lead-batches/china-quality-links-2026-08-14";
 import { existingDispatchCanonicalSources } from "./source-lead-batches/existing-dispatch-canonical-sources";
@@ -60,6 +62,7 @@ const atlasEvidenceLeadIds = new Set([
 ]);
 
 const leads = [
+  ...anthropicChinaThreatReport20260915,
   ...chinaArticleIntake01,
   ...chinaArticleIntake02,
   ...chinaArticleIntake03,
@@ -74,6 +77,7 @@ const leads = [
   ...chinaArticleIntake12,
   ...chinaArticleIntake13,
   ...chinaCriticalMinerals20260906,
+  ...chinaHnPastYear20260915,
   ...chinaNews20260915,
   ...chinaQualityLinks20260814,
   ...existingDispatchCanonicalSources,
