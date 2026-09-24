@@ -82,6 +82,19 @@ describe("Inquiry 11 draft boundary", () => {
       field: "label",
     };
     expect(NotebookDraftSchema.safeParse(missingCase).success).toBe(false);
+    const overlapping = NotebookDraftSchema.parse(draft);
+    overlapping.unverified.push({
+      ...overlapping.unverified[3],
+      id: "unverified-hardware-access-overlap",
+      phrase: "hardware they were discussing",
+    });
+    expect(
+      NotebookDraftSchema.safeParse(overlapping).error?.issues.map(
+        (issue) => issue.message
+      )
+    ).toEqual([
+      "Unverified phrases must not overlap at one location: unverified-hardware-access-overlap",
+    ]);
     const wrongStatus = {
       ...draft,
       unverified: [{ ...draft.unverified[0], status: "reported" }],

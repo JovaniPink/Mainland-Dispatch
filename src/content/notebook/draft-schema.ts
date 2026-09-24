@@ -131,6 +131,7 @@ export const NotebookDraftSchema = z
         });
       }
     }
+    const markedRanges = new Map<string, [number, number][]>();
     for (const item of draft.unverified) {
       const target = unverifiedTargetText(draft, item);
       if (target === undefined || target.split(item.phrase).length !== 2) {
@@ -138,7 +139,19 @@ export const NotebookDraftSchema = z
           code: "custom",
           message: `Unverified phrase must appear exactly once at its location: ${item.id}`,
         });
+        continue;
       }
+      const key = JSON.stringify(item.location);
+      const start = target.indexOf(item.phrase);
+      const end = start + item.phrase.length;
+      const ranges = markedRanges.get(key) ?? [];
+      if (ranges.some(([from, to]) => start < to && from < end)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Unverified phrases must not overlap at one location: ${item.id}`,
+        });
+      }
+      markedRanges.set(key, [...ranges, [start, end]]);
     }
     if (
       draft.evidenceCutoff > draft.draftUpdatedAt ||
