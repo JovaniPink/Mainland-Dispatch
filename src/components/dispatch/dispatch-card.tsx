@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Dispatch } from "@/content/schema";
+import type { PublicDispatch } from "@/content/schema";
 import { formatDateShort, verticals } from "@/content/site";
 import { MetaLine } from "./meta-line";
 import { SaveButton } from "./save-button";
@@ -10,7 +10,7 @@ export function DispatchCard({
   dispatch: d,
   featured = false,
 }: {
-  dispatch: Dispatch;
+  dispatch: PublicDispatch;
   featured?: boolean;
 }) {
   const verticalLabels: string[] = [

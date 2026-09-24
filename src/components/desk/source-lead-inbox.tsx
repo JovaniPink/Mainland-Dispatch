@@ -1,11 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { sourceLeads } from "@/content/source-leads";
 import {
   sourceLeadRegionLabels,
   sourceLeadThemeLabels,
-} from "@/content/source-lead-taxonomy";
+} from "@/content/source-lead-labels";
 import type {
   SourceLead,
   SourceLeadRegion,
@@ -20,7 +19,12 @@ const decadeFor = (publishedAt?: string, publicationYear?: number) => {
   return year ? `${Math.floor(year / 10) * 10}s` : "Date pending";
 };
 
-export function SourceLeadInbox() {
+/** Receives the private catalog as a server prop; it never imports the catalog. */
+export function SourceLeadInbox({
+  sourceLeads,
+}: {
+  sourceLeads: SourceLead[];
+}) {
   const [query, setQuery] = useState("");
   const [reviewState, setReviewState] = useState<
     "all" | SourceLead["reviewState"]
@@ -65,7 +69,7 @@ export function SourceLeadInbox() {
           (!normalizedQuery || searchable.includes(normalizedQuery))
         );
       }),
-    [disposition, normalizedQuery, region, reviewState, theme]
+    [disposition, normalizedQuery, region, reviewState, sourceLeads, theme]
   );
 
   const groups = new Map<string, typeof filteredLeads>();

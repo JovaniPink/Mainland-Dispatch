@@ -1,4 +1,4 @@
-import { publishedDispatches } from "@/content/dispatches";
+import { publishedDispatches, toPublicDispatch } from "@/content/dispatches";
 import {
   publicDiscovery,
   discoveryInquiries,
@@ -10,9 +10,9 @@ import { ArchiveExplorerClient } from "./archive-explorer-client";
 export function ArchiveExplorer() {
   return (
     <ArchiveExplorerClient
-      records={publishedDispatches.filter(
-        (record) => record.provenance === "verified"
-      )}
+      records={publishedDispatches
+        .filter((record) => record.provenance === "verified")
+        .map(toPublicDispatch)}
       entries={discoveryInquiries}
       data={publicDiscovery}
       catalog={publicArchiveCatalog}

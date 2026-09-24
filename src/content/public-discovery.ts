@@ -1,10 +1,10 @@
-import { publishedDispatches } from "./dispatches";
+import { publishedDispatches, toPublicDispatch } from "./dispatches";
 import { latestNotebookEntry, publicNotebookEntries } from "./notebook";
 import {
   notebookSourceKnowledgeId,
   dispatchSourceKnowledgeId,
 } from "./notebook/source-authority";
-import type { Dispatch } from "./schema";
+import type { PublicDispatch } from "./schema";
 
 export type SourceUse = {
   kind: "notebook" | "dispatch";
@@ -40,7 +40,7 @@ export type SourceResult = ResultBase & {
 };
 export type DispatchResult = ResultBase & {
   kind: "dispatch";
-  record: Dispatch;
+  record: PublicDispatch;
 };
 export type PublicDiscoveryResult =
   InquiryResult | SourceResult | DispatchResult;
@@ -149,7 +149,7 @@ function projectPublicDiscovery(): PublicDiscoveryResult[] {
       reviewedAt: record.curatedAt,
       topics: [...record.tags, ...record.verticals, ...record.places],
       href,
-      record,
+      record: toPublicDispatch(record),
       searchText: [
         record.title,
         record.summary,

@@ -3,7 +3,6 @@
 import { useMachine } from "@xstate/react";
 import Link from "next/link";
 import type { Trace } from "@/content/schema";
-import { getDispatchById } from "@/content/dispatches";
 import { phaseLabels } from "@/content/traces";
 import { formatDate } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -14,7 +13,14 @@ import { StateLab } from "@/components/state-lab/state-lab";
  * Chronological story record with a clickable entry list and a
  * "critical moments" sidebar (the chess-lab review-panel pattern).
  */
-export function TraceTimeline({ trace }: { trace: Trace }) {
+export function TraceTimeline({
+  trace,
+  dispatchSlugs,
+}: {
+  trace: Trace;
+  /** Entry id → Dispatch slug, resolved on the server so no catalog ships here. */
+  dispatchSlugs: Record<string, string>;
+}) {
   const [state, send] = useMachine(traceMachine, {
     input: {
       initialId: trace.entries[0]?.id ?? "",
@@ -29,9 +35,7 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
       <ol className="relative border-l border-rule pl-6">
         {trace.entries.map((entry) => {
           const selected = entry.id === selectedId;
-          const dispatch = entry.dispatchId
-            ? getDispatchById(entry.dispatchId)
-            : undefined;
+          const dispatchSlug = dispatchSlugs[entry.id];
           return (
             <li
               key={entry.id}
@@ -78,9 +82,9 @@ export function TraceTimeline({ trace }: { trace: Trace }) {
                         {entry.sourceLabel ?? "Source"} ↗
                       </a>
                     )}
-                    {dispatch && (
+                    {dispatchSlug && (
                       <Link
-                        href={`/dispatch/${dispatch.slug}`}
+                        href={`/dispatch/${dispatchSlug}`}
                         className="font-mono text-xs uppercase tracking-widest text-jade hover:text-signal"
                       >
                         Read dispatch →
