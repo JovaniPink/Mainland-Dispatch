@@ -57,7 +57,9 @@ claim-safety posture from `handoff-navigator`.
 - **Desk** — a local editorial sandbox with link intake, live Zod feedback, and
   an evidence-focused review queue. It is absent from public navigation and
   returns 404 in production unless `ENABLE_EDITORIAL_DESK=1` is explicitly set
-  at build time. It is not an authenticated CMS.
+  at build time. It is not an authenticated CMS. The Desk reads the source-lead
+  catalog on the server and passes it to its client components as props; the
+  catalog modules are `server-only`.
 
 ## Publication and evidence boundaries
 
@@ -143,8 +145,10 @@ corepack npm run test-all
 
 It rejects high-severity advisories in both the deployed and complete dependency
 graphs, then runs formatting, ESLint, the fail-closed compiler contract, strict
-checks with TypeScript 7 and TypeScript 6, Jest/Testing Library coverage, and a
-production build. The same gates run on Node 22 and Node 24 in GitHub Actions.
+checks with TypeScript 7 and TypeScript 6, Jest/Testing Library coverage, a
+production build, and a public-boundary audit that fails if any source-lead ID
+or serialized source-lead field reaches a client chunk or prerendered public
+document. The same gates run on Node 22 and Node 24 in GitHub Actions.
 Individual commands remain available for formatting
 (`corepack npm run format:check`), lint (`corepack npm run lint`), baseline
 validation (`corepack npm run baseline:check`), compiler validation

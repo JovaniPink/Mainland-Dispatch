@@ -1,5 +1,6 @@
+import "server-only";
 import { z } from "zod";
-import { SourceLeadSchema } from "./schema";
+import { SourceLeadSchema } from "./source-lead-schema";
 import { classifySourceLead } from "./source-lead-taxonomy";
 import { anthropicChinaThreatReport20260915 } from "./source-lead-batches/anthropic-china-threat-report-2026-09-15";
 import { chinaArticleIntake01 } from "./source-lead-batches/china-article-intake-01";

@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { SaveButton } from "@/components/dispatch/save-button";
 import { evidenceStatusLabels } from "@/content/dossiers";
-import type { Dispatch, EvidenceStatus } from "@/content/schema";
+import type { EvidenceStatus, PublicDispatch } from "@/content/schema";
 import { formatDateShort } from "@/content/site";
 
-function uniqueStatuses(dispatch: Dispatch): EvidenceStatus[] {
+function uniqueStatuses(dispatch: PublicDispatch): EvidenceStatus[] {
   return [...new Set(dispatch.claims.map((claim) => claim.status))];
 }
 
-export function ArchiveRecordCard({ record }: { record: Dispatch }) {
+export function ArchiveRecordCard({ record }: { record: PublicDispatch }) {
   const statuses = uniqueStatuses(record);
 
   return (

@@ -1,4 +1,4 @@
-import type { Dispatch } from "@/content/schema";
+import type { PublicDispatch } from "@/content/schema";
 import { kindLabels, formatDate } from "@/content/site";
 import { cn } from "@/lib/utils";
 
@@ -9,7 +9,7 @@ export function DispatchVisual({
   dispatch,
   compact = false,
 }: {
-  dispatch: Dispatch;
+  dispatch: PublicDispatch;
   compact?: boolean;
 }) {
   const label = kindLabels[dispatch.kind];

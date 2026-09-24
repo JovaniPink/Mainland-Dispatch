@@ -1,10 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { SourceLeadInbox } from "./source-lead-inbox";
+import { sourceLeads } from "@/content/source-leads";
 
 describe("SourceLeadInbox", () => {
   it("presents the long chronology as collapsed decade groups", () => {
-    render(<SourceLeadInbox />);
+    render(<SourceLeadInbox sourceLeads={sourceLeads} />);
 
     expect(
       screen.getByText(/609 article-source candidates/)
@@ -16,7 +17,7 @@ describe("SourceLeadInbox", () => {
   });
 
   it("retains canonical links and shows evidence dispositions", () => {
-    render(<SourceLeadInbox />);
+    render(<SourceLeadInbox sourceLeads={sourceLeads} />);
 
     expect(
       screen
@@ -41,7 +42,7 @@ describe("SourceLeadInbox", () => {
   });
 
   it("filters a large inbox without changing its publication boundary", () => {
-    render(<SourceLeadInbox />);
+    render(<SourceLeadInbox sourceLeads={sourceLeads} />);
 
     fireEvent.change(
       screen.getByRole("searchbox", { name: "Search source leads" }),
@@ -55,7 +56,7 @@ describe("SourceLeadInbox", () => {
   });
 
   it("filters and presents the controlled link taxonomy", () => {
-    render(<SourceLeadInbox />);
+    render(<SourceLeadInbox sourceLeads={sourceLeads} />);
 
     fireEvent.change(screen.getByRole("combobox", { name: "Theme" }), {
       target: { value: "trade-industry" },
