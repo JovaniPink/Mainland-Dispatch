@@ -15,7 +15,7 @@ import {
   discoveryLabels,
 } from "./discovery-results";
 import {
-  type Dispatch,
+  type PublicDispatch,
   type DispatchKind,
   type EvidenceStatus,
   type Vertical,
@@ -114,7 +114,7 @@ function PublishedRelationshipMap({
   focusId,
   onSelect,
 }: {
-  records: Dispatch[];
+  records: PublicDispatch[];
   focusId: string;
   onSelect: (id: string) => void;
 }) {
@@ -137,7 +137,7 @@ function PublishedRelationshipMap({
 
   const related = focus.relatedDispatchIds
     .map((id) => records.find((record) => record.id === id))
-    .filter((record): record is Dispatch => Boolean(record));
+    .filter((record): record is PublicDispatch => Boolean(record));
 
   return (
     <section className="mt-6 border border-rule p-4 sm:p-6">
@@ -238,7 +238,7 @@ export function ArchiveExplorerClient({
   data,
   catalog,
 }: {
-  records: Dispatch[];
+  records: PublicDispatch[];
   entries: DiscoveryInquiry[];
   data: PublicDiscoveryResult[];
   catalog: ArchiveUrlCatalog;
