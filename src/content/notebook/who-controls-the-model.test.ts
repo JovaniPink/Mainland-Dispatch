@@ -1,4 +1,4 @@
-import { NotebookDraftSchema } from "./draft-schema";
+import { NotebookDraftSchema, unverifiedTargetText } from "./draft-schema";
 import {
   whoControlsTheModel as draft,
   whoControlsTheModelWordCount,
@@ -49,5 +49,58 @@ describe("Inquiry 11 draft boundary", () => {
       sourceTrail: [...draft.sourceTrail, draft.sourceTrail[0]],
     };
     expect(NotebookDraftSchema.safeParse(duplicate).success).toBe(false);
+  });
+  it("keeps every unsourced detail in place and marked as needing a primary source", () => {
+    expect(draft.unverified.map((item) => item.phrase)).toEqual([
+      "late 2024",
+      "tokens",
+      "senior officials",
+      "access to the hardware",
+      "Chinese-speaking",
+      "could not reliably verify nationality",
+      "GTG-17003",
+      "Chinese-speaking",
+      "Compromises reported by provider",
+    ]);
+    for (const item of draft.unverified) {
+      expect(item.status).toBe("needs-primary-source");
+      expect(unverifiedTargetText(draft, item)).toContain(item.phrase);
+    }
+  });
+  it("rejects unverified entries whose phrase is missing from their location", () => {
+    const moved = NotebookDraftSchema.parse(draft);
+    moved.unverified[0].location = {
+      kind: "paragraph",
+      sectionId: "access-and-rerouting",
+      paragraph: 0,
+    };
+    expect(NotebookDraftSchema.safeParse(moved).success).toBe(false);
+    const missingCase = NotebookDraftSchema.parse(draft);
+    missingCase.unverified[6].location = {
+      kind: "case",
+      caseId: "case-missing",
+      field: "label",
+    };
+    expect(NotebookDraftSchema.safeParse(missingCase).success).toBe(false);
+    const wrongStatus = {
+      ...draft,
+      unverified: [{ ...draft.unverified[0], status: "reported" }],
+    };
+    expect(NotebookDraftSchema.safeParse(wrongStatus).success).toBe(false);
+  });
+  it("uses the source record's title and the ledger's official-record status", () => {
+    expect(
+      draft.sourceTrail.find(
+        (source) => source.id === "notebook-source-anthropic-september"
+      )?.title
+    ).toBe("Countering misuse of AI: September 2026");
+    expect(
+      draft.claimAudit.find((claim) => claim.id === "audit-response")?.status
+    ).toBe("officiallyAnnounced");
+    expect(
+      draft.claimAudit
+        .filter((claim) => claim.id !== "audit-response")
+        .every((claim) => claim.status === "reported")
+    ).toBe(true);
   });
 });

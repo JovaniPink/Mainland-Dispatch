@@ -15,6 +15,17 @@ const paragraph = (
   claimIds = ["audit-access"]
 ) => ({ text, sourceIds, claimIds });
 
+const paragraphAt = (sectionId: string, paragraph: number) => ({
+  kind: "paragraph" as const,
+  sectionId,
+  paragraph,
+});
+
+const caseAt = (
+  caseId: string,
+  field: "label" | "activity" | "attribution" | "outcome"
+) => ({ kind: "case" as const, caseId, field });
+
 export const whoControlsTheModel = NotebookDraftSchema.parse({
   ordinal: 11,
   slug: "who-controls-the-model",
@@ -218,7 +229,7 @@ export const whoControlsTheModel = NotebookDraftSchema.parse({
     [
       report,
       "Primary provider disclosure",
-      "Detecting and countering misuse of AI: September 2026",
+      "Countering misuse of AI: September 2026",
       "Anthropic",
       "2026-09-10",
       "https://www.anthropic.com/threat-intelligence-report-september-2026",
@@ -371,6 +382,7 @@ export const whoControlsTheModel = NotebookDraftSchema.parse({
       "exclude",
       "September 11 official English briefing supplies a general response; detailed company responses unresolved.",
       response,
+      "officiallyAnnounced",
     ],
     [
       "audit-scrutiny",
@@ -393,10 +405,10 @@ export const whoControlsTheModel = NotebookDraftSchema.parse({
       "Description-only discovery citation; audio has not been audited.",
       podcast,
     ],
-  ].map(([id, claim, decision, assessment, source]) => ({
+  ].map(([id, claim, decision, assessment, source, status = "reported"]) => ({
     id,
     claim,
-    status: "reported",
+    status,
     decision,
     assessment,
     sourceIds: [source],
@@ -483,7 +495,70 @@ export const whoControlsTheModel = NotebookDraftSchema.parse({
     "Full PDF and podcast audio audits remain open. No operational instructions or personal identifiers reproduced.",
     "Underlying export directive, congressional statements, and detailed named-company responses remain unresolved.",
     "No aggregate exchange count, growth multiplier, demonstrated invasion preparation, or irreversible capability claim retained.",
+    "Details marked [unverified] have no support in the reviewed source records or story ledger and need a primary source before promotion.",
   ],
+  unverified: [
+    [
+      "unverified-advisory-period",
+      "late 2024",
+      paragraphAt("distillation-and-measurement", 3),
+      "The advisory's start of period is not recorded in the ledger's advisory review.",
+    ],
+    [
+      "unverified-advisory-tokens",
+      "tokens",
+      paragraphAt("distillation-and-measurement", 3),
+      "The ledger records exchanges and six named companies, not a token measure.",
+    ],
+    [
+      "unverified-briefing-recipients",
+      "senior officials",
+      paragraphAt("military-and-surveillance", 3),
+      "The ledger records restricted briefings and intended recipients, not their seniority.",
+    ],
+    [
+      "unverified-hardware-access",
+      "access to the hardware",
+      paragraphAt("military-and-surveillance", 3),
+      "The ledger records only that the actors already possessed hardware expertise.",
+    ],
+    [
+      "unverified-hunan-language",
+      "Chinese-speaking",
+      paragraphAt("military-and-surveillance", 4),
+      "The ledger mentions location and language generally; this exact descriptor is not recorded.",
+    ],
+    [
+      "unverified-nationality-check",
+      "could not reliably verify nationality",
+      paragraphAt("hardware-and-access", 2),
+      "The ledger records the June timeline, not this stated reason for the suspension.",
+    ],
+    [
+      "unverified-briefing-designator",
+      "GTG-17003",
+      caseAt("case-briefing", "label"),
+      "No reviewed record assigns this designator to the directed-energy case.",
+    ],
+    [
+      "unverified-hunan-language-case",
+      "Chinese-speaking",
+      caseAt("case-hunan", "attribution"),
+      "Same descriptor as the section 03 paragraph; not recorded in the ledger.",
+    ],
+    [
+      "unverified-hunan-compromises",
+      "Compromises reported by provider",
+      caseAt("case-hunan", "outcome"),
+      "The ledger records the cluster and its attribution limit, not reported compromises.",
+    ],
+  ].map(([id, phrase, location, note]) => ({
+    id,
+    phrase,
+    location,
+    status: "needs-primary-source",
+    note,
+  })),
 });
 
 export const whoControlsTheModelWordCount = whoControlsTheModel.sections

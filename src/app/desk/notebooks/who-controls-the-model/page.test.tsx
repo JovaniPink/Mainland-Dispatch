@@ -41,6 +41,16 @@ describe("gated Notebook preview", () => {
         container.querySelector(`[id="${link.hash.slice(1)}"]`)
       ).not.toBeNull();
     }
+    expect(screen.getAllByRole("link", { name: /^Unverified: / })).toHaveLength(
+      9
+    );
+    expect(
+      screen.getByRole("link", { name: "Unverified: GTG-17003" })
+    ).toHaveTextContent("[unverified]");
+    expect(screen.getByText(/Unverified details \(9\)/)).toBeInTheDocument();
+    expect(
+      screen.getAllByText(/needs primary source/).length
+    ).toBeGreaterThanOrEqual(9);
     expect(metadata.robots).toEqual({
       index: false,
       follow: false,

@@ -319,3 +319,49 @@ unchanged. Later corrections append dated entries and preserve this cutoff.
 The local preview is a review artifact, not release approval. Remaining source,
 legal, translation, audio, independent corroboration, and editorial gates above
 remain open. No push, PR, publication, or outreach is part of this implementation.
+
+## September 24, 2026: unverified details and draft corrections
+
+This appended entry preserves the September 15 entries above. A review of the
+Inquiry 11 draft found details with no support in this ledger, the HN
+past-year ledger, or the source records in
+`src/content/source-lead-batches/anthropic-china-threat-report-2026-09-15.ts`.
+Each was searched for again in both ledgers and every repository source record
+before being marked. No source was invented, and none of these phrases was
+removed. Each stays in the draft, marked `[unverified]` in the Desk preview,
+and is registered in the draft's `unverified` list with status
+`needs-primary-source`.
+
+### Open items: needs primary source
+
+| Exact phrase | Where it appears | Status |
+| --- | --- | --- |
+| "late 2024" | Section 02, paragraph 4 (government advisory period) | Needs primary source |
+| "tokens" | Section 02, paragraph 4 (government advisory measures) | Needs primary source |
+| "senior officials" | Section 03, paragraph 4 (directed-energy briefings) | Needs primary source |
+| "access to the hardware" | Section 03, paragraph 4 (actors' prior capability) | Needs primary source. The claim ledger above records only hardware expertise. |
+| "Chinese-speaking" | Section 03, paragraph 5 (Hunan cyber cluster) | Needs primary source |
+| "could not reliably verify nationality" | Section 05, paragraph 3 (June access suspension) | Needs primary source |
+| "GTG-17003" | Case table, directed-energy row, case label | Needs primary source |
+| "Chinese-speaking" | Case table, GTG-10007 row, attribution | Needs primary source |
+| "Compromises reported by provider" | Case table, GTG-10007 row, outcome | Needs primary source |
+
+Rechecked and left unchanged: "Mythos 5" (Section 05, paragraph 3). The
+verified Dispatch `d-036` in `src/content/dispatches.ts`, which cites the same
+Anthropic June 30 publisher record, names Fable 5 and Mythos 5.
+
+### Corrections
+
+- The September report's citation title now matches its source record,
+  "Countering misuse of AI: September 2026". The earlier title matched the
+  PDF file name, not the recorded publisher title.
+- The claim decision about the Chinese government's response now carries the
+  status `officiallyAnnounced`. This follows the publisher review receipt and
+  the claim-by-claim decision above, which treat the September 11 briefing as a
+  reviewed official record. Every other claim decision stays `reported`.
+- The general-China article audit is 487 records: 404 from the thirteen article
+  batches and the August 14 quality links, 78 from the September 15 HN
+  past-year intake, and 5 from this story packet. All 83 added records are
+  withheld, so 458 are withheld and 29 rejected. The stale 404-record and
+  481-record statements in `docs/README.md` and `docs/publication-methodology.md`
+  now use these figures.

@@ -208,11 +208,14 @@ The publication program and migration-specification issues below are closed;
 | Batch 12              |         29 |       26 |        3 |              0 |
 | Batch 13              |         30 |       28 |        2 |              0 |
 | Aug. 14 quality links |         20 |       20 |        0 |              0 |
-| **Total**             |    **404** |  **375** |   **29** |          **0** |
+| Sep. 15 HN past year  |         78 |       78 |        0 |              0 |
+| Sep. 15 Anthropic     |          5 |        5 |        0 |              0 |
+| **Total**             |    **487** |  **458** |   **29** |          **0** |
 
-The other 106 catalog records comprise 29 withheld critical-minerals research
-leads plus 77 existing Dispatch canonical sources, supporting research, policy
-records, open-model intake and Atlas evidence records. Eleven evidence-reviewed
+The other 122 catalog records comprise 29 withheld critical-minerals research
+leads, 16 withheld September 15 China-news candidates, and 77 existing
+Dispatch canonical sources, supporting research, policy records, open-model
+intake and Atlas evidence records. Eleven evidence-reviewed
 mappings remain outside public routes. A catalog entry, taxonomy assignment, or
 drafted mapping is not a publication count.
 
@@ -240,7 +243,7 @@ ledgers, not public summaries.
 - [September 6 critical-minerals source report](source-notes/2026-09-06-china-critical-minerals/report-source.md)
 
 The critical-minerals batch contributes 29 private, withheld research leads. It
-does not change the 404-record general-China article audit or authorize a public
+does not change the 487-record general-China article audit or authorize a public
 interactive.
 
 ## Release and promotion records

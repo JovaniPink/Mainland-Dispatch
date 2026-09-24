@@ -6,6 +6,36 @@ const date = z.iso.date();
 const fragment = text.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const references = z.array(text).min(1);
 
+/** Where an unverified phrase appears, so the preview can mark it in place. */
+const UnverifiedLocationSchema = z.discriminatedUnion("kind", [
+  z.strictObject({
+    kind: z.literal("paragraph"),
+    sectionId: fragment,
+    paragraph: z.number().int().nonnegative(),
+  }),
+  z.strictObject({
+    kind: z.literal("case"),
+    caseId: fragment,
+    field: z.enum(["label", "activity", "attribution", "outcome"]),
+  }),
+]);
+
+/**
+ * A draft detail that no reviewed source record or ledger entry supports.
+ * It stays in the text, visibly marked, until a primary source is recorded.
+ */
+export const NotebookDraftUnverifiedSchema = z.strictObject({
+  id: text.regex(/^unverified-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  phrase: text,
+  location: UnverifiedLocationSchema,
+  status: z.literal("needs-primary-source"),
+  note: text,
+});
+
+export type NotebookDraftUnverified = z.infer<
+  typeof NotebookDraftUnverifiedSchema
+>;
+
 /** Drafts have revision dates, never publication dates or public registry entries. */
 export const NotebookDraftSchema = z
   .strictObject({
@@ -62,6 +92,7 @@ export const NotebookDraftSchema = z
       )
       .min(1),
     limitations: z.array(text).min(1),
+    unverified: z.array(NotebookDraftUnverifiedSchema),
   })
   .superRefine((draft, ctx) => {
     const sources = new Set(draft.sourceTrail.map((source) => source.id));
@@ -71,6 +102,7 @@ export const NotebookDraftSchema = z
       ...claims,
       ...draft.sections.map((section) => section.id),
       ...draft.cases.map((item) => item.id),
+      ...draft.unverified.map((item) => item.id),
     ];
     if (
       sources.size !== draft.sourceTrail.length ||
@@ -99,6 +131,15 @@ export const NotebookDraftSchema = z
         });
       }
     }
+    for (const item of draft.unverified) {
+      const target = unverifiedTargetText(draft, item);
+      if (target === undefined || target.split(item.phrase).length !== 2) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Unverified phrase must appear exactly once at its location: ${item.id}`,
+        });
+      }
+    }
     if (
       draft.evidenceCutoff > draft.draftUpdatedAt ||
       draft.sourceTrail.some(
@@ -115,3 +156,29 @@ export const NotebookDraftSchema = z
   });
 
 export type NotebookDraft = z.infer<typeof NotebookDraftSchema>;
+
+type DraftText = {
+  sections: { id: string; paragraphs: { text: string }[] }[];
+  cases: {
+    id: string;
+    label: string;
+    activity: string;
+    attribution: string;
+    outcome: string;
+  }[];
+};
+
+/** The exact draft text an unverified entry points to, if it exists. */
+export function unverifiedTargetText(
+  draft: DraftText,
+  item: Pick<NotebookDraftUnverified, "location">
+): string | undefined {
+  const { location } = item;
+  if (location.kind === "paragraph") {
+    return draft.sections.find((section) => section.id === location.sectionId)
+      ?.paragraphs[location.paragraph]?.text;
+  }
+  return draft.cases.find((entry) => entry.id === location.caseId)?.[
+    location.field
+  ];
+}

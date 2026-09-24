@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { NotebookReaderShell } from "@/components/notebook/notebook-reader";
 import {
   NotebookSectionHeading,
@@ -36,6 +37,62 @@ export default async function WhoControlsTheModelPreview() {
         </a>
       );
     });
+  /** Render text with each unverified phrase followed by a visible marker. */
+  const marked = (
+    text: string,
+    matches: (item: (typeof draft.unverified)[number]) => boolean
+  ) => {
+    const items = draft.unverified.filter(matches);
+    if (items.length === 0) return text;
+    const nodes: ReactNode[] = [];
+    let rest = text;
+    const ordered = [...items].sort(
+      (a, b) => text.indexOf(a.phrase) - text.indexOf(b.phrase)
+    );
+    for (const item of ordered) {
+      const at = rest.indexOf(item.phrase);
+      const end = at + item.phrase.length;
+      nodes.push(
+        rest.slice(0, at),
+        <span key={item.id} className="bg-signal/10">
+          {item.phrase}{" "}
+          <a
+            href={`#${item.id}`}
+            className="font-mono text-xs text-signal no-underline"
+            aria-label={`Unverified: ${item.phrase}`}
+          >
+            [unverified]
+          </a>
+        </span>
+      );
+      rest = rest.slice(end);
+    }
+    nodes.push(rest);
+    return nodes;
+  };
+  const inParagraph =
+    (sectionId: string, paragraph: number) =>
+    (item: (typeof draft.unverified)[number]) =>
+      item.location.kind === "paragraph" &&
+      item.location.sectionId === sectionId &&
+      item.location.paragraph === paragraph;
+  const inCase =
+    (caseId: string, field: string) =>
+    (item: (typeof draft.unverified)[number]) =>
+      item.location.kind === "case" &&
+      item.location.caseId === caseId &&
+      item.location.field === field;
+  const locate = (item: (typeof draft.unverified)[number]) => {
+    const { location } = item;
+    if (location.kind === "case") {
+      const row = draft.cases.find((entry) => entry.id === location.caseId);
+      return `Case table, ${row?.label ?? location.caseId}, ${location.field}`;
+    }
+    const index = draft.sections.findIndex(
+      (section) => section.id === location.sectionId
+    );
+    return `Section ${String(index + 1).padStart(2, "0")}, paragraph ${location.paragraph + 1}`;
+  };
   return (
     <NotebookReaderShell
       preview
@@ -78,7 +135,10 @@ export default async function WhoControlsTheModelPreview() {
           <div className="max-w-[70ch] space-y-5 text-lg leading-[1.65] text-ink">
             {section.paragraphs.map((paragraph, paragraphIndex) => (
               <p key={paragraphIndex}>
-                {paragraph.text}{" "}
+                {marked(
+                  paragraph.text,
+                  inParagraph(section.id, paragraphIndex)
+                )}{" "}
                 <span className="whitespace-nowrap">
                   {sourceLinks(paragraph.sourceIds)}
                 </span>
@@ -153,17 +213,20 @@ export default async function WhoControlsTheModelPreview() {
                         scope="row"
                         className="border-b border-rule p-3 align-top"
                       >
-                        {item.label}
+                        {marked(item.label, inCase(item.id, "label"))}
                         {sourceLinks(item.sourceIds)}
                       </th>
                       <td className="border-b border-rule p-3 align-top">
-                        {item.activity}
+                        {marked(item.activity, inCase(item.id, "activity"))}
                       </td>
                       <td className="border-b border-rule p-3 align-top">
-                        {item.attribution}
+                        {marked(
+                          item.attribution,
+                          inCase(item.id, "attribution")
+                        )}
                       </td>
                       <td className="border-b border-rule p-3 align-top">
-                        {item.outcome}
+                        {marked(item.outcome, inCase(item.id, "outcome"))}
                       </td>
                     </tr>
                   ))}
@@ -193,6 +256,27 @@ export default async function WhoControlsTheModelPreview() {
                 </dt>
                 <dd className="mt-1 text-sm leading-relaxed">
                   {claim.assessment} {sourceLinks(claim.sourceIds)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </details>
+        <details className="border border-signal p-4" open>
+          <summary className="cursor-pointer font-serif text-xl">
+            Unverified details ({draft.unverified.length})
+          </summary>
+          <p className="mt-2 text-sm text-ink-muted">
+            Each phrase stays in the draft, marked in place, until a primary
+            source is recorded. None is supported by the reviewed records.
+          </p>
+          <dl className="mt-4 space-y-5">
+            {draft.unverified.map((item) => (
+              <div key={item.id} id={item.id}>
+                <dt className="font-semibold">
+                  &ldquo;{item.phrase}&rdquo;: needs primary source
+                </dt>
+                <dd className="mt-1 text-sm leading-relaxed">
+                  {locate(item)}. {item.note}
                 </dd>
               </div>
             ))}
