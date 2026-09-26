@@ -23,7 +23,7 @@ The stream is deliberately not a wall of identical cards. Video, audio,
 documents, data, galleries, social captures, articles, and original notes have
 distinct visual signatures, while the first item receives a wider editorial
 treatment. The pattern borrows chapter rhythm from `christinepink`, structured
-link metadata from `jovanipinkv2`, selectable moments from `chess-lab`, and
+link metadata from `jovanipink-site`, selectable moments from `chess-lab`, and
 claim-safety posture from `handoff-navigator`.
 
 ## Reader experiences
